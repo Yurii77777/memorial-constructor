@@ -1,0 +1,234 @@
+/**
+ * Made by Yurets in UA!
+ * Copyright (c) GPL License <2021> <Yurii Andriiko>
+ * Telegram @Yurets7777 E-mail: yuretshome@gmail.com
+ * "Делай хорошо, только хорошо! А можешь? - Делай лучше!"
+ */
+
+@import './reset.css';
+@import './settings.css';
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/montserrat-v18-latin_cyrillic-regular.eot');
+    src: local(''),
+         url('../fonts/montserrat-v18-latin_cyrillic-regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-regular.woff2') format('woff2'),
+         url('../fonts/montserrat-v18-latin_cyrillic-regular.woff') format('woff'),
+         url('../fonts/montserrat-v18-latin_cyrillic-regular.ttf') format('truetype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-regular.svg#Montserrat') format('svg');
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 400;
+    src: url('../fonts/montserrat-v18-latin_cyrillic-italic.eot');
+    src: local(''),
+         url('../fonts/montserrat-v18-latin_cyrillic-italic.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-italic.woff2') format('woff2'),
+         url('../fonts/montserrat-v18-latin_cyrillic-italic.woff') format('woff'),
+         url('../fonts/montserrat-v18-latin_cyrillic-italic.ttf') format('truetype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-italic.svg#Montserrat') format('svg');
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/montserrat-v18-latin_cyrillic-700.eot');
+    src: local(''),
+         url('../fonts/montserrat-v18-latin_cyrillic-700.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-700.woff2') format('woff2'),
+         url('../fonts/montserrat-v18-latin_cyrillic-700.woff') format('woff'),
+         url('../fonts/montserrat-v18-latin_cyrillic-700.ttf') format('truetype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-700.svg#Montserrat') format('svg');
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 800;
+    src: url('../fonts/montserrat-v18-latin_cyrillic-800.eot');
+    src: local(''),
+         url('../fonts/montserrat-v18-latin_cyrillic-800.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-800.woff2') format('woff2'),
+         url('../fonts/montserrat-v18-latin_cyrillic-800.woff') format('woff'),
+         url('../fonts/montserrat-v18-latin_cyrillic-800.ttf') format('truetype'),
+         url('../fonts/montserrat-v18-latin_cyrillic-800.svg#Montserrat') format('svg');
+}
+
+body {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--xs-padding);
+}
+
+.constructor {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60%;
+}
+
+.constructor__field {
+    position: relative;
+    width: inherit;
+    height: 70%;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    margin-bottom: var(--xs-margin);
+}
+
+.field__land-plot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 26px;
+    font-size: 0.8rem;
+}
+
+.field__land-plot-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: var(--xs-padding);
+}
+
+.field__land-plot-title,
+.field__land-plot-length {
+    margin-right: var(--sm-margin);
+}
+
+.field__land-plot-width,
+.field__land-plot-delimiter {
+    margin-right: var(--xs-margin);
+}
+
+.field__land-plot-arrow-down {
+    display: none;
+}
+
+.field__land-plot-arrow-down.active {
+    display: block;
+    width: 20px;
+    margin-bottom: var(--m-margin);
+    cursor: pointer;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background-color: #b3b3b3;
+}
+
+.constructor__elements {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 120px;
+    border: 1px solid var(--border-color);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    padding: var(--xs-padding);
+}
+
+.constructor__elements-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: scroll;
+    cursor: pointer;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.constructor__elements-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.constructor__elements-nav-item {
+    padding: var(--xs-padding);
+    transition: border-color .15s ease-in-out;
+}
+
+.constructor__elements-nav-item.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: 1px solid transparent;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-color: var(--border-color) var(--border-color) #fff;
+}
+
+.constructor__elements-container {
+    flex: 1 1 0;
+}
+
+.constructor__elements-values {
+    display: none;
+}
+
+.constructor__elements-values.active {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+@media (min-width: 576px) {}
+
+@media (min-width: 768px) {
+    .constructor {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .constructor__field {
+        width: 50%;
+        margin-right: var(--xs-margin);
+    }
+    
+    .constructor__elements {
+        width: 50%;
+    }
+}
+
+@media (min-width: 992px) {}
+
+@media (min-width: 1200px) {}
+
+@media (min-width: 1400px) {}

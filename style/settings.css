@@ -1,0 +1,23 @@
+/**
+ * Made by Yurets in UA!
+ * Copyright (c) GPL License <2021> <Yurii Andriiko>
+ * Telegram @Yurets7777 E-mail: yuretshome@gmail.com
+ * "Делай хорошо, только хорошо! А можешь? - Делай лучше!"
+ */
+
+:root {
+    /**
+     * Налаштування поля конструктора
+     * Settings for constructor field
+     * Настройки поля конструктора
+     */
+    --border-color: #dee2e6;
+    --border-radius: 5px;
+    --background-color: #fff;
+
+    --xs-margin: 5px;
+    --sm-margin: 10px;
+    --m-margin: 15px;
+
+    --xs-padding: 5px;
+}
