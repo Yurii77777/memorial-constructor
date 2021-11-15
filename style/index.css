@@ -73,7 +73,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: var(--xs-padding);
+    padding: var(--sm-padding);
 }
 
 .constructor {
@@ -98,9 +98,9 @@ body {
 .field__land-plot {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     width: 70%;
-    height: 26px;
+    height: 60px;
     font-size: 0.8rem;
 }
 
@@ -109,8 +109,8 @@ body {
     flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 100%;
-    padding: var(--xs-padding);
+    height: 50%;
+    padding: var(--sm-padding);
 }
 
 .field__land-plot-title,
@@ -123,15 +123,97 @@ body {
     margin-right: var(--xs-margin);
 }
 
-.field__land-plot-arrow-down {
+.field__land-plot-arrow-down,
+.field__land-plot-arrow-up {
     display: none;
 }
 
-.field__land-plot-arrow-down.active {
+.field__land-plot-arrow-down.active,
+.field__land-plot-arrow-up.active {
     display: block;
     width: 20px;
-    margin-bottom: var(--m-margin);
     cursor: pointer;
+}
+
+.field__land-plot-arrow-down.active {
+    margin-bottom: var(--m-margin);
+}
+
+.field__land-plot-arrow-up.active {
+    margin-top: var(--m-margin);
+}
+
+.field__land-plot-user-edit {
+    display: none;
+}
+
+.field__land-plot-user-edit.active {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    padding: var(--sm-padding);
+}
+
+.land-plot-user-edit__title {
+    font-size: 0.7rem;
+    margin-right: var(--sm-margin);
+}
+
+.land-plot-user-edit__plot-width,
+.land-plot-user-edit__plot-length {
+    width: 50px;
+    padding: 3px;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.land-plot-user-edit__plot-width:focus,
+.land-plot-user-edit__plot-length:focus {
+    outline: none;
+}
+
+.land-plot-user-edit__plot-length {
+    margin-right: var(--xs-margin);
+}
+
+.land-plot-user-edit__ok,
+.land-plot-user-edit__cancel {
+    padding: var(--sm-padding);
+}
+
+.land-plot-user-edit__ok,
+.land-plot-user-edit__cancel {
+    font-size: 0.7rem;
+    border: 1px solid transparent;
+    color: var(--confirm-button-text-color);
+    border-radius: var(--confirm-button-border-radius);
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+.land-plot-user-edit__ok {
+    background-color: var(--confirm-button-bg-color);
+    margin-right: var(--sm-margin);
+}
+
+.land-plot-user-edit__ok:hover,
+.land-plot-user-edit__ok:active,
+.land-plot-user-edit__ok:focus {
+    background-color: var(--confirm-button-bg-color-hover);
+}
+
+.land-plot-user-edit__cancel {
+    background-color: var(--cancel-button-bg-color);
+}
+
+.land-plot-user-edit__cancel:hover,
+.land-plot-user-edit__cancel:active,
+.land-plot-user-edit__cancel:focus {
+    background-color: var(--cancel-button-bg-color-hover);
 }
 
 .calculator {
@@ -153,7 +235,7 @@ body {
     border: 1px solid var(--border-color);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
-    padding: var(--xs-padding);
+    padding: var(--sm-padding);
 }
 
 .constructor__elements-nav {
@@ -175,7 +257,7 @@ body {
 }
 
 .constructor__elements-nav-item {
-    padding: var(--xs-padding);
+    padding: var(--sm-padding);
     transition: border-color .15s ease-in-out;
 }
 

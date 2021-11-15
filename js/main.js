@@ -32,6 +32,43 @@ elementsNavTabs[0].addEventListener('click', e => {
     }
 });
 
+/**
+ * Блок для роботи з полями ввода зміни розмірів ділянки землі
+ */
+let isVisibleEditPlotSizes = false;
+const arrowsContainerNode = document.querySelectorAll('.field__land-plot-show-edit');
+const editPlotSizesNode = document.querySelectorAll('.field__land-plot-user-edit');
+
+//TODO: Validate and getting data from inputs
+const handleEditPlotInputs = () => {
+    let newWidth = null;
+    let newLength = null;
+
+    let inputPlotWidth = document.querySelectorAll('.land-plot-user-edit__plot-width');
+    let inputPlotLength = document.querySelectorAll('.land-plot-user-edit__plot-length');
+
+    return {newWidth, newLength};
+}
+
+arrowsContainerNode[0].addEventListener('click', e => {
+    e.stopPropagation();
+
+    const arrowsContainer = Array.from(arrowsContainerNode[0].children);
+    let userClick = e.target;
+    
+    if (!isVisibleEditPlotSizes) {
+        isVisibleEditPlotSizes = true;
+        arrowsContainer[0].classList.remove('active');
+        arrowsContainer[1].classList.add('active');
+        editPlotSizesNode[0].classList.add('active');
+
+    } else {
+        isVisibleEditPlotSizes = false;
+        arrowsContainer[1].classList.remove('active');
+        arrowsContainer[0].classList.add('active');
+        editPlotSizesNode[0].classList.remove('active');
+    }
+})
 
 /* Ниже черновички "позже к ним обратимся" */
 

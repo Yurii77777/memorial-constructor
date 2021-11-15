@@ -19,14 +19,28 @@
                         <p class="field__land-plot-width">140</p>
                         <p class="field__land-plot-delimiter">x</p>
                         <p class="field__land-plot-length">220</p>
-                        <img src="./img/icons/arrow-down.svg" 
-                            alt="Ввести дані" 
-                            class="field__land-plot-arrow-down active" 
-                        />
+                        <p class="field__land-plot-show-edit">
+                            <img src="./img/icons/arrow-down.svg" 
+                                 alt="Показати поля для вводу данних" 
+                                 class="field__land-plot-arrow-down active" 
+                            />
+                            <img src="./img/icons/arrow-up.svg" 
+                                 alt="Приховати поля для вводу данних" 
+                                 class="field__land-plot-arrow-up" 
+                            />
+                        </p>
                     </div>
 
                     <div class="field__land-plot-user-edit">
-                        
+                        <p class="land-plot-user-edit__title">
+                            Введите
+                        </p>
+                        <label for="land-plot-user-edit__plot-width">Ш:</label>
+                        <input type="text" name="land-plot-user-edit__plot-width" class="land-plot-user-edit__plot-width">
+                        <label for="land-plot-user-edit__plot-length">Д:</label>
+                        <input type="text" name="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length">
+                        <button type="button" class="land-plot-user-edit__ok">Ok</button>
+                        <button type="button" class="land-plot-user-edit__cancel">Cancel</button>
                     </div>
                 </div>
             </div>
