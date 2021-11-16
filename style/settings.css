@@ -32,4 +32,6 @@
     --cancel-button-bg-color: #dc3545;
     --cancel-button-bg-color-hover: #b02a37;
 
+    /* Загальній кольори */
+    --input-error-border-color: #dc3545;
 }

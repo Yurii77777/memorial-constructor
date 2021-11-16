@@ -176,6 +176,11 @@ body {
     outline: none;
 }
 
+.land-plot-user-edit__plot-width.error,
+.land-plot-user-edit__plot-length.error {
+    border-bottom: 1px solid var(--input-error-border-color);
+}
+
 .land-plot-user-edit__plot-length {
     margin-right: var(--xs-margin);
 }
@@ -216,6 +221,31 @@ body {
     background-color: var(--cancel-button-bg-color-hover);
 }
 
+.field__error {
+    display: none;
+}
+
+.field__error.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    width: 50%;
+    height: 80px;
+    margin: auto auto;
+    color: #842029;
+    background-color: #f8d7da;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-color: #f5c2c7;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .calculator {
     display: flex;
     flex-direction: column;
@@ -223,7 +253,24 @@ body {
     align-items: center;
     width: 100%;
     height: 70px;
-    background-color: #b3b3b3;
+}
+
+.calculator__title {
+    font-size: 1rem;
+    margin-bottom: var(--xs-margin);
+}
+
+.calculator__data-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    width: inherit;
+    margin-bottom: var(--xs-margin);
+}
+
+.calculator__data-title {
+    margin-right: var(--xs-margin);
 }
 
 .constructor__elements {

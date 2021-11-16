@@ -36,12 +36,28 @@
                             Введите
                         </p>
                         <label for="land-plot-user-edit__plot-width">Ш:</label>
-                        <input type="text" name="land-plot-user-edit__plot-width" class="land-plot-user-edit__plot-width">
+                        <input type="text" 
+                                name="land-plot-user-edit__plot-width" 
+                                class="land-plot-user-edit__plot-width"
+                                onblur="validateEditPlotInputs()" 
+                        />
                         <label for="land-plot-user-edit__plot-length">Д:</label>
-                        <input type="text" name="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length">
-                        <button type="button" class="land-plot-user-edit__ok">Ok</button>
+                        <input type="text" 
+                                name="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length"
+                                onblur="validateEditPlotInputs()"
+                        />
+                        <button type="button" 
+                                class="land-plot-user-edit__ok"
+                                onclick="handlePlotInputsData()"
+                        >Ok</button>
                         <button type="button" class="land-plot-user-edit__cancel">Cancel</button>
                     </div>
+                </div>
+
+                <div class="field__error">
+                    //TODO: Доработать сообщение об ошибке!</br>
+                    Минимальные габариты участка 140 х 220.</br>
+                    Не более 4-х знаков.
                 </div>
             </div>
 
@@ -70,7 +86,22 @@
         <!-- Поле конструктора Кінець. Constructor field End. Поле конструктора Конец -->
 
         <section class="calculator">
-            Зона Калькулятора
+            <h2 class="calculator__title">
+                Калькулятор
+            </h2>
+
+            <div class="calculator__data-container">
+                <p class="calculator__data-title">
+                    Размеры земельного участка, см
+                </p>
+                <p class="calculator__data-value land-plot"></p>
+            </div>
+            <div class="calculator__data-container">
+                <p class="calculator__data-title">
+                    Площадь (S), м2
+                </p>
+                <p class="calculator__data-value land-pot-square"></p>
+            </div>
         </section>
 
         <!-- <div id="mydiv">
