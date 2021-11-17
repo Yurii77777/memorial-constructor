@@ -21,6 +21,7 @@
     
     --xs-padding: 2px;
     --sm-padding: 5px;
+    --md-padding: 10px;
 
     /* Кнопка підтвердження зміни габаритів поля */
     --confirm-button-text-color: #fff;

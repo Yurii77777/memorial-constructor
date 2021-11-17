@@ -8,32 +8,273 @@
 "use strict";
 
 /**
+ * Локалізація вузлів сторінки
+ * Localization of page's nodes
+ * Локализация узлов страницы
+ */
+const pageTitlesNode = document.querySelectorAll(".title-container__titles");
+const landPlotTitleNode = document.querySelectorAll(".field__land-plot-title");
+const landPlotUserEditTitleNode = document.querySelectorAll(
+    ".land-plot-user-edit__title"
+);
+const widthInputLableNode = document.querySelectorAll(
+    ".land-plot-user-edit__plot-width-label"
+);
+const lengthInputLableNode = document.querySelectorAll(
+    ".land-plot-user-edit__plot-length-label"
+);
+const landPlotEditButtonOkNode = document.querySelectorAll(
+    ".land-plot-user-edit__ok"
+);
+const landPlotEditButtonCancelNode = document.querySelectorAll(
+    ".land-plot-user-edit__cancel"
+);
+const plotInputErrorMessage = document.querySelectorAll(".field__error");
+
+const elementsNavTabs = document.getElementsByClassName(
+    "constructor__elements-nav"
+);
+
+const calculatorTitleNode = document.querySelectorAll(".calculator__title");
+const calculatorDataTitleNode = document.getElementsByClassName(
+    "calculator__data-container"
+);
+
+const handleSelectLanguage = () => {
+    const navTabs = Array.from(elementsNavTabs[0].children);
+    const calculatorDataTitles = Array.from(calculatorDataTitleNode);
+
+    if (isUaLanguage) {
+        pageTitlesNode[0].children[0].classList.add("active");
+        pageTitlesNode[0].children[1].classList.remove("active");
+        pageTitlesNode[0].children[2].classList.remove("active");
+
+        landPlotTitleNode[0].children[0].classList.add("active");
+        landPlotTitleNode[0].children[1].classList.remove("active");
+        landPlotTitleNode[0].children[2].classList.remove("active");
+
+        landPlotUserEditTitleNode[0].children[0].classList.add("active");
+        landPlotUserEditTitleNode[0].children[1].classList.remove("active");
+        landPlotUserEditTitleNode[0].children[2].classList.remove("active");
+
+        widthInputLableNode[0].children[0].classList.add("active");
+        widthInputLableNode[0].children[1].classList.remove("active");
+
+        lengthInputLableNode[0].children[0].classList.add("active");
+        lengthInputLableNode[0].children[1].classList.remove("active");
+
+        landPlotEditButtonOkNode[0].children[0].classList.add("active");
+        landPlotEditButtonOkNode[0].children[1].classList.remove("active");
+        landPlotEditButtonOkNode[0].children[2].classList.remove("active");
+
+        landPlotEditButtonCancelNode[0].children[0].classList.add("active");
+        landPlotEditButtonCancelNode[0].children[1].classList.remove("active");
+        landPlotEditButtonCancelNode[0].children[2].classList.remove("active");
+
+        plotInputErrorMessage[0].children[0].classList.add("active");
+        plotInputErrorMessage[0].children[1].classList.remove("active");
+        plotInputErrorMessage[0].children[2].classList.remove("active");
+
+        navTabs.forEach((tab) => {
+            tab.children[0].classList.add("active");
+            tab.children[1].classList.remove("active");
+            tab.children[2].classList.remove("active");
+        });
+
+        calculatorTitleNode[0].children[0].classList.add("active");
+        calculatorTitleNode[0].children[1].classList.remove("active");
+
+        calculatorDataTitles.forEach((el) => {
+            el.children[0].children[0].classList.add("active");
+            el.children[0].children[1].classList.remove("active");
+            el.children[0].children[2].classList.remove("active");
+        });
+    }
+
+    if (isRuLanguage) {
+        pageTitlesNode[0].children[1].classList.add("active");
+        pageTitlesNode[0].children[0].classList.remove("active");
+        pageTitlesNode[0].children[2].classList.remove("active");
+
+        landPlotTitleNode[0].children[1].classList.add("active");
+        landPlotTitleNode[0].children[0].classList.remove("active");
+        landPlotTitleNode[0].children[2].classList.remove("active");
+
+        landPlotUserEditTitleNode[0].children[1].classList.add("active");
+        landPlotUserEditTitleNode[0].children[0].classList.remove("active");
+        landPlotUserEditTitleNode[0].children[2].classList.remove("active");
+
+        widthInputLableNode[0].children[1].classList.add("active");
+        widthInputLableNode[0].children[1].classList.remove("active");
+
+        lengthInputLableNode[0].children[1].classList.add("active");
+        lengthInputLableNode[0].children[1].classList.remove("active");
+
+        landPlotEditButtonOkNode[0].children[1].classList.add("active");
+        landPlotEditButtonOkNode[0].children[0].classList.remove("active");
+        landPlotEditButtonOkNode[0].children[2].classList.remove("active");
+
+        landPlotEditButtonCancelNode[0].children[1].classList.add("active");
+        landPlotEditButtonCancelNode[0].children[0].classList.remove("active");
+        landPlotEditButtonCancelNode[0].children[2].classList.remove("active");
+
+        plotInputErrorMessage[0].children[1].classList.add("active");
+        plotInputErrorMessage[0].children[0].classList.remove("active");
+        plotInputErrorMessage[0].children[2].classList.remove("active");
+
+        navTabs.forEach((tab) => {
+            tab.children[1].classList.add("active");
+            tab.children[0].classList.remove("active");
+            tab.children[2].classList.remove("active");
+        });
+
+        calculatorTitleNode[0].children[0].classList.add("active");
+        calculatorTitleNode[0].children[1].classList.remove("active");
+
+        calculatorDataTitles.forEach((el) => {
+            el.children[0].children[1].classList.add("active");
+            el.children[0].children[0].classList.remove("active");
+            el.children[0].children[2].classList.remove("active");
+        });
+    }
+
+    if (isEngLanguage) {
+        pageTitlesNode[0].children[2].classList.add("active");
+        pageTitlesNode[0].children[0].classList.remove("active");
+        pageTitlesNode[0].children[1].classList.remove("active");
+
+        landPlotTitleNode[0].children[2].classList.add("active");
+        landPlotTitleNode[0].children[0].classList.remove("active");
+        landPlotTitleNode[0].children[1].classList.remove("active");
+
+        landPlotUserEditTitleNode[0].children[2].classList.add("active");
+        landPlotUserEditTitleNode[0].children[0].classList.remove("active");
+        landPlotUserEditTitleNode[0].children[1].classList.remove("active");
+
+        widthInputLableNode[0].children[1].classList.add("active");
+        widthInputLableNode[0].children[0].classList.remove("active");
+
+        lengthInputLableNode[0].children[1].classList.add("active");
+        lengthInputLableNode[0].children[0].classList.remove("active");
+
+        landPlotEditButtonOkNode[0].children[2].classList.add("active");
+        landPlotEditButtonOkNode[0].children[0].classList.remove("active");
+        landPlotEditButtonOkNode[0].children[1].classList.remove("active");
+
+        landPlotEditButtonCancelNode[0].children[2].classList.add("active");
+        landPlotEditButtonCancelNode[0].children[0].classList.remove("active");
+        landPlotEditButtonCancelNode[0].children[1].classList.remove("active");
+
+        plotInputErrorMessage[0].children[2].classList.add("active");
+        plotInputErrorMessage[0].children[0].classList.remove("active");
+        plotInputErrorMessage[0].children[1].classList.remove("active");
+
+        navTabs.forEach((tab) => {
+            tab.children[2].classList.add("active");
+            tab.children[0].classList.remove("active");
+            tab.children[1].classList.remove("active");
+        });
+
+        calculatorTitleNode[0].children[1].classList.add("active");
+        calculatorTitleNode[0].children[0].classList.remove("active");
+
+        calculatorDataTitles.forEach((el) => {
+            el.children[0].children[2].classList.add("active");
+            el.children[0].children[0].classList.remove("active");
+            el.children[0].children[1].classList.remove("active");
+        });
+    }
+};
+
+/**
+ * Вибір мови конструктора
+ * Handler of language select
+ * Выбор языка конструктора
+ */
+let isUaLanguage = true;
+let isRuLanguage = false;
+let isEngLanguage = false;
+let isHiddenLanguageList = true;
+const languageListNode = document.querySelectorAll(
+    ".title-container__language-list"
+);
+
+languageListNode[0].addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    const languageList = Array.from(languageListNode[0].children);
+
+    if (
+        (isHiddenLanguageList && languageList.indexOf(userClick) === 0) ||
+        (isHiddenLanguageList && languageList.indexOf(userClick) === 1) ||
+        (isHiddenLanguageList && languageList.indexOf(userClick) === 2)
+    ) {
+        languageListNode[0].classList.add("active");
+        isHiddenLanguageList = false;
+
+        for (let i = 0; i < languageList.length; i++) {
+            languageList[i].classList.add("active");
+        }
+    } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 0) {
+        languageListNode[0].classList.remove("active");
+        languageList[1].classList.remove("active");
+        languageList[2].classList.remove("active");
+
+        isHiddenLanguageList = true;
+        isUaLanguage = true;
+        isRuLanguage = false;
+        isEngLanguage = false;
+        handleSelectLanguage();
+    } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 1) {
+        languageListNode[0].classList.remove("active");
+        languageList[0].classList.remove("active");
+        languageList[2].classList.remove("active");
+
+        isHiddenLanguageList = true;
+        isUaLanguage = false;
+        isRuLanguage = true;
+        isEngLanguage = false;
+        handleSelectLanguage();
+    } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 2) {
+        languageListNode[0].classList.remove("active");
+        languageList[0].classList.remove("active");
+        languageList[1].classList.remove("active");
+
+        isHiddenLanguageList = true;
+        isUaLanguage = false;
+        isRuLanguage = false;
+        isEngLanguage = true;
+        handleSelectLanguage();
+    } else {
+        languageListNode[0].classList.remove("active");
+    }
+});
+
+/**
  * Блок для роботи з вкладками елементів конструктора (показати / приховати)
  * Handle constructor's Nav Tabs (show / hide)
  * Блок для работы с вкладками элементов конструктора (показать / скрыть)
  */
-const elementsNavTabs = document.getElementsByClassName(
-  "constructor__elements-nav"
-);
 const elementsNavTabsValues = document.getElementsByClassName(
-  "constructor__elements-container"
+    "constructor__elements-container"
 );
 
 elementsNavTabs[0].addEventListener("click", (e) => {
-  e.stopPropagation();
+    e.stopPropagation();
 
-  let userClick = e.target;
-  const navTabs = Array.from(elementsNavTabs[0].children);
-  let selectedNavTabNumber = navTabs.indexOf(userClick);
-  const navTabsValues = Array.from(elementsNavTabsValues[0].children);
+    let userClick = e.target;
+    const navTabs = Array.from(elementsNavTabs[0].children);
+    let selectedNavTabNumber = navTabs.indexOf(userClick.parentNode);
+    const navTabsValues = Array.from(elementsNavTabsValues[0].children);
 
-  for (let i = 0; i < navTabs.length; i++) {
-    navTabs[i].classList.remove("active");
-    navTabsValues[i].classList.remove("active");
+    for (let i = 0; i < navTabs.length; i++) {
+        navTabs[i].classList.remove("active");
+        navTabsValues[i].classList.remove("active");
 
-    navTabs[selectedNavTabNumber].classList.add("active");
-    navTabsValues[selectedNavTabNumber].classList.add("active");
-  }
+        navTabs[selectedNavTabNumber].classList.add("active");
+        navTabsValues[selectedNavTabNumber].classList.add("active");
+    }
 });
 
 /**
@@ -41,29 +282,29 @@ elementsNavTabs[0].addEventListener("click", (e) => {
  */
 let isVisibleEditPlotSizes = false;
 const arrowsContainerNode = document.querySelectorAll(
-  ".field__land-plot-show-edit"
+    ".field__land-plot-show-edit"
 );
 const editPlotSizesNode = document.querySelectorAll(
-  ".field__land-plot-user-edit"
+    ".field__land-plot-user-edit"
 );
 
 arrowsContainerNode[0].addEventListener("click", (e) => {
-  e.stopPropagation();
+    e.stopPropagation();
 
-  const arrowsContainer = Array.from(arrowsContainerNode[0].children);
-  let userClick = e.target;
+    const arrowsContainer = Array.from(arrowsContainerNode[0].children);
+    let userClick = e.target;
 
-  if (!isVisibleEditPlotSizes) {
-    isVisibleEditPlotSizes = true;
-    arrowsContainer[0].classList.remove("active");
-    arrowsContainer[1].classList.add("active");
-    editPlotSizesNode[0].classList.add("active");
-  } else {
-    isVisibleEditPlotSizes = false;
-    arrowsContainer[1].classList.remove("active");
-    arrowsContainer[0].classList.add("active");
-    editPlotSizesNode[0].classList.remove("active");
-  }
+    if (!isVisibleEditPlotSizes) {
+        isVisibleEditPlotSizes = true;
+        arrowsContainer[0].classList.remove("active");
+        arrowsContainer[1].classList.add("active");
+        editPlotSizesNode[0].classList.add("active");
+    } else {
+        isVisibleEditPlotSizes = false;
+        arrowsContainer[1].classList.remove("active");
+        arrowsContainer[0].classList.add("active");
+        editPlotSizesNode[0].classList.remove("active");
+    }
 });
 
 /**
@@ -73,34 +314,37 @@ arrowsContainerNode[0].addEventListener("click", (e) => {
 let isNewWidth = false;
 let isNewLength = false;
 const plotWidthInput = document.querySelectorAll(
-  ".land-plot-user-edit__plot-width"
+    ".land-plot-user-edit__plot-width"
 );
 const plotLengthInput = document.querySelectorAll(
-  ".land-plot-user-edit__plot-length"
+    ".land-plot-user-edit__plot-length"
 );
 let newPlotWidth = null;
 let newPlotLength = null;
 
 const validateEditPlotInputs = () => {
-  newPlotWidth = plotWidthInput[0].value.replace(/\D/g, "");
-  newPlotLength = plotLengthInput[0].value.replace(/\D/g, "");
+    newPlotWidth = plotWidthInput[0].value.replace(/\D/g, "");
+    newPlotLength = plotLengthInput[0].value.replace(/\D/g, "");
 
-  if (newPlotWidth.length > 4 || newPlotWidth === "" || newPlotWidth < 140) {
-    plotWidthInput[0].classList.add("error");
-    isNewWidth = false;
+    if (newPlotWidth.length > 4 || newPlotWidth === "" || newPlotWidth < 140) {
+        plotWidthInput[0].classList.add("error");
+        isNewWidth = false;
+    } else {
+        plotWidthInput[0].classList.remove("error");
+        isNewWidth = true;
+    }
 
-  } else {
-    plotWidthInput[0].classList.remove("error");
-    isNewWidth = true;
-  }
-
-  if (newPlotLength.length > 4 || newPlotLength === "" || newPlotLength < 220) {
-    plotLengthInput[0].classList.add("error");
-    isNewLength = false;
-  } else {
-    plotLengthInput[0].classList.remove("error");
-    isNewLength = true;
-  }
+    if (
+        newPlotLength.length > 4 ||
+        newPlotLength === "" ||
+        newPlotLength < 220
+    ) {
+        plotLengthInput[0].classList.add("error");
+        isNewLength = false;
+    } else {
+        plotLengthInput[0].classList.remove("error");
+        isNewLength = true;
+    }
 };
 
 /**
@@ -110,27 +354,34 @@ const landPlotWidth = document.querySelectorAll(".field__land-plot-width");
 const landPlotLength = document.querySelectorAll(".field__land-plot-length");
 const calculatorLandPlotNode = document.querySelectorAll(
     ".calculator__data-value.land-plot"
-  );
-const landPlotSquareNode = document.querySelectorAll('.calculator__data-value.land-pot-square');
-const plotInputErrorMessage = document.querySelectorAll('.field__error');
+);
+const landPlotSquareNode = document.querySelectorAll(
+    ".calculator__data-value.land-pot-square"
+);
+const landPlotPerimeterNode = document.querySelectorAll(
+    ".calculator__data-value.land-pot-perimeter"
+);
 
 const handlePlotInputsData = () => {
-  if (isNewWidth && isNewLength) {
-    landPlotWidth[0].innerText = newPlotWidth;
-    landPlotLength[0].innerText = newPlotLength;
-    calculatorLandPlotNode[0].innerText = `${newPlotWidth} x ${newPlotLength}`;
-    landPlotSquareNode[0].innerText = (newPlotWidth * newPlotLength) / 10000;
+    if (isNewWidth && isNewLength) {
+        landPlotWidth[0].innerText = newPlotWidth;
+        landPlotLength[0].innerText = newPlotLength;
+        calculatorLandPlotNode[0].innerText = `${newPlotWidth} x ${newPlotLength}`;
+        landPlotSquareNode[0].innerText =
+            (newPlotWidth * newPlotLength) / 10000;
+        landPlotPerimeterNode[0].innerText = 2 * ((newPlotWidth / 100) + (newPlotLength / 100));
 
-    plotWidthInput[0].value = "";
-    plotLengthInput[0].value = "";
-    editPlotSizesNode[0].classList.remove("active");
-  } else {
-    plotInputErrorMessage[0].classList.add("active");
+        plotWidthInput[0].value = "";
+        plotLengthInput[0].value = "";
+        editPlotSizesNode[0].classList.remove("active");
+    } else {
+        plotInputErrorMessage[0].classList.add("active");
+        handleSelectLanguage();
 
-    setTimeout(() => {
-        plotInputErrorMessage[0].classList.remove("active");
-    }, 3000)
-  }
+        setTimeout(() => {
+            plotInputErrorMessage[0].classList.remove("active");
+        }, 3000);
+    }
 };
 
 /**
@@ -139,7 +390,9 @@ const handlePlotInputsData = () => {
 
 if (!isNewWidth && !isNewLength) {
     calculatorLandPlotNode[0].innerText = `${landPlotWidth[0].innerText} x ${landPlotLength[0].innerText}`;
-    landPlotSquareNode[0].innerText = (+landPlotWidth[0].innerText * +landPlotLength[0].innerText) / 10000;
+    landPlotSquareNode[0].innerText =
+        (+landPlotWidth[0].innerText * +landPlotLength[0].innerText) / 10000;
+    landPlotPerimeterNode[0].innerText = 2 * ((+landPlotWidth[0].innerText / 100) + (+landPlotLength[0].innerText / 100));
 }
 
 /* Ниже черновички "позже к ним обратимся" */

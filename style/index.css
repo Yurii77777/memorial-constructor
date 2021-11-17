@@ -75,6 +75,87 @@ body {
     align-items: center;
     padding: var(--sm-padding);
 }
+/* Блок Хедер начало. Удалить при внедрении на сайт */
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: 40px;
+    color: #084298;
+    background-color: #cfe2ff;
+    border-color: #b6d4fe;
+}
+/* Блок Хедер конец. Удалить при внедрении на сайт */
+
+.title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: inherit;
+    height: 30px;
+    padding: 0 var(--md-padding);
+}
+
+.title-container__titles {
+    width: 90%;
+    text-align: center;
+    margin-right: var(--xs-margin);
+}
+
+.title-ua,
+.title-ru,
+.title-eng,
+.title-container__language-item,
+.field__land-plot-title > span,
+.land-plot-user-edit__title > span,
+.land-plot-user-edit__plot-width-label > span,
+.land-plot-user-edit__plot-length-label > span,
+.land-plot-user-edit__ok > span,
+.land-plot-user-edit__cancel > span,
+.field__error,
+.field__error > span,
+.constructor__elements-nav-item > span,
+.calculator__title > span,
+.calculator__data-title > span {
+    display: none;
+}
+
+.title-ua.active,
+.title-ru.active,
+.title-eng.active {
+    display: block;
+    font-size: 1rem;
+}
+
+.title-container__language-list {
+    font-size: 0.7rem;
+    width: 10%;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.title-container__language-list.active > li:nth-child(2) {
+    top: 18px;
+}
+
+.title-container__language-list.active > li:last-child {
+    top: 36px;
+}
+
+.title-container__language-item.active {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 15px;
+    padding: var(--xs-padding);
+    transform: translate(-50%, -50%);
+}
 
 .constructor {
     display: flex;
@@ -99,7 +180,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 70%;
+    width: 75%;
     height: 60px;
     font-size: 0.8rem;
 }
@@ -116,6 +197,15 @@ body {
 .field__land-plot-title,
 .field__land-plot-length {
     margin-right: var(--sm-margin);
+}
+
+.field__land-plot-title > span.active,
+.land-plot-user-edit__title > span.active,
+.land-plot-user-edit__plot-width-label > span.active,
+.land-plot-user-edit__plot-length-label > span.active,
+.land-plot-user-edit__ok > span.active,
+.land-plot-user-edit__cancel > span.active {
+    display: inline;
 }
 
 .field__land-plot-width,
@@ -221,17 +311,13 @@ body {
     background-color: var(--cancel-button-bg-color-hover);
 }
 
-.field__error {
-    display: none;
-}
-
 .field__error.active {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     font-size: 0.7rem;
-    width: 50%;
+    width: 60%;
     height: 80px;
     margin: auto auto;
     color: #842029;
@@ -240,10 +326,12 @@ body {
     padding: 5px;
     border: 1px solid transparent;
     border-color: #f5c2c7;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+}
+
+.field__error.active > span.active {
+    display: inline;
+    text-align: center;
+    line-height: 1.3;
 }
 
 .calculator {
@@ -258,6 +346,11 @@ body {
 .calculator__title {
     font-size: 1rem;
     margin-bottom: var(--xs-margin);
+}
+
+.calculator__title > span.active,
+.calculator__data-title > span.active {
+    display: block;
 }
 
 .calculator__data-container {
@@ -320,6 +413,11 @@ body {
     border-color: var(--border-color) var(--border-color) #fff;
 }
 
+.constructor__elements-nav-item.active > span.active,
+.constructor__elements-nav-item > span.active {
+    display: block;
+}
+
 .constructor__elements-container {
     flex: 1 1 0;
 }
@@ -337,7 +435,12 @@ body {
     height: 100%;
 }
 
-@media (min-width: 576px) {}
+@media (min-width: 576px) {
+    .field__error.active {
+        width: 200px;
+        margin: auto 60px 0;
+    }
+}
 
 @media (min-width: 768px) {
     .constructor {
@@ -354,10 +457,27 @@ body {
     .constructor__elements {
         width: 50%;
     }
+
+    .calculator {
+        width: 700px;
+    }
 }
 
-@media (min-width: 992px) {}
+@media (min-width: 992px) {
+    .wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
 
-@media (min-width: 1200px) {}
+    .calculator {
+        width: 800px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .calculator {
+        width: 1000px;
+    }
+}
 
 @media (min-width: 1400px) {}

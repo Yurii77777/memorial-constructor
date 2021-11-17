@@ -10,12 +10,33 @@
 </head>
 <body>
     <div class="wrapper">
+        <header class="header">
+            Тут буде меню майбутнього сайту
+        </header>
+
+        <div class="title-container">
+            <div class="title-container__titles">
+                <h1 class="title-ua active">Конструктор пам'ятників</h1>
+                <h1 class="title-ru">Конструктор памятников</h1>
+                <h1 class="title-eng">Memorial constructor</h1>
+            </div>
+            <ul class="title-container__language-list">
+                <li class="title-container__language-item active">UA</li>
+                <li class="title-container__language-item">RU</li>
+                <li class="title-container__language-item">ENG</li>
+            </ul>
+        </div>
+
         <!-- Поле конструктора Початок. Constructor field Begin. Поле конструктора Начало -->
         <section class="constructor">
             <div class="constructor__field">
                 <div class="field__land-plot">
                     <div class="field__land-plot-container">
-                        <p class="field__land-plot-title">Участок, см</p>
+                        <p class="field__land-plot-title">
+                            <span class="active">Ділянка, см</span>
+                            <span>Участок, см</span>
+                            <span>Land plot, cm</span>
+                        </p>
                         <p class="field__land-plot-width">140</p>
                         <p class="field__land-plot-delimiter">x</p>
                         <p class="field__land-plot-length">220</p>
@@ -33,15 +54,23 @@
 
                     <div class="field__land-plot-user-edit">
                         <p class="land-plot-user-edit__title">
-                            Введите
+                            <span class="active">Введіть</span>
+                            <span>Введите</span>
+                            <span>Enter</span>
                         </p>
-                        <label for="land-plot-user-edit__plot-width">Ш:</label>
+                        <label for="land-plot-user-edit__plot-width" class="land-plot-user-edit__plot-width-label">
+                            <span class="active">Ш:</span>
+                            <span>W:</span>
+                        </label>
                         <input type="text" 
                                 name="land-plot-user-edit__plot-width" 
                                 class="land-plot-user-edit__plot-width"
                                 onblur="validateEditPlotInputs()" 
                         />
-                        <label for="land-plot-user-edit__plot-length">Д:</label>
+                        <label for="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length-label">
+                            <span class="active">Д:</span>
+                            <span>L:</span>
+                        </label>
                         <input type="text" 
                                 name="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length"
                                 onblur="validateEditPlotInputs()"
@@ -49,26 +78,67 @@
                         <button type="button" 
                                 class="land-plot-user-edit__ok"
                                 onclick="handlePlotInputsData()"
-                        >Ok</button>
-                        <button type="button" class="land-plot-user-edit__cancel">Cancel</button>
+                        >
+                            <span class="active">Так</span>
+                            <span>Да</span>
+                            <span>Ok</span>
+                        </button>
+                        <button type="button" class="land-plot-user-edit__cancel">
+                            <span class="active">Відміна</span>
+                            <span>Отмена</span>
+                            <span>Cancel</span>
+                        </button>
                     </div>
                 </div>
 
                 <div class="field__error">
-                    //TODO: Доработать сообщение об ошибке!</br>
-                    Минимальные габариты участка 140 х 220.</br>
-                    Не более 4-х знаков.
+                    <span>
+                        Мінімальні габарити ділянки 140 х 220 см. </br>
+                        Максимальне значення не більше 4-х знаків!
+                    </span>
+                    <span>
+                        Минимальные габариты участка 140 х 220 см.</br>
+                        Максимальное значение не более 4-х знаков!
+                    </span>
+                    <span>
+                        The minimum dimensions of the plot are 140 x 220 cm. </br>
+                        The maximum value cannot be more than 4 characters!
+                    </span>
                 </div>
             </div>
 
             <div class="constructor__elements">
                 <ul class="constructor__elements-nav">
-                    <li class="constructor__elements-nav-item active">Под<wbr>ставка</li>
-                    <li class="constructor__elements-nav-item">Памят<wbr>ник</li>
-                    <li class="constructor__elements-nav-item">Цвет<wbr>ник</li>
-                    <li class="constructor__elements-nav-item">Аксес<wbr>суары</li>
-                    <li class="constructor__elements-nav-item">Цоколи, ограды</li>
-                    <li class="constructor__elements-nav-item">Благо<wbr>устройство</li>
+                    <li class="constructor__elements-nav-item active">
+                        <span class="active">Під<wbr>ставка</span>
+                        <span>Под<wbr>ставка</span>
+                        <span>Stand</span>
+                    </li>
+                    <li class="constructor__elements-nav-item">
+                        <span class="active">Пам'<wbr>ятник</span>
+                        <span>Памят<wbr>ник</span>
+                        <span>Memo<wbr>rial</span>
+                    </li>
+                    <li class="constructor__elements-nav-item">
+                        <span class="active">Цвіт<wbr>ник</span>
+                        <span>Цвет<wbr>ник</span>
+                        <span>Flower garden</span>
+                    </li>
+                    <li class="constructor__elements-nav-item">
+                        <span class="active">Аксесуари</span>
+                        <span>Аксес<wbr>суары</span>
+                        <span>Accessories</span>
+                    </li>
+                    <li class="constructor__elements-nav-item">
+                        <span class="active">Цоколі, огорожі</span>
+                        <span>Цоколи, ограды</span>
+                        <span>Plinths, fences</span>
+                    </li>
+                    <li class="constructor__elements-nav-item">
+                        <span class="active">Благоустрій</span>
+                        <span>Благо<wbr>устройство</span>
+                        <span>Beauti<wbr>fication</span>
+                    </li>
                 </ul>
 
                 <div class="constructor__elements-container">
@@ -87,20 +157,33 @@
 
         <section class="calculator">
             <h2 class="calculator__title">
-                Калькулятор
+                <span class="active">Калькулятор</span>
+                <span>Calculator</span>
             </h2>
 
             <div class="calculator__data-container">
                 <p class="calculator__data-title">
-                    Размеры земельного участка, см
+                    <span class="active">Розміри земельної ділянки, см</span>
+                    <span>Размеры земельного участка, см</span>
+                    <span>Land plot size, cm</span>
                 </p>
                 <p class="calculator__data-value land-plot"></p>
             </div>
             <div class="calculator__data-container">
                 <p class="calculator__data-title">
-                    Площадь (S), м2
+                    <span class="active">Площа, м2</span>
+                    <span>Площадь, м2</span>
+                    <span>Area, m2</span>
                 </p>
                 <p class="calculator__data-value land-pot-square"></p>
+            </div>
+            <div class="calculator__data-container">
+                <p class="calculator__data-title">
+                    <span class="active">Периметр, м</span>
+                    <span>Периметр, м</span>
+                    <span>Perimeter, m</span>
+                </p>
+                <p class="calculator__data-value land-pot-perimeter"></p>
             </div>
         </section>
 
