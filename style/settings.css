@@ -33,6 +33,11 @@
     --cancel-button-bg-color: #dc3545;
     --cancel-button-bg-color-hover: #b02a37;
 
-    /* Загальній кольори */
+    /* Загальні кольори */
     --input-error-border-color: #dc3545;
+
+    /* Налаштування повідомлення про помилку */
+    --error-text-color: #842029;
+    --error-background-color: #f8d7da;
+    --error-border-color: #f5c2c7;
 }

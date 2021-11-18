@@ -217,9 +217,9 @@ languageListNode[0].addEventListener("click", (e) => {
             languageList[i].classList.add("active");
         }
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 0) {
-        languageListNode[0].classList.remove("active");
         languageList[1].classList.remove("active");
         languageList[2].classList.remove("active");
+        languageListNode[0].classList.remove("active");
 
         isHiddenLanguageList = true;
         isUaLanguage = true;
@@ -227,9 +227,9 @@ languageListNode[0].addEventListener("click", (e) => {
         isEngLanguage = false;
         handleSelectLanguage();
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 1) {
-        languageListNode[0].classList.remove("active");
         languageList[0].classList.remove("active");
         languageList[2].classList.remove("active");
+        languageListNode[0].classList.remove("active");
 
         isHiddenLanguageList = true;
         isUaLanguage = false;
@@ -237,9 +237,9 @@ languageListNode[0].addEventListener("click", (e) => {
         isEngLanguage = false;
         handleSelectLanguage();
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 2) {
-        languageListNode[0].classList.remove("active");
         languageList[0].classList.remove("active");
         languageList[1].classList.remove("active");
+        languageListNode[0].classList.remove("active");
 
         isHiddenLanguageList = true;
         isUaLanguage = false;
