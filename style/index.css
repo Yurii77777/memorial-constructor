@@ -339,8 +339,8 @@ body {
 
 .field__main-container {
     position: absolute;
-    top: 115px;
     left: 30px;
+    bottom: 15%;
     background-image: url('../img/land-plot.svg');
     background-size: cover;
     transform: skew(30deg, -10deg);
