@@ -39,6 +39,7 @@ const calculatorTitleNode = document.querySelectorAll(".calculator__title");
 const calculatorDataTitleNode = document.getElementsByClassName(
     "calculator__data-container"
 );
+const calculatorAttentionNode = document.querySelectorAll(".calculator__attention");
 
 const handleSelectLanguage = () => {
     const navTabs = Array.from(elementsNavTabs[0].children);
@@ -89,6 +90,10 @@ const handleSelectLanguage = () => {
             el.children[0].children[1].classList.remove("active");
             el.children[0].children[2].classList.remove("active");
         });
+
+        calculatorAttentionNode[0].children[0].classList.add("active");
+        calculatorAttentionNode[0].children[1].classList.remove("active");
+        calculatorAttentionNode[0].children[2].classList.remove("active");
     }
 
     if (isRuLanguage) {
@@ -136,6 +141,10 @@ const handleSelectLanguage = () => {
             el.children[0].children[0].classList.remove("active");
             el.children[0].children[2].classList.remove("active");
         });
+
+        calculatorAttentionNode[0].children[1].classList.add("active");
+        calculatorAttentionNode[0].children[0].classList.remove("active");
+        calculatorAttentionNode[0].children[2].classList.remove("active");
     }
 
     if (isEngLanguage) {
@@ -183,6 +192,10 @@ const handleSelectLanguage = () => {
             el.children[0].children[0].classList.remove("active");
             el.children[0].children[1].classList.remove("active");
         });
+
+        calculatorAttentionNode[0].children[2].classList.add("active");
+        calculatorAttentionNode[0].children[0].classList.remove("active");
+        calculatorAttentionNode[0].children[1].classList.remove("active");
     }
 };
 
@@ -383,6 +396,13 @@ const handlePlotInputsData = () => {
         }, 3000);
     }
 };
+
+/**
+ * Функція відміни введення нових даних в конструктор
+ */
+const handleCancelEditPlotInputsData = () => {
+    console.log('//TODO: Clear inputs and hide block Edit land plot')
+}
 
 /**
  * Блок калькулятора
