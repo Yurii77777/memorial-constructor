@@ -64,8 +64,7 @@
                         </label>
                         <input type="text" 
                                 name="land-plot-user-edit__plot-width" 
-                                class="land-plot-user-edit__plot-width"
-                                onblur="validateEditPlotInputs()" 
+                                class="land-plot-user-edit__plot-width" 
                         />
                         <label for="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length-label">
                             <span class="active">Д:</span>
@@ -73,11 +72,10 @@
                         </label>
                         <input type="text" 
                                 name="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length"
-                                onblur="validateEditPlotInputs()"
                         />
                         <button type="button" 
                                 class="land-plot-user-edit__ok"
-                                onclick="handlePlotInputsData()"
+                                onclick="handleSubmitLandPlotInputsData()"
                         >
                             <span class="active">Так</span>
                             <span>Да</span>
@@ -230,6 +228,15 @@
                 </p>
                 <p class="calculator__data-value land-pot-perimeter"></p>
             </div>
+
+            <div class="calculator__data-container-curbs">
+                <p class="calculator__data-title">
+                    <span class="active">Бордюр, шт.</span>
+                    <span>Бордюр, шт.</span>
+                    <span>Curb, pcs</span>
+                </p>
+                <p class="calculator__data-value curbs"></p>
+            </div>
         </section>
 
         <!-- <div id="mydiv">
@@ -240,6 +247,7 @@
           </div> -->
     </div>
 
+    <script defer src="./data/prices.js"></script>
     <script async src="./js/main.js"></script>
 </body>
 </html>

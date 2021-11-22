@@ -8,12 +8,28 @@
 "use strict";
 
 /**
- * Локалізація вузлів сторінки
- * Localization of page's nodes
- * Локализация узлов страницы
+ * Отримуємо всі вузли, з якими будемо працювати
+ * Getting all nodes with which we will work
+ * Получаем все узлы, с которыми будем работать
  */
+// Заголовок сторінки
 const pageTitlesNode = document.querySelectorAll(".title-container__titles");
+
+// Список доступних мов
+const languageListNode = document.querySelectorAll(
+    ".title-container__language-list"
+);
+
+// Елементи зміни габаритів земельної дялінки
 const landPlotTitleNode = document.querySelectorAll(".field__land-plot-title");
+const landPlotWidth = document.querySelectorAll(".field__land-plot-width");
+const landPlotLength = document.querySelectorAll(".field__land-plot-length");
+const arrowsContainerNode = document.querySelectorAll(
+    ".field__land-plot-show-edit"
+);
+const editPlotSizesNode = document.querySelectorAll(
+    ".field__land-plot-user-edit"
+);
 const landPlotUserEditTitleNode = document.querySelectorAll(
     ".land-plot-user-edit__title"
 );
@@ -23,6 +39,12 @@ const widthInputLableNode = document.querySelectorAll(
 const lengthInputLableNode = document.querySelectorAll(
     ".land-plot-user-edit__plot-length-label"
 );
+const plotWidthInput = document.querySelectorAll(
+    ".land-plot-user-edit__plot-width"
+);
+const plotLengthInput = document.querySelectorAll(
+    ".land-plot-user-edit__plot-length"
+);
 const landPlotEditButtonOkNode = document.querySelectorAll(
     ".land-plot-user-edit__ok"
 );
@@ -31,16 +53,65 @@ const landPlotEditButtonCancelNode = document.querySelectorAll(
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
 
+// Вкладки
 const elementsNavTabs = document.getElementsByClassName(
     "constructor__elements-nav"
 );
+const elementsNavTabsValues = document.getElementsByClassName(
+    "constructor__elements-container"
+);
 
+// Калькулятор
 const calculatorTitleNode = document.querySelectorAll(".calculator__title");
 const calculatorDataTitleNode = document.getElementsByClassName(
     "calculator__data-container"
 );
-const calculatorAttentionNode = document.querySelectorAll(".calculator__attention");
+const calculatorAttentionNode = document.querySelectorAll(
+    ".calculator__attention"
+);
+const calculatorLandPlotNode = document.querySelectorAll(
+    ".calculator__data-value.land-plot"
+);
+const landPlotAreaNode = document.querySelectorAll(
+    ".calculator__data-value.land-pot-square"
+);
+const landPlotPerimeterNode = document.querySelectorAll(
+    ".calculator__data-value.land-pot-perimeter"
+);
+const elementsBordersNode = document.querySelectorAll(
+    ".constructor__elements-borders"
+);
+const borderElementOnConstructor =
+    document.querySelectorAll(".field__border-img");
+const dataContainerCurbsNode = document.querySelectorAll(
+    ".calculator__data-container-curbs"
+);
+const dataValueCurbsNode = document.querySelectorAll('.calculator__data-value.curbs');
 
+/**
+ * Функція для отримання поточних розмірів земельної ділянки
+ * повертає об'єкт з поточними розмірами
+ * Function for getting current land plot sizes
+ * returns object which includes current sizes
+ * Функция для получения текущих размеров земельного участка
+ * возвращает объект с текущими размерами
+ * @returns { width, length }
+ */
+const handleLandPlotSizes = () => {
+    let width = null;
+    let length = null;
+
+    width = landPlotWidth[0].innerText;
+    length = landPlotLength[0].innerText;
+
+    return { width, length };
+};
+
+/**
+ * Локалізація вузлів сторінки
+ * Localization of page's nodes
+ * Локализация узлов страницы
+ */
 const handleSelectLanguage = () => {
     const navTabs = Array.from(elementsNavTabs[0].children);
     const calculatorDataTitles = Array.from(calculatorDataTitleNode);
@@ -200,17 +271,14 @@ const handleSelectLanguage = () => {
 };
 
 /**
- * Вибір мови конструктора
+ * Вибір мови
  * Handler of language select
- * Выбор языка конструктора
+ * Выбор языка
  */
 let isUaLanguage = true;
 let isRuLanguage = false;
 let isEngLanguage = false;
 let isHiddenLanguageList = true;
-const languageListNode = document.querySelectorAll(
-    ".title-container__language-list"
-);
 
 languageListNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
@@ -269,10 +337,6 @@ languageListNode[0].addEventListener("click", (e) => {
  * Handle constructor's Nav Tabs (show / hide)
  * Блок для работы с вкладками элементов конструктора (показать / скрыть)
  */
-const elementsNavTabsValues = document.getElementsByClassName(
-    "constructor__elements-container"
-);
-
 elementsNavTabs[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
@@ -291,15 +355,11 @@ elementsNavTabs[0].addEventListener("click", (e) => {
 });
 
 /**
- * Блок для роботи з полями ввода зміни розмірів ділянки землі (показати / приховати)
+ * Показати/приховати поля вводу зміни розмірів ділянки
+ * Handle show/hide node which changes land plot sizes
+ * Показать/скрыть поля ввода смены размеров участка
  */
 let isVisibleEditPlotSizes = false;
-const arrowsContainerNode = document.querySelectorAll(
-    ".field__land-plot-show-edit"
-);
-const editPlotSizesNode = document.querySelectorAll(
-    ".field__land-plot-user-edit"
-);
 
 arrowsContainerNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
@@ -321,69 +381,75 @@ arrowsContainerNode[0].addEventListener("click", (e) => {
 });
 
 /**
- * Функція валідації данних інпутів зміни земельної ділянки
+ * Валідація данних інпутів зміни земельної ділянки
  * тільки числа, максимум 4 знаки, не менше базових габаритів
+ * Validation data from inputs edit land plot
+ * only numbers, max. 4 chars, but not less than the basic dimensions
+ * Валидация данных с инпутов изменения земельного участка
+ * только числа, максимум 4 знака, не менее базовых габаритов
  */
-let isNewWidth = false;
-let isNewLength = false;
-const plotWidthInput = document.querySelectorAll(
-    ".land-plot-user-edit__plot-width"
-);
-const plotLengthInput = document.querySelectorAll(
-    ".land-plot-user-edit__plot-length"
-);
-let newPlotWidth = null;
-let newPlotLength = null;
+const validateEditLandPlotInputs = () => {
+    let isValid = false;
+    let isNewLandPlotWidth = false;
+    let isNewLandPlotLength = false;
+    let newLandPlotWidth = null;
+    let newLandPlotLength = null;
 
-const validateEditPlotInputs = () => {
-    newPlotWidth = plotWidthInput[0].value.replace(/\D/g, "");
-    newPlotLength = plotLengthInput[0].value.replace(/\D/g, "");
+    newLandPlotWidth = plotWidthInput[0].value.replace(/\D/g, "");
+    newLandPlotLength = plotLengthInput[0].value.replace(/\D/g, "");
 
-    if (newPlotWidth.length > 4 || newPlotWidth === "" || newPlotWidth < 140) {
-        plotWidthInput[0].classList.add("error");
-        isNewWidth = false;
+    if (
+        newLandPlotWidth.length > 4 ||
+        newLandPlotWidth === "" ||
+        newLandPlotWidth < 140
+    ) {
+        isNewLandPlotWidth = false;
+        plotWidthInput[0].classList.add('error');
     } else {
-        plotWidthInput[0].classList.remove("error");
-        isNewWidth = true;
+        isNewLandPlotWidth = true;
+        plotWidthInput[0].classList.remove('error');
     }
 
     if (
-        newPlotLength.length > 4 ||
-        newPlotLength === "" ||
-        newPlotLength < 220
+        newLandPlotLength.length > 4 ||
+        newLandPlotLength === "" ||
+        newLandPlotLength < 220
     ) {
-        plotLengthInput[0].classList.add("error");
-        isNewLength = false;
+        isNewLandPlotLength = false;
+        plotLengthInput[0].classList.add('error');
     } else {
-        plotLengthInput[0].classList.remove("error");
-        isNewLength = true;
+        isNewLandPlotLength = true;
+        plotLengthInput[0].classList.remove('error');
     }
+
+    isNewLandPlotWidth && isNewLandPlotLength
+        ? (isValid = true)
+        : (isValid = false);
+
+    return { isValid, newLandPlotWidth, newLandPlotLength };
 };
 
 /**
- * Функція застосування валідних даних в конструктор
+ * Отримуємо ціни з прайсу. Прайс знаходиться за адресою ../data/prices.js
+ * Getting prices from price. Price's url is ../data/prices.js
+ * Получаем цены с прайса. Прайс находится по адресу ../data/prices.js
  */
-const landPlotWidth = document.querySelectorAll(".field__land-plot-width");
-const landPlotLength = document.querySelectorAll(".field__land-plot-length");
-const calculatorLandPlotNode = document.querySelectorAll(
-    ".calculator__data-value.land-plot"
-);
-const landPlotSquareNode = document.querySelectorAll(
-    ".calculator__data-value.land-pot-square"
-);
-const landPlotPerimeterNode = document.querySelectorAll(
-    ".calculator__data-value.land-pot-perimeter"
-);
+const priceList = prices[0];
+const { curbs } = priceList;
 
-const handlePlotInputsData = () => {
-    if (isNewWidth && isNewLength) {
-        landPlotWidth[0].innerText = newPlotWidth;
-        landPlotLength[0].innerText = newPlotLength;
-        calculatorLandPlotNode[0].innerText = `${newPlotWidth} x ${newPlotLength}`;
-        landPlotSquareNode[0].innerText =
-            (newPlotWidth * newPlotLength) / 10000;
-        landPlotPerimeterNode[0].innerText = 2 * ((newPlotWidth / 100) + (newPlotLength / 100));
+/**
+ * Функція застосування валідних даних (нові розміри земельної ділянки) в конструктор
+ * Submit valid data (new land plot sizes) to constructor
+ * Функция применения валидных данных (новые размеры земельного участка) в конструкторе
+ */
+const handleSubmitLandPlotInputsData = () => {
+    const { isValid, newLandPlotLength, newLandPlotWidth } =
+    validateEditLandPlotInputs();
 
+    if (isValid) {
+        landPlotWidth[0].innerText = newLandPlotWidth;
+        landPlotLength[0].innerText = newLandPlotLength;
+        calculate();
         plotWidthInput[0].value = "";
         plotLengthInput[0].value = "";
         editPlotSizesNode[0].classList.remove("active");
@@ -399,36 +465,40 @@ const handlePlotInputsData = () => {
 
 /**
  * Обробник елементів блоку "Цоколі, огорожі"
+ * Handler of elements "Socles, fences"
+ * Обработчик элементов блока "Цоколи, ограждения"
  */
-const elementsBordersNode = document.querySelectorAll('.constructor__elements-borders');
-const borderElementOnConstructor = document.querySelectorAll('.field__border-img');
-let isBorderHidden = true;
-let selectedBorder = null;
-
-elementsBordersNode[0].addEventListener('click', e => {
+elementsBordersNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
-
+    
+    let isBorderHidden = true;
+    let selectedBorder = null;
     let userClick = e.target;
     const elementsBorders = Array.from(elementsBordersNode[0].children);
 
     if (userClick) {
         isBorderHidden = false;
         selectedBorder = elementsBorders.indexOf(userClick.parentNode);
+        
+        dataContainerCurbsNode[0].classList.add("active");
+        calculate();
     }
 
     if (!isBorderHidden) {
         for (let i = 0; i < elementsBorders.length; i++) {
-            elementsBorders[i].classList.remove('active');
+            elementsBorders[i].classList.remove("active");
         }
 
-        elementsBorders[selectedBorder].classList.add('active');
-        borderElementOnConstructor[0].classList.add('active');
+        elementsBorders[selectedBorder].classList.add("active");
+        borderElementOnConstructor[0].classList.add("active");
+        calculate();
     }
-    
-    if (!isBorderHidden && userClick.className === 'field__border-close') {
+
+    if (!isBorderHidden && userClick.className === "field__border-close") {
         isBorderHidden = true;
-        borderElementOnConstructor[0].classList.remove('active');
-        elementsBorders[selectedBorder].classList.remove('active');
+        borderElementOnConstructor[0].classList.remove("active");
+        elementsBorders[selectedBorder].classList.remove("active");
+        dataContainerCurbsNode[0].classList.remove("active");
         selectedBorder = null;
     }
 });
@@ -437,28 +507,57 @@ elementsBordersNode[0].addEventListener('click', e => {
  * Функція відміни введення нових даних в конструктор
  */
 const handleCancelEditPlotInputsData = () => {
-    console.log('//TODO: Clear inputs and hide block Edit land plot')
-}
+    console.log("//TODO: Clear inputs and hide block Edit land plot");
+};
 
 /**
  * Блок калькулятора
  */
 
-if (!isNewWidth && !isNewLength) {
-    calculatorLandPlotNode[0].innerText = `${landPlotWidth[0].innerText} x ${landPlotLength[0].innerText}`;
-    landPlotSquareNode[0].innerText =
-        (+landPlotWidth[0].innerText * +landPlotLength[0].innerText) / 10000;
-    landPlotPerimeterNode[0].innerText = 2 * ((+landPlotWidth[0].innerText / 100) + (+landPlotLength[0].innerText / 100));
-}
+const getActiveBorder = () => {
+    let activeBorder = null;
+    const elementsBorders = Array.from(elementsBordersNode[0].children);
+
+    elementsBorders.forEach((el, i) => {
+        if (el.className === 'constructor__element-container active') {
+            activeBorder = i;
+        }
+    });
+    
+    return activeBorder;
+};
+
+const calculate = () => {
+    const { width, length } = handleLandPlotSizes();
+
+    calculatorLandPlotNode[0].innerText = `${width} x ${length}`;
+
+    // Рахуємо периметр. Calculate perimeter. Считаем периметр
+    let perimeter = null;
+    perimeter = 2 * (width / 100 + length / 100);
+    landPlotPerimeterNode[0].innerText = perimeter;
+
+    // Рахуємо площу. Calculate area. Считаем площадь
+    let area = null;
+    area = (width * length) / 10000;
+    landPlotAreaNode[0].innerText = area;
+
+    // Рахуємо к-сть бордюр
+    const selectedBorder = getActiveBorder();
+    if (selectedBorder) {
+        curbs.forEach(({ id, length }) => {
+            if (id === selectedBorder) {
+                const borderPcs = Math.ceil((perimeter * 100) / length);
+                dataValueCurbsNode[0].innerText = borderPcs;
+            }
+        });
+    }
+};
+
+calculate();
+
 
 /* Ниже черновички "позже к ним обратимся" */
-
-// document.addEventListener('click', e => {
-//     let userClick = null;
-
-//     userClick = e.target;
-//     console.log('[userClick]', userClick);
-// });
 
 // dragElement(document.getElementById("mydiv"));
 
