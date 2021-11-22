@@ -398,6 +398,42 @@ const handlePlotInputsData = () => {
 };
 
 /**
+ * Обробник елементів блоку "Цоколі, огорожі"
+ */
+const elementsBordersNode = document.querySelectorAll('.constructor__elements-borders');
+const borderElementOnConstructor = document.querySelectorAll('.field__border-img');
+let isBorderHidden = true;
+let selectedBorder = null;
+
+elementsBordersNode[0].addEventListener('click', e => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    const elementsBorders = Array.from(elementsBordersNode[0].children);
+
+    if (userClick) {
+        isBorderHidden = false;
+        selectedBorder = elementsBorders.indexOf(userClick.parentNode);
+    }
+
+    if (!isBorderHidden) {
+        for (let i = 0; i < elementsBorders.length; i++) {
+            elementsBorders[i].classList.remove('active');
+        }
+
+        elementsBorders[selectedBorder].classList.add('active');
+        borderElementOnConstructor[0].classList.add('active');
+    }
+    
+    if (!isBorderHidden && userClick.className === 'field__border-close') {
+        isBorderHidden = true;
+        borderElementOnConstructor[0].classList.remove('active');
+        elementsBorders[selectedBorder].classList.remove('active');
+        selectedBorder = null;
+    }
+});
+
+/**
  * Функція відміни введення нових даних в конструктор
  */
 const handleCancelEditPlotInputsData = () => {

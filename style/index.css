@@ -122,7 +122,8 @@ body {
 .constructor__elements-nav-item > span,
 .calculator__title > span,
 .calculator__attention-paragraph,
-.calculator__data-title > span {
+.calculator__data-title > span,
+.field__border-img {
     display: none;
 }
 
@@ -173,14 +174,14 @@ body {
     align-items: center;
     flex: 1 1 0;
     width: 100%;
-    height: 340px;
+    height: 350px;
     margin-bottom: var(--xs-margin);
 }
 
 .constructor__field {
     position: relative;
     width: inherit;
-    height: 340px;
+    height: 220px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     background-color: var(--background-color);
@@ -327,7 +328,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute;
     left: 20%;
     z-index: 100;
     font-size: 0.7rem;
@@ -348,14 +349,48 @@ body {
 }
 
 .field__main-container {
+    width: 100%;
+    height: 155px;
+    position: relative;
+}
+
+.field__land {
     position: absolute;
+    width: 85%;
+    height: 79px;
     left: 7%;
     bottom: 15%;
-    background-image: url('../img/land-plot.svg');
+    background-image: url(../img/land-plot.svg);
     background-size: cover;
-    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-    width: 85%;
-    height: 100px;
+    clip-path: polygon(22% 0%, 81% 0%, 101% 100%, 0% 100%);
+}
+
+.field__border-img.active {
+    display: block;
+    position: absolute;
+    bottom: -14%;
+    height: 180px;
+    left: 3%;
+    width: 95%;
+    z-index: 2;
+}
+
+.constructor__element-container.active {
+    opacity: 0.5;
+}
+
+.constructor__element-container.active > .field__border-close {
+    display: block;
+    position: absolute;
+    width: 25px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.field__border-close {
+    display: none;
 }
 
 .calculator {
@@ -407,7 +442,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 120px;
+    height: 130px;
     border: 1px solid var(--border-color);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
@@ -421,6 +456,7 @@ body {
     align-items: center;
     font-size: 0.7rem;
     text-align: center;
+    height: 30px;
     border-bottom: 1px solid var(--border-color);
     overflow-x: scroll;
     cursor: pointer;
@@ -458,11 +494,13 @@ body {
     flex: 1 1 0;
 }
 
-.constructor__elements-values {
+.constructor__elements-values,
+.constructor__elements-borders {
     display: none;
 }
 
-.constructor__elements-values.active {
+.constructor__elements-values.active,
+.constructor__elements-borders.active {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -471,16 +509,29 @@ body {
     height: 100%;
 }
 
-@media (min-width: 387px) {
-    .constructor {
-        height: 730px;
-    }
+.constructor__element-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 80px;
+    margin-right: var(--xs-margin);
+    cursor: pointer;
+    position: relative;
+}
 
-    .field__main-container {
-        height: 140px;
-        width: 80%;
-        left: 10%;
-    }
+.constructor__element-sizes {
+    font-size: 0.6rem;
+    margin-bottom: 3px;
+}
+
+.constructor__element-price {
+    font-size: 0.7rem;
+}
+
+.constructor__element-sizes,
+.constructor__element-price {
+    font-weight: 700;
 }
 
 @media (min-width: 440px) {
@@ -500,12 +551,28 @@ body {
         width: 50px;
     }
 
+    .constructor {
+        height: 380px;
+    }
+
+    .constructor__field {
+        height: 250px;
+    }
+
     .field__error.active {
         left: 13%;
     }
 
     .field__main-container {
-        height: 160px;
+        height: 180px;
+    }
+
+    .field__land {
+        height: 86px;
+    }
+
+    .field__border-img.active {
+        height: 200px;
     }
 
     .calculator__attention-paragraph.active {
@@ -532,12 +599,26 @@ body {
         left: 20%;
     }
 
+    .field__land {
+        height: 100px;
+    }
+
     .field__main-container {
-        height: 150px;
+        height: 200px;
+        margin-top: 85px;
+    }
+
+    .field__border-img.active {
+        height: 230px;
     }
     
     .constructor__elements {
         width: 50%;
+        height: 150px;
+    }
+
+    .constructor__elements-nav {
+        height: 30px;
     }
 
     .calculator {
@@ -564,7 +645,16 @@ body {
     }
 
     .field__main-container {
-        height: 170px;
+        margin-top: 95px;
+        height: 240px;
+    }
+
+    .field__land {
+        height: 130px;
+    }
+
+    .field__border-img.active {
+        height: 290px;
     }
 
     .calculator {
