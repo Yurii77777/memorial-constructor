@@ -139,7 +139,8 @@ body {
 .field__border-img,
 .calculator__data-container.curbs,
 .constructor__element-price > span,
-.calculator__data-container.curbs-total-cost {
+.calculator__data-container.curbs-total-cost,
+.field__cement-img {
     display: none;
 }
 
@@ -373,13 +374,18 @@ body {
 }
 
 .field__land {
+    background-image: url(../img/land-plot.svg);
+    background-size: cover;
+}
+
+.field__land,
+.field__cement-img.active {
+    display: block;
     position: absolute;
     width: 85%;
     height: 79px;
     left: 7%;
     bottom: 15%;
-    background-image: url(../img/land-plot.svg);
-    background-size: cover;
     clip-path: polygon(22% 0%, 81% 0%, 101% 100%, 0% 100%);
 }
 
@@ -520,13 +526,11 @@ body {
     flex: 1 1 0;
 }
 
-.constructor__elements-values,
-.constructor__elements-borders {
+.constructor__elements-values {
     display: none;
 }
 
-.constructor__elements-values.active,
-.constructor__elements-borders.active {
+.constructor__elements-values.active {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -548,6 +552,7 @@ body {
 
 .constructor__element-sizes {
     font-size: 0.6rem;
+    text-align: center;
     margin-bottom: 3px;
 }
 
@@ -593,7 +598,8 @@ body {
         height: 180px;
     }
 
-    .field__land {
+    .field__land,
+    .field__cement-img.active {
         height: 86px;
     }
 
@@ -625,7 +631,8 @@ body {
         left: 20%;
     }
 
-    .field__land {
+    .field__land,
+    .field__cement-img.active {
         height: 100px;
     }
 
@@ -675,7 +682,8 @@ body {
         height: 240px;
     }
 
-    .field__land {
+    .field__land,
+    .field__cement-img.active {
         height: 130px;
     }
 

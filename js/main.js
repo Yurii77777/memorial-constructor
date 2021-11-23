@@ -53,6 +53,11 @@ const landPlotEditButtonCancelNode = document.querySelectorAll(
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
 
+// Елементи, котрі накладуються на земельну ділянку
+const borderElementOnConstructor =
+    document.querySelectorAll(".field__border-img");
+const cementImgOnConstructor = document.querySelectorAll('.field__cement-img');
+
 // Вкладки
 const elementsNavTabs = document.getElementsByClassName(
     "constructor__elements-nav"
@@ -79,10 +84,9 @@ const landPlotPerimeterNode = document.querySelectorAll(
     ".calculator__data-value.land-pot-perimeter"
 );
 const elementsBordersNode = document.querySelectorAll(
-    ".constructor__elements-borders"
+    ".constructor__elements-values.borders"
 );
-const borderElementOnConstructor =
-    document.querySelectorAll(".field__border-img");
+const elementsBeautyNode = document.querySelectorAll('.constructor__elements-values.beauty');
 const dataContainerCurbsNode = document.querySelectorAll(
     ".calculator__data-container.curbs"
 );
@@ -506,6 +510,61 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         dataContainerCurbsNode[0].classList.remove("active");
         dataContainerCurbsTotalCostNode[0].classList.remove("active");
         selectedBorder = null;
+    }
+});
+
+/**
+ * Обробник елементів блоку "Благоустрій"
+ * Handler of elements "Beautification"
+ * Обработчик элементов блока "Благоустройство"
+ */
+
+//TODO: 
+const handleSelectBeautyElements = () => {
+    let isSelectCement = null;
+    let selectedCementItem = null;
+
+    return { isSelectCement, selectedCementItem };
+};
+
+elementsBeautyNode[0].addEventListener('click', e => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    let isSelestedBeautyElements = false;
+    let isSelectedCement = false;
+    let selectedItem = null;
+    const elementsBeautyfication = Array.from(elementsBeautyNode[0].children);
+
+    if (userClick) {
+        selectedItem= elementsBeautyfication.indexOf(userClick.parentNode);
+        elementsBeautyfication[selectedItem].classList.add("active");
+        isSelestedBeautyElements = true;
+    }
+    
+    if (isSelestedBeautyElements && selectedItem === 0) {
+        elementsBeautyfication[selectedItem].classList.add("active");
+        elementsBeautyfication[1].classList.remove("active");
+        isSelectedCement = true;
+    }
+    
+    if (isSelestedBeautyElements && selectedItem === 1) {
+        elementsBeautyfication[selectedItem].classList.add("active");
+        elementsBeautyfication[0].classList.remove("active");
+        isSelectedCement = true;
+    }
+    
+    if (isSelestedBeautyElements && (selectedItem === 0 || selectedItem === 1)) {
+        cementImgOnConstructor[0].classList.add('active');
+    }
+
+    if (userClick.className === "field__border-close") {
+        elementsBeautyfication[selectedItem].classList.remove("active");
+        cementImgOnConstructor[0].classList.remove('active');
+    }
+
+    if (selectedItem !== 0 && selectedItem !== 1) {
+        isSelectedCement = false;
     }
 });
 
