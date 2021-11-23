@@ -84,9 +84,13 @@ const elementsBordersNode = document.querySelectorAll(
 const borderElementOnConstructor =
     document.querySelectorAll(".field__border-img");
 const dataContainerCurbsNode = document.querySelectorAll(
-    ".calculator__data-container-curbs"
+    ".calculator__data-container.curbs"
 );
-const dataValueCurbsNode = document.querySelectorAll('.calculator__data-value.curbs');
+const dataValueCurbsNode = document.querySelectorAll(
+    ".calculator__data-value.curbs"
+);
+const dataContainerCurbsTotalCostNode = document.querySelectorAll('.calculator__data-container.curbs-total-cost');
+const dataValueCurbsTotalCostNode = document.querySelectorAll('.calculator__data-value.curbs-total-cost');
 
 /**
  * Функція для отримання поточних розмірів земельної ділянки
@@ -404,10 +408,10 @@ const validateEditLandPlotInputs = () => {
         newLandPlotWidth < 140
     ) {
         isNewLandPlotWidth = false;
-        plotWidthInput[0].classList.add('error');
+        plotWidthInput[0].classList.add("error");
     } else {
         isNewLandPlotWidth = true;
-        plotWidthInput[0].classList.remove('error');
+        plotWidthInput[0].classList.remove("error");
     }
 
     if (
@@ -416,10 +420,10 @@ const validateEditLandPlotInputs = () => {
         newLandPlotLength < 220
     ) {
         isNewLandPlotLength = false;
-        plotLengthInput[0].classList.add('error');
+        plotLengthInput[0].classList.add("error");
     } else {
         isNewLandPlotLength = true;
-        plotLengthInput[0].classList.remove('error');
+        plotLengthInput[0].classList.remove("error");
     }
 
     isNewLandPlotWidth && isNewLandPlotLength
@@ -444,7 +448,7 @@ const { curbs } = priceList;
  */
 const handleSubmitLandPlotInputsData = () => {
     const { isValid, newLandPlotLength, newLandPlotWidth } =
-    validateEditLandPlotInputs();
+        validateEditLandPlotInputs();
 
     if (isValid) {
         landPlotWidth[0].innerText = newLandPlotWidth;
@@ -470,7 +474,7 @@ const handleSubmitLandPlotInputsData = () => {
  */
 elementsBordersNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
-    
+
     let isBorderHidden = true;
     let selectedBorder = null;
     let userClick = e.target;
@@ -479,8 +483,9 @@ elementsBordersNode[0].addEventListener("click", (e) => {
     if (userClick) {
         isBorderHidden = false;
         selectedBorder = elementsBorders.indexOf(userClick.parentNode);
-        
+
         dataContainerCurbsNode[0].classList.add("active");
+        dataContainerCurbsTotalCostNode[0].classList.add("active");
         calculate();
     }
 
@@ -499,6 +504,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         borderElementOnConstructor[0].classList.remove("active");
         elementsBorders[selectedBorder].classList.remove("active");
         dataContainerCurbsNode[0].classList.remove("active");
+        dataContainerCurbsTotalCostNode[0].classList.remove("active");
         selectedBorder = null;
     }
 });
@@ -519,11 +525,11 @@ const getActiveBorder = () => {
     const elementsBorders = Array.from(elementsBordersNode[0].children);
 
     elementsBorders.forEach((el, i) => {
-        if (el.className === 'constructor__element-container active') {
+        if (el.className === "constructor__element-container active") {
             activeBorder = i;
         }
     });
-    
+
     return activeBorder;
 };
 
@@ -545,17 +551,19 @@ const calculate = () => {
     // Рахуємо к-сть бордюр
     const selectedBorder = getActiveBorder();
     if (selectedBorder) {
-        curbs.forEach(({ id, length }) => {
+        curbs.forEach(({ id, length, price }) => {
             if (id === selectedBorder) {
                 const borderPcs = Math.ceil((perimeter * 100) / length);
                 dataValueCurbsNode[0].innerText = borderPcs;
+
+                const totalCost = borderPcs * price;
+                dataValueCurbsTotalCostNode[0].innerText = totalCost;
             }
         });
     }
 };
 
 calculate();
-
 
 /* Ниже черновички "позже к ним обратимся" */
 

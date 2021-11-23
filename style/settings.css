@@ -18,7 +18,7 @@
     --xs-margin: 5px;
     --sm-margin: 10px;
     --m-margin: 15px;
-    
+
     --xs-padding: 2px;
     --sm-padding: 5px;
     --md-padding: 10px;
@@ -28,7 +28,7 @@
     --confirm-button-bg-color: #198754;
     --confirm-button-bg-color-hover: #157347;
     --confirm-button-border-radius: 3px;
-    
+
     /* Кнопка відміни зміни габаритів поля */
     --cancel-button-bg-color: #dc3545;
     --cancel-button-bg-color-hover: #b02a37;

@@ -5,63 +5,76 @@
  * "Делай хорошо, только хорошо! А можешь? - Делай лучше!"
  */
 
-@import './reset.css';
-@import './settings.css';
+@import "./reset.css";
+@import "./settings.css";
 
 @font-face {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/montserrat-v18-latin_cyrillic-regular.eot');
-    src: local(''),
-         url('../fonts/montserrat-v18-latin_cyrillic-regular.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-regular.woff2') format('woff2'),
-         url('../fonts/montserrat-v18-latin_cyrillic-regular.woff') format('woff'),
-         url('../fonts/montserrat-v18-latin_cyrillic-regular.ttf') format('truetype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-regular.svg#Montserrat') format('svg');
+    src: url("../fonts/montserrat-v18-latin_cyrillic-regular.eot");
+    src: local(""),
+        url("../fonts/montserrat-v18-latin_cyrillic-regular.eot?#iefix")
+            format("embedded-opentype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-regular.woff2")
+            format("woff2"),
+        url("../fonts/montserrat-v18-latin_cyrillic-regular.woff")
+            format("woff"),
+        url("../fonts/montserrat-v18-latin_cyrillic-regular.ttf")
+            format("truetype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-regular.svg#Montserrat")
+            format("svg");
 }
 
 @font-face {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     font-style: italic;
     font-weight: 400;
-    src: url('../fonts/montserrat-v18-latin_cyrillic-italic.eot');
-    src: local(''),
-         url('../fonts/montserrat-v18-latin_cyrillic-italic.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-italic.woff2') format('woff2'),
-         url('../fonts/montserrat-v18-latin_cyrillic-italic.woff') format('woff'),
-         url('../fonts/montserrat-v18-latin_cyrillic-italic.ttf') format('truetype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-italic.svg#Montserrat') format('svg');
+    src: url("../fonts/montserrat-v18-latin_cyrillic-italic.eot");
+    src: local(""),
+        url("../fonts/montserrat-v18-latin_cyrillic-italic.eot?#iefix")
+            format("embedded-opentype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-italic.woff2")
+            format("woff2"),
+        url("../fonts/montserrat-v18-latin_cyrillic-italic.woff") format("woff"),
+        url("../fonts/montserrat-v18-latin_cyrillic-italic.ttf")
+            format("truetype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-italic.svg#Montserrat")
+            format("svg");
 }
 
 @font-face {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     font-style: normal;
     font-weight: 700;
-    src: url('../fonts/montserrat-v18-latin_cyrillic-700.eot');
-    src: local(''),
-         url('../fonts/montserrat-v18-latin_cyrillic-700.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-700.woff2') format('woff2'),
-         url('../fonts/montserrat-v18-latin_cyrillic-700.woff') format('woff'),
-         url('../fonts/montserrat-v18-latin_cyrillic-700.ttf') format('truetype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-700.svg#Montserrat') format('svg');
+    src: url("../fonts/montserrat-v18-latin_cyrillic-700.eot");
+    src: local(""),
+        url("../fonts/montserrat-v18-latin_cyrillic-700.eot?#iefix")
+            format("embedded-opentype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-700.woff2") format("woff2"),
+        url("../fonts/montserrat-v18-latin_cyrillic-700.woff") format("woff"),
+        url("../fonts/montserrat-v18-latin_cyrillic-700.ttf") format("truetype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-700.svg#Montserrat")
+            format("svg");
 }
 
 @font-face {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     font-style: normal;
     font-weight: 800;
-    src: url('../fonts/montserrat-v18-latin_cyrillic-800.eot');
-    src: local(''),
-         url('../fonts/montserrat-v18-latin_cyrillic-800.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-800.woff2') format('woff2'),
-         url('../fonts/montserrat-v18-latin_cyrillic-800.woff') format('woff'),
-         url('../fonts/montserrat-v18-latin_cyrillic-800.ttf') format('truetype'),
-         url('../fonts/montserrat-v18-latin_cyrillic-800.svg#Montserrat') format('svg');
+    src: url("../fonts/montserrat-v18-latin_cyrillic-800.eot");
+    src: local(""),
+        url("../fonts/montserrat-v18-latin_cyrillic-800.eot?#iefix")
+            format("embedded-opentype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-800.woff2") format("woff2"),
+        url("../fonts/montserrat-v18-latin_cyrillic-800.woff") format("woff"),
+        url("../fonts/montserrat-v18-latin_cyrillic-800.ttf") format("truetype"),
+        url("../fonts/montserrat-v18-latin_cyrillic-800.svg#Montserrat")
+            format("svg");
 }
 
 body {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     font-style: normal;
     font-weight: 400;
 }
@@ -124,7 +137,9 @@ body {
 .calculator__attention-paragraph,
 .calculator__data-title > span,
 .field__border-img,
-.calculator__data-container-curbs {
+.calculator__data-container.curbs,
+.constructor__element-price > span,
+.calculator__data-container.curbs-total-cost {
     display: none;
 }
 
@@ -217,7 +232,8 @@ body {
 .land-plot-user-edit__plot-width-label > span.active,
 .land-plot-user-edit__plot-length-label > span.active,
 .land-plot-user-edit__ok > span.active,
-.land-plot-user-edit__cancel > span.active {
+.land-plot-user-edit__cancel > span.active,
+.constructor__element-price > span.active {
     display: inline;
 }
 
@@ -299,7 +315,8 @@ body {
     border: 1px solid transparent;
     color: var(--confirm-button-text-color);
     border-radius: var(--confirm-button-border-radius);
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     cursor: pointer;
 }
 
@@ -426,13 +443,20 @@ body {
 }
 
 .calculator__data-container,
-.calculator__data-container-curbs.active {
+.calculator__data-container.curbs.active,
+.calculator__data-container.curbs-total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-size: 0.8rem;
     width: inherit;
     margin-bottom: var(--xs-margin);
+}
+
+.calculator__data-container.curbs.active {
+    padding-top: var(--sm-padding);
+    margin-top: var(--sm-margin);
+    border-top: 1px solid var(--border-color);
 }
 
 .calculator__data-title {
@@ -472,7 +496,7 @@ body {
 
 .constructor__elements-nav-item {
     padding: var(--sm-padding);
-    transition: border-color .15s ease-in-out;
+    transition: border-color 0.15s ease-in-out;
 }
 
 .constructor__elements-nav-item.active {
@@ -613,7 +637,7 @@ body {
     .field__border-img.active {
         height: 230px;
     }
-    
+
     .constructor__elements {
         width: 50%;
         height: 150px;
@@ -682,4 +706,5 @@ body {
     }
 }
 
-@media (min-width: 1400px) {}
+@media (min-width: 1400px) {
+}
