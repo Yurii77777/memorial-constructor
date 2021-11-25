@@ -140,6 +140,7 @@ body {
 .calculator__data-container.curbs,
 .constructor__element-price > span,
 .calculator__data-container.curbs-total-cost,
+.calculator__data-container.cement-total-cost,
 .field__cement-img {
     display: none;
 }
@@ -191,7 +192,7 @@ body {
     align-items: center;
     flex: 1 1 0;
     width: 100%;
-    height: 350px;
+    height: 370px;
     margin-bottom: var(--xs-margin);
 }
 
@@ -403,7 +404,7 @@ body {
     opacity: 0.5;
 }
 
-.constructor__element-container.active > .field__border-close {
+.constructor__element-container.active > .field__hide-element-button {
     display: block;
     position: absolute;
     width: 25px;
@@ -413,7 +414,7 @@ body {
     z-index: 1;
 }
 
-.field__border-close {
+.field__hide-element-button {
     display: none;
 }
 
@@ -450,7 +451,8 @@ body {
 
 .calculator__data-container,
 .calculator__data-container.curbs.active,
-.calculator__data-container.curbs-total-cost.active {
+.calculator__data-container.curbs-total-cost.active,
+.calculator__data-container.cement-total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -474,7 +476,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 130px;
+    height: 150px;
     border: 1px solid var(--border-color);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
@@ -550,7 +552,7 @@ body {
     position: relative;
 }
 
-.constructor__element-sizes {
+.constructor__element-name {
     font-size: 0.6rem;
     text-align: center;
     margin-bottom: 3px;
@@ -558,9 +560,10 @@ body {
 
 .constructor__element-price {
     font-size: 0.7rem;
+    text-align: center;
 }
 
-.constructor__element-sizes,
+.constructor__element-name,
 .constructor__element-price {
     font-weight: 700;
 }
@@ -695,7 +698,7 @@ body {
         width: 95px;
     }
 
-    .constructor__element-sizes {
+    .constructor__element-name {
         font-size: 0.7rem;
     }
 

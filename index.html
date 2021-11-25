@@ -71,7 +71,8 @@
                             <span>L:</span>
                         </label>
                         <input type="text" 
-                                name="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length"
+                                name="land-plot-user-edit__plot-length" 
+                                class="land-plot-user-edit__plot-length"
                         />
                         <button type="button" 
                                 class="land-plot-user-edit__ok"
@@ -153,53 +154,8 @@
                     <div class="constructor__elements-values">Тут будут памятники</div>
                     <div class="constructor__elements-values">Тут будут цветники</div>
                     <div class="constructor__elements-values">Тут будут аксессуары</div>
-                    <div class="constructor__elements-values borders">
-                        <div class="constructor__element-container">
-                            <img src="./img/icons/close.svg" alt="Приховати бордюр" class="field__border-close">
-                            <img src="./img/items/borders/border_1.png" alt="Бордюр" class="constructor__element-img">
-                            <p class="constructor__element-sizes">50х20х4</p>
-                            <p class="constructor__element-price">
-                                <span class="active">45 грн/шт</span>
-                                <span>45 UAH/pcs</span>
-                            </p>
-                        </div>
-                        <div class="constructor__element-container">
-                            <img src="./img/icons/close.svg" alt="Приховати бордюр" class="field__border-close">
-                            <img src="./img/items/borders/border_1.png" alt="Бордюр" class="constructor__element-img">
-                            <p class="constructor__element-sizes">50х20х6,5</p>
-                            <p class="constructor__element-price">
-                                <span class="active">53 грн/шт</span>
-                                <span>53 UAH/pcs</span>
-                            </p>
-                        </div>
-                        <div class="constructor__element-container">
-                            <img src="./img/icons/close.svg" alt="Приховати бордюр" class="field__border-close">
-                            <img src="./img/items/borders/border_1.png" alt="Бордюр" class="constructor__element-img">
-                            <p class="constructor__element-sizes">100х20х8</p>
-                            <p class="constructor__element-price">
-                                <span class="active">110 грн/шт</span>
-                                <span>110 UAH/pcs</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="constructor__elements-values beauty">
-                        <div class="constructor__element-container">
-                            <img src="./img/icons/close.svg" alt="Приховати елемент благоустрою" class="field__border-close">
-                            <img src="./img/items/beauty/cement.png" alt="Цоколь (бетон)" class="constructor__element-img">
-                            <p class="constructor__element-sizes">Цоколь (бетон) h 7-10см</p>
-                            <p class="constructor__element-price">
-                                <span class="active">1400 грн/м2</span>
-                            </p>
-                        </div>
-                        <div class="constructor__element-container">
-                            <img src="./img/icons/close.svg" alt="Приховати елемент благоустрою" class="field__border-close">
-                            <img src="./img/items/beauty/cement.png" alt="Цоколь (бетон)" class="constructor__element-img">
-                            <p class="constructor__element-sizes">Цоколь (бетон) h 15см</p>
-                            <p class="constructor__element-price">
-                                <span class="active">2000 грн/м2</span>
-                            </p>
-                        </div>
-                    </div>
+                    <div class="constructor__elements-values borders"></div>
+                    <div class="constructor__elements-values beauty"></div>
                 </div>
             </div>
 
@@ -269,6 +225,15 @@
                     <span class="active">Загальная вартість бордюр, грн.</span>
                     <span>Общая стоимость бордюр, грн.</span>
                     <span>Total cost of curbs, UAH</span>
+                </p>
+                <p class="calculator__data-value curbs-total-cost"></p>
+            </div>
+
+            <div class="calculator__data-container cement-total-cost">
+                <p class="calculator__data-title">
+                    <span class="active">Загальная вартість цоколю, грн.</span>
+                    <span>Общая стоимость цоколя, грн.</span>
+                    <span>Total cost of cap, UAH</span>
                 </p>
                 <p class="calculator__data-value curbs-total-cost"></p>
             </div>

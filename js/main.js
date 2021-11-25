@@ -8,6 +8,13 @@
 "use strict";
 
 /**
+ * Отримуємо прайс. Прайс знаходиться за адресою ../data/prices.js
+ * Getting pricelist. It's url is ../data/prices.js
+ * Получаем прайс. Прайс находится по адресу ../data/prices.js
+ */
+const priceList = prices;
+
+/**
  * Отримуємо всі вузли, з якими будемо працювати
  * Getting all nodes with which we will work
  * Получаем все узлы, с которыми будем работать
@@ -56,7 +63,7 @@ const plotInputErrorMessage = document.querySelectorAll(".field__error");
 // Елементи, котрі накладуються на земельну ділянку
 const borderElementOnConstructor =
     document.querySelectorAll(".field__border-img");
-const cementImgOnConstructor = document.querySelectorAll('.field__cement-img');
+const cementImgOnConstructor = document.querySelectorAll(".field__cement-img");
 
 // Вкладки
 const elementsNavTabs = document.getElementsByClassName(
@@ -86,15 +93,67 @@ const landPlotPerimeterNode = document.querySelectorAll(
 const elementsBordersNode = document.querySelectorAll(
     ".constructor__elements-values.borders"
 );
-const elementsBeautyNode = document.querySelectorAll('.constructor__elements-values.beauty');
+const elementsBeautyNode = document.querySelectorAll(
+    ".constructor__elements-values.beauty"
+);
 const dataContainerCurbsNode = document.querySelectorAll(
     ".calculator__data-container.curbs"
 );
 const dataValueCurbsNode = document.querySelectorAll(
     ".calculator__data-value.curbs"
 );
-const dataContainerCurbsTotalCostNode = document.querySelectorAll('.calculator__data-container.curbs-total-cost');
-const dataValueCurbsTotalCostNode = document.querySelectorAll('.calculator__data-value.curbs-total-cost');
+const dataContainerCurbsTotalCostNode = document.querySelectorAll(
+    ".calculator__data-container.curbs-total-cost"
+);
+const dataValueCurbsTotalCostNode = document.querySelectorAll(
+    ".calculator__data-value.curbs-total-cost"
+);
+const dataContainerCementTotalCostNode = document.querySelectorAll(
+    ".calculator__data-container.cement-total-cost"
+);
+
+/**
+ * Функція для створення карток елементів у вкладках.
+ * Function for creating tabbed items in tabs.
+ * Функция для создания карточек элементов во вкладках.
+ * @param {Number} selectedTabIndex
+ * @param {Array} priceList
+ * @returns  Array which contains Nodes of individual element as a strings
+ */
+const createCardNode = (selectedTabIndex, priceList) => {
+    let newCard = [];
+    let selectedTab = selectedTabIndex + 1;
+    const BASE_IMG_URL = './img/items/';
+
+    priceList.forEach((el) => {
+        for (let key in el) {
+            const data = el[key];
+
+            for (let i = 0; i < data.length; i++) {
+                const { tabId } = data[i];
+
+                if (tabId === selectedTab) {
+                    const { imgUrl, titleUa, siteNameUa, price } = data[i];
+
+                    // unshift для того, щоб елементи рендерилися в тому ж порядку, як і в прайсі
+                    newCard.unshift(
+                        `<div class="constructor__element-container">
+                            <img src="./img/icons/close.svg" alt="Приховати елемент" class="field__hide-element-button">
+                            <img src="${BASE_IMG_URL + imgUrl}" alt="${titleUa}" class="constructor__element-img">
+                            <p class="constructor__element-name">${siteNameUa}</p>
+                            <p class="constructor__element-price">
+                                <span class="active">${price} грн/шт</span>
+                                <span>${price} UAH/pcs</span>
+                            </p>
+                        </div>`
+                    );
+                }
+            }
+        }
+    });
+
+    return newCard;
+};
 
 /**
  * Функція для отримання поточних розмірів земельної ділянки
@@ -345,20 +404,51 @@ languageListNode[0].addEventListener("click", (e) => {
  * Handle constructor's Nav Tabs (show / hide)
  * Блок для работы с вкладками элементов конструктора (показать / скрыть)
  */
+
+// Спочатку (при першому завантаженні сторінки) показуємо елементи першої (активної) вкладки
+const firstTabElements = createCardNode(0, priceList);
+let viewedTabsIndexes = [0];
+
+if (firstTabElements && viewedTabsIndexes.length === 1) {
+    firstTabElements.forEach((el) => {
+        const firstTabNode = elementsNavTabsValues[0].children[0];
+        firstTabNode.insertAdjacentHTML("afterbegin", el);
+    });
+}
+
 elementsNavTabs[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
     const navTabs = Array.from(elementsNavTabs[0].children);
+    let currentActiveTab = 0;
     let selectedNavTabNumber = navTabs.indexOf(userClick.parentNode);
     const navTabsValues = Array.from(elementsNavTabsValues[0].children);
 
     for (let i = 0; i < navTabs.length; i++) {
-        navTabs[i].classList.remove("active");
-        navTabsValues[i].classList.remove("active");
+        if (navTabs[i].classList.contains("active")) {
+            currentActiveTab = navTabs.indexOf(navTabs[i]);
+        }
+    }
+
+    if (selectedNavTabNumber !== currentActiveTab) {
+        navTabs[currentActiveTab].classList.remove("active");
+        navTabsValues[currentActiveTab].classList.remove("active");
 
         navTabs[selectedNavTabNumber].classList.add("active");
         navTabsValues[selectedNavTabNumber].classList.add("active");
+
+        if (!viewedTabsIndexes.includes(selectedNavTabNumber)) {
+            viewedTabsIndexes.push(selectedNavTabNumber);
+            const tabValues = createCardNode(selectedNavTabNumber, priceList);
+
+            tabValues &&
+                tabValues.forEach((el) => {
+                    const data =
+                        elementsNavTabsValues[0].children[selectedNavTabNumber];
+                    data.insertAdjacentHTML("afterbegin", el);
+                });
+        }
     }
 });
 
@@ -438,14 +528,6 @@ const validateEditLandPlotInputs = () => {
 };
 
 /**
- * Отримуємо ціни з прайсу. Прайс знаходиться за адресою ../data/prices.js
- * Getting prices from price. Price's url is ../data/prices.js
- * Получаем цены с прайса. Прайс находится по адресу ../data/prices.js
- */
-const priceList = prices[0];
-const { curbs } = priceList;
-
-/**
  * Функція застосування валідних даних (нові розміри земельної ділянки) в конструктор
  * Submit valid data (new land plot sizes) to constructor
  * Функция применения валидных данных (новые размеры земельного участка) в конструкторе
@@ -503,7 +585,10 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         calculate();
     }
 
-    if (!isBorderHidden && userClick.className === "field__border-close") {
+    if (
+        !isBorderHidden &&
+        userClick.className === "field__hide-element-button"
+    ) {
         isBorderHidden = true;
         borderElementOnConstructor[0].classList.remove("active");
         elementsBorders[selectedBorder].classList.remove("active");
@@ -519,15 +604,16 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Обработчик элементов блока "Благоустройство"
  */
 
-//TODO: 
+//TODO:
 const handleSelectBeautyElements = () => {
     let isSelectCement = null;
     let selectedCementItem = null;
+    const elementsBeautyfication = Array.from(elementsBeautyNode[0].children);
 
     return { isSelectCement, selectedCementItem };
 };
 
-elementsBeautyNode[0].addEventListener('click', e => {
+elementsBeautyNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
@@ -537,35 +623,43 @@ elementsBeautyNode[0].addEventListener('click', e => {
     const elementsBeautyfication = Array.from(elementsBeautyNode[0].children);
 
     if (userClick) {
-        selectedItem= elementsBeautyfication.indexOf(userClick.parentNode);
+        selectedItem = elementsBeautyfication.indexOf(userClick.parentNode);
         elementsBeautyfication[selectedItem].classList.add("active");
         isSelestedBeautyElements = true;
     }
-    
-    if (isSelestedBeautyElements && selectedItem === 0) {
-        elementsBeautyfication[selectedItem].classList.add("active");
-        elementsBeautyfication[1].classList.remove("active");
-        isSelectedCement = true;
-    }
-    
-    if (isSelestedBeautyElements && selectedItem === 1) {
-        elementsBeautyfication[selectedItem].classList.add("active");
-        elementsBeautyfication[0].classList.remove("active");
-        isSelectedCement = true;
-    }
-    
-    if (isSelestedBeautyElements && (selectedItem === 0 || selectedItem === 1)) {
-        cementImgOnConstructor[0].classList.add('active');
-    }
 
-    if (userClick.className === "field__border-close") {
+    if (userClick.className === "field__hide-element-button") {
         elementsBeautyfication[selectedItem].classList.remove("active");
-        cementImgOnConstructor[0].classList.remove('active');
     }
 
-    if (selectedItem !== 0 && selectedItem !== 1) {
-        isSelectedCement = false;
-    }
+    // if (
+    //     (selectedItem === 0 && userClick.className === "field__hide-element-button") ||
+    //     (selectedItem === 1 && userClick.className === "field__hide-element-button")
+    // ) {
+    //     dataContainerCementTotalCostNode[0].classList.remove("active");
+    //     isSelectedCement = false;
+
+    // } else if (selectedItem === 0 && isSelectedCement === false) {
+    //     elementsBeautyfication[0].classList.add("active")
+    //     dataContainerCementTotalCostNode[0].classList.add("active");
+
+    // } else if (selectedItem === 0 && isSelectedCement === true) {
+    //     elementsBeautyfication[0].classList.add("active");
+    //     elementsBeautyfication[1].classList.remove("active");
+
+    // } else if (selectedItem === 1 && isSelectedCement === false) {
+    //     dataContainerCementTotalCostNode[1].classList.add("active");
+
+    // } else if (selectedItem === 1 && isSelectedCement === true) {
+    //     elementsBeautyfication[1].classList.add("active");
+    //     elementsBeautyfication[0].classList.remove("active");
+    // } else {
+    //     dataContainerCementTotalCostNode[0].classList.remove("active");
+    // }
+
+    console.log("[selectedItem]", selectedItem);
+    console.log("[isSelestedBeautyElements]", isSelestedBeautyElements);
+    console.log("[isSelectedCement]", isSelectedCement);
 });
 
 /**
@@ -583,11 +677,11 @@ const getActiveBorder = () => {
     let activeBorder = null;
     const elementsBorders = Array.from(elementsBordersNode[0].children);
 
-    elementsBorders.forEach((el, i) => {
-        if (el.className === "constructor__element-container active") {
+    for (let i = 0; i < elementsBorders.length; i++) {
+        if (elementsBorders[i].classList.contains("active")) {
             activeBorder = i;
         }
-    });
+    }
 
     return activeBorder;
 };
@@ -609,9 +703,12 @@ const calculate = () => {
 
     // Рахуємо к-сть бордюр
     const selectedBorder = getActiveBorder();
+
     if (selectedBorder) {
-        curbs.forEach(({ id, length, price }) => {
-            if (id === selectedBorder) {
+        const borders = priceList.map(el => el.curbs);
+
+        borders[0].forEach(({ id, length, price }) => {
+            if (selectedBorder === id) {
                 const borderPcs = Math.ceil((perimeter * 100) / length);
                 dataValueCurbsNode[0].innerText = borderPcs;
 
