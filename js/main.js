@@ -111,6 +111,9 @@ const dataValueCurbsTotalCostNode = document.querySelectorAll(
 const dataContainerCementTotalCostNode = document.querySelectorAll(
     ".calculator__data-container.cement-total-cost"
 );
+const dataValueCementTotalCostNode = document.querySelectorAll(
+    ".calculator__data-value.cement-total-cost"
+);
 
 /**
  * Функція для створення карток елементів у вкладках.
@@ -123,7 +126,7 @@ const dataContainerCementTotalCostNode = document.querySelectorAll(
 const createCardNode = (selectedTabIndex, priceList) => {
     let newCard = [];
     let selectedTab = selectedTabIndex + 1;
-    const BASE_IMG_URL = './img/items/';
+    const BASE_IMG_URL = "./img/items/";
 
     priceList.forEach((el) => {
         for (let key in el) {
@@ -139,7 +142,9 @@ const createCardNode = (selectedTabIndex, priceList) => {
                     newCard.unshift(
                         `<div class="constructor__element-container">
                             <img src="./img/icons/close.svg" alt="Приховати елемент" class="field__hide-element-button">
-                            <img src="${BASE_IMG_URL + imgUrl}" alt="${titleUa}" class="constructor__element-img">
+                            <img src="${
+                                BASE_IMG_URL + imgUrl
+                            }" alt="${titleUa}" class="constructor__element-img">
                             <p class="constructor__element-name">${siteNameUa}</p>
                             <p class="constructor__element-price">
                                 <span class="active">${price} грн/шт</span>
@@ -603,22 +608,13 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Handler of elements "Beautification"
  * Обработчик элементов блока "Благоустройство"
  */
-
-//TODO:
-const handleSelectBeautyElements = () => {
-    let isSelectCement = null;
-    let selectedCementItem = null;
-    const elementsBeautyfication = Array.from(elementsBeautyNode[0].children);
-
-    return { isSelectCement, selectedCementItem };
-};
+let isSelestedBeautyElements = false;
+let isSelectedCement = false;
 
 elementsBeautyNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    let isSelestedBeautyElements = false;
-    let isSelectedCement = false;
     let selectedItem = null;
     const elementsBeautyfication = Array.from(elementsBeautyNode[0].children);
 
@@ -628,37 +624,50 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
         isSelestedBeautyElements = true;
     }
 
-    if (userClick.className === "field__hide-element-button") {
-        elementsBeautyfication[selectedItem].classList.remove("active");
+    if (
+        selectedItem === 0 &&
+        userClick.className !== "field__hide-element-button"
+    ) {
+        cementImgOnConstructor[0].classList.add("active");
+        dataContainerCementTotalCostNode[0].classList.add("active");
+        elementsBeautyfication[1].classList.remove("active");
+        isSelectedCement = true;
+        calculate();
     }
 
-    // if (
-    //     (selectedItem === 0 && userClick.className === "field__hide-element-button") ||
-    //     (selectedItem === 1 && userClick.className === "field__hide-element-button")
-    // ) {
-    //     dataContainerCementTotalCostNode[0].classList.remove("active");
-    //     isSelectedCement = false;
+    if (
+        selectedItem === 1 &&
+        userClick.className !== "field__hide-element-button"
+    ) {
+        cementImgOnConstructor[0].classList.add("active");
+        dataContainerCementTotalCostNode[0].classList.add("active");
+        elementsBeautyfication[0].classList.remove("active");
+        isSelectedCement = true;
+        calculate();
+    }
 
-    // } else if (selectedItem === 0 && isSelectedCement === false) {
-    //     elementsBeautyfication[0].classList.add("active")
-    //     dataContainerCementTotalCostNode[0].classList.add("active");
+    if (
+        selectedItem === 0 &&
+        userClick.className === "field__hide-element-button"
+    ) {
+        elementsBeautyfication[0].classList.remove("active");
+        dataContainerCementTotalCostNode[0].classList.remove("active");
+        cementImgOnConstructor[0].classList.remove("active");
+        isSelectedCement = false;
+    }
 
-    // } else if (selectedItem === 0 && isSelectedCement === true) {
-    //     elementsBeautyfication[0].classList.add("active");
-    //     elementsBeautyfication[1].classList.remove("active");
+    if (
+        selectedItem === 1 &&
+        userClick.className === "field__hide-element-button"
+    ) {
+        elementsBeautyfication[1].classList.remove("active");
+        dataContainerCementTotalCostNode[0].classList.remove("active");
+        cementImgOnConstructor[0].classList.remove("active");
+        isSelectedCement = false;
+    }
 
-    // } else if (selectedItem === 1 && isSelectedCement === false) {
-    //     dataContainerCementTotalCostNode[1].classList.add("active");
-
-    // } else if (selectedItem === 1 && isSelectedCement === true) {
-    //     elementsBeautyfication[1].classList.add("active");
-    //     elementsBeautyfication[0].classList.remove("active");
-    // } else {
-    //     dataContainerCementTotalCostNode[0].classList.remove("active");
-    // }
-
-    console.log("[selectedItem]", selectedItem);
-    console.log("[isSelestedBeautyElements]", isSelestedBeautyElements);
+    // console.log("[selectedItem]", selectedItem);
+    // console.log("[isSelestedBeautyElements]", isSelestedBeautyElements);
     console.log("[isSelectedCement]", isSelectedCement);
 });
 
@@ -686,6 +695,18 @@ const getActiveBorder = () => {
     return activeBorder;
 };
 
+const getActiveCementElement = () => {
+    let seceltedCementElement = null;
+    const elementsBeautyfication = Array.from(elementsBeautyNode[0].children);
+
+    elementsBeautyfication[0].classList.contains("active") &&
+        (seceltedCementElement = 0);
+    elementsBeautyfication[1].classList.contains("active") &&
+        (seceltedCementElement = 1);
+
+    return seceltedCementElement;
+};
+
 const calculate = () => {
     const { width, length } = handleLandPlotSizes();
 
@@ -701,11 +722,11 @@ const calculate = () => {
     area = (width * length) / 10000;
     landPlotAreaNode[0].innerText = area;
 
-    // Рахуємо к-сть бордюр
+    // Рахуємо к-сть і вартість бордюр
     const selectedBorder = getActiveBorder();
 
     if (selectedBorder) {
-        const borders = priceList.map(el => el.curbs);
+        const borders = priceList.map((el) => el.curbs);
 
         borders[0].forEach(({ id, length, price }) => {
             if (selectedBorder === id) {
@@ -716,6 +737,22 @@ const calculate = () => {
                 dataValueCurbsTotalCostNode[0].innerText = totalCost;
             }
         });
+    }
+
+    // Рахуємо вибрані елементи з вкладки Благоустрій
+    if (isSelestedBeautyElements) {
+        //Якщо вибраний хоча б один цоколь
+        if (isSelectedCement) {
+            const userSelectCementElement = getActiveCementElement();
+            const beautyElements = priceList[1].beauty;
+            
+            beautyElements.forEach(({ id, price }) => {
+                if (userSelectCementElement === id) {
+                    const totalCementCost = area * price;
+                    dataValueCementTotalCostNode[0].innerText = totalCementCost;
+                }
+            });
+        }
     }
 };
 
