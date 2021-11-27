@@ -559,9 +559,9 @@ const handleSubmitLandPlotInputsData = () => {
 };
 
 /**
- * Обробник елементів блоку "Цоколі, огорожі"
- * Handler of elements "Socles, fences"
- * Обработчик элементов блока "Цоколи, ограждения"
+ * Обробник елементів блоку "Огорожі"
+ * Handler of elements "Fences"
+ * Обработчик элементов блока "Ограждения"
  */
 elementsBordersNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
@@ -572,21 +572,21 @@ elementsBordersNode[0].addEventListener("click", (e) => {
     const elementsBorders = Array.from(elementsBordersNode[0].children);
 
     if (userClick) {
-        isBorderHidden = false;
         selectedBorder = elementsBorders.indexOf(userClick.parentNode);
-
-        dataContainerCurbsNode[0].classList.add("active");
-        dataContainerCurbsTotalCostNode[0].classList.add("active");
-        calculate();
     }
 
-    if (!isBorderHidden) {
+    if (selectedBorder !== -1) {
+        isBorderHidden = false;
+
         for (let i = 0; i < elementsBorders.length; i++) {
             elementsBorders[i].classList.remove("active");
         }
 
         elementsBorders[selectedBorder].classList.add("active");
         borderElementOnConstructor[0].classList.add("active");
+        dataContainerCurbsNode[0].classList.add("active");
+        dataContainerCurbsTotalCostNode[0].classList.add("active");
+
         calculate();
     }
 
@@ -725,7 +725,7 @@ const calculate = () => {
     // Рахуємо к-сть і вартість бордюр
     const selectedBorder = getActiveBorder();
 
-    if (selectedBorder) {
+    if (selectedBorder || selectedBorder === 0) {
         const borders = priceList.map((el) => el.curbs);
 
         borders[0].forEach(({ id, length, price }) => {
