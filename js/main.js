@@ -116,6 +116,8 @@ const dataContainerCementTotalCostNode = document.querySelectorAll(
 const dataValueCementTotalCostNode = document.querySelectorAll(
     ".calculator__data-value.socle-total-cost"
 );
+const totalCostNode = document.querySelectorAll(".calculator__data-container.total-cost");
+const totalCostValueNode = document.querySelectorAll(".calculator__data-value.total-cost");
 
 /**
  * Функція для створення карток елементів у вкладках.
@@ -597,6 +599,8 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         dataContainerCurbsNode[0].classList.remove("active");
         dataContainerCurbsTotalCostNode[0].classList.remove("active");
         selectedBorder = null;
+
+        calculate();
     }
 });
 
@@ -644,6 +648,8 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         dataValueCementTotalCostNode[0].classList.remove("active");
         landPlotNode[0].classList.remove("hide");
         selectedSocle = null;
+
+        calculate();
     }
 });
 
@@ -716,6 +722,7 @@ const calculate = () => {
     landPlotAreaNode[0].innerText = area;
 
     // Рахуємо к-сть і вартість бордюр
+    let totalCostBorders = 0;
     const selectedBorder = getActiveBorder();
 
     if (selectedBorder || selectedBorder === 0) {
@@ -726,13 +733,14 @@ const calculate = () => {
                 const borderPcs = Math.ceil((perimeter * 100) / length);
                 dataValueCurbsNode[0].innerText = borderPcs;
 
-                const totalCost = borderPcs * price;
-                dataValueCurbsTotalCostNode[0].innerText = totalCost;
+                totalCostBorders = borderPcs * price;
+                dataValueCurbsTotalCostNode[0].innerText = totalCostBorders;
             }
         });
     }
 
     // Рахуємо вартість цоколю
+    let totalScoleCost = 0;
     const selectedSocle = getActiveSocleElement();
 
     if (selectedSocle || selectedSocle === 0) {
@@ -740,10 +748,21 @@ const calculate = () => {
 
         socles[1].forEach(({ id, price }) => {
             if (selectedSocle === id) {
-                const totalScoleCost = area * price;
+                totalScoleCost = area * price;
                 dataValueCementTotalCostNode[0].innerText = totalScoleCost;
             }
         });
+    }
+
+    if ((selectedBorder || selectedBorder === 0) || (selectedSocle || selectedSocle === 0)) {
+        totalCostNode[0].classList.add("active");
+        
+        let totalCost = totalCostBorders + totalScoleCost;
+        totalCostValueNode[0].innerText = totalCost;
+        
+    } else {
+        totalCostValueNode[0].innerText = '';
+        totalCostNode[0].classList.remove("active");
     }
 };
 

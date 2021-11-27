@@ -141,6 +141,7 @@ body {
 .constructor__element-price > span,
 .calculator__data-container.curbs-total-cost,
 .calculator__data-container.socle-total-cost,
+.calculator__data-container.total-cost,
 .field__socle-img {
     display: none;
 }
@@ -467,13 +468,20 @@ body {
 .calculator__data-container,
 .calculator__data-container.curbs.active,
 .calculator__data-container.curbs-total-cost.active,
-.calculator__data-container.socle-total-cost.active {
+.calculator__data-container.socle-total-cost.active,
+.calculator__data-container.total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-size: 0.8rem;
     width: inherit;
     margin-bottom: var(--xs-margin);
+}
+
+.calculator__data-container.total-cost.active {
+    font-weight: 700;
+    padding-top: var(--sm-padding);
+    border-top: 1px solid var(--border-color);
 }
 
 .calculator__data-container.delimeter {
