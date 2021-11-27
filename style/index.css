@@ -140,8 +140,8 @@ body {
 .calculator__data-container.curbs,
 .constructor__element-price > span,
 .calculator__data-container.curbs-total-cost,
-.calculator__data-container.cement-total-cost,
-.field__cement-img {
+.calculator__data-container.socle-total-cost,
+.field__socle-img {
     display: none;
 }
 
@@ -379,15 +379,31 @@ body {
     background-size: cover;
 }
 
-.field__land,
-.field__cement-img.active {
-    display: block;
-    position: absolute;
+.field__land {
     width: 85%;
     height: 79px;
     left: 7%;
     bottom: 15%;
     clip-path: polygon(22% 0%, 81% 0%, 101% 100%, 0% 100%);
+}
+
+.field__land,
+.field__socle-img.active {
+    display: block;
+    position: absolute;
+}
+
+.field__land.hide {
+    display: none;
+}
+
+.field__socle-img.active {
+    z-index: 2;
+    width: 83%;
+    height: 74px;
+    left: 9%;
+    bottom: 25%;
+    clip-path: polygon(20% 0%, 81% 0%, 101% 100%, 0% 100%);
 }
 
 .field__border-img.active {
@@ -452,7 +468,7 @@ body {
 .calculator__data-container,
 .calculator__data-container.curbs.active,
 .calculator__data-container.curbs-total-cost.active,
-.calculator__data-container.cement-total-cost.active {
+.calculator__data-container.socle-total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -461,10 +477,10 @@ body {
     margin-bottom: var(--xs-margin);
 }
 
-.calculator__data-container.curbs.active {
-    padding-top: var(--sm-padding);
-    margin-top: var(--sm-margin);
-    border-top: 1px solid var(--border-color);
+.calculator__data-container.delimeter {
+    padding-bottom: var(--sm-padding);
+    margin-bottom: var(--sm-margin);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .calculator__data-title {
@@ -601,9 +617,13 @@ body {
         height: 180px;
     }
 
-    .field__land,
-    .field__cement-img.active {
+    .field__land {
         height: 86px;
+    }
+
+    .field__socle-img.active {
+        height: 81px;
+        bottom: 24%;
     }
 
     .field__border-img.active {
@@ -634,9 +654,13 @@ body {
         left: 20%;
     }
 
-    .field__land,
-    .field__cement-img.active {
+    .field__land {
         height: 100px;
+    }
+
+    .field__socle-img.active {
+        bottom: 25%;
+        height: 94px;
     }
 
     .field__main-container {
@@ -685,9 +709,13 @@ body {
         height: 240px;
     }
 
-    .field__land,
-    .field__cement-img.active {
+    .field__land {
         height: 130px;
+    }
+
+    .field__socle-img.active {
+        bottom: 27%;
+        height: 119px;
     }
 
     .field__border-img.active {

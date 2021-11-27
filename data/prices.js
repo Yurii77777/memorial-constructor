@@ -31,7 +31,7 @@ const prices = [
         ]
     },
     {
-        "beauty": [
+        "socle": [
             {
                 "id": 0,
                 "titleUa": "Цоколь (бетон) h 7-10см",
@@ -49,20 +49,24 @@ const prices = [
                 "tabId": 6,
                 "imgUrl": "/beauty/cement.png",
                 "siteNameUa": "Цоколь (бетон) h 15см"
-            },
+            }
+        ]
+    },
+    {
+        "beauty": [
             {
-                "id": 2,
+                "id": 0,
                 "titleUa": "Плитка Граніт (сіра)",
                 "price": 1950,
-                "tabId": 6,
+                "tabId": 7,
                 "imgUrl": "/tiles/tile_granite_gray.png",
                 "siteNameUa": "Плитка Граніт (сіра)"
             },
             {
-                "id": 3,
+                "id": 1,
                 "titleUa": "Плитка Граніт (чорна)",
                 "price": 1950,
-                "tabId": 6,
+                "tabId": 7,
                 "imgUrl": "/tiles/tile_granite_black.png",
                 "siteNameUa": "Плитка Граніт (чорна)"
             },
