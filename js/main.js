@@ -466,24 +466,19 @@ elementsNavTabs[0].addEventListener("click", (e) => {
  */
 let isVisibleEditPlotSizes = false;
 
-arrowsContainerNode[0].addEventListener("click", (e) => {
-    e.stopPropagation();
-
-    const arrowsContainer = Array.from(arrowsContainerNode[0].children);
-    let userClick = e.target;
-
+const handleChangeLandPlotSizes = () => {
     if (!isVisibleEditPlotSizes) {
-        isVisibleEditPlotSizes = true;
-        arrowsContainer[0].classList.remove("active");
-        arrowsContainer[1].classList.add("active");
+        arrowsContainerNode[0].children[0].classList.remove("active");
+        arrowsContainerNode[0].children[1].classList.add("active");
         editPlotSizesNode[0].classList.add("active");
+        isVisibleEditPlotSizes = true;
     } else {
-        isVisibleEditPlotSizes = false;
-        arrowsContainer[1].classList.remove("active");
-        arrowsContainer[0].classList.add("active");
+        arrowsContainerNode[0].children[1].classList.remove("active");
+        arrowsContainerNode[0].children[0].classList.add("active");
         editPlotSizesNode[0].classList.remove("active");
+        isVisibleEditPlotSizes = false;
     }
-});
+}
 
 /**
  * Валідація данних інпутів зміни земельної ділянки
@@ -663,7 +658,16 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Функція відміни введення нових даних в конструктор
  */
 const handleCancelEditPlotInputsData = () => {
-    console.log("//TODO: Clear inputs and hide block Edit land plot");
+    plotWidthInput[0].value = '';
+    plotWidthInput[0].classList.contains("error") && plotWidthInput[0].classList.remove("error");
+
+    plotLengthInput[0].value = '';
+    plotLengthInput[0].classList.contains("error") && plotLengthInput[0].classList.remove("error")
+
+    editPlotSizesNode[0].classList.remove("active");
+
+    arrowsContainerNode[0].children[1].classList.remove("active");
+    arrowsContainerNode[0].children[0].classList.add("active");
 };
 
 /**
