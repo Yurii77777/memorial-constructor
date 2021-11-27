@@ -7,7 +7,7 @@ const prices = [
                 "price": 45,
                 "length": 50,
                 "tabId": 5,
-                "imgUrl": "/borders/border_1.png",
+                "imgUrl": "/mobile/borders/border_50x20x4.png",
                 "siteNameUa": "50х20х4"
             },
             {
@@ -16,7 +16,7 @@ const prices = [
                 "price": 53,
                 "length": 50,
                 "tabId": 5,
-                "imgUrl": "/borders/border_1.png",
+                "imgUrl": "/mobile/borders/border_50x20x6.5.png",
                 "siteNameUa": "50х20х6,5"
             },
             {
@@ -25,7 +25,7 @@ const prices = [
                 "price": 110,
                 "length": 100,
                 "tabId": 5,
-                "imgUrl": "/borders/border_1.png",
+                "imgUrl": "/mobile/borders/border_100x20x8.png",
                 "siteNameUa": "100х20х8"
             }
         ]
@@ -38,7 +38,7 @@ const prices = [
                 "price": 1400,
                 "height": "7-10см",
                 "tabId": 6,
-                "imgUrl": "/beauty/cement.png",
+                "imgUrl": "/mobile/socle/socle.png",
                 "siteNameUa": "Цоколь (бетон) h 7-10см"
             },
             {
@@ -47,7 +47,7 @@ const prices = [
                 "price": 2000,
                 "height": "15см",
                 "tabId": 6,
-                "imgUrl": "/beauty/cement.png",
+                "imgUrl": "/mobile/socle/socle.png",
                 "siteNameUa": "Цоколь (бетон) h 15см"
             }
         ]
@@ -56,19 +56,27 @@ const prices = [
         "beauty": [
             {
                 "id": 0,
-                "titleUa": "Плитка Граніт (сіра)",
-                "price": 1950,
-                "tabId": 7,
-                "imgUrl": "/tiles/tile_granite_gray.png",
-                "siteNameUa": "Плитка Граніт (сіра)"
-            },
-            {
-                "id": 1,
                 "titleUa": "Плитка Граніт (чорна)",
                 "price": 1950,
                 "tabId": 7,
-                "imgUrl": "/tiles/tile_granite_black.png",
+                "imgUrl": "/mobile/tiles/tile_granite_black.png",
                 "siteNameUa": "Плитка Граніт (чорна)"
+            },
+            {
+                "id": 1,
+                "titleUa": "Плитка Грес",
+                "price": 0,
+                "tabId": 7,
+                "imgUrl": "/mobile/tiles/tile_granite_gres.png",
+                "siteNameUa": "Плитка Грес"
+            },
+            {
+                "id": 2,
+                "titleUa": "Плитка Тротуарна",
+                "price": 280,
+                "tabId": 7,
+                "imgUrl": "/mobile/tiles/tile_sidewalk.png",
+                "siteNameUa": "Плитка Тротуарна"
             },
         ]
     }

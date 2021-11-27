@@ -381,7 +381,7 @@ body {
 
 .field__land {
     width: 85%;
-    height: 79px;
+    height: 89px;
     left: 7%;
     bottom: 15%;
     clip-path: polygon(22% 0%, 81% 0%, 101% 100%, 0% 100%);
@@ -399,17 +399,16 @@ body {
 
 .field__socle-img.active {
     z-index: 2;
-    width: 83%;
-    height: 74px;
-    left: 9%;
-    bottom: 25%;
-    clip-path: polygon(20% 0%, 81% 0%, 101% 100%, 0% 100%);
+    width: 97%;
+    height: 183px;
+    left: 2%;
+    bottom: -1%;
 }
 
 .field__border-img.active {
     display: block;
     position: absolute;
-    bottom: -14%;
+    bottom: 0%;
     height: 180px;
     left: 3%;
     width: 95%;
@@ -576,12 +575,8 @@ body {
 
 .constructor__element-price {
     font-size: 0.7rem;
-    text-align: center;
-}
-
-.constructor__element-name,
-.constructor__element-price {
     font-weight: 700;
+    text-align: center;
 }
 
 @media (min-width: 440px) {
@@ -618,12 +613,12 @@ body {
     }
 
     .field__land {
-        height: 86px;
+        height: 97px;
     }
 
     .field__socle-img.active {
-        height: 81px;
-        bottom: 24%;
+        height: 204px;
+        bottom: -1%;
     }
 
     .field__border-img.active {
@@ -655,12 +650,12 @@ body {
     }
 
     .field__land {
-        height: 100px;
+        height: 113px;
     }
 
     .field__socle-img.active {
-        bottom: 25%;
-        height: 94px;
+        bottom: -1%;
+        height: 232px;
     }
 
     .field__main-container {
@@ -710,12 +705,12 @@ body {
     }
 
     .field__land {
-        height: 130px;
+        height: 144px;
     }
 
     .field__socle-img.active {
-        bottom: 27%;
-        height: 119px;
+        bottom: -1%;
+        height: 296px;
     }
 
     .field__border-img.active {
