@@ -15,6 +15,14 @@
 const priceList = prices;
 
 /**
+ * Важливі тумблери!
+ * Important toggle switches!
+ * Важные тумблеры!
+ */
+let isSocleHidden = true;
+let isTileHidden = true;
+
+/**
  * Отримуємо всі вузли, з якими будемо працювати
  * Getting all nodes with which we will work
  * Получаем все узлы, с которыми будем работать
@@ -140,11 +148,17 @@ const dataContainerCementTotalCostNode = document.querySelectorAll(
 const dataValueCementTotalCostNode = document.querySelectorAll(
     ".calculator__data-value.socle-total-cost"
 );
+const dataValueTileTotalCostNode = document.querySelectorAll(
+    ".calculator__data-value.tile-total-cost"
+);
 const totalCostNode = document.querySelectorAll(
     ".calculator__data-container.total-cost"
 );
 const totalCostValueNode = document.querySelectorAll(
     ".calculator__data-value.total-cost"
+);
+const totalCostTileNode = document.querySelectorAll(
+    ".calculator__data-container.tile-total-cost"
 );
 
 /**
@@ -642,8 +656,6 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Handler of elements "Socles"
  * Обработчик элементов блока "Цоколи"
  */
-let isSocleHidden = true;
-
 elementsValuesSocleNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
@@ -681,6 +693,25 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         dataContainerCementTotalCostNode[0].classList.remove("active");
         dataValueCementTotalCostNode[0].classList.remove("active");
         landPlotNode[0].classList.remove("hide");
+
+        // Якщо випадково видалили цоколь, тоді видаляємо і плитку
+        const activeTileElement = getActiveElement(elementsBeautyNode);
+        const elementsBeautification = Array.from(
+            elementsBeautyNode[0].children
+        );
+
+        if (activeTileElement || activeTileElement === 0) {
+            elementsBeautification[activeTileElement].classList.remove("active");
+            tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+            tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+            tileGres1ImgOnConstructor[0].classList.remove("active");
+            tileGres2ImgOnConstructor[0].classList.remove("active");
+            tileSidewalkImgOnConstructor[0].classList.remove("active");
+            tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+            totalCostTileNode[0].classList.remove("active");
+        }
+
+        isTileHidden = true;
         selectedSocle = null;
 
         calculate();
@@ -697,7 +728,6 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
 
     let userClick = e.target;
     let selectedBeautyElement = null;
-    let isTileHidden = true;
     const elementsBeautification = Array.from(elementsBeautyNode[0].children);
     const beautyElements = [];
 
@@ -747,65 +777,103 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 elementsBeautification[selectedBeautyElement].classList.add(
                     "active"
                 );
-                
+
                 if (selectedBeautyElement === 0) {
                     tileGraniteBlackImgOnConstructor[0].classList.add("active");
 
-                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGraniteGrayImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
                     tileGres1ImgOnConstructor[0].classList.remove("active");
                     tileGres2ImgOnConstructor[0].classList.remove("active");
                     tileSidewalkImgOnConstructor[0].classList.remove("active");
                     tileSidewalk2ImgOnConstructor[0].classList.remove("active");
-
                 } else if (selectedBeautyElement === 1) {
                     tileGraniteGrayImgOnConstructor[0].classList.add("active");
 
-                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+                    tileGraniteBlackImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
                     tileGres1ImgOnConstructor[0].classList.remove("active");
                     tileGres2ImgOnConstructor[0].classList.remove("active");
                     tileSidewalkImgOnConstructor[0].classList.remove("active");
                     tileSidewalk2ImgOnConstructor[0].classList.remove("active");
-
                 } else if (selectedBeautyElement === 2) {
                     tileGres1ImgOnConstructor[0].classList.add("active");
 
-                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
-                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGraniteBlackImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
+                    tileGraniteGrayImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
                     tileGres2ImgOnConstructor[0].classList.remove("active");
                     tileSidewalkImgOnConstructor[0].classList.remove("active");
                     tileSidewalk2ImgOnConstructor[0].classList.remove("active");
-
                 } else if (selectedBeautyElement === 3) {
                     tileGres2ImgOnConstructor[0].classList.add("active");
 
-                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
-                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGraniteBlackImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
+                    tileGraniteGrayImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
                     tileGres1ImgOnConstructor[0].classList.remove("active");
                     tileSidewalkImgOnConstructor[0].classList.remove("active");
                     tileSidewalk2ImgOnConstructor[0].classList.remove("active");
-
                 } else if (selectedBeautyElement === 4) {
                     tileSidewalkImgOnConstructor[0].classList.add("active");
 
-                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
-                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGraniteBlackImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
+                    tileGraniteGrayImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
                     tileGres1ImgOnConstructor[0].classList.remove("active");
                     tileGres2ImgOnConstructor[0].classList.remove("active");
                     tileSidewalk2ImgOnConstructor[0].classList.remove("active");
-
                 } else if (selectedBeautyElement === 5) {
                     tileSidewalk2ImgOnConstructor[0].classList.add("active");
 
-                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
-                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGraniteBlackImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
+                    tileGraniteGrayImgOnConstructor[0].classList.remove(
+                        "active"
+                    );
                     tileGres1ImgOnConstructor[0].classList.remove("active");
                     tileGres2ImgOnConstructor[0].classList.remove("active");
                     tileSidewalkImgOnConstructor[0].classList.remove("active");
                 }
 
+                totalCostTileNode[0].classList.add("active");
                 isTileHidden = false;
+
+                calculate();
             }
         });
+    }
+
+    if (!isTileHidden && userClick.className === "field__hide-element-button") {
+        const activeTileElement = getActiveElement(elementsBeautyNode);
+        elementsBeautification[activeTileElement].classList.remove("active");
+        tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+        tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+        tileGres1ImgOnConstructor[0].classList.remove("active");
+        tileGres2ImgOnConstructor[0].classList.remove("active");
+        tileSidewalkImgOnConstructor[0].classList.remove("active");
+        tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+
+        elementsBeautification[selectedBeautyElement].classList.remove(
+            "active"
+        );
+        totalCostTileNode[0].classList.remove("active");
+        // landPlotNode[0].classList.remove("hide");
+        isTileHidden = true;
+
+        calculate();
     }
 });
 
@@ -831,30 +899,24 @@ const handleCancelEditPlotInputsData = () => {
  * Блок калькулятора
  */
 
-const getActiveBorder = () => {
-    let activeBorder = null;
-    const elementsBorders = Array.from(elementsBordersNode[0].children);
+/**
+ * Функція для отримання активного елементу вкладки.
+ * Function to get the active tab item.
+ * Функция для получения активного элемента вкладки
+ * @param {HTML_Node} node
+ * @returns Index (number) of active node element
+ */
+const getActiveElement = (node) => {
+    let activeElement = null;
+    const elements = Array.from(node[0].children);
 
-    for (let i = 0; i < elementsBorders.length; i++) {
-        if (elementsBorders[i].classList.contains("active")) {
-            activeBorder = i;
+    for (let i = 0; i < elements.length; i++) {
+        if (elements[i].classList.contains("active")) {
+            activeElement = i;
         }
     }
 
-    return activeBorder;
-};
-
-const getActiveSocleElement = () => {
-    let seceltedSocleElement = null;
-    const elementsSocles = Array.from(elementsValuesSocleNode[0].children);
-
-    for (let i = 0; i < elementsSocles.length; i++) {
-        if (elementsSocles[i].classList.contains("active")) {
-            seceltedSocleElement = i;
-        }
-    }
-
-    return seceltedSocleElement;
+    return activeElement;
 };
 
 const calculate = () => {
@@ -873,9 +935,9 @@ const calculate = () => {
     landPlotAreaNode[0].innerText = area;
 
     // Рахуємо к-сть і вартість бордюр
-    let totalCostBorders = 0;
-    const selectedBorder = getActiveBorder();
 
+    const selectedBorder = getActiveElement(elementsBordersNode);
+    let totalCostBorders = 0;
     if (selectedBorder || selectedBorder === 0) {
         const borders = priceList.map((el) => el.curbs);
 
@@ -892,12 +954,13 @@ const calculate = () => {
 
     // Рахуємо вартість цоколю
     let totalScoleCost = 0;
-    const selectedSocle = getActiveSocleElement();
+    const selectedSocle = getActiveElement(elementsValuesSocleNode);
 
     if (selectedSocle || selectedSocle === 0) {
-        const socles = priceList.map((el) => el.socle);
+        const soclesElements = priceList.filter(({ socle }) => socle);
+        const { socle } = soclesElements[0];
 
-        socles[1].forEach(({ id, price }) => {
+        socle.forEach(({ id, price }) => {
             if (selectedSocle === id) {
                 totalScoleCost = area * price;
                 dataValueCementTotalCostNode[0].innerText = totalScoleCost;
@@ -905,6 +968,23 @@ const calculate = () => {
         });
     }
 
+    // Рахуємо вартість плитки
+    let totaTileCost = 0;
+    const selectedTile = getActiveElement(elementsBeautyNode);
+
+    if (selectedTile || selectedTile === 0) {
+        const beautyElements = priceList.filter(({ beauty }) => beauty);
+        const { beauty } = beautyElements[0];
+
+        beauty.forEach(({ id, price, type }) => {
+            if (selectedTile === id && type === "tile") {
+                totaTileCost = area * price;
+                dataValueTileTotalCostNode[0].innerText = totaTileCost;
+            }
+        });
+    }
+
+    // Рахуємо загальну вартість замовлення
     if (
         selectedBorder ||
         selectedBorder === 0 ||
@@ -913,7 +993,7 @@ const calculate = () => {
     ) {
         totalCostNode[0].classList.add("active");
 
-        let totalCost = totalCostBorders + totalScoleCost;
+        let totalCost = totalCostBorders + totalScoleCost + totaTileCost;
         totalCostValueNode[0].innerText = totalCost;
     } else {
         totalCostValueNode[0].innerText = "";

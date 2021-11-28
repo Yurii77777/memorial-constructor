@@ -150,6 +150,7 @@ body {
 .field__tile-gres2-img,
 .field__tile-sidewalk-img,
 .field__tile-sidewalk2-img,
+.calculator__data-container.tile-total-cost,
 .field__socle-img {
     display: none;
 }
@@ -512,7 +513,8 @@ body {
 .calculator__data-container.curbs.active,
 .calculator__data-container.curbs-total-cost.active,
 .calculator__data-container.socle-total-cost.active,
-.calculator__data-container.total-cost.active {
+.calculator__data-container.total-cost.active,
+.calculator__data-container.tile-total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
