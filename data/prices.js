@@ -27,7 +27,7 @@ const prices = [
                 "tabId": 5,
                 "imgUrl": "/mobile/borders/border_100x20x8.png",
                 "siteNameUa": "100х20х8"
-            }
+            },
         ]
     },
     {
@@ -51,7 +51,7 @@ const prices = [
                 "imgUrl": "/mobile/socle/socle.png",
                 "type": "socle",
                 "siteNameUa": "Цоколь (бетон) h 15см"
-            }
+            },
         ]
     },
     {
@@ -67,6 +67,15 @@ const prices = [
             },
             {
                 "id": 1,
+                "titleUa": "Плитка Граніт (сіра)",
+                "price": 1950,
+                "tabId": 7,
+                "imgUrl": "/mobile/tiles/tile_granite_gray.png",
+                "type": "tile",
+                "siteNameUa": "Плитка Граніт (сіра)"
+            },
+            {
+                "id": 2,
                 "titleUa": "Плитка Грес",
                 "price": 350,
                 "tabId": 7,
@@ -75,11 +84,29 @@ const prices = [
                 "siteNameUa": "Плитка Грес"
             },
             {
-                "id": 2,
+                "id": 3,
+                "titleUa": "Плитка Грес",
+                "price": 350,
+                "tabId": 7,
+                "imgUrl": "/mobile/tiles/tile_granite_gres2.png",
+                "type": "tile",
+                "siteNameUa": "Плитка Грес"
+            },
+            {
+                "id": 4,
                 "titleUa": "Плитка Тротуарна",
                 "price": 280,
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_sidewalk.png",
+                "type": "tile",
+                "siteNameUa": "Плитка Тротуарна"
+            },
+            {
+                "id": 5,
+                "titleUa": "Плитка Тротуарна",
+                "price": 280,
+                "tabId": 7,
+                "imgUrl": "/mobile/tiles/tile_sidewalk2.png",
                 "type": "tile",
                 "siteNameUa": "Плитка Тротуарна"
             },

@@ -76,6 +76,28 @@ const elementsNavTabsValues = document.getElementsByClassName(
 const elementsValuesSocleNode = document.querySelectorAll(
     ".constructor__elements-values.socle"
 );
+const tileGraniteBlackImgOnConstructor = document.querySelectorAll(
+    ".field__tile-granite-black-img"
+);
+const tileGraniteGrayImgOnConstructor = document.querySelectorAll(
+    ".field__tile-granite-gray-img"
+);
+const tileGres1ImgOnConstructor = document.querySelectorAll(
+    ".field__tile-gres1-img"
+);
+const tileGres2ImgOnConstructor = document.querySelectorAll(
+    ".field__tile-gres2-img"
+);
+const tileSidewalkImgOnConstructor = document.querySelectorAll(
+    ".field__tile-sidewalk-img"
+);
+const tileSidewalk2ImgOnConstructor = document.querySelectorAll(
+    ".field__tile-sidewalk2-img"
+);
+
+const tileErrorNode = document.querySelectorAll(
+    ".elements-container__tile-error"
+);
 
 // Калькулятор
 const calculatorTitleNode = document.querySelectorAll(".calculator__title");
@@ -620,10 +642,11 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Handler of elements "Socles"
  * Обработчик элементов блока "Цоколи"
  */
+let isSocleHidden = true;
+
 elementsValuesSocleNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
-    let isSocleHidden = true;
     let selectedSocle = null;
     let userClick = e.target;
     const elementsSocles = Array.from(elementsValuesSocleNode[0].children);
@@ -669,6 +692,122 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
  * Handler of elements "Beautification"
  * Обработчик элементов блока "Благоустройство"
  */
+elementsBeautyNode[0].addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    let selectedBeautyElement = null;
+    let isTileHidden = true;
+    const elementsBeautification = Array.from(elementsBeautyNode[0].children);
+    const beautyElements = [];
+
+    priceList.forEach((el) => {
+        if (el.beauty) {
+            const { beauty } = el;
+
+            for (let i = 0; i < beauty.length; i++) {
+                // unshift для того, щоб елементи рендерилися в тому ж порядку, як і в прайсі
+                beautyElements.unshift(beauty[i]);
+            }
+        }
+    });
+
+    if (userClick) {
+        selectedBeautyElement = elementsBeautification.indexOf(
+            userClick.parentNode
+        );
+    }
+
+    if (selectedBeautyElement !== -1) {
+        beautyElements.forEach((el, i) => {
+            const { type } = el;
+
+            if (
+                i === selectedBeautyElement &&
+                type === "tile" &&
+                isSocleHidden
+            ) {
+                tileErrorNode[0].classList.add("active");
+
+                setTimeout(() => {
+                    tileErrorNode[0].classList.remove("active");
+                }, 3000);
+            }
+
+            if (
+                i === selectedBeautyElement &&
+                type === "tile" &&
+                !isSocleHidden &&
+                userClick.className !== "field__hide-element-button"
+            ) {
+                for (let i = 0; i < elementsBeautification.length; i++) {
+                    elementsBeautification[i].classList.remove("active");
+                }
+
+                elementsBeautification[selectedBeautyElement].classList.add(
+                    "active"
+                );
+                
+                if (selectedBeautyElement === 0) {
+                    tileGraniteBlackImgOnConstructor[0].classList.add("active");
+
+                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGres1ImgOnConstructor[0].classList.remove("active");
+                    tileGres2ImgOnConstructor[0].classList.remove("active");
+                    tileSidewalkImgOnConstructor[0].classList.remove("active");
+                    tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+
+                } else if (selectedBeautyElement === 1) {
+                    tileGraniteGrayImgOnConstructor[0].classList.add("active");
+
+                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+                    tileGres1ImgOnConstructor[0].classList.remove("active");
+                    tileGres2ImgOnConstructor[0].classList.remove("active");
+                    tileSidewalkImgOnConstructor[0].classList.remove("active");
+                    tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+
+                } else if (selectedBeautyElement === 2) {
+                    tileGres1ImgOnConstructor[0].classList.add("active");
+
+                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGres2ImgOnConstructor[0].classList.remove("active");
+                    tileSidewalkImgOnConstructor[0].classList.remove("active");
+                    tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+
+                } else if (selectedBeautyElement === 3) {
+                    tileGres2ImgOnConstructor[0].classList.add("active");
+
+                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGres1ImgOnConstructor[0].classList.remove("active");
+                    tileSidewalkImgOnConstructor[0].classList.remove("active");
+                    tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+
+                } else if (selectedBeautyElement === 4) {
+                    tileSidewalkImgOnConstructor[0].classList.add("active");
+
+                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGres1ImgOnConstructor[0].classList.remove("active");
+                    tileGres2ImgOnConstructor[0].classList.remove("active");
+                    tileSidewalk2ImgOnConstructor[0].classList.remove("active");
+
+                } else if (selectedBeautyElement === 5) {
+                    tileSidewalk2ImgOnConstructor[0].classList.add("active");
+
+                    tileGraniteBlackImgOnConstructor[0].classList.remove("active");
+                    tileGraniteGrayImgOnConstructor[0].classList.remove("active");
+                    tileGres1ImgOnConstructor[0].classList.remove("active");
+                    tileGres2ImgOnConstructor[0].classList.remove("active");
+                    tileSidewalkImgOnConstructor[0].classList.remove("active");
+                }
+
+                isTileHidden = false;
+            }
+        });
+    }
+});
 
 /**
  * Функція відміни введення нових даних в конструктор
