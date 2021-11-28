@@ -39,6 +39,7 @@ const prices = [
                 "height": "7-10см",
                 "tabId": 6,
                 "imgUrl": "/mobile/socle/socle.png",
+                "type": "socle",
                 "siteNameUa": "Цоколь (бетон) h 7-10см"
             },
             {
@@ -48,6 +49,7 @@ const prices = [
                 "height": "15см",
                 "tabId": 6,
                 "imgUrl": "/mobile/socle/socle.png",
+                "type": "socle",
                 "siteNameUa": "Цоколь (бетон) h 15см"
             }
         ]
@@ -60,14 +62,16 @@ const prices = [
                 "price": 1950,
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_granite_black.png",
+                "type": "tile",
                 "siteNameUa": "Плитка Граніт (чорна)"
             },
             {
                 "id": 1,
                 "titleUa": "Плитка Грес",
-                "price": 0,
+                "price": 350,
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_granite_gres.png",
+                "type": "tile",
                 "siteNameUa": "Плитка Грес"
             },
             {
@@ -76,6 +80,7 @@ const prices = [
                 "price": 280,
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_sidewalk.png",
+                "type": "tile",
                 "siteNameUa": "Плитка Тротуарна"
             },
         ]

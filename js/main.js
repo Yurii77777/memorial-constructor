@@ -73,7 +73,9 @@ const elementsNavTabs = document.getElementsByClassName(
 const elementsNavTabsValues = document.getElementsByClassName(
     "constructor__elements-container"
 );
-const elementsValuesSocleNode = document.querySelectorAll(".constructor__elements-values.socle");
+const elementsValuesSocleNode = document.querySelectorAll(
+    ".constructor__elements-values.socle"
+);
 
 // Калькулятор
 const calculatorTitleNode = document.querySelectorAll(".calculator__title");
@@ -116,8 +118,12 @@ const dataContainerCementTotalCostNode = document.querySelectorAll(
 const dataValueCementTotalCostNode = document.querySelectorAll(
     ".calculator__data-value.socle-total-cost"
 );
-const totalCostNode = document.querySelectorAll(".calculator__data-container.total-cost");
-const totalCostValueNode = document.querySelectorAll(".calculator__data-value.total-cost");
+const totalCostNode = document.querySelectorAll(
+    ".calculator__data-container.total-cost"
+);
+const totalCostValueNode = document.querySelectorAll(
+    ".calculator__data-value.total-cost"
+);
 
 /**
  * Функція для створення карток елементів у вкладках.
@@ -140,7 +146,8 @@ const createCardNode = (selectedTabIndex, priceList) => {
                 const { tabId } = data[i];
 
                 if (tabId === selectedTab) {
-                    const { imgUrl, titleUa, siteNameUa, price } = data[i];
+                    const { imgUrl, titleUa, siteNameUa, price, type } =
+                        data[i];
 
                     // unshift для того, щоб елементи рендерилися в тому ж порядку, як і в прайсі
                     newCard.unshift(
@@ -151,7 +158,11 @@ const createCardNode = (selectedTabIndex, priceList) => {
                             }" alt="${titleUa}" class="constructor__element-img">
                             <p class="constructor__element-name">${siteNameUa}</p>
                             <p class="constructor__element-price">
-                                <span class="active">${price} грн/шт</span>
+                                <span class="active">${price} ${
+                            type === "tile" || type === "socle"
+                                ? "грн/м2"
+                                : "грн/шт"
+                        }</span>
                                 <span>${price} UAH/pcs</span>
                             </p>
                         </div>`
@@ -480,7 +491,7 @@ const handleChangeLandPlotSizes = () => {
         editPlotSizesNode[0].classList.remove("active");
         isVisibleEditPlotSizes = false;
     }
-}
+};
 
 /**
  * Валідація данних інпутів зміни земельної ділянки
@@ -609,7 +620,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Handler of elements "Socles"
  * Обработчик элементов блока "Цоколи"
  */
- elementsValuesSocleNode[0].addEventListener("click", (e) => {
+elementsValuesSocleNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let isSocleHidden = true;
@@ -659,16 +670,17 @@ elementsBordersNode[0].addEventListener("click", (e) => {
  * Обработчик элементов блока "Благоустройство"
  */
 
-
 /**
  * Функція відміни введення нових даних в конструктор
  */
 const handleCancelEditPlotInputsData = () => {
-    plotWidthInput[0].value = '';
-    plotWidthInput[0].classList.contains("error") && plotWidthInput[0].classList.remove("error");
+    plotWidthInput[0].value = "";
+    plotWidthInput[0].classList.contains("error") &&
+        plotWidthInput[0].classList.remove("error");
 
-    plotLengthInput[0].value = '';
-    plotLengthInput[0].classList.contains("error") && plotLengthInput[0].classList.remove("error")
+    plotLengthInput[0].value = "";
+    plotLengthInput[0].classList.contains("error") &&
+        plotLengthInput[0].classList.remove("error");
 
     editPlotSizesNode[0].classList.remove("active");
 
@@ -744,7 +756,7 @@ const calculate = () => {
     const selectedSocle = getActiveSocleElement();
 
     if (selectedSocle || selectedSocle === 0) {
-        const socles = priceList.map(el => el.socle);
+        const socles = priceList.map((el) => el.socle);
 
         socles[1].forEach(({ id, price }) => {
             if (selectedSocle === id) {
@@ -754,14 +766,18 @@ const calculate = () => {
         });
     }
 
-    if ((selectedBorder || selectedBorder === 0) || (selectedSocle || selectedSocle === 0)) {
+    if (
+        selectedBorder ||
+        selectedBorder === 0 ||
+        selectedSocle ||
+        selectedSocle === 0
+    ) {
         totalCostNode[0].classList.add("active");
-        
+
         let totalCost = totalCostBorders + totalScoleCost;
         totalCostValueNode[0].innerText = totalCost;
-        
     } else {
-        totalCostValueNode[0].innerText = '';
+        totalCostValueNode[0].innerText = "";
         totalCostNode[0].classList.remove("active");
     }
 };
