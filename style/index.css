@@ -200,7 +200,6 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    flex: 1 1 0;
     width: 100%;
     height: 370px;
     margin-bottom: var(--xs-margin);
@@ -480,15 +479,20 @@ body {
 
 .draggable-elements {
     position: absolute;
-    width: 90%;
-    height: 120px;
+    width: 91%;
+    height: 190px;
     left: 5%;
-    bottom: 15%;
+    bottom: 13%;
     overflow: hidden;
     z-index: 3;
 }
 
-#stand-container {
+.stand-container {
+    display: none;
+}
+
+.stand-container.active {
+    display: block;
     position: absolute;
     width: 25%;
     height: 35%;
@@ -680,11 +684,11 @@ body {
     }
 
     .constructor {
-        height: 380px;
+        height: 460px;
     }
 
     .constructor__field {
-        height: 250px;
+        height: 305px;
     }
 
     .field__error.active {
@@ -692,16 +696,17 @@ body {
     }
 
     .field__main-container {
-        height: 180px;
+        height: 240px;
     }
 
     .field__land {
-        height: 97px;
+        bottom: 5%;
+        height: 130px;
     }
 
     .field__socle-img.active {
-        height: 204px;
-        bottom: -1%;
+        height: 243px;
+        bottom: -3.5%;
     }
 
     .field__tile-granite-black-img.active,
@@ -710,13 +715,14 @@ body {
     .field__tile-gres2-img.active,
     .field__tile-sidewalk-img.active,
     .field__tile-sidewalk2-img.active {
-        height: 203px;
+        height: 238px;
         width: 95.5%;
-        bottom: 4.5%;
+        bottom: 2%;
     }
 
     .field__border-img.active {
-        height: 200px;
+        height: 235px;
+        bottom: -2%;
     }
 
     .calculator__attention-paragraph.active {
@@ -744,12 +750,13 @@ body {
     }
 
     .field__land {
-        height: 113px;
+        height: 125px;
+        bottom: 7%;
     }
 
     .field__socle-img.active {
-        bottom: -1%;
-        height: 232px;
+        bottom: -3.5%;
+        height: 236px;
     }
 
     .field__tile-granite-black-img.active,
@@ -758,7 +765,7 @@ body {
     .field__tile-gres2-img.active,
     .field__tile-sidewalk-img.active,
     .field__tile-sidewalk2-img.active {
-        bottom: 4.5%;
+        bottom: 2.5%;
         height: 234px;
     }
 
@@ -809,12 +816,12 @@ body {
     }
 
     .field__land {
-        height: 144px;
+        height: 159px;
     }
 
     .field__socle-img.active {
-        bottom: -1%;
-        height: 296px;
+        bottom: -3.5%;
+        height: 299px;
     }
 
     .field__tile-granite-black-img.active,
@@ -823,7 +830,7 @@ body {
     .field__tile-gres2-img.active,
     .field__tile-sidewalk-img.active,
     .field__tile-sidewalk2-img.active {
-        bottom: 4.5%;
+        bottom: 2.5%;
         height: 296px;
     }
 
@@ -847,6 +854,10 @@ body {
 
     .constructor__element-price {
         font-size: 0.8rem;
+    }
+
+    .draggable-elements {
+        height: 250px;
     }
 
     .calculator {

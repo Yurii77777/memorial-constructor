@@ -102,6 +102,10 @@ const tileSidewalkImgOnConstructor = document.querySelectorAll(
 const tileSidewalk2ImgOnConstructor = document.querySelectorAll(
     ".field__tile-sidewalk2-img"
 );
+const elementsStandsNode = document.querySelectorAll(
+    ".constructor__elements-values.stand"
+);
+const standContainerNode = document.querySelectorAll(".stand-container");
 
 const tileErrorNode = document.querySelectorAll(
     ".elements-container__tile-error"
@@ -233,7 +237,7 @@ const handleLandPlotSizes = () => {
 /**
  * Фугкція для пересування елементів - Тумби
  */
-const standContainer = document.getElementById("stand-container");
+ const standContainer = document.getElementById("stand-container");
 
 let pos1 = 0;
 let pos2 = 0;
@@ -667,6 +671,29 @@ const handleSubmitLandPlotInputsData = () => {
         }, 3000);
     }
 };
+/**
+ * Обробник елементів блоку "Тумби"
+ * Handler of elements "Stands"
+ * Обработчик элементом блока "Тумбы"
+ */
+let isStandHidden = true;
+
+elementsStandsNode[0].addEventListener("click", (e) => {
+    let selectedStand = null;
+    let userClick = e.target;
+    let selectedStandsCount = 0;
+    const elementsStands = Array.from(elementsStandsNode[0].children);
+
+    if (userClick) {
+        selectedStand = elementsStands.indexOf(userClick.parentNode);
+    }
+
+    if (selectedStand !== -1 && selectedStandsCount === 0) {
+        isStandHidden = false;
+
+        standContainerNode[0].classList.add("active");
+    }
+});
 
 /**
  * Обробник елементів блоку "Огорожі"
