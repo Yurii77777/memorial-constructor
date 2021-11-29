@@ -478,6 +478,26 @@ body {
     display: none;
 }
 
+.draggable-elements {
+    position: absolute;
+    width: 90%;
+    height: 120px;
+    left: 5%;
+    bottom: 15%;
+    overflow: hidden;
+    z-index: 3;
+}
+
+#stand-container {
+    position: absolute;
+    width: 25%;
+    height: 35%;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: move;
+}
+
 .calculator {
     display: flex;
     flex-direction: column;
@@ -616,7 +636,7 @@ body {
     height: 4px;
 }
 
-.constructor__elements-values.active .constructor__element-container {
+.constructor__element-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
