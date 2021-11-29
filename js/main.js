@@ -233,46 +233,66 @@ const handleLandPlotSizes = () => {
 /**
  * Фугкція для пересування елементів - Тумби
  */
-dragElement(document.getElementById("stand-container"));
+const standContainer = document.getElementById("stand-container");
 
-function dragElement(elmnt) {
-    let pos1 = 0;
-    let pos2 = 0;
-    let pos3 = 0;
-    let pos4 = 0;
+let pos1 = 0;
+let pos2 = 0;
+let pos3 = 0;
+let pos4 = 0;
 
-    if (document.getElementById(elmnt.id)) {
-        document.getElementById(elmnt.id).onmousedown = dragMouseDown;
-    } else {
-        elmnt.onmousedown = dragMouseDown;
-    }
+standContainer.addEventListener("mousedown", (e) => {
+    e = e || window.event;
+    e.preventDefault();
 
-    function dragMouseDown(e) {
+    const closeDragElement = () => {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    };
+
+    const elementDrag = (e) => {
         e = e || window.event;
         e.preventDefault();
 
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
         pos1 = pos3 - e.clientX;
         pos2 = pos4 - e.clientY;
         pos3 = e.clientX;
         pos4 = e.clientY;
-        elmnt.style.top = elmnt.offsetTop - pos2 + "px";
-        elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
-    }
+        standContainer.style.top = standContainer.offsetTop - pos2 + "px";
+        standContainer.style.left = standContainer.offsetLeft - pos1 + "px";
+    };
 
-    function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-}
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+});
+
+standContainer.addEventListener("touchstart", (e) => {
+    e = e || window.event;
+    e.preventDefault();
+
+    const closeDragElement = () => {
+        document.ontouchend = null;
+        document.ontouchmove = null;
+    };
+
+    const elementDrag = (e) => {
+        e = e || window.event;
+        // e.preventDefault();
+
+        pos1 = pos3 - e.touches[0].clientX;
+        pos2 = pos4 - e.touches[0].clientY;
+        pos3 = e.touches[0].clientX;
+        pos4 = e.touches[0].clientY;
+        standContainer.style.top = standContainer.offsetTop - pos2 + "px";
+        standContainer.style.left = standContainer.offsetLeft - pos1 + "px";
+    };
+
+    pos3 = e.touches[0].clientX;
+    pos4 = e.touches[0].clientY;
+    document.ontouchend = closeDragElement;
+    document.ontouchmove = elementDrag;
+});
 
 /**
  * Локалізація вузлів сторінки
