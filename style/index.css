@@ -480,7 +480,7 @@ body {
 .draggable-elements {
     position: absolute;
     width: 91%;
-    height: 190px;
+    height: 140px;
     left: 5%;
     bottom: 13%;
     overflow: hidden;
@@ -666,6 +666,23 @@ body {
     text-align: center;
 }
 
+.stand-container__info-message {
+    display: none;
+}
+
+.stand-container__info-message.active {
+    display: block;
+    font-size: 0.7rem;
+    line-height: 1.1;
+    text-align: center;
+    color: #084298;
+    width: 120%;
+    background-color: #cfe2ff;
+    border-color: #b6d4fe;
+    padding: var(--sm-padding);
+    border-radius: var(--border-radius);
+}
+
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
@@ -723,6 +740,11 @@ body {
     .field__border-img.active {
         height: 235px;
         bottom: -2%;
+    }
+
+    .draggable-elements {
+        height: 190px;
+        bottom: 5%;
     }
 
     .calculator__attention-paragraph.active {

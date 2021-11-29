@@ -106,6 +106,7 @@ const elementsStandsNode = document.querySelectorAll(
     ".constructor__elements-values.stand"
 );
 const standContainerNode = document.querySelectorAll(".stand-container");
+const infoMessageNode = document.querySelectorAll(".stand-container__info-message");
 
 const tileErrorNode = document.querySelectorAll(
     ".elements-container__tile-error"
@@ -692,6 +693,11 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         isStandHidden = false;
 
         standContainerNode[0].classList.add("active");
+        infoMessageNode[0].classList.add("active");
+
+        setTimeout(() => {
+            infoMessageNode[0].classList.remove("active");
+        }, 3000);
     }
 });
 
