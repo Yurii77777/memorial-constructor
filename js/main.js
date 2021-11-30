@@ -106,7 +106,14 @@ const elementsStandsNode = document.querySelectorAll(
     ".constructor__elements-values.stand"
 );
 const standContainerNode = document.querySelectorAll(".stand-container");
-const infoMessageNode = document.querySelectorAll(".stand-container__info-message");
+const infoMessageNode = document.querySelectorAll(
+    ".stand-container__info-message"
+);
+const standContainer2Node = document.querySelectorAll(".stand-container2");
+const infoMessage2Node = document.querySelectorAll(
+    ".stand-container__info-message2"
+);
+const standErrorNode = document.querySelectorAll(".stand__error");
 
 const tileErrorNode = document.querySelectorAll(
     ".elements-container__tile-error"
@@ -158,6 +165,12 @@ const dataValueTileTotalCostNode = document.querySelectorAll(
 );
 const totalCostNode = document.querySelectorAll(
     ".calculator__data-container.total-cost"
+);
+const dataContainerStandTotalCostNode = document.querySelectorAll(
+    ".calculator__data-container.stand-total-cost"
+);
+const dataValueStandTotalCostNode = document.querySelectorAll(
+    ".calculator__data-value.stand-total-cost"
 );
 const totalCostValueNode = document.querySelectorAll(
     ".calculator__data-value.total-cost"
@@ -223,7 +236,7 @@ const createCardNode = (selectedTabIndex, priceList) => {
  * returns object which includes current sizes
  * Функция для получения текущих размеров земельного участка
  * возвращает объект с текущими размерами
- * @returns { width, length }
+ * @returns Object { width, length }
  */
 const handleLandPlotSizes = () => {
     let width = null;
@@ -236,9 +249,9 @@ const handleLandPlotSizes = () => {
 };
 
 /**
- * Фугкція для пересування елементів - Тумби
+ * Функція для пересування елементів - Тумби
  */
- const standContainer = document.getElementById("stand-container");
+const standContainer = document.getElementById("stand-container");
 
 let pos1 = 0;
 let pos2 = 0;
@@ -295,6 +308,71 @@ standContainer.addEventListener("touchstart", (e) => {
 
     pos3 = e.touches[0].clientX;
     pos4 = e.touches[0].clientY;
+    document.ontouchend = closeDragElement;
+    document.ontouchmove = elementDrag;
+});
+
+const standContainer2 = document.getElementById("stand-container2");
+
+let pos1Container2 = 0;
+let pos2Container2 = 0;
+let pos3Container2 = 0;
+let pos4Container2 = 0;
+
+standContainer2.addEventListener("mousedown", (e) => {
+    e = e || window.event;
+    e.preventDefault();
+
+    const closeDragElement = () => {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    };
+
+    const elementDrag = (e) => {
+        e = e || window.event;
+        e.preventDefault();
+
+        pos1Container2 = pos3Container2 - e.clientX;
+        pos2Container2 = pos4Container2 - e.clientY;
+        pos3Container2 = e.clientX;
+        pos4Container2 = e.clientY;
+        standContainer2.style.top =
+            standContainer2.offsetTop - pos2Container2 + "px";
+        standContainer2.style.left =
+            standContainer2.offsetLeft - pos1Container2 + "px";
+    };
+
+    pos3Container2 = e.clientX;
+    pos4Container2 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+});
+
+standContainer2.addEventListener("touchstart", (e) => {
+    e = e || window.event;
+    e.preventDefault();
+
+    const closeDragElement = () => {
+        document.ontouchend = null;
+        document.ontouchmove = null;
+    };
+
+    const elementDrag = (e) => {
+        e = e || window.event;
+        // e.preventDefault();
+
+        pos1Container2 = pos3Container2 - e.touches[0].clientX;
+        pos2Container2 = pos4Container2 - e.touches[0].clientY;
+        pos3Container2 = e.touches[0].clientX;
+        pos4Container2 = e.touches[0].clientY;
+        standContainer2.style.top =
+            standContainer2.offsetTop - pos2Container2 + "px";
+        standContainer2.style.left =
+            standContainer2.offsetLeft - pos1Container2 + "px";
+    };
+
+    pos3Container2 = e.touches[0].clientX;
+    pos4Container2 = e.touches[0].clientY;
     document.ontouchend = closeDragElement;
     document.ontouchmove = elementDrag;
 });
@@ -677,28 +755,121 @@ const handleSubmitLandPlotInputsData = () => {
  * Handler of elements "Stands"
  * Обработчик элементом блока "Тумбы"
  */
+const getStandLength = (selectedStand) => {
+    let selectedStandLength = [];
+
+    const allStands = priceList.filter(({ stand }) => stand);
+    const { stand } = allStands[0];
+
+    stand.forEach((el, i) => {
+        if (i === selectedStand) {
+            selectedStandLength.push(el);
+        }
+    });
+
+    return selectedStandLength;
+};
+
 let isStandHidden = true;
+let selectedStandsLengths = 0;
+let selectedStendsCount = 0;
 
 elementsStandsNode[0].addEventListener("click", (e) => {
     let selectedStand = null;
     let userClick = e.target;
-    let selectedStandsCount = 0;
     const elementsStands = Array.from(elementsStandsNode[0].children);
+    selectedStand = elementsStands.indexOf(userClick.parentNode);
+    const { width } = handleLandPlotSizes();
 
-    if (userClick) {
-        selectedStand = elementsStands.indexOf(userClick.parentNode);
-    }
+    const stands = getStandLength(selectedStand);
+    const { length: standLength } = stands[0];
+    standLength && (selectedStandsLengths += standLength);
 
-    if (selectedStand !== -1 && selectedStandsCount === 0) {
+    if (
+        selectedStand !== -1 &&
+        userClick.className !== "field__hide-element-button" &&
+        selectedStendsCount === 0
+    ) {
+        selectedStendsCount += 1;
         isStandHidden = false;
 
+        elementsStands[selectedStand].classList.add("active");
         standContainerNode[0].classList.add("active");
         infoMessageNode[0].classList.add("active");
 
         setTimeout(() => {
             infoMessageNode[0].classList.remove("active");
         }, 3000);
+
+        dataContainerStandTotalCostNode[0].classList.add("active");
+
+        calculate();
     }
+
+    if (
+        selectedStand !== -1 &&
+        userClick.className === "field__hide-element-button" &&
+        selectedStendsCount === 1
+    ) {
+        selectedStendsCount -= 1;
+        isStandHidden = true;
+
+        elementsStands[selectedStand].classList.remove("active");
+        standContainerNode[0].classList.remove("active");
+        dataContainerStandTotalCostNode[0].classList.remove("active");
+
+        calculate();
+    }
+
+    // if (selectedStendsCount === 2 && (selectedStandsLengths <= width - 20)) {
+    //     elementsStands[selectedStand].classList.add("active");
+    //     standContainer2Node[0].classList.add("active");
+    //     infoMessage2Node[0].classList.add("active");
+
+    //     setTimeout(() => {
+    //         infoMessage2Node[0].classList.remove("active");
+    //     }, 3000);
+
+    // } else if (selectedStendsCount === 2 && (selectedStandsLengths > width - 20)) {
+    //     standErrorNode[0].classList.add("active");
+
+    //     setTimeout(() => {
+    //         standErrorNode[0].classList.remove("active");
+    //     }, 3000);
+    // }
+
+    // if (selectedStendsCount > 2 || (selectedStandsLengths > width - 20)) {
+    //     selectedStendsCount -= 1;
+    //     selectedStandsLengths -= standLength;
+
+    //     standErrorNode[0].classList.add("active");
+
+    //     setTimeout(() => {
+    //         standErrorNode[0].classList.remove("active");
+    //     }, 3000);
+    // }
+
+    // if (
+    //     !isStandHidden &&
+    //     userClick.className === "field__hide-element-button"
+    // ) {
+    //     const activeStands = getActiveElements(elementsStandsNode);
+
+    //     // Якщо вибрано два елементи і масив складається з двої елементів,
+    //     // значить це два річні елементи
+    //     if (selectedStendsCount === 2 && activeStands.length === 2) {
+    //         activeStands.forEach(({ id }) => {
+    //             id === selectedStand && elementsStands[id].classList.remove("active");
+    //         })
+    //     }
+
+    //     // Определить сколько выбрано элементов и на каких стоит актив
+    //     // если актив один, а элементов 2, тогда снять актив только на макете, убрать длину и кол-во
+    //     //если актив стоит на разных элементах, тогда ...
+    // }
+
+    console.log("[selectedStendsCount]", selectedStendsCount);
+    // console.log('[selectedStandsLengths]', selectedStandsLengths);
 });
 
 /**
@@ -792,7 +963,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         landPlotNode[0].classList.remove("hide");
 
         // Якщо випадково видалили цоколь, тоді видаляємо і плитку
-        const activeTileElement = getActiveElement(elementsBeautyNode);
+        const activeTileElement = getActiveElements(elementsBeautyNode);
         const elementsBeautification = Array.from(
             elementsBeautyNode[0].children
         );
@@ -956,7 +1127,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
     }
 
     if (!isTileHidden && userClick.className === "field__hide-element-button") {
-        const activeTileElement = getActiveElement(elementsBeautyNode);
+        const activeTileElement = getActiveElements(elementsBeautyNode);
         elementsBeautification[activeTileElement].classList.remove("active");
         tileGraniteBlackImgOnConstructor[0].classList.remove("active");
         tileGraniteGrayImgOnConstructor[0].classList.remove("active");
@@ -1003,15 +1174,15 @@ const handleCancelEditPlotInputsData = () => {
  * Function to get the active tab item.
  * Функция для получения активного элемента вкладки
  * @param {HTML_Node} node
- * @returns Index (number) of active node element
+ * @returns Array which contains indexes of node elements with class 'active'
  */
-const getActiveElement = (node) => {
-    let activeElement = null;
+const getActiveElements = (node) => {
+    let activeElement = [];
     const elements = Array.from(node[0].children);
 
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].classList.contains("active")) {
-            activeElement = i;
+            activeElement.push(i);
         }
     }
 
@@ -1035,13 +1206,13 @@ const calculate = () => {
 
     // Рахуємо к-сть і вартість бордюр
 
-    const selectedBorder = getActiveElement(elementsBordersNode);
+    const selectedBorder = getActiveElements(elementsBordersNode);
     let totalCostBorders = 0;
-    if (selectedBorder || selectedBorder === 0) {
+    if (selectedBorder.length && selectedBorder.length === 1) {
         const borders = priceList.map((el) => el.curbs);
 
         borders[0].forEach(({ id, length, price }) => {
-            if (selectedBorder === id) {
+            if (selectedBorder[0] === id) {
                 const borderPcs = Math.ceil((perimeter * 100) / length);
                 dataValueCurbsNode[0].innerText = borderPcs;
 
@@ -1053,14 +1224,14 @@ const calculate = () => {
 
     // Рахуємо вартість цоколю
     let totalScoleCost = 0;
-    const selectedSocle = getActiveElement(elementsValuesSocleNode);
+    const selectedSocle = getActiveElements(elementsValuesSocleNode);
 
-    if (selectedSocle || selectedSocle === 0) {
+    if (selectedSocle.length && selectedSocle.length === 1) {
         const soclesElements = priceList.filter(({ socle }) => socle);
         const { socle } = soclesElements[0];
 
         socle.forEach(({ id, price }) => {
-            if (selectedSocle === id) {
+            if (selectedSocle[0] === id) {
                 totalScoleCost = area * price;
                 dataValueCementTotalCostNode[0].innerText = totalScoleCost;
             }
@@ -1069,30 +1240,48 @@ const calculate = () => {
 
     // Рахуємо вартість плитки
     let totaTileCost = 0;
-    const selectedTile = getActiveElement(elementsBeautyNode);
+    const selectedTile = getActiveElements(elementsBeautyNode);
 
-    if (selectedTile || selectedTile === 0) {
+    if (selectedTile.length && selectedTile.length === 1) {
         const beautyElements = priceList.filter(({ beauty }) => beauty);
         const { beauty } = beautyElements[0];
 
         beauty.forEach(({ id, price, type }) => {
-            if (selectedTile === id && type === "tile") {
+            if (selectedTile[0] === id && type === "tile") {
                 totaTileCost = area * price;
                 dataValueTileTotalCostNode[0].innerText = totaTileCost;
             }
         });
     }
 
+    // Рахуємо вартість тумб
+    let totalStandsCost = 0;
+    const selectedStands = getActiveElements(elementsStandsNode);
+
+    if (selectedStands.length && selectedStendsCount === 1) {
+        const standsElements = priceList.filter(({ stand }) => stand);
+        const { stand } = standsElements[0];
+
+        stand.forEach(({ id, price }) => {
+            if (selectedStands[0] === id) {
+                totalStandsCost = price;
+                console.log("[totalStandsCost]", totalStandsCost);
+
+                dataValueStandTotalCostNode[0].innerText = totalStandsCost;
+            }
+        });
+    }
+
     // Рахуємо загальну вартість замовлення
     if (
-        selectedBorder ||
-        selectedBorder === 0 ||
-        selectedSocle ||
-        selectedSocle === 0
+        selectedBorder.length ||
+        selectedSocle.length ||
+        selectedStands.length
     ) {
         totalCostNode[0].classList.add("active");
 
-        let totalCost = totalCostBorders + totalScoleCost + totaTileCost;
+        let totalCost =
+            totalCostBorders + totalScoleCost + totaTileCost + totalStandsCost;
         totalCostValueNode[0].innerText = totalCost;
     } else {
         totalCostValueNode[0].innerText = "";
@@ -1101,34 +1290,3 @@ const calculate = () => {
 };
 
 calculate();
-
-/* Ниже черновички "позже к ним обратимся" */
-
-// var canvas = new fabric.Canvas('canvas');
-// document.getElementById('file').addEventListener("change", function (e) {
-//   var file = e.target.files[0];
-//   var reader = new FileReader();
-//   reader.onload = function (f) {
-//     var data = f.target.result;
-//     fabric.Image.fromURL(data, function (img) {
-//       var oImg = img.set({left: 0, top: 0, angle: 00,width:100, height:100}).scale(0.9);
-//       canvas.add(oImg).renderAll();
-//       var a = canvas.setActiveObject(oImg);
-//       var dataURL = canvas.toDataURL({format: 'png', quality: 0.8});
-//     });
-//   };
-//   reader.readAsDataURL(file);
-// });
-
-// window.addEventListener('load', function() {
-//   document.querySelector('input[type="file"]').addEventListener('change', function() {
-//       if (this.files && this.files[0]) {
-//           var img = document.querySelector('img');
-//           img.onload = () => {
-//               URL.revokeObjectURL(img.src);  // no longer needed, free memory
-//           }
-
-//           img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-//       }
-//   });
-// });

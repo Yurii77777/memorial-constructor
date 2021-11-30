@@ -151,6 +151,7 @@ body {
 .field__tile-sidewalk-img,
 .field__tile-sidewalk2-img,
 .calculator__data-container.tile-total-cost,
+.calculator__data-container.stand-total-cost,
 .field__socle-img {
     display: none;
 }
@@ -487,11 +488,13 @@ body {
     z-index: 3;
 }
 
-.stand-container {
+.stand-container,
+.stand-container2 {
     display: none;
 }
 
-.stand-container.active {
+.stand-container.active,
+.stand-container2.active {
     display: block;
     position: absolute;
     width: 25%;
@@ -538,7 +541,8 @@ body {
 .calculator__data-container.curbs-total-cost.active,
 .calculator__data-container.socle-total-cost.active,
 .calculator__data-container.total-cost.active,
-.calculator__data-container.tile-total-cost.active {
+.calculator__data-container.tile-total-cost.active,
+.calculator__data-container.stand-total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -666,11 +670,32 @@ body {
     text-align: center;
 }
 
-.stand-container__info-message {
+.stand__error {
     display: none;
 }
 
-.stand-container__info-message.active {
+.stand__error.active {
+    position: absolute;
+    display: block;
+    z-index: 100;
+    font-size: 0.7rem;
+    width: 40%;
+    color: var(--error-text-color);
+    background-color: var(--error-background-color);
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid transparent;
+    left: 30%;
+    top: 30%;
+}
+
+.stand-container__info-message,
+.stand-container__info-message2 {
+    display: none;
+}
+
+.stand-container__info-message.active,
+.stand-container__info-message2.active {
     display: block;
     font-size: 0.7rem;
     line-height: 1.1;
