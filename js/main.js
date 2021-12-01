@@ -770,7 +770,6 @@ const getStandLength = (selectedStand) => {
     return selectedStandLength;
 };
 
-let isStandHidden = true;
 let selectedStandsLengths = 0;
 let selectedStendsCount = 0;
 
@@ -791,7 +790,6 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStendsCount === 0
     ) {
         selectedStendsCount += 1;
-        isStandHidden = false;
 
         elementsStands[selectedStand].classList.add("active");
         standContainerNode[0].classList.add("active");
@@ -804,6 +802,36 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         dataContainerStandTotalCostNode[0].classList.add("active");
 
         calculate();
+    } else if (
+        selectedStand !== -1 &&
+        userClick.className !== "field__hide-element-button" &&
+        selectedStendsCount === 1 &&
+        selectedStandsLengths <= width
+    ) {
+        selectedStendsCount += 1;
+
+        elementsStands[selectedStand].classList.add("active");
+        standContainer2Node[0].classList.add("active");
+        infoMessage2Node[0].classList.add("active");
+
+        setTimeout(() => {
+            infoMessage2Node[0].classList.remove("active");
+        }, 3000);
+
+        calculate();
+    } else if (
+        selectedStand !== -1 &&
+        userClick.className !== "field__hide-element-button" &&
+        selectedStendsCount === 1 &&
+        selectedStandsLengths > width
+    ) {
+        selectedStandsLengths -= standLength;
+
+        standErrorNode[0].classList.add("active");
+
+        setTimeout(() => {
+            standErrorNode[0].classList.remove("active");
+        }, 3000);
     }
 
     if (
@@ -812,70 +840,54 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStendsCount === 1
     ) {
         selectedStendsCount -= 1;
-        isStandHidden = true;
+        selectedStandsLengths -= standLength * 2;
 
         elementsStands[selectedStand].classList.remove("active");
-        standContainerNode[0].classList.remove("active");
+        standContainerNode[0].classList.contains("active") &&
+            standContainerNode[0].classList.remove("active");
+        standContainer2Node[0].classList.contains("active") &&
+            standContainer2Node[0].classList.remove("active");
+
+        dataValueStandTotalCostNode[0].innerText = 0;
         dataContainerStandTotalCostNode[0].classList.remove("active");
 
         calculate();
+    } else if (
+        selectedStand !== -1 &&
+        userClick.className === "field__hide-element-button" &&
+        selectedStendsCount === 2
+    ) {
+        selectedStandsLengths -= standLength * 2;
+        const selectedStandsIndexes = getActiveElements(elementsStandsNode);
+
+        if (selectedStendsCount === 2 && selectedStandsIndexes.length === 1) {
+            standContainer2Node[0].classList.remove("active");
+
+            selectedStendsCount -= 1;
+        }
+
+        if (selectedStendsCount === 2 && selectedStandsIndexes.length === 2) {
+            for (let i = 0; i < selectedStandsIndexes.length; i++) {
+                if (selectedStandsIndexes[i] === selectedStand) {
+                    elementsStands[selectedStand].classList.remove("active");
+
+                    i === 0 && standContainerNode[0].classList.remove("active");
+                    i === 1 &&
+                        standContainer2Node[0].classList.remove("active");
+                }
+            }
+
+            selectedStendsCount -= 1;
+        }
+
+        calculate();
     }
-
-    // if (selectedStendsCount === 2 && (selectedStandsLengths <= width - 20)) {
-    //     elementsStands[selectedStand].classList.add("active");
-    //     standContainer2Node[0].classList.add("active");
-    //     infoMessage2Node[0].classList.add("active");
-
-    //     setTimeout(() => {
-    //         infoMessage2Node[0].classList.remove("active");
-    //     }, 3000);
-
-    // } else if (selectedStendsCount === 2 && (selectedStandsLengths > width - 20)) {
-    //     standErrorNode[0].classList.add("active");
-
-    //     setTimeout(() => {
-    //         standErrorNode[0].classList.remove("active");
-    //     }, 3000);
-    // }
-
-    // if (selectedStendsCount > 2 || (selectedStandsLengths > width - 20)) {
-    //     selectedStendsCount -= 1;
-    //     selectedStandsLengths -= standLength;
-
-    //     standErrorNode[0].classList.add("active");
-
-    //     setTimeout(() => {
-    //         standErrorNode[0].classList.remove("active");
-    //     }, 3000);
-    // }
-
-    // if (
-    //     !isStandHidden &&
-    //     userClick.className === "field__hide-element-button"
-    // ) {
-    //     const activeStands = getActiveElements(elementsStandsNode);
-
-    //     // Якщо вибрано два елементи і масив складається з двої елементів,
-    //     // значить це два річні елементи
-    //     if (selectedStendsCount === 2 && activeStands.length === 2) {
-    //         activeStands.forEach(({ id }) => {
-    //             id === selectedStand && elementsStands[id].classList.remove("active");
-    //         })
-    //     }
-
-    //     // Определить сколько выбрано элементов и на каких стоит актив
-    //     // если актив один, а элементов 2, тогда снять актив только на макете, убрать длину и кол-во
-    //     //если актив стоит на разных элементах, тогда ...
-    // }
-
-    console.log("[selectedStendsCount]", selectedStendsCount);
-    // console.log('[selectedStandsLengths]', selectedStandsLengths);
 });
 
 /**
- * Обробник елементів блоку "Огорожі"
- * Handler of elements "Fences"
- * Обработчик элементов блока "Ограждения"
+ * Обробник елементів блоку "Бордюри"
+ * Handler of elements "Borders"
+ * Обработчик элементов блока "Бордюры"
  */
 elementsBordersNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1258,18 +1270,25 @@ const calculate = () => {
     let totalStandsCost = 0;
     const selectedStands = getActiveElements(elementsStandsNode);
 
-    if (selectedStands.length && selectedStendsCount === 1) {
+    if (selectedStands.length) {
         const standsElements = priceList.filter(({ stand }) => stand);
         const { stand } = standsElements[0];
 
-        stand.forEach(({ id, price }) => {
-            if (selectedStands[0] === id) {
-                totalStandsCost = price;
-                console.log("[totalStandsCost]", totalStandsCost);
+        if (selectedStendsCount === 2 && selectedStands.length === 1) {
+            stand.forEach(({ id, price }) => {
+                for (let i = 0; i < selectedStands.length; i++) {
+                    selectedStands[i] === id && (totalStandsCost += price * 2);
+                }
+            });
+        } else {
+            stand.forEach(({ id, price }) => {
+                for (let i = 0; i < selectedStands.length; i++) {
+                    selectedStands[i] === id && (totalStandsCost += price);
+                }
+            });
+        }
 
-                dataValueStandTotalCostNode[0].innerText = totalStandsCost;
-            }
-        });
+        dataValueStandTotalCostNode[0].innerText = totalStandsCost;
     }
 
     // Рахуємо загальну вартість замовлення
