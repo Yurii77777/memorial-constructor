@@ -827,11 +827,29 @@ body {
 
     .constructor__elements {
         width: 50%;
-        height: 150px;
+        height: 260px;
     }
 
     .constructor__elements-nav {
+        flex-shrink: 0;
         height: 30px;
+    }
+
+    .constructor__elements-container {
+        height: 220px;
+    }
+
+    .constructor__elements-values.active {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .constructor__elements-values.active::-webkit-scrollbar {
+        background-color: var(--scroll-color);
+        width: 5px;
     }
 
     .calculator {
@@ -886,7 +904,7 @@ body {
     }
 
     .constructor__elements {
-        height: 170px;
+        height: 300px;
     }
 
     .constructor__element-container {
