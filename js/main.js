@@ -832,6 +832,18 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         setTimeout(() => {
             standErrorNode[0].classList.remove("active");
         }, 3000);
+    } else if (
+        selectedStand !== -1 &&
+        userClick.className !== "field__hide-element-button" &&
+        selectedStendsCount === 2
+    ) {
+        selectedStandsLengths -= standLength;
+
+        standErrorNode[0].classList.add("active");
+
+        setTimeout(() => {
+            standErrorNode[0].classList.remove("active");
+        }, 3000);
     }
 
     if (
