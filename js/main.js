@@ -253,6 +253,20 @@ const handleLandPlotSizes = () => {
 };
 
 /**
+ * Функція для обробки повідомлень (інформаційних і про помилки)
+ * Function for handle messages (informational and error)
+ * Функция для обработки сообщений (информационных и об о шибках)
+ * @param {HTMLnode} HTMLnode 
+ */
+const handleInfoAndErrorMessages = (HTMLnode) => {
+    HTMLnode[0].classList.add("active");
+
+    setTimeout(() => {
+        HTMLnode[0].classList.remove("active");
+    }, 3000);
+};
+
+/**
  * Функція для пересування елементів - Тумби
  */
 const standContainer = document.getElementById("stand-container");
@@ -746,12 +760,8 @@ const handleSubmitLandPlotInputsData = () => {
         plotLengthInput[0].value = "";
         editPlotSizesNode[0].classList.remove("active");
     } else {
-        plotInputErrorMessage[0].classList.add("active");
+        handleInfoAndErrorMessages(plotInputErrorMessage);
         handleSelectLanguage();
-
-        setTimeout(() => {
-            plotInputErrorMessage[0].classList.remove("active");
-        }, 3000);
     }
 };
 
@@ -798,12 +808,7 @@ elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.add("active");
         standContainerNode[0].classList.add("active");
-        infoMessageNode[0].classList.add("active");
-
-        setTimeout(() => {
-            infoMessageNode[0].classList.remove("active");
-        }, 3000);
-
+        handleInfoAndErrorMessages(infoMessageNode);
         dataContainerStandTotalCostNode[0].classList.add("active");
 
         calculate();
@@ -817,11 +822,7 @@ elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.add("active");
         standContainer2Node[0].classList.add("active");
-        infoMessage2Node[0].classList.add("active");
-
-        setTimeout(() => {
-            infoMessage2Node[0].classList.remove("active");
-        }, 3000);
+        handleInfoAndErrorMessages(infoMessage2Node);
 
         calculate();
     } else if (
@@ -831,24 +832,15 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStandsLengths > width
     ) {
         selectedStandsLengths -= standLength;
+        handleInfoAndErrorMessages(standErrorNode);
 
-        standErrorNode[0].classList.add("active");
-
-        setTimeout(() => {
-            standErrorNode[0].classList.remove("active");
-        }, 3000);
     } else if (
         selectedStand !== -1 &&
         userClick.className !== "field__hide-element-button" &&
         selectedStendsCount === 2
     ) {
         selectedStandsLengths -= standLength;
-
-        standErrorNode[0].classList.add("active");
-
-        setTimeout(() => {
-            standErrorNode[0].classList.remove("active");
-        }, 3000);
+        handleInfoAndErrorMessages(standErrorNode);
     }
 
     if (
@@ -906,7 +898,9 @@ elementsStandsNode[0].addEventListener("click", (e) => {
  */
 elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
     let userClick = e.target;
-    const elementsMonuments = Array.from(elementsValuesMonumentsNode[0].children);
+    const elementsMonuments = Array.from(
+        elementsValuesMonumentsNode[0].children
+    );
     let selectedMonument = elementsMonuments.indexOf(userClick.parentNode);
     const filteredMonuments = priceList.filter(({ monuments }) => monuments);
     const { monuments } = filteredMonuments[0];
@@ -917,8 +911,11 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             class="stand-container__monument-img"/>`;
 
         if (id === selectedMonument) {
-            console.log('Yes')
-            standContainerNode[0].insertAdjacentHTML("afterbegin", imgOnConstructor);
+            console.log("Yes");
+            standContainerNode[0].insertAdjacentHTML(
+                "afterbegin",
+                imgOnConstructor
+            );
         }
     });
 });
@@ -1078,11 +1075,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 type === "tile" &&
                 isSocleHidden
             ) {
-                tileErrorNode[0].classList.add("active");
-
-                setTimeout(() => {
-                    tileErrorNode[0].classList.remove("active");
-                }, 3000);
+                handleInfoAndErrorMessages(tileErrorNode);
             }
 
             if (
