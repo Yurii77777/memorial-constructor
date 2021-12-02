@@ -119,6 +119,10 @@ const tileErrorNode = document.querySelectorAll(
     ".elements-container__tile-error"
 );
 
+const elementsValuesMonumentsNode = document.querySelectorAll(
+    ".constructor__elements-values.monuments"
+);
+
 // Калькулятор
 const calculatorTitleNode = document.querySelectorAll(".calculator__title");
 const calculatorDataTitleNode = document.getElementsByClassName(
@@ -750,6 +754,7 @@ const handleSubmitLandPlotInputsData = () => {
         }, 3000);
     }
 };
+
 /**
  * Обробник елементів блоку "Тумби"
  * Handler of elements "Stands"
@@ -894,6 +899,28 @@ elementsStandsNode[0].addEventListener("click", (e) => {
 
         calculate();
     }
+});
+
+/**
+ * Обробник елементів блоку "Стелли"
+ */
+elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
+    let userClick = e.target;
+    const elementsMonuments = Array.from(elementsValuesMonumentsNode[0].children);
+    let selectedMonument = elementsMonuments.indexOf(userClick.parentNode);
+    const filteredMonuments = priceList.filter(({ monuments }) => monuments);
+    const { monuments } = filteredMonuments[0];
+
+    monuments.forEach(({ id, titleUa, length, imgConstructorUrl }) => {
+        let imgOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
+            alt="${titleUa}" 
+            class="stand-container__monument-img"/>`;
+
+        if (id === selectedMonument) {
+            console.log('Yes')
+            standContainerNode[0].insertAdjacentHTML("afterbegin", imgOnConstructor);
+        }
+    });
 });
 
 /**

@@ -505,6 +505,11 @@ body {
     cursor: move;
 }
 
+.stand-container__monument-img {
+    position: absolute;
+    top: -372%;
+}
+
 .calculator {
     display: flex;
     flex-direction: column;
@@ -922,7 +927,12 @@ body {
     }
 
     .draggable-elements {
-        height: 250px;
+        height: 330px;
+    }
+
+    .stand-container.active {
+        height: 13%;
+        top: 70%;
     }
 
     .calculator {
