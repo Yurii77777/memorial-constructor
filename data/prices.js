@@ -397,6 +397,105 @@ const prices = [
                 "imgUrl": "/mobile/monuments/P80x40x5.png",
                 "siteNameUa": "Стелла П110х50х8"
             },
+            {
+                "id": 19,
+                "titleUa": "Стелла А110х55х8",
+                "price": 7200,
+                "length": 55,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/A110x55x8.png",
+                "siteNameUa": "Стелла А110х55х8"
+            },
+            {
+                "id": 20,
+                "titleUa": "Стелла А110х60х8",
+                "price": 7500,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/A110x60x8.png",
+                "siteNameUa": "Стелла А110х60х8"
+            },
+            {
+                "id": 21,
+                "titleUa": "Стелла Б110х60х8",
+                "price": 7300,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/B110x60x8.png",
+                "siteNameUa": "Стелла Б110х60х8"
+            },
+            {
+                "id": 22,
+                "titleUa": "Стелла А120х60х8",
+                "price": 7800,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/A120x60x8.png",
+                "siteNameUa": "Стелла А120х60х8"
+            },
+            {
+                "id": 23,
+                "titleUa": "Стелла Б120х60х8",
+                "price": 7800,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/B120x60x8.png",
+                "siteNameUa": "Стелла Б120х60х8"
+            },
+            {
+                "id": 24,
+                "titleUa": "Стелла В120х60х8",
+                "price": 7700,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/V120x60x8.png",
+                "siteNameUa": "Стелла В120х60х8"
+            },
+            {
+                "id": 25,
+                "titleUa": "Стелла Г120х60х8",
+                "price": 7800,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/G120x60x8.png",
+                "siteNameUa": "Стелла Г120х60х8"
+            },
+            {
+                "id": 26,
+                "titleUa": "Стелла П120х60х8",
+                "price": 6900,
+                "length": 60,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/P80x40x5.png",
+                "siteNameUa": "Стелла П120х60х8"
+            },
+            {
+                "id": 27,
+                "titleUa": "Подвійний 50х100х8",
+                "price": 4000,
+                "length": 100,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/Double_50x100x8.png",
+                "siteNameUa": "Подвійний 50х100х8"
+            },
+            {
+                "id": 28,
+                "titleUa": "Подвійний 60х120х8",
+                "price": 7600,
+                "length": 120,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/Double_60x120x8.png",
+                "siteNameUa": "Подвійний 60х120х8"
+            },
+            {
+                "id": 29,
+                "titleUa": "Подвійний А60х120х8",
+                "price": 7600,
+                "length": 120,
+                "tabId": 2,
+                "imgUrl": "/mobile/monuments/Double_A60x120x8.png",
+                "siteNameUa": "Подвійний А60х120х8"
+            },
         ]
     },
 ];
