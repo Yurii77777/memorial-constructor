@@ -11,15 +11,15 @@
 <body>
     <div class="wrapper">
         <header class="header">
-            Тут буде меню майбутнього сайту
+            Тут буде меню сайту
         </header>
 
         <div class="title-container">
-            <div class="title-container__titles">
-                <h1 class="title-ua active">Конструктор пам'ятників</h1>
-                <h1 class="title-ru">Конструктор памятников</h1>
-                <h1 class="title-eng">Memorial constructor</h1>
-            </div>
+            <h1 class="title-container__titles">
+                <span data-lang="ua" class="active">Конструктор пам'ятників</span>
+                <span data-lang="ru">Конструктор памятников</span>
+                <span data-lang="eng">Monuments constructor</span>
+            </h1>
             <ul class="title-container__language-list">
                 <li class="title-container__language-item active">UA</li>
                 <li class="title-container__language-item">RU</li>
@@ -33,9 +33,9 @@
                 <div class="field__land-plot">
                     <div class="field__land-plot-container">
                         <p class="field__land-plot-title">
-                            <span class="active">Ділянка, см</span>
-                            <span>Участок, см</span>
-                            <span>Land plot, cm</span>
+                            <span data-lang="ua" class="active">Ділянка, см</span>
+                            <span data-lang="ru">Участок, см</span>
+                            <span data-lang="eng">Land plot, cm</span>
                         </p>
                         <p class="field__land-plot-width">140</p>
                         <p class="field__land-plot-delimiter">x</p>
@@ -54,21 +54,23 @@
 
                     <div class="field__land-plot-user-edit">
                         <p class="land-plot-user-edit__title">
-                            <span class="active">Введіть</span>
-                            <span>Введите</span>
-                            <span>Enter</span>
+                            <span data-lang="ua" class="active">Введіть</span>
+                            <span data-lang="ru">Введите</span>
+                            <span data-lang="eng">Enter</span>
                         </p>
                         <label for="land-plot-user-edit__plot-width" class="land-plot-user-edit__plot-width-label">
-                            <span class="active">Ш:</span>
-                            <span>W:</span>
+                            <span data-lang="ua" class="active">Ш:</span>
+                            <span data-lang="ru">Ш:</span>
+                            <span data-lang="eng">W:</span>
                         </label>
                         <input type="text" 
                                 name="land-plot-user-edit__plot-width" 
                                 class="land-plot-user-edit__plot-width" 
                         />
                         <label for="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length-label">
-                            <span class="active">Д:</span>
-                            <span>L:</span>
+                            <span data-lang="ua" class="active">Д:</span>
+                            <span data-lang="ru">Д:</span>
+                            <span data-lang="eng">L:</span>
                         </label>
                         <input type="text" 
                                 name="land-plot-user-edit__plot-length" 
@@ -78,31 +80,31 @@
                                 class="land-plot-user-edit__ok"
                                 onclick="handleSubmitLandPlotInputsData()"
                         >
-                            <span class="active">Так</span>
-                            <span>Да</span>
-                            <span>Ok</span>
+                            <span data-lang="ua" class="active">Так</span>
+                            <span data-lang="ru">Да</span>
+                            <span data-lang="eng">Ok</span>
                         </button>
                         <button type="button" 
                                 class="land-plot-user-edit__cancel"
                                 onclick="handleCancelEditPlotInputsData()"
                         >
-                            <span class="active">Відміна</span>
-                            <span>Отмена</span>
-                            <span>Cancel</span>
+                            <span data-lang="ua" class="active">Відміна</span>
+                            <span data-lang="ru">Отмена</span>
+                            <span data-lang="eng">Cancel</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="field__error">
-                    <span>
+                    <span data-lang="ua">
                         Мінімальні габарити ділянки 140 х 220 см. </br>
                         Максимальне значення не більше 4-х знаків!
                     </span>
-                    <span>
+                    <span data-lang="ru">
                         Минимальные габариты участка 140 х 220 см.</br>
                         Максимальное значение не более 4-х знаков!
                     </span>
-                    <span>
+                    <span data-lang="eng">
                         The minimum dimensions of the plot are 140 x 220 cm. </br>
                         The maximum value cannot be more than 4 characters!
                     </span>
@@ -152,7 +154,10 @@
                                 />
 
                                 <p class="stand-container__info-message">
-                                    Елемент можна переміщати по полю!
+                                    <span data-lang="ua">Елемент можна переміщати по полю!</span>
+                                    <span data-lang="ru">Элемент можно перемещать по полю!</span>
+                                    <span data-lang="eng">You can move the item across the field!</span>
+                                    
                                 </p>
                             </div>
                             <div id="stand-container2" class="stand-container2">
@@ -162,7 +167,9 @@
                                 />
 
                                 <p class="stand-container__info-message2">
-                                    Елемент можна переміщати по полю!
+                                    <span data-lang="ua">Елемент можна переміщати по полю!</span>
+                                    <span data-lang="ru">Элемент можно перемещать по полю!</span>
+                                    <span data-lang="eng">You can move the item across the field!</span>
                                 </p>
                             </div>
                         </section>
@@ -172,39 +179,39 @@
             <div class="constructor__elements">
                 <ul class="constructor__elements-nav">
                     <li class="constructor__elements-nav-item active">
-                        <span class="active">Тумба</span>
-                        <span>Тумба</span>
-                        <span>Stand</span>
+                        <span data-lang="ua" class="active">Тумба</span>
+                        <span data-lang="ru">Тумба</span>
+                        <span data-lang="eng">Stand</span>
                     </li>
                     <li class="constructor__elements-nav-item">
-                        <span class="active">Стелла</span>
-                        <span>Стелла</span>
-                        <span>Monument</span>
+                        <span data-lang="ua" class="active">Стелла</span>
+                        <span data-lang="ru">Стелла</span>
+                        <span data-lang="eng">Monument</span>
                     </li>
                     <li class="constructor__elements-nav-item">
-                        <span class="active">Цвіт<wbr>ник</span>
-                        <span>Цвет<wbr>ник</span>
-                        <span>Flower garden</span>
+                        <span data-lang="ua" class="active">Цвітник</span>
+                        <span data-lang="ru">Цветник</span>
+                        <span data-lang="eng">Flower garden</span>
                     </li>
                     <li class="constructor__elements-nav-item">
-                        <span class="active">Аксесуари</span>
-                        <span>Аксес<wbr>суары</span>
-                        <span>Accessories</span>
+                        <span data-lang="ua" class="active">Аксесуари</span>
+                        <span data-lang="ru">Аксессуары</span>
+                        <span data-lang="eng">Accessories</span>
                     </li>
                     <li class="constructor__elements-nav-item">
-                        <span class="active">Бордюри</span>
-                        <span>Бордюры</span>
-                        <span>Border</span>
+                        <span data-lang="ua" class="active">Бордюри</span>
+                        <span data-lang="ru">Бордюры</span>
+                        <span data-lang="eng">Border</span>
                     </li>
                     <li class="constructor__elements-nav-item">
-                        <span class="active">Цоколь</span>
-                        <span>Цоколь</span>
-                        <span>Socle</span>
+                        <span data-lang="ua" class="active">Цоколь</span>
+                        <span data-lang="ru">Цоколь</span>
+                        <span data-lang="eng">Socle</span>
                     </li>
                     <li class="constructor__elements-nav-item">
-                        <span class="active">Благоустрій</span>
-                        <span>Благо<wbr>устройство</span>
-                        <span>Beauti<wbr>fication</span>
+                        <span data-lang="ua" class="active">Благоустрій</span>
+                        <span data-lang="ru">Благо<wbr>устройство</span>
+                        <span data-lang="eng">Beautification</span>
                     </li>
                 </ul>
 
@@ -218,13 +225,15 @@
                     <div class="constructor__elements-values beauty"></div>
 
                     <div class="elements-container__tile-error">
-                        <span class="active">Спочатку потрібно вибрати цоколь!</span>
-                        <span>Сначала нужно выбрать цоколь!</span>
-                        <span>First you need to choose socle!</span>
+                        <span data-lang="ua" class="active">Спочатку потрібно вибрати цоколь!</span>
+                        <span data-lang="ru">Сначала нужно выбрать цоколь!</span>
+                        <span data-lang="eng">First you need to choose socle!</span>
                     </div>
 
                     <p class="stand__error">
-                        Максимум 2 елементи, довжина яких не перевищує ширину ділянки!
+                        <span data-lang="ua">Максимум 2 елементи, довжина яких не перевищує ширину ділянки!</span>
+                        <span data-lang="ru">Максимум 2 элемента, длина которых не превышает ширину участка!</span>
+                        <span data-lang="eng">Maximum 2 elements, the length of which does not exceed the width of the plot!</span>
                     </p>
                 </div>
             </div>
@@ -235,22 +244,23 @@
 
         <section class="calculator">
             <h2 class="calculator__title">
-                <span class="active">Калькулятор</span>
-                <span>Calculator</span>
+                <span data-lang="ua" class="active">Калькулятор</span>
+                <span data-lang="ru">Калькулятор</span>
+                <span data-lang="eng">Calculator</span>
             </h2>
 
             <div class="calculator__attention">
-                <p class="calculator__attention-paragraph active">
+                <p data-lang="ua" class="calculator__attention-paragraph active">
                     Розрахунки в калькуляторі носять інформативний характер!</br>
                     За детями просимо звернутися до наших спеціалістів</br>
                     тел. 095-000-00-00 e-mail: mail@example.com
                 </p>
-                <p class="calculator__attention-paragraph">
+                <p data-lang="ru" class="calculator__attention-paragraph">
                     Расчеты в калькуляторе носят информативный характер!</br>
                     За деталями просим обратиться к нашим специалистам</br>
                     тел. 095-000-00-00 e-mail: mail@example.com
                 </p>
-                <p class="calculator__attention-paragraph">
+                <p data-lang="eng" class="calculator__attention-paragraph">
                     Calculations in the calculator are informative! </br>
                     For details, please contact our specialists </br>
                     Tel. 095-000-00-00 e-mail: mail@example.com
@@ -259,89 +269,82 @@
 
             <div class="calculator__data-container">
                 <p class="calculator__data-title">
-                    <span class="active">Розміри земельної ділянки, см</span>
-                    <span>Размеры земельного участка, см</span>
-                    <span>Land plot size, cm</span>
+                    <span data-lang="ua" class="active">Розміри земельної ділянки, см</span>
+                    <span data-lang="ru">Размеры земельного участка, см</span>
+                    <span data-lang="eng">Land plot size, cm</span>
                 </p>
                 <p class="calculator__data-value land-plot"></p>
             </div>
             <div class="calculator__data-container">
                 <p class="calculator__data-title">
-                    <span class="active">Площа, м2</span>
-                    <span>Площадь, м2</span>
-                    <span>Area, m2</span>
+                    <span data-lang="ua" class="active">Площа, м2</span>
+                    <span data-lang="ru">Площадь, м2</span>
+                    <span data-lang="eng">Area, m2</span>
                 </p>
                 <p class="calculator__data-value land-pot-square"></p>
             </div>
             <div class="calculator__data-container delimeter">
                 <p class="calculator__data-title">
-                    <span class="active">Периметр, м</span>
-                    <span>Периметр, м</span>
-                    <span>Perimeter, m</span>
+                    <span data-lang="ua" class="active">Периметр, м</span>
+                    <span data-lang="ru">Периметр, м</span>
+                    <span data-lang="eng">Perimeter, m</span>
                 </p>
                 <p class="calculator__data-value land-pot-perimeter"></p>
             </div>
 
             <div class="calculator__data-container curbs">
                 <p class="calculator__data-title">
-                    <span class="active">Кількість бордюр, шт.</span>
-                    <span>Количество бордюр, шт.</span>
-                    <span>Number of curbs, pcs</span>
+                    <span data-lang="ua" class="active">Кількість бордюр, шт.</span>
+                    <span data-lang="ru">Количество бордюр, шт.</span>
+                    <span data-lang="eng">Number of curbs, pcs</span>
                 </p>
                 <p class="calculator__data-value curbs"></p>
             </div>
             <div class="calculator__data-container curbs-total-cost">
                 <p class="calculator__data-title">
-                    <span class="active">Вартість бордюр, грн.</span>
-                    <span>Стоимость бордюр, грн.</span>
-                    <span>Curb cost, UAH</span>
+                    <span data-lang="ua" class="active">Вартість бордюр, грн.</span>
+                    <span data-lang="ru">Стоимость бордюр, грн.</span>
+                    <span data-lang="eng">Curb cost, UAH</span>
                 </p>
                 <p class="calculator__data-value curbs-total-cost"></p>
             </div>
 
             <div class="calculator__data-container socle-total-cost">
                 <p class="calculator__data-title">
-                    <span class="active">Вартість цоколю, грн.</span>
-                    <span>Стоимость цоколя, грн.</span>
-                    <span>Cap cost, UAH</span>
+                    <span data-lang="ua" class="active">Вартість цоколю, грн.</span>
+                    <span data-lang="ru">Стоимость цоколя, грн.</span>
+                    <span data-lang="eng">Cap cost, UAH</span>
                 </p>
                 <p class="calculator__data-value socle-total-cost"></p>
             </div>
 
             <div class="calculator__data-container tile-total-cost">
                 <p class="calculator__data-title">
-                    <span class="active">Вартість плитки, грн.</span>
-                    <span>Стоимость плитки, грн.</span>
-                    <span>Tile cost, UAH</span>
+                    <span data-lang="ua" class="active">Вартість плитки, грн.</span>
+                    <span data-lang="ru">Стоимость плитки, грн.</span>
+                    <span data-lang="eng">Tile cost, UAH</span>
                 </p>
                 <p class="calculator__data-value tile-total-cost"></p>
             </div>
 
             <div class="calculator__data-container stand-total-cost">
                 <p class="calculator__data-title">
-                    <span class="active">Вартість тумб, грн.</span>
-                    <span>Стоимость тумб, грн.</span>
-                    <span>Stand cost, UAH</span>
+                    <span data-lang="ua" class="active">Вартість тумб, грн.</span>
+                    <span data-lang="ru">Стоимость тумб, грн.</span>
+                    <span data-lang="eng">Stand cost, UAH</span>
                 </p>
                 <p class="calculator__data-value stand-total-cost"></p>
             </div>
 
             <div class="calculator__data-container total-cost">
                 <p class="calculator__data-title">
-                    <span class="active">Загальная вартість, грн.</span>
-                    <span>Общая стоимость, грн.</span>
-                    <span>Total cost, UAH</span>
+                    <span data-lang="ua" class="active">Загальная вартість, грн.</span>
+                    <span data-lang="ru">Общая стоимость, грн.</span>
+                    <span data-lang="eng">Total cost, UAH</span>
                 </p>
                 <p class="calculator__data-value total-cost"></p>
             </div>
         </section>
-
-        <!-- <div id="mydiv">
-            <div id="mydivheader">Click here to move</div>
-            <p>Move</p>
-            <p>this</p>
-            <p>DIV</p>
-          </div> -->
     </div>
 
     <script defer src="./data/prices.js"></script>

@@ -8,7 +8,9 @@ const prices = [
                 "length": 50,
                 "tabId": 5,
                 "imgUrl": "/mobile/borders/border_50x20x4.png",
-                "siteNameUa": "50х20х4"
+                "siteNameUa": "50х20х4",
+                "siteNameRu": "50х20х4",
+                "siteNameEng": "50х20х4"
             },
             {
                 "id": 1,
@@ -17,7 +19,9 @@ const prices = [
                 "length": 50,
                 "tabId": 5,
                 "imgUrl": "/mobile/borders/border_50x20x6.5.png",
-                "siteNameUa": "50х20х6,5"
+                "siteNameUa": "50х20х6,5",
+                "siteNameRu": "50х20х6,5",
+                "siteNameEng": "50х20х6,5"
             },
             {
                 "id": 2,
@@ -26,7 +30,9 @@ const prices = [
                 "length": 100,
                 "tabId": 5,
                 "imgUrl": "/mobile/borders/border_100x20x8.png",
-                "siteNameUa": "100х20х8"
+                "siteNameUa": "100х20х8",
+                "siteNameRu": "100х20х8",
+                "siteNameEng": "100х20х8"
             },
         ]
     },
@@ -40,7 +46,9 @@ const prices = [
                 "tabId": 6,
                 "imgUrl": "/mobile/socle/socle.png",
                 "type": "socle",
-                "siteNameUa": "Цоколь (бетон) h 7-10см"
+                "siteNameUa": "Цоколь (бетон) h 7-10см",
+                "siteNameRu": "Цоколь (бетон) h 7-10см",
+                "siteNameEng": "Socle (concrete) h 7-10cm"
             },
             {
                 "id": 1,
@@ -50,7 +58,9 @@ const prices = [
                 "tabId": 6,
                 "imgUrl": "/mobile/socle/socle.png",
                 "type": "socle",
-                "siteNameUa": "Цоколь (бетон) h 15см"
+                "siteNameUa": "Цоколь (бетон) h 15см",
+                "siteNameRu": "Цоколь (бетон) h 15см",
+                "siteNameEng": "Socle (concrete) h 15cm"
             },
         ]
     },
@@ -63,7 +73,9 @@ const prices = [
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_granite_black.png",
                 "type": "tile",
-                "siteNameUa": "Плитка Граніт (чорна)"
+                "siteNameUa": "Плитка Граніт (чорна)",
+                "siteNameRu": "Плитка Гранит (черная)",
+                "siteNameEng": "Granite tile (black)"
             },
             {
                 "id": 1,
@@ -72,7 +84,9 @@ const prices = [
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_granite_gray.png",
                 "type": "tile",
-                "siteNameUa": "Плитка Граніт (сіра)"
+                "siteNameUa": "Плитка Граніт (сіра)",
+                "siteNameRu": "Плитка Гранит (серая)",
+                "siteNameEng": "Granite tile (gray)"
             },
             {
                 "id": 2,
@@ -81,7 +95,9 @@ const prices = [
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_granite_gres.png",
                 "type": "tile",
-                "siteNameUa": "Плитка Грес"
+                "siteNameUa": "Плитка Грес",
+                "siteNameRu": "Плитка Грес",
+                "siteNameEng": "Tile Gres"
             },
             {
                 "id": 3,
@@ -90,7 +106,9 @@ const prices = [
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_granite_gres2.png",
                 "type": "tile",
-                "siteNameUa": "Плитка Грес"
+                "siteNameUa": "Плитка Грес",
+                "siteNameRu": "Плитка Грес",
+                "siteNameEng": "Tile Gres"
             },
             {
                 "id": 4,
@@ -99,7 +117,9 @@ const prices = [
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_sidewalk.png",
                 "type": "tile",
-                "siteNameUa": "Плитка Тротуарна"
+                "siteNameUa": "Плитка Тротуарна",
+                "siteNameRu": "Плитка Тротуарная",
+                "siteNameEng": "Paving Slabs"
             },
             {
                 "id": 5,
@@ -108,7 +128,9 @@ const prices = [
                 "tabId": 7,
                 "imgUrl": "/mobile/tiles/tile_sidewalk2.png",
                 "type": "tile",
-                "siteNameUa": "Плитка Тротуарна"
+                "siteNameUa": "Плитка Тротуарна",
+                "siteNameRu": "Плитка Тротуарная",
+                "siteNameEng": "Paving Slabs"
             },
         ]
     },
@@ -121,7 +143,9 @@ const prices = [
                 "length": 50,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 50х20х15"
+                "siteNameUa": "Тумба 50х20х15",
+                "siteNameRu": "Тумба 50х20х15",
+                "siteNameEng": "Stand 50х20х15"
             },
             {
                 "id": 1,
@@ -130,7 +154,9 @@ const prices = [
                 "length": 50,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 50х20х20"
+                "siteNameUa": "Тумба 50х20х20",
+                "siteNameRu": "Тумба 50х20х20",
+                "siteNameEng": "Stand 50х20х20"
             },
             {
                 "id": 2,
@@ -139,7 +165,9 @@ const prices = [
                 "length": 60,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 60х20х15"
+                "siteNameUa": "Тумба 60х20х15",
+                "siteNameRu": "Тумба 60х20х15",
+                "siteNameEng": "Stand 60х20х15"
             },
             {
                 "id": 3,
@@ -148,7 +176,9 @@ const prices = [
                 "length": 60,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 60х20х20"
+                "siteNameUa": "Тумба 60х20х20",
+                "siteNameRu": "Тумба 60х20х20",
+                "siteNameEng": "Stand 60х20х20"
             },
             {
                 "id": 4,
@@ -157,7 +187,9 @@ const prices = [
                 "length": 60,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 60х20х25"
+                "siteNameUa": "Тумба 60х20х25",
+                "siteNameRu": "Тумба 60х20х25",
+                "siteNameEng": "Stand 60х20х25"
             },
             {
                 "id": 5,
@@ -166,7 +198,9 @@ const prices = [
                 "length": 70,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 70х20х20"
+                "siteNameUa": "Тумба 70х20х20",
+                "siteNameRu": "Тумба 70х20х20",
+                "siteNameEng": "Stand 70х20х20"
             },
             {
                 "id": 6,
@@ -175,7 +209,9 @@ const prices = [
                 "length": 70,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 70х20х25"
+                "siteNameUa": "Тумба 70х20х25",
+                "siteNameRu": "Тумба 70х20х25",
+                "siteNameEng": "Stand 70х20х25"
             },
             {
                 "id": 7,
@@ -184,7 +220,9 @@ const prices = [
                 "length": 70,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 70х20х30"
+                "siteNameUa": "Тумба 70х20х30",
+                "siteNameRu": "Тумба 70х20х30",
+                "siteNameEng": "Stand 70х20х30"
             },
             {
                 "id": 8,
@@ -193,7 +231,9 @@ const prices = [
                 "length": 80,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 80х20х20"
+                "siteNameUa": "Тумба 80х20х20",
+                "siteNameRu": "Тумба 80х20х20",
+                "siteNameEng": "Stand 80х20х20"
             },
             {
                 "id": 9,
@@ -202,7 +242,9 @@ const prices = [
                 "length": 80,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 80х20х25"
+                "siteNameUa": "Тумба 80х20х25",
+                "siteNameRu": "Тумба 80х20х25",
+                "siteNameEng": "Stand 80х20х25"
             },
             {
                 "id": 10,
@@ -211,7 +253,9 @@ const prices = [
                 "length": 90,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 90х20х20"
+                "siteNameUa": "Тумба 90х20х20",
+                "siteNameRu": "Тумба 90х20х20",
+                "siteNameEng": "Stand 90х20х20"
             },
             {
                 "id": 11,
@@ -220,7 +264,9 @@ const prices = [
                 "length": 100,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
-                "siteNameUa": "Тумба 1000х20х20"
+                "siteNameUa": "Тумба 1000х20х20",
+                "siteNameRu": "Тумба 1000х20х20",
+                "siteNameEng": "Stand 1000х20х20"
             },
         ]
     },
@@ -234,7 +280,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/A80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла А80х40х5"
+                "siteNameUa": "Стелла А80х40х5",
+                "siteNameRu": "Стелла А80х40х5",
+                "siteNameEng": "Monument А80х40х5"
             },
             {
                 "id": 1,
@@ -244,7 +292,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/B80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/B80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла Б80х40х5"
+                "siteNameUa": "Стелла Б80х40х5",
+                "siteNameRu": "Стелла Б80х40х5",
+                "siteNameEng": "Monument Б80х40х5"
             },
             {
                 "id": 2,
@@ -254,7 +304,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/V80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/V80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла В80х40х5"
+                "siteNameUa": "Стелла В80х40х5",
+                "siteNameRu": "Стелла В80х40х5",
+                "siteNameEng": "Monument В80х40х5"
             },
             {
                 "id": 3,
@@ -264,7 +316,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/P80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/P80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла П80х40х5"
+                "siteNameUa": "Стелла П80х40х5",
+                "siteNameRu": "Стелла П80х40х5",
+                "siteNameEng": "Monument П80х40х5"
             },
             {
                 "id": 4,
@@ -274,7 +328,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A90x45x6.png",
                 "imgConstructorUrl": "/mobile/monuments/A90x45x6_on_constructor.png",
-                "siteNameUa": "Стелла А90х45х6"
+                "siteNameUa": "Стелла А90х45х6",
+                "siteNameRu": "Стелла А90х45х6",
+                "siteNameEng": "Monument А90х45х6"
             },
             {
                 "id": 5,
@@ -284,7 +340,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/P80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/P80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла П90х45х6"
+                "siteNameUa": "Стелла П90х45х6",
+                "siteNameRu": "Стелла П90х45х6",
+                "siteNameEng": "Monument П90х45х6"
             },
             {
                 "id": 6,
@@ -294,7 +352,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A100x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/A100x50x8_on_constructor.png",
-                "siteNameUa": "Стелла А100х50х8"
+                "siteNameUa": "Стелла А100х50х8",
+                "siteNameRu": "Стелла А100х50х8",
+                "siteNameEng": "Monument А100х50х8"
             },
             {
                 "id": 7,
@@ -304,7 +364,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/B80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/B80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла Б100х50х8"
+                "siteNameUa": "Стелла Б100х50х8",
+                "siteNameRu": "Стелла Б100х50х8",
+                "siteNameEng": "Monument Б100х50х8"
             },
             {
                 "id": 8,
@@ -314,7 +376,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/V100x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/V100x50x8_on_constructor.png",
-                "siteNameUa": "Стелла В100х50х8"
+                "siteNameUa": "Стелла В100х50х8",
+                "siteNameRu": "Стелла В100х50х8",
+                "siteNameEng": "Monument В100х50х8"
             },
             {
                 "id": 9,
@@ -324,7 +388,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/G100x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/G100x50x8_on_constructor.png",
-                "siteNameUa": "Стелла Г100х50х8"
+                "siteNameUa": "Стелла Г100х50х8",
+                "siteNameRu": "Стелла Г100х50х8",
+                "siteNameEng": "Monument Г100х50х8"
             },
             {
                 "id": 10,
@@ -334,7 +400,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/P80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/P80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла П100х50х8"
+                "siteNameUa": "Стелла П100х50х8",
+                "siteNameRu": "Стелла П100х50х8",
+                "siteNameEng": "Monument П100х50х8"
             },
             {
                 "id": 11,
@@ -344,7 +412,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/A110x50x8_on_costructor.png",
-                "siteNameUa": "Стелла А110х50х8"
+                "siteNameUa": "Стелла А110х50х8",
+                "siteNameRu": "Стелла А110х50х8",
+                "siteNameEng": "Monument А110х50х8"
             },
             {
                 "id": 12,
@@ -354,7 +424,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/B110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/B110x50x8_on_constructor.png",
-                "siteNameUa": "Стелла Б110х50х8"
+                "siteNameUa": "Стелла Б110х50х8",
+                "siteNameRu": "Стелла Б110х50х8",
+                "siteNameEng": "Monument Б110х50х8"
             },
             {
                 "id": 13,
@@ -364,7 +436,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/V110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/V110x50x8_on_constructor.png",
-                "siteNameUa": "Стелла В110х50х8"
+                "siteNameUa": "Стелла В110х50х8",
+                "siteNameRu": "Стелла В110х50х8",
+                "siteNameEng": "Monument В110х50х8"
             },
             {
                 "id": 14,
@@ -374,7 +448,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/G110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/G110x50x8_on_constructor.png",
-                "siteNameUa": "Стелла Г110х50х8"
+                "siteNameUa": "Стелла Г110х50х8",
+                "siteNameRu": "Стелла Г110х50х8",
+                "siteNameEng": "Monument Г110х50х8"
             },
             {
                 "id": 15,
@@ -384,7 +460,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/D110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/D110x50x8_on_constructor.png",
-                "siteNameUa": "Стелла Д110х50х8"
+                "siteNameUa": "Стелла Д110х50х8",
+                "siteNameRu": "Стелла Д110х50х8",
+                "siteNameEng": "Monument Д110х50х8"
             },
             {
                 "id": 16,
@@ -394,7 +472,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/E110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/E110x50x8_on_constructor.png",
-                "siteNameUa": "Стелла Е110х50х8"
+                "siteNameUa": "Стелла Е110х50х8",
+                "siteNameRu": "Стелла Е110х50х8",
+                "siteNameEng": "Monument Е110х50х8"
             },
             {
                 "id": 17,
@@ -404,7 +484,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/J110x50x8.png",
                 "imgConstructorUrl": "/mobile/monuments/J110x50x8_on_constructor.png",
-                "siteNameUa": "Стелла Ж110х50х8"
+                "siteNameUa": "Стелла Ж110х50х8",
+                "siteNameRu": "Стелла Ж110х50х8",
+                "siteNameEng": "Monument Ж110х50х8"
             },
             {
                 "id": 18,
@@ -414,7 +496,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/P80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/P80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла П110х50х8"
+                "siteNameUa": "Стелла П110х50х8",
+                "siteNameRu": "Стелла П110х50х8",
+                "siteNameEng": "Monument П110х50х8"
             },
             {
                 "id": 19,
@@ -424,7 +508,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A110x55x8.png",
                 "imgConstructorUrl": "/mobile/monuments/A110x55x8_on_constructor.png",
-                "siteNameUa": "Стелла А110х55х8"
+                "siteNameUa": "Стелла А110х55х8",
+                "siteNameRu": "Стелла А110х55х8",
+                "siteNameEng": "Monument А110х55х8"
             },
             {
                 "id": 20,
@@ -434,7 +520,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A110x60x8.png",
                 "imgConstructorUrl": "/mobile/monuments/A110x60x8_on_constructor.png",
-                "siteNameUa": "Стелла А110х60х8"
+                "siteNameUa": "Стелла А110х60х8",
+                "siteNameRu": "Стелла А110х60х8",
+                "siteNameEng": "Monument А110х60х8"
             },
             {
                 "id": 21,
@@ -444,7 +532,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/B110x60x8.png",
                 "imgConstructorUrl": "/mobile/monuments/B110x60x8_on_contruct.png",
-                "siteNameUa": "Стелла Б110х60х8"
+                "siteNameUa": "Стелла Б110х60х8",
+                "siteNameRu": "Стелла Б110х60х8",
+                "siteNameEng": "Monument Б110х60х8"
             },
             {
                 "id": 22,
@@ -454,7 +544,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/A120x60x8.png",
                 "imgConstructorUrl": "/mobile/monuments/A120x60x8_on_constructor.png",
-                "siteNameUa": "Стелла А120х60х8"
+                "siteNameUa": "Стелла А120х60х8",
+                "siteNameRu": "Стелла А120х60х8",
+                "siteNameEng": "Monument А120х60х8"
             },
             {
                 "id": 23,
@@ -464,7 +556,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/B120x60x8.png",
                 "imgConstructorUrl": "/mobile/monuments/B120x60x8_on_constructor.png",
-                "siteNameUa": "Стелла Б120х60х8"
+                "siteNameUa": "Стелла Б120х60х8",
+                "siteNameRu": "Стелла Б120х60х8",
+                "siteNameEng": "Monument Б120х60х8"
             },
             {
                 "id": 24,
@@ -474,7 +568,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/V120x60x8.png",
                 "imgConstructorUrl": "/mobile/monuments/V120x60x8_on_constructor.png",
-                "siteNameUa": "Стелла В120х60х8"
+                "siteNameUa": "Стелла В120х60х8",
+                "siteNameRu": "Стелла В120х60х8",
+                "siteNameEng": "Monument В120х60х8"
             },
             {
                 "id": 25,
@@ -484,7 +580,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/G120x60x8.png",
                 "imgConstructorUrl": "/mobile/monuments/G120x60x8_on_constructor.png",
-                "siteNameUa": "Стелла Г120х60х8"
+                "siteNameUa": "Стелла Г120х60х8",
+                "siteNameRu": "Стелла Г120х60х8",
+                "siteNameEng": "Monument Г120х60х8"
             },
             {
                 "id": 26,
@@ -494,7 +592,9 @@ const prices = [
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/P80x40x5.png",
                 "imgConstructorUrl": "/mobile/monuments/P80x40x5_on_constructor.png",
-                "siteNameUa": "Стелла П120х60х8"
+                "siteNameUa": "Стелла П120х60х8",
+                "siteNameRu": "Стелла П120х60х8",
+                "siteNameEng": "Monument П120х60х8"
             },
             {
                 "id": 27,
@@ -503,7 +603,9 @@ const prices = [
                 "length": 100,
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/Double_50x100x8.png",
-                "siteNameUa": "Подвійний 50х100х8"
+                "siteNameUa": "Подвійний 50х100х8",
+                "siteNameRu": "Двойной 50х100х8",
+                "siteNameEng": "Double 50х100х8"
             },
             {
                 "id": 28,
@@ -512,7 +614,9 @@ const prices = [
                 "length": 120,
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/Double_60x120x8.png",
-                "siteNameUa": "Подвійний 60х120х8"
+                "siteNameUa": "Подвійний 60х120х8",
+                "siteNameRu": "Двойной 60х120х8",
+                "siteNameEng": "Double 60х120х8"
             },
             {
                 "id": 29,
@@ -521,7 +625,9 @@ const prices = [
                 "length": 120,
                 "tabId": 2,
                 "imgUrl": "/mobile/monuments/Double_A60x120x8.png",
-                "siteNameUa": "Подвійний А60х120х8"
+                "siteNameUa": "Подвійний А60х120х8",
+                "siteNameRu": "Двойной А60х120х8",
+                "siteNameEng": "Double А60х120х8"
             },
         ]
     },

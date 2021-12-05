@@ -21,22 +21,21 @@ const priceList = prices;
  */
 let isSocleHidden = true;
 let isTileHidden = true;
+let isUaLanguage = true;
+let isRuLanguage = false;
+let isEngLanguage = false;
 
 /**
  * Отримуємо всі вузли, з якими будемо працювати
  * Getting all nodes with which we will work
  * Получаем все узлы, с которыми будем работать
  */
-// Заголовок сторінки
-const pageTitlesNode = document.querySelectorAll(".title-container__titles");
-
 // Список доступних мов
 const languageListNode = document.querySelectorAll(
     ".title-container__language-list"
 );
 
 // Елементи зміни габаритів земельної дялінки
-const landPlotTitleNode = document.querySelectorAll(".field__land-plot-title");
 const landPlotWidth = document.querySelectorAll(".field__land-plot-width");
 const landPlotLength = document.querySelectorAll(".field__land-plot-length");
 const arrowsContainerNode = document.querySelectorAll(
@@ -45,26 +44,11 @@ const arrowsContainerNode = document.querySelectorAll(
 const editPlotSizesNode = document.querySelectorAll(
     ".field__land-plot-user-edit"
 );
-const landPlotUserEditTitleNode = document.querySelectorAll(
-    ".land-plot-user-edit__title"
-);
-const widthInputLableNode = document.querySelectorAll(
-    ".land-plot-user-edit__plot-width-label"
-);
-const lengthInputLableNode = document.querySelectorAll(
-    ".land-plot-user-edit__plot-length-label"
-);
 const plotWidthInput = document.querySelectorAll(
     ".land-plot-user-edit__plot-width"
 );
 const plotLengthInput = document.querySelectorAll(
     ".land-plot-user-edit__plot-length"
-);
-const landPlotEditButtonOkNode = document.querySelectorAll(
-    ".land-plot-user-edit__ok"
-);
-const landPlotEditButtonCancelNode = document.querySelectorAll(
-    ".land-plot-user-edit__cancel"
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
 
@@ -204,7 +188,7 @@ const createCardNode = (selectedTabIndex, priceList) => {
                 const { tabId } = data[i];
 
                 if (tabId === selectedTab) {
-                    const { imgUrl, titleUa, siteNameUa, price, type } =
+                    const { imgUrl, titleUa, siteNameUa, siteNameRu, siteNameEng, price, type } =
                         data[i];
 
                     // unshift для того, щоб елементи рендерилися в тому ж порядку, як і в прайсі
@@ -214,7 +198,11 @@ const createCardNode = (selectedTabIndex, priceList) => {
                             <img src="${
                                 BASE_IMG_URL + imgUrl
                             }" alt="${titleUa}" class="constructor__element-img">
-                            <p class="constructor__element-name">${siteNameUa}</p>
+                            <p class="constructor__element-name">
+                                <span data-lang="ua" class="active">${siteNameUa}</span>
+                                <span data-lang="ru">${siteNameRu}</span>
+                                <span data-lang="eng">${siteNameEng}</span>
+                            </p>
                             <p class="constructor__element-price">
                                 <span class="active">${price} ${
                             type === "tile" || type === "socle"
@@ -256,14 +244,69 @@ const handleLandPlotSizes = () => {
  * Функція для обробки повідомлень (інформаційних і про помилки)
  * Function for handle messages (informational and error)
  * Функция для обработки сообщений (информационных и об о шибках)
- * @param {HTMLnode} HTMLnode 
+ * @param {HTMLnode} HTMLnode
+ * @param {languageList} Object
  */
-const handleInfoAndErrorMessages = (HTMLnode) => {
-    HTMLnode[0].classList.add("active");
+const handleInfoAndErrorMessages = (HTMLnode, languageList) => {
+    const { isUaLanguage, isRuLanguage, isEngLanguage } = languageList;
 
-    setTimeout(() => {
-        HTMLnode[0].classList.remove("active");
-    }, 3000);
+    if (isUaLanguage) {
+        HTMLnode[0].classList.add("active");
+        HTMLnode[0].children[0].classList.add("active");
+
+        setTimeout(() => {
+            HTMLnode[0].children[0].classList.remove("active");
+            HTMLnode[0].classList.remove("active");
+        }, 3000);
+    }
+
+    if (isRuLanguage) {
+        HTMLnode[0].classList.add("active");
+        HTMLnode[0].children[1].classList.add("active");
+
+        setTimeout(() => {
+            HTMLnode[0].children[1].classList.remove("active");
+            HTMLnode[0].classList.remove("active");
+        }, 3000);
+    }
+
+    if (isEngLanguage) {
+        HTMLnode[0].classList.add("active");
+        HTMLnode[0].children[2].classList.add("active");
+
+        setTimeout(() => {
+            HTMLnode[0].children[2].classList.remove("active");
+            HTMLnode[0].classList.remove("active");
+        }, 3000);
+    }
+};
+
+/**
+ * Фукція проходить по всьому DOM-дереву, шукає data-атрибут "lang"
+ * видаляє та додає клас "active" в залежності від вибраної мови
+ * The function runs throughout the DOM-tree, looking for the data attribute "lang"
+ * removes and adds the "active" class depending on the selected language
+ * Фукция проходит по всему DOM-дереву, ищет data-атрибут "lang"
+ * удаляет и добавляет класс "active" в зависимости от выбранного языка
+ * @param {HTMLNode} parentElement
+ * @param {String} language
+ */
+const setLanguage = (parentElement, language) => {
+    const nodeIterator = parentElement.createNodeIterator(
+        document,
+        NodeFilter.SHOW_ELEMENT,
+        null
+    );
+
+    let child = null;
+
+    while ((child = nodeIterator.nextNode()) !== null) {
+        if (child.dataset.lang) {
+            child.classList.contains("active") &&
+                child.classList.remove("active");
+            child.dataset.lang === language && child.classList.add("active");
+        }
+    }
 };
 
 /**
@@ -396,176 +439,10 @@ standContainer2.addEventListener("touchstart", (e) => {
 });
 
 /**
- * Локалізація вузлів сторінки
- * Localization of page's nodes
- * Локализация узлов страницы
- */
-const handleSelectLanguage = () => {
-    const navTabs = Array.from(elementsNavTabs[0].children);
-    const calculatorDataTitles = Array.from(calculatorDataTitleNode);
-
-    if (isUaLanguage) {
-        pageTitlesNode[0].children[0].classList.add("active");
-        pageTitlesNode[0].children[1].classList.remove("active");
-        pageTitlesNode[0].children[2].classList.remove("active");
-
-        landPlotTitleNode[0].children[0].classList.add("active");
-        landPlotTitleNode[0].children[1].classList.remove("active");
-        landPlotTitleNode[0].children[2].classList.remove("active");
-
-        landPlotUserEditTitleNode[0].children[0].classList.add("active");
-        landPlotUserEditTitleNode[0].children[1].classList.remove("active");
-        landPlotUserEditTitleNode[0].children[2].classList.remove("active");
-
-        widthInputLableNode[0].children[0].classList.add("active");
-        widthInputLableNode[0].children[1].classList.remove("active");
-
-        lengthInputLableNode[0].children[0].classList.add("active");
-        lengthInputLableNode[0].children[1].classList.remove("active");
-
-        landPlotEditButtonOkNode[0].children[0].classList.add("active");
-        landPlotEditButtonOkNode[0].children[1].classList.remove("active");
-        landPlotEditButtonOkNode[0].children[2].classList.remove("active");
-
-        landPlotEditButtonCancelNode[0].children[0].classList.add("active");
-        landPlotEditButtonCancelNode[0].children[1].classList.remove("active");
-        landPlotEditButtonCancelNode[0].children[2].classList.remove("active");
-
-        plotInputErrorMessage[0].children[0].classList.add("active");
-        plotInputErrorMessage[0].children[1].classList.remove("active");
-        plotInputErrorMessage[0].children[2].classList.remove("active");
-
-        navTabs.forEach((tab) => {
-            tab.children[0].classList.add("active");
-            tab.children[1].classList.remove("active");
-            tab.children[2].classList.remove("active");
-        });
-
-        calculatorTitleNode[0].children[0].classList.add("active");
-        calculatorTitleNode[0].children[1].classList.remove("active");
-
-        calculatorDataTitles.forEach((el) => {
-            el.children[0].children[0].classList.add("active");
-            el.children[0].children[1].classList.remove("active");
-            el.children[0].children[2].classList.remove("active");
-        });
-
-        calculatorAttentionNode[0].children[0].classList.add("active");
-        calculatorAttentionNode[0].children[1].classList.remove("active");
-        calculatorAttentionNode[0].children[2].classList.remove("active");
-    }
-
-    if (isRuLanguage) {
-        pageTitlesNode[0].children[1].classList.add("active");
-        pageTitlesNode[0].children[0].classList.remove("active");
-        pageTitlesNode[0].children[2].classList.remove("active");
-
-        landPlotTitleNode[0].children[1].classList.add("active");
-        landPlotTitleNode[0].children[0].classList.remove("active");
-        landPlotTitleNode[0].children[2].classList.remove("active");
-
-        landPlotUserEditTitleNode[0].children[1].classList.add("active");
-        landPlotUserEditTitleNode[0].children[0].classList.remove("active");
-        landPlotUserEditTitleNode[0].children[2].classList.remove("active");
-
-        widthInputLableNode[0].children[1].classList.add("active");
-        widthInputLableNode[0].children[1].classList.remove("active");
-
-        lengthInputLableNode[0].children[1].classList.add("active");
-        lengthInputLableNode[0].children[1].classList.remove("active");
-
-        landPlotEditButtonOkNode[0].children[1].classList.add("active");
-        landPlotEditButtonOkNode[0].children[0].classList.remove("active");
-        landPlotEditButtonOkNode[0].children[2].classList.remove("active");
-
-        landPlotEditButtonCancelNode[0].children[1].classList.add("active");
-        landPlotEditButtonCancelNode[0].children[0].classList.remove("active");
-        landPlotEditButtonCancelNode[0].children[2].classList.remove("active");
-
-        plotInputErrorMessage[0].children[1].classList.add("active");
-        plotInputErrorMessage[0].children[0].classList.remove("active");
-        plotInputErrorMessage[0].children[2].classList.remove("active");
-
-        navTabs.forEach((tab) => {
-            tab.children[1].classList.add("active");
-            tab.children[0].classList.remove("active");
-            tab.children[2].classList.remove("active");
-        });
-
-        calculatorTitleNode[0].children[0].classList.add("active");
-        calculatorTitleNode[0].children[1].classList.remove("active");
-
-        calculatorDataTitles.forEach((el) => {
-            el.children[0].children[1].classList.add("active");
-            el.children[0].children[0].classList.remove("active");
-            el.children[0].children[2].classList.remove("active");
-        });
-
-        calculatorAttentionNode[0].children[1].classList.add("active");
-        calculatorAttentionNode[0].children[0].classList.remove("active");
-        calculatorAttentionNode[0].children[2].classList.remove("active");
-    }
-
-    if (isEngLanguage) {
-        pageTitlesNode[0].children[2].classList.add("active");
-        pageTitlesNode[0].children[0].classList.remove("active");
-        pageTitlesNode[0].children[1].classList.remove("active");
-
-        landPlotTitleNode[0].children[2].classList.add("active");
-        landPlotTitleNode[0].children[0].classList.remove("active");
-        landPlotTitleNode[0].children[1].classList.remove("active");
-
-        landPlotUserEditTitleNode[0].children[2].classList.add("active");
-        landPlotUserEditTitleNode[0].children[0].classList.remove("active");
-        landPlotUserEditTitleNode[0].children[1].classList.remove("active");
-
-        widthInputLableNode[0].children[1].classList.add("active");
-        widthInputLableNode[0].children[0].classList.remove("active");
-
-        lengthInputLableNode[0].children[1].classList.add("active");
-        lengthInputLableNode[0].children[0].classList.remove("active");
-
-        landPlotEditButtonOkNode[0].children[2].classList.add("active");
-        landPlotEditButtonOkNode[0].children[0].classList.remove("active");
-        landPlotEditButtonOkNode[0].children[1].classList.remove("active");
-
-        landPlotEditButtonCancelNode[0].children[2].classList.add("active");
-        landPlotEditButtonCancelNode[0].children[0].classList.remove("active");
-        landPlotEditButtonCancelNode[0].children[1].classList.remove("active");
-
-        plotInputErrorMessage[0].children[2].classList.add("active");
-        plotInputErrorMessage[0].children[0].classList.remove("active");
-        plotInputErrorMessage[0].children[1].classList.remove("active");
-
-        navTabs.forEach((tab) => {
-            tab.children[2].classList.add("active");
-            tab.children[0].classList.remove("active");
-            tab.children[1].classList.remove("active");
-        });
-
-        calculatorTitleNode[0].children[1].classList.add("active");
-        calculatorTitleNode[0].children[0].classList.remove("active");
-
-        calculatorDataTitles.forEach((el) => {
-            el.children[0].children[2].classList.add("active");
-            el.children[0].children[0].classList.remove("active");
-            el.children[0].children[1].classList.remove("active");
-        });
-
-        calculatorAttentionNode[0].children[2].classList.add("active");
-        calculatorAttentionNode[0].children[0].classList.remove("active");
-        calculatorAttentionNode[0].children[1].classList.remove("active");
-    }
-};
-
-/**
  * Вибір мови
  * Handler of language select
  * Выбор языка
  */
-let isUaLanguage = true;
-let isRuLanguage = false;
-let isEngLanguage = false;
 let isHiddenLanguageList = true;
 
 languageListNode[0].addEventListener("click", (e) => {
@@ -594,7 +471,7 @@ languageListNode[0].addEventListener("click", (e) => {
         isUaLanguage = true;
         isRuLanguage = false;
         isEngLanguage = false;
-        handleSelectLanguage();
+        setLanguage(document, "ua");
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 1) {
         languageList[0].classList.remove("active");
         languageList[2].classList.remove("active");
@@ -604,7 +481,7 @@ languageListNode[0].addEventListener("click", (e) => {
         isUaLanguage = false;
         isRuLanguage = true;
         isEngLanguage = false;
-        handleSelectLanguage();
+        setLanguage(document, "ru");
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 2) {
         languageList[0].classList.remove("active");
         languageList[1].classList.remove("active");
@@ -614,7 +491,7 @@ languageListNode[0].addEventListener("click", (e) => {
         isUaLanguage = false;
         isRuLanguage = false;
         isEngLanguage = true;
-        handleSelectLanguage();
+        setLanguage(document, "eng");
     } else {
         languageListNode[0].classList.remove("active");
     }
@@ -669,6 +546,10 @@ elementsNavTabs[0].addEventListener("click", (e) => {
                         elementsNavTabsValues[0].children[selectedNavTabNumber];
                     data.insertAdjacentHTML("afterbegin", el);
                 });
+
+            isUaLanguage && setLanguage(document, "ua");
+            isRuLanguage && setLanguage(document, "ru");
+            isEngLanguage && setLanguage(document, "eng");
         }
     }
 });
@@ -760,8 +641,11 @@ const handleSubmitLandPlotInputsData = () => {
         plotLengthInput[0].value = "";
         editPlotSizesNode[0].classList.remove("active");
     } else {
-        handleInfoAndErrorMessages(plotInputErrorMessage);
-        handleSelectLanguage();
+        handleInfoAndErrorMessages(plotInputErrorMessage, {
+            isUaLanguage,
+            isRuLanguage,
+            isEngLanguage,
+        });
     }
 };
 
@@ -808,7 +692,11 @@ elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.add("active");
         standContainerNode[0].classList.add("active");
-        handleInfoAndErrorMessages(infoMessageNode);
+        handleInfoAndErrorMessages(infoMessageNode, {
+            isUaLanguage,
+            isRuLanguage,
+            isEngLanguage,
+        });
         dataContainerStandTotalCostNode[0].classList.add("active");
 
         calculate();
@@ -822,7 +710,11 @@ elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.add("active");
         standContainer2Node[0].classList.add("active");
-        handleInfoAndErrorMessages(infoMessage2Node);
+        handleInfoAndErrorMessages(infoMessage2Node, {
+            isUaLanguage,
+            isRuLanguage,
+            isEngLanguage,
+        });
 
         calculate();
     } else if (
@@ -832,15 +724,22 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStandsLengths > width
     ) {
         selectedStandsLengths -= standLength;
-        handleInfoAndErrorMessages(standErrorNode);
-
+        handleInfoAndErrorMessages(standErrorNode, {
+            isUaLanguage,
+            isRuLanguage,
+            isEngLanguage,
+        });
     } else if (
         selectedStand !== -1 &&
         userClick.className !== "field__hide-element-button" &&
         selectedStendsCount === 2
     ) {
         selectedStandsLengths -= standLength;
-        handleInfoAndErrorMessages(standErrorNode);
+        handleInfoAndErrorMessages(standErrorNode, {
+            isUaLanguage,
+            isRuLanguage,
+            isEngLanguage,
+        });
     }
 
     if (
@@ -1075,7 +974,11 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 type === "tile" &&
                 isSocleHidden
             ) {
-                handleInfoAndErrorMessages(tileErrorNode);
+                handleInfoAndErrorMessages(tileErrorNode, {
+                    isUaLanguage,
+                    isRuLanguage,
+                    isEngLanguage,
+                });
             }
 
             if (

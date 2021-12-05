@@ -120,9 +120,6 @@ body {
     margin-right: var(--xs-margin);
 }
 
-.title-ua,
-.title-ru,
-.title-eng,
 .title-container__language-item,
 .field__land-plot-title > span,
 .land-plot-user-edit__title > span,
@@ -152,15 +149,16 @@ body {
 .field__tile-sidewalk2-img,
 .calculator__data-container.tile-total-cost,
 .calculator__data-container.stand-total-cost,
+.title-container__titles > span,
+.stand-container__info-message,
+.stand-container__info-message2,
+.stand-container__info-message > span,
+.stand-container__info-message2 > span,
+.stand__error,
+.stand__error > span,
+.constructor__element-name > span,
 .field__socle-img {
     display: none;
-}
-
-.title-ua.active,
-.title-ru.active,
-.title-eng.active {
-    display: block;
-    font-size: 1rem;
 }
 
 .title-container__language-list {
@@ -245,8 +243,17 @@ body {
 .land-plot-user-edit__plot-length-label > span.active,
 .land-plot-user-edit__ok > span.active,
 .land-plot-user-edit__cancel > span.active,
-.constructor__element-price > span.active {
+.constructor__element-price > span.active,
+.title-container__titles > span.active,
+.stand-container__info-message.active > span.active,
+.stand-container__info-message2.active > span.active,
+.stand__error.active > span.active,
+.constructor__element-name > span.active {
     display: inline;
+}
+
+.title-container__titles > span.active {
+    font-size: 1rem;
 }
 
 .field__land-plot-width,
@@ -675,10 +682,6 @@ body {
     text-align: center;
 }
 
-.stand__error {
-    display: none;
-}
-
 .stand__error.active {
     position: absolute;
     display: block;
@@ -692,11 +695,6 @@ body {
     border: 1px solid transparent;
     left: 30%;
     top: 30%;
-}
-
-.stand-container__info-message,
-.stand-container__info-message2 {
-    display: none;
 }
 
 .stand-container__info-message.active,
