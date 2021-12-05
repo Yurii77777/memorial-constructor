@@ -19,6 +19,7 @@ const priceList = prices;
  * Important toggle switches!
  * Важные тумблеры!
  */
+let isStandHidden = true;
 let isSocleHidden = true;
 let isTileHidden = true;
 let isUaLanguage = true;
@@ -35,7 +36,13 @@ const languageListNode = document.querySelectorAll(
     ".title-container__language-list"
 );
 
+// Блок інформаційних повідомлень
+const helperNode = document.querySelectorAll(".field__land-plot-help-info");
+
 // Елементи зміни габаритів земельної дялінки
+const landPlotEditContainer = document.querySelectorAll(
+    ".field__land-plot-container"
+);
 const landPlotWidth = document.querySelectorAll(".field__land-plot-width");
 const landPlotLength = document.querySelectorAll(".field__land-plot-length");
 const arrowsContainerNode = document.querySelectorAll(
@@ -167,6 +174,125 @@ const totalCostTileNode = document.querySelectorAll(
     ".calculator__data-container.tile-total-cost"
 );
 
+let isFirstStep = true;
+let isSecondStep = false;
+
+const startHelper = () => {
+    const infoMessages = [
+        {
+            id: 0,
+            uaMessage:
+                "<p>Спочатку радимо вибрати розміри земельної ділянки</p>",
+            ruMessage:
+                "<p>Сначала рекомендуем выбрать размеры земельного участка</p>",
+            engMessage:
+                "<p>First, we advise you to choose the size of the land</p>",
+        },
+        {
+            id: 1,
+            uaMessage:
+                "<p>Якщо розміри ділянки Вас влаштовують, виберіть будь-ласка тумбу (підставку) для стелли</p>",
+            ruMessage:
+                "<p>Если размеры участка Вас устраивают, выберите пожалуйста тумбу (подставку) для стеллы</p>",
+            engMessage:
+                "<p>If the size of the land suits you, please choose a pedestal (stand) for the stele</p>",
+        },
+        {
+            id: 2,
+            uaMessage:
+                "<p>Тепер Ви можете вибрати стеллу</p>",
+            ruMessage:
+                "<p>Теперь Вы можете выбрать стеллу</p>",
+            engMessage:
+                "<p>Now you can choose a stele</p>",
+        },
+    ];
+
+    if (isFirstStep) {
+        infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
+            helperNode[0].classList.add("animate");
+
+            if (id === 0 && isUaLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
+            }
+
+            if (id === 0 && isRuLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
+            }
+
+            if (id === 0 && isEngLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
+            }
+        });
+
+        setTimeout(() => {
+            landPlotEditContainer[0].classList.add("focus");
+        }, 5000);
+
+        setTimeout(() => {
+            landPlotEditContainer[0].classList.remove("focus");
+        }, 8000);
+
+        setTimeout(() => {
+            isFirstStep = false;
+            isSecondStep = true;
+            startHelper();
+        }, 16000);
+    }
+
+    if (isSecondStep) {
+        infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
+            if (id === 1 && isUaLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
+            }
+
+            if (id === 1 && isRuLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
+            }
+
+            if (id === 1 && isEngLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
+            }
+        });
+    }
+
+    if (!isStandHidden) {
+        infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
+            if (id === 2 && isUaLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
+            }
+
+            if (id === 2 && isRuLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
+            }
+
+            if (id === 2 && isEngLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
+            }
+        });
+    }
+};
+
+startHelper();
+
 /**
  * Функція для створення карток елементів у вкладках.
  * Function for creating tabbed items in tabs.
@@ -188,8 +314,15 @@ const createCardNode = (selectedTabIndex, priceList) => {
                 const { tabId } = data[i];
 
                 if (tabId === selectedTab) {
-                    const { imgUrl, titleUa, siteNameUa, siteNameRu, siteNameEng, price, type } =
-                        data[i];
+                    const {
+                        imgUrl,
+                        titleUa,
+                        siteNameUa,
+                        siteNameRu,
+                        siteNameEng,
+                        price,
+                        type,
+                    } = data[i];
 
                     // unshift для того, щоб елементи рендерилися в тому ж порядку, як і в прайсі
                     newCard.unshift(
@@ -472,6 +605,7 @@ languageListNode[0].addEventListener("click", (e) => {
         isRuLanguage = false;
         isEngLanguage = false;
         setLanguage(document, "ua");
+        startHelper();
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 1) {
         languageList[0].classList.remove("active");
         languageList[2].classList.remove("active");
@@ -482,6 +616,7 @@ languageListNode[0].addEventListener("click", (e) => {
         isRuLanguage = true;
         isEngLanguage = false;
         setLanguage(document, "ru");
+        startHelper();
     } else if (!isHiddenLanguageList && languageList.indexOf(userClick) === 2) {
         languageList[0].classList.remove("active");
         languageList[1].classList.remove("active");
@@ -492,6 +627,7 @@ languageListNode[0].addEventListener("click", (e) => {
         isRuLanguage = false;
         isEngLanguage = true;
         setLanguage(document, "eng");
+        startHelper();
     } else {
         languageListNode[0].classList.remove("active");
     }
@@ -689,6 +825,8 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStendsCount === 0
     ) {
         selectedStendsCount += 1;
+        isStandHidden = false;
+        startHelper();
 
         elementsStands[selectedStand].classList.add("active");
         standContainerNode[0].classList.add("active");
@@ -749,6 +887,8 @@ elementsStandsNode[0].addEventListener("click", (e) => {
     ) {
         selectedStendsCount -= 1;
         selectedStandsLengths -= standLength * 2;
+        isStandHidden = true;
+        startHelper();
 
         elementsStands[selectedStand].classList.remove("active");
         standContainerNode[0].classList.contains("active") &&

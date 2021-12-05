@@ -157,6 +157,7 @@ body {
 .stand__error,
 .stand__error > span,
 .constructor__element-name > span,
+.constructor__filter-section,
 .field__socle-img {
     display: none;
 }
@@ -200,18 +201,19 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 370px;
+    height: 420px;
     margin-bottom: var(--xs-margin);
 }
 
 .constructor__field {
     position: relative;
     width: inherit;
-    height: 220px;
+    height: 265px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     background-color: var(--background-color);
     margin-bottom: var(--xs-margin);
+    overflow: hidden;
 }
 
 .field__land-plot {
@@ -219,7 +221,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: 75%;
-    height: 60px;
+    height: 30px;
     font-size: 0.8rem;
 }
 
@@ -228,8 +230,13 @@ body {
     flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 50%;
+    height: 100%;
     padding: var(--sm-padding);
+}
+
+.field__land-plot-container.focus {
+    border: 3px solid #842029;
+    border-radius: 5px;
 }
 
 .field__land-plot-title,
@@ -289,9 +296,12 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
-    height: 50%;
+    position: absolute;
+    top: 12%;
+    width: 95%;
+    height: 35px;
     padding: var(--sm-padding);
+    z-index: 100;
 }
 
 .land-plot-user-edit__title {
@@ -371,6 +381,7 @@ body {
     justify-content: center;
     align-items: center;
     position: absolute;
+    top: 24%;
     left: 20%;
     z-index: 100;
     font-size: 0.7rem;
@@ -389,6 +400,30 @@ body {
     line-height: 1.3;
 }
 
+.field__land-plot-help-info {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    position: absolute;
+    width: 95%;
+    height: 20px;
+    top: 90%;
+    left: 2.5%;
+    color: #084298;
+    margin-top: var(--xs-margin);
+}
+
+.field__land-plot-help-info.animate {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    position: absolute;
+    width: 95%;
+    height: 15px;
+    top: 90%;
+    left: 2.5%;
+    color: #084298;
+    animation: 10s linear 1s infinite running slide;
+}
+
 .elements-container__tile-error.active {
     height: 40px;
     top: 110%;
@@ -402,7 +437,7 @@ body {
 
 .field__main-container {
     width: 100%;
-    height: 155px;
+    height: 210px;
     position: relative;
 }
 
@@ -415,8 +450,8 @@ body {
     width: 85%;
     height: 89px;
     left: 7%;
-    bottom: 15%;
-    clip-path: polygon(22% 0%, 81% 0%, 101% 100%, 0% 100%);
+    bottom: 4%;
+    clip-path: polygon(22% 0%, 81% 0%, 100% 100%, 0% 100%);
 }
 
 .field__land,
@@ -438,9 +473,9 @@ body {
 .field__socle-img.active {
     z-index: 2;
     width: 97%;
-    height: 183px;
+    height: 178px;
     left: 2%;
-    bottom: -1%;
+    bottom: -6%;
 }
 
 .field__tile-granite-black-img.active,
@@ -450,9 +485,9 @@ body {
 .field__tile-sidewalk-img.active,
 .field__tile-sidewalk2-img.active {
     z-index: 3;
-    bottom: 4%;
-    height: 184px;
-    width: 96%;
+    bottom: -1%;
+    height: 173px;
+    width: 95.8%;
     left: 3%;
     clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 98%);
 }
@@ -460,8 +495,8 @@ body {
 .field__border-img.active {
     display: block;
     position: absolute;
-    bottom: 0%;
-    height: 180px;
+    bottom: -4%;
+    height: 170px;
     left: 3%;
     width: 95%;
     z-index: 2;
@@ -488,9 +523,9 @@ body {
 .draggable-elements {
     position: absolute;
     width: 91%;
-    height: 140px;
+    height: 210px;
     left: 5%;
-    bottom: 13%;
+    bottom: 3%;
     overflow: hidden;
     z-index: 3;
 }
@@ -505,8 +540,8 @@ body {
     display: block;
     position: absolute;
     width: 25%;
-    height: 35%;
-    top: 60%;
+    height: 15%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: move;
@@ -514,7 +549,7 @@ body {
 
 .stand-container__monument-img {
     position: absolute;
-    top: -372%;
+    top: -310%;
 }
 
 .calculator {
@@ -711,9 +746,31 @@ body {
     border-radius: var(--border-radius);
 }
 
+@keyframes slide {
+    0% {
+        left: 0%;
+    }
+
+    50.9% {
+        left: -110%;
+    }
+
+    51% {
+        left: 110%;
+    }
+
+    100% {
+        left: 0%;
+    }
+}
+
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
+    }
+
+    .stand-container__monument-img {
+        top: -404%;
     }
 }
 
@@ -741,17 +798,41 @@ body {
     }
 
     .field__main-container {
-        height: 240px;
+        height: 273px;
     }
 
     .field__land {
-        bottom: 5%;
+        bottom: 3%;
         height: 130px;
+    }
+
+    .field__land-plot {
+        width: 50%;
+    }
+
+    .field__error.active {
+        top: 21%;
+    }
+
+    .field__land-plot-container {
+        background-color: #fff;
+        position: relative;
+        z-index: 101;
+    }
+
+    .field__land-plot-user-edit.active {
+        top: 100%;
+        width: 70%;
     }
 
     .field__socle-img.active {
         height: 243px;
-        bottom: -3.5%;
+        bottom: -5.5%;
+    }
+
+    .field__land-plot-help-info.animate {
+        top: 1%;
+        left: 50%;
     }
 
     .field__tile-granite-black-img.active,
@@ -760,19 +841,23 @@ body {
     .field__tile-gres2-img.active,
     .field__tile-sidewalk-img.active,
     .field__tile-sidewalk2-img.active {
-        height: 238px;
-        width: 95.5%;
-        bottom: 2%;
+        height: 239px;
+        width: 95.8%;
+        bottom: -0.5%;
     }
 
     .field__border-img.active {
         height: 235px;
-        bottom: -2%;
+        bottom: -4%;
     }
 
     .draggable-elements {
-        height: 190px;
-        bottom: 5%;
+        height: 270px;
+        bottom: 2%;
+    }
+
+    .stand-container__monument-img {
+        top: -400%;
     }
 
     .calculator__attention-paragraph.active {
@@ -790,7 +875,7 @@ body {
     }
 
     .constructor__field {
-        width: 50%;
+        width: 60%;
         height: 350px;
         margin-right: var(--xs-margin);
     }
@@ -800,13 +885,21 @@ body {
     }
 
     .field__land {
-        height: 125px;
-        bottom: 7%;
+        height: 135px;
+        bottom: 3%;
     }
 
     .field__socle-img.active {
-        bottom: -3.5%;
+        bottom: -5%;
         height: 236px;
+    }
+
+    .draggable-elements {
+        height: 310px;
+    }
+
+    .stand-container__monument-img {
+        top: -280%;
     }
 
     .field__tile-granite-black-img.active,
@@ -815,13 +908,12 @@ body {
     .field__tile-gres2-img.active,
     .field__tile-sidewalk-img.active,
     .field__tile-sidewalk2-img.active {
-        bottom: 2.5%;
-        height: 234px;
+        bottom: -1.5%;
+        height: 235px;
     }
 
     .field__main-container {
-        height: 200px;
-        margin-top: 85px;
+        height: 318px;
     }
 
     .field__border-img.active {
@@ -829,7 +921,7 @@ body {
     }
 
     .constructor__elements {
-        width: 50%;
+        width: 40%;
         height: 260px;
     }
 
@@ -862,34 +954,73 @@ body {
 
 @media (min-width: 992px) {
     .wrapper {
-        max-width: 1100px;
+        max-width: 1250px;
         margin: 0 auto;
     }
 
     .constructor {
-        height: 420px;
+        height: 450px;
+    }
+
+    .constructor__filter-section {
+        display: flex;
+        flex-direction: column;
+        width: 5%;
+        height: 450px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-right: var(--xs-margin);
     }
 
     .constructor__field {
-        height: 400px;
+        width: 60%;
+        height: 450px;
+    }
+
+    .field__land-plot {
+        flex-direction: row;
+        height: 30px;
+    }
+
+    .field__land-plot-container {
+        flex: 1 1 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .field__land-plot-user-edit.active {
+        position: absolute;
+        z-index: 100;
+        width: 50%;
+        height: 30px;
     }
 
     .field__error.active {
-        left: 15%;
+        top: 14%;
+        left: 10%;
+    }
+
+    .field__land-plot-help-info {
+        font-size: 1rem;
+    }
+
+    .constructor__elements {
+        width: 35%;
+        height: 300px;
     }
 
     .field__main-container {
-        margin-top: 95px;
-        height: 240px;
+        height: 418px;
     }
 
     .field__land {
-        height: 159px;
+        height: 180px;
+        bottom: 3%;
     }
 
     .field__socle-img.active {
-        bottom: -3.5%;
-        height: 299px;
+        bottom: -5%;
+        height: 335px;
     }
 
     .field__tile-granite-black-img.active,
@@ -898,16 +1029,12 @@ body {
     .field__tile-gres2-img.active,
     .field__tile-sidewalk-img.active,
     .field__tile-sidewalk2-img.active {
-        bottom: 2.5%;
-        height: 296px;
+        bottom: -1.5%;
+        height: 335px;
     }
 
     .field__border-img.active {
-        height: 290px;
-    }
-
-    .constructor__elements {
-        height: 300px;
+        height: 325px;
     }
 
     .constructor__element-container {
@@ -925,12 +1052,17 @@ body {
     }
 
     .draggable-elements {
-        height: 330px;
+        bottom: 1%;
+        height: 410px;
     }
 
     .stand-container.active {
         height: 13%;
         top: 70%;
+    }
+
+    .stand-container__monument-img {
+        top: -404%;
     }
 
     .calculator {

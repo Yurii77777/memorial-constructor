@@ -29,6 +29,8 @@
 
         <!-- Поле конструктора Початок. Constructor field Begin. Поле конструктора Начало -->
         <section class="constructor">
+            <div class="constructor__filter-section"></div>
+
             <div class="constructor__field">
                 <div class="field__land-plot">
                     <div class="field__land-plot-container">
@@ -49,50 +51,53 @@
                                  alt="Приховати поля для вводу данних" 
                                  class="field__land-plot-arrow-up" 
                             />
-                        </p>
+                            </p>
+
+                            <div class="field__land-plot-user-edit">
+                                <p class="land-plot-user-edit__title">
+                                    <span data-lang="ua" class="active">Введіть</span>
+                                    <span data-lang="ru">Введите</span>
+                                    <span data-lang="eng">Enter</span>
+                                </p>
+                                <label for="land-plot-user-edit__plot-width" class="land-plot-user-edit__plot-width-label">
+                                    <span data-lang="ua" class="active">Ш:</span>
+                                    <span data-lang="ru">Ш:</span>
+                                    <span data-lang="eng">W:</span>
+                                </label>
+                                <input type="text" 
+                                        name="land-plot-user-edit__plot-width" 
+                                        class="land-plot-user-edit__plot-width" 
+                                />
+                                <label for="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length-label">
+                                    <span data-lang="ua" class="active">Д:</span>
+                                    <span data-lang="ru">Д:</span>
+                                    <span data-lang="eng">L:</span>
+                                </label>
+                                <input type="text" 
+                                        name="land-plot-user-edit__plot-length" 
+                                        class="land-plot-user-edit__plot-length"
+                                />
+                                <button type="button" 
+                                        class="land-plot-user-edit__ok"
+                                        onclick="handleSubmitLandPlotInputsData()"
+                                >
+                                    <span data-lang="ua" class="active">Так</span>
+                                    <span data-lang="ru">Да</span>
+                                    <span data-lang="eng">Ok</span>
+                                </button>
+                                <button type="button" 
+                                        class="land-plot-user-edit__cancel"
+                                        onclick="handleCancelEditPlotInputsData()"
+                                >
+                                    <span data-lang="ua" class="active">Відміна</span>
+                                    <span data-lang="ru">Отмена</span>
+                                    <span data-lang="eng">Cancel</span>
+                                </button>
+                            </div>
+    
                     </div>
 
-                    <div class="field__land-plot-user-edit">
-                        <p class="land-plot-user-edit__title">
-                            <span data-lang="ua" class="active">Введіть</span>
-                            <span data-lang="ru">Введите</span>
-                            <span data-lang="eng">Enter</span>
-                        </p>
-                        <label for="land-plot-user-edit__plot-width" class="land-plot-user-edit__plot-width-label">
-                            <span data-lang="ua" class="active">Ш:</span>
-                            <span data-lang="ru">Ш:</span>
-                            <span data-lang="eng">W:</span>
-                        </label>
-                        <input type="text" 
-                                name="land-plot-user-edit__plot-width" 
-                                class="land-plot-user-edit__plot-width" 
-                        />
-                        <label for="land-plot-user-edit__plot-length" class="land-plot-user-edit__plot-length-label">
-                            <span data-lang="ua" class="active">Д:</span>
-                            <span data-lang="ru">Д:</span>
-                            <span data-lang="eng">L:</span>
-                        </label>
-                        <input type="text" 
-                                name="land-plot-user-edit__plot-length" 
-                                class="land-plot-user-edit__plot-length"
-                        />
-                        <button type="button" 
-                                class="land-plot-user-edit__ok"
-                                onclick="handleSubmitLandPlotInputsData()"
-                        >
-                            <span data-lang="ua" class="active">Так</span>
-                            <span data-lang="ru">Да</span>
-                            <span data-lang="eng">Ok</span>
-                        </button>
-                        <button type="button" 
-                                class="land-plot-user-edit__cancel"
-                                onclick="handleCancelEditPlotInputsData()"
-                        >
-                            <span data-lang="ua" class="active">Відміна</span>
-                            <span data-lang="ru">Отмена</span>
-                            <span data-lang="eng">Cancel</span>
-                        </button>
-                    </div>
+                    <div class="field__land-plot-help-info"></div>
                 </div>
 
                 <div class="field__error">
