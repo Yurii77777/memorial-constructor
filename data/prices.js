@@ -143,6 +143,7 @@ const prices = [
                 "length": 50,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 50х20х15",
                 "siteNameRu": "Тумба 50х20х15",
                 "siteNameEng": "Stand 50х20х15"
@@ -154,6 +155,7 @@ const prices = [
                 "length": 50,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 50х20х20",
                 "siteNameRu": "Тумба 50х20х20",
                 "siteNameEng": "Stand 50х20х20"
@@ -165,6 +167,7 @@ const prices = [
                 "length": 60,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 60х20х15",
                 "siteNameRu": "Тумба 60х20х15",
                 "siteNameEng": "Stand 60х20х15"
@@ -176,6 +179,7 @@ const prices = [
                 "length": 60,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 60х20х20",
                 "siteNameRu": "Тумба 60х20х20",
                 "siteNameEng": "Stand 60х20х20"
@@ -187,6 +191,7 @@ const prices = [
                 "length": 60,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 60х20х25",
                 "siteNameRu": "Тумба 60х20х25",
                 "siteNameEng": "Stand 60х20х25"
@@ -198,6 +203,7 @@ const prices = [
                 "length": 70,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 70х20х20",
                 "siteNameRu": "Тумба 70х20х20",
                 "siteNameEng": "Stand 70х20х20"
@@ -209,6 +215,7 @@ const prices = [
                 "length": 70,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 70х20х25",
                 "siteNameRu": "Тумба 70х20х25",
                 "siteNameEng": "Stand 70х20х25"
@@ -220,6 +227,7 @@ const prices = [
                 "length": 70,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 70х20х30",
                 "siteNameRu": "Тумба 70х20х30",
                 "siteNameEng": "Stand 70х20х30"
@@ -231,6 +239,7 @@ const prices = [
                 "length": 80,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 80х20х20",
                 "siteNameRu": "Тумба 80х20х20",
                 "siteNameEng": "Stand 80х20х20"
@@ -242,6 +251,7 @@ const prices = [
                 "length": 80,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 80х20х25",
                 "siteNameRu": "Тумба 80х20х25",
                 "siteNameEng": "Stand 80х20х25"
@@ -253,6 +263,7 @@ const prices = [
                 "length": 90,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 90х20х20",
                 "siteNameRu": "Тумба 90х20х20",
                 "siteNameEng": "Stand 90х20х20"
@@ -264,6 +275,7 @@ const prices = [
                 "length": 100,
                 "tabId": 1,
                 "imgUrl": "/mobile/stand/stand_granite_black.png",
+                "imgConstructorUrl": "/mobile/stand/stand_granite_black-on-constructor.png",
                 "siteNameUa": "Тумба 1000х20х20",
                 "siteNameRu": "Тумба 1000х20х20",
                 "siteNameEng": "Stand 1000х20х20"

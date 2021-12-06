@@ -478,6 +478,12 @@ body {
     bottom: -6%;
 }
 
+.stand-container__stand-img,
+.stand-container__stand-img2 {
+    width: 100%;
+    height: 100%;
+}
+
 .field__tile-granite-black-img.active,
 .field__tile-granite-gray-img.active,
 .field__tile-gres1-img.active,
@@ -539,8 +545,6 @@ body {
 .stand-container2.active {
     display: block;
     position: absolute;
-    width: 25%;
-    height: 15%;
     top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -831,6 +835,8 @@ body {
     }
 
     .field__land-plot-help-info.animate {
+        font-weight: 700;
+        letter-spacing: 0.1em;
         top: 1%;
         left: 50%;
     }
@@ -881,7 +887,7 @@ body {
     }
 
     .field__error.active {
-        left: 20%;
+        letter-spacing: 0.1em;
     }
 
     .field__land {
@@ -1057,8 +1063,7 @@ body {
     }
 
     .stand-container.active {
-        height: 13%;
-        top: 70%;
+        top: 55%;
     }
 
     .stand-container__monument-img {
