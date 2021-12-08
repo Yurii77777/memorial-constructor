@@ -28,6 +28,13 @@ let isEngLanguage = false;
 
 let firstSelectedStand = null;
 let secondSelectedStand = null;
+let selectedStandsLengths = 0;
+let selectedStendsCount = 0;
+
+/**
+ * Сховище для зберігання всіх вибранних елементів в одному місці
+ */
+let seceltedItems = [];
 
 /**
  * Отримуємо всі вузли, з якими будемо працювати
@@ -61,6 +68,8 @@ const plotLengthInput = document.querySelectorAll(
     ".land-plot-user-edit__plot-length"
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
+
+const filterNode = document.querySelectorAll(".constructor__filter-section");
 
 // Елементи, котрі накладуються на земельну ділянку
 const draggableElementsNode = document.querySelectorAll(".draggable-elements");
@@ -212,8 +221,6 @@ const startHelper = () => {
 
     if (isFirstStep) {
         infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
-            helperNode[0].classList.add("animate");
-
             if (id === 0 && isUaLanguage) {
                 helperNode[0].hasChildNodes() &&
                     helperNode[0].removeChild(helperNode[0].children[0]);
@@ -458,7 +465,7 @@ standContainer.addEventListener("mousedown", (e) => {
     e = e || window.event;
     e.preventDefault();
 
-    const { length: standLength } = firstSelectedStand;
+    const { length: standLength, height } = firstSelectedStand;
     const { width } = handleLandPlotSizes();
     let intViewportWidth = window.innerWidth;
 
@@ -478,98 +485,22 @@ standContainer.addEventListener("mousedown", (e) => {
         standContainer.style.top = standContainer.offsetTop - pos2 + "px";
         standContainer.style.left = standContainer.offsetLeft - pos1 + "px";
 
+        const INITIAL_TOP_POSITION = 320;
+        const MAX_HEIGHT_OF_AREA = 150;
+        let initialLength = ((standLength / width) * 100) / 1.8;
+
         const newCoordinates = standContainerNode[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
         if (intViewportWidth > 992) {
-            if (top > 330) {
-                let widthOfStand = ((standLength / width) * 100) / 1.7;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "26px";
-            }
-
-            if (top > 340) {
-                let widthOfStand = ((standLength / width) * 100) / 1.58;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "27px";
-            }
-
-            if (top > 350) {
-                let widthOfStand = ((standLength / width) * 100) / 1.53;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "27.5px";
-            }
-
-            if (top > 360) {
-                let widthOfStand = ((standLength / width) * 100) / 1.48;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "28px";
-            }
-
-            if (top > 370) {
-                let widthOfStand = ((standLength / width) * 100) / 1.45;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "28.5px";
-            }
-
-            if (top > 380) {
-                let widthOfStand = ((standLength / width) * 100) / 1.41;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "29px";
-            }
-
-            if (top > 390) {
-                let widthOfStand = ((standLength / width) * 100) / 1.39;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "29.5px";
-            }
-
-            if (top > 400) {
-                let widthOfStand = ((standLength / width) * 100) / 1.35;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "30px";
-            }
-
-            if (top > 410) {
-                let widthOfStand = ((standLength / width) * 100) / 1.31;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "30.6px";
-            }
-
-            if (top > 420) {
-                let widthOfStand = ((standLength / width) * 100) / 1.25;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "31.25px";
-            }
-
-            if (top > 430) {
-                let widthOfStand = ((standLength / width) * 100) / 1.23;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "31.8px";
-            }
-
-            if (top > 440) {
-                let widthOfStand = ((standLength / width) * 100) / 1.19;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "32.5px";
-            }
-
-            if (top > 450) {
-                let widthOfStand = ((standLength / width) * 100) / 1.15;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "33.75px";
-            }
-
-            if (top > 460) {
-                let widthOfStand = ((standLength / width) * 100) / 1.11;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "34.5px";
-            }
-
-            if (top > 470) {
-                let widthOfStand = ((standLength / width) * 100) / 1.07;
-                standContainerNode[0].style.width = `${widthOfStand}%`;
-                standContainerNode[0].style.height = "35px";
+            if (top > INITIAL_TOP_POSITION) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLength + initialLength * (progress / 1.2);
+                standContainerNode[0].style.width = `${newLength}%`;
+                standContainerNode[0].style.height = `${newHeigth}px`;
             }
         }
     };
@@ -640,98 +571,22 @@ standContainer2.addEventListener("mousedown", (e) => {
         standContainer2.style.left =
             standContainer2.offsetLeft - pos1Container2 + "px";
 
+        const INITIAL_TOP_POSITION = 320;
+        const MAX_HEIGHT_OF_AREA = 150;
+        let initialLength = ((standLength / width) * 100) / 1.8;
+
         const newCoordinates = standContainer2Node[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
         if (intViewportWidth > 992) {
-            if (top > 330) {
-                let widthOfStand = ((standLength / width) * 100) / 1.7;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "26px";
-            }
-
-            if (top > 340) {
-                let widthOfStand = ((standLength / width) * 100) / 1.58;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "27px";
-            }
-
-            if (top > 350) {
-                let widthOfStand = ((standLength / width) * 100) / 1.53;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "27.5px";
-            }
-
-            if (top > 360) {
-                let widthOfStand = ((standLength / width) * 100) / 1.48;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "28px";
-            }
-
-            if (top > 370) {
-                let widthOfStand = ((standLength / width) * 100) / 1.45;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "28.5px";
-            }
-
-            if (top > 380) {
-                let widthOfStand = ((standLength / width) * 100) / 1.41;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "29px";
-            }
-
-            if (top > 390) {
-                let widthOfStand = ((standLength / width) * 100) / 1.39;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "29.5px";
-            }
-
-            if (top > 400) {
-                let widthOfStand = ((standLength / width) * 100) / 1.35;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "30px";
-            }
-
-            if (top > 410) {
-                let widthOfStand = ((standLength / width) * 100) / 1.31;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "30.6px";
-            }
-
-            if (top > 420) {
-                let widthOfStand = ((standLength / width) * 100) / 1.25;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "31.25px";
-            }
-
-            if (top > 430) {
-                let widthOfStand = ((standLength / width) * 100) / 1.23;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "31.8px";
-            }
-
-            if (top > 440) {
-                let widthOfStand = ((standLength / width) * 100) / 1.19;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "32.5px";
-            }
-
-            if (top > 450) {
-                let widthOfStand = ((standLength / width) * 100) / 1.15;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "33.75px";
-            }
-
-            if (top > 460) {
-                let widthOfStand = ((standLength / width) * 100) / 1.11;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "34.5px";
-            }
-
-            if (top > 470) {
-                let widthOfStand = ((standLength / width) * 100) / 1.07;
-                standContainer2Node[0].style.width = `${widthOfStand}%`;
-                standContainer2Node[0].style.height = "35px";
+            if (top > INITIAL_TOP_POSITION) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLength + initialLength * (progress / 1.2);
+                standContainer2Node[0].style.width = `${newLength}%`;
+                standContainer2Node[0].style.height = `${newHeigth}px`;
             }
         }
     };
@@ -986,6 +841,33 @@ const handleSubmitLandPlotInputsData = () => {
 };
 
 /**
+ * Блок Фільтр
+ */
+filterNode[0].addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    let selectedItem = null;
+    const filterElements = Array.from(filterNode[0].children);
+    selectedItem = filterElements.indexOf(userClick.parentNode);
+
+    filterNode[0].removeChild(filterElements[selectedItem]);
+
+    if (filterElements[selectedItem].dataset.category === "stand") {
+        let selectedStand = getElementData(selectedItem, "stand");
+        const { length: standLength } = selectedStand;
+        selectedStendsCount -= 1;
+        selectedStandsLengths -= standLength * 2;
+        selectedStendsCount === 0 && (isStandHidden = true);
+
+        const standsItems = Array.from(elementsStandsNode[0].children);
+        standsItems[standContainerNode[0].children[0].dataset.itemIndex].classList.remove("active");
+
+        //TODO: Remove Img Stand on Constructor
+    }
+});
+
+/**
  * Обробник елементів блоку "Тумби"
  * Handler of elements "Stands"
  * Обработчик элементом блока "Тумбы"
@@ -1020,9 +902,6 @@ const getElementData = (selectedElement, categoryToSearch) => {
     return selectedElementData;
 };
 
-let selectedStandsLengths = 0;
-let selectedStendsCount = 0;
-
 elementsStandsNode[0].addEventListener("click", (e) => {
     let selectedStand = null;
     let userClick = e.target;
@@ -1033,8 +912,13 @@ elementsStandsNode[0].addEventListener("click", (e) => {
     let userSelectStand = getElementData(selectedStand, "stand");
     const {
         length: standLength,
+        height,
+        imgUrl,
         imgConstructorUrl,
         siteNameUa,
+        siteNameRu,
+        siteNameEng,
+        category,
     } = userSelectStand;
     standLength && (selectedStandsLengths += standLength);
 
@@ -1048,10 +932,27 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         startHelper();
 
         firstSelectedStand = userSelectStand;
+        seceltedItems.push(firstSelectedStand);
         let imgStandOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
                                         alt="${siteNameUa}" 
                                         class="stand-container__stand-img"
+                                        data-category="${category}"
+                                        data-item-index="${selectedStand}"
                                     />`;
+        let imgStandOnFilter = `<div class="filter-section__item" data-category="${category}" data-item-index="${selectedStand}">
+                                    <img src="./img/items${imgUrl}" 
+                                         alt="${siteNameUa}" 
+                                         class="filter-section__item-img"
+                                    />
+                                    <p class="filter-section__item-title">
+                                        <span data-lang="ua" class="active">${siteNameUa}</span>
+                                        <span data-lang="ru">${siteNameRu}</span>
+                                        <span data-lang="eng">${siteNameEng}</span>
+                                    </p>
+                                    <img src="./img/icons/close.svg" 
+                                         alt="Приховати елемент" 
+                                         class="field__hide-element-button">
+                                </div>`;
 
         elementsStands[selectedStand].classList.add("active");
         standContainerNode[0].classList.add("active");
@@ -1059,9 +960,11 @@ elementsStandsNode[0].addEventListener("click", (e) => {
             "afterbegin",
             imgStandOnConstructor
         );
+        filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
+
         let widthOfStand = ((standLength / width) * 100) / 1.8;
         standContainerNode[0].style.width = `${widthOfStand}%`;
-        standContainerNode[0].style.height = "25px";
+        standContainerNode[0].style.height = `${height}px`;
 
         handleInfoAndErrorMessages(infoMessageNode, {
             isUaLanguage,
@@ -1137,10 +1040,40 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         startHelper();
 
         elementsStands[selectedStand].classList.remove("active");
-        standContainerNode[0].classList.contains("active") &&
+
+        if (
+            standContainerNode[0].classList.contains("active") &&
+            standContainerNode[0].children.length === 2
+        ) {
+            const imgNodeOnConstructor = document.querySelectorAll(
+                ".stand-container__stand-img"
+            );
+            standContainerNode[0].removeChild(imgNodeOnConstructor[0]);
             standContainerNode[0].classList.remove("active");
-        standContainer2Node[0].classList.contains("active") &&
+        }
+
+        if (
+            standContainer2Node[0].classList.contains("active") &&
+            standContainer2Node[0].children.length === 2
+        ) {
+            const img2NodeOnConstructor = document.querySelectorAll(
+                ".stand-container__stand-img2"
+            );
+            standContainer2Node[0].removeChild(img2NodeOnConstructor[0]);
             standContainer2Node[0].classList.remove("active");
+        }
+
+        const itemsInFilterSection = Array.from(filterNode[0].children);
+
+        for (let i = 0; i < itemsInFilterSection.length; i++) {
+            if (
+                itemsInFilterSection[i].dataset.category === "stand" &&
+                itemsInFilterSection[i].dataset.itemIndex ===
+                    String(selectedStand)
+            ) {
+                filterNode[0].removeChild(itemsInFilterSection[i]);
+            }
+        }
 
         dataValueStandTotalCostNode[0].innerText = 0;
         dataContainerStandTotalCostNode[0].classList.remove("active");

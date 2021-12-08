@@ -158,6 +158,7 @@ body {
 .stand__error > span,
 .constructor__element-name > span,
 .constructor__filter-section,
+.filter-section__item-title > span,
 .field__socle-img {
     display: none;
 }
@@ -255,7 +256,8 @@ body {
 .stand-container__info-message.active > span.active,
 .stand-container__info-message2.active > span.active,
 .stand__error.active > span.active,
-.constructor__element-name > span.active {
+.constructor__element-name > span.active,
+.filter-section__item-title > span.active {
     display: inline;
 }
 
@@ -421,7 +423,6 @@ body {
     top: 90%;
     left: 2.5%;
     color: #084298;
-    animation: 10s linear 1s infinite running slide;
 }
 
 .elements-container__tile-error.active {
@@ -545,7 +546,7 @@ body {
 .stand-container2.active {
     display: block;
     position: absolute;
-    top: 70%;
+    top: 320px;
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: move;
@@ -750,24 +751,6 @@ body {
     border-radius: var(--border-radius);
 }
 
-@keyframes slide {
-    0% {
-        left: 0%;
-    }
-
-    50.9% {
-        left: -110%;
-    }
-
-    51% {
-        left: 110%;
-    }
-
-    100% {
-        left: 0%;
-    }
-}
-
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
@@ -835,7 +818,6 @@ body {
     }
 
     .field__land-plot-help-info.animate {
-        font-weight: 700;
         letter-spacing: 0.1em;
         top: 1%;
         left: 50%;
@@ -964,6 +946,36 @@ body {
         margin: 0 auto;
     }
 
+    .constructor__filter-section {
+        font-size: 0.6rem;
+        text-align: center;
+    }
+
+    .filter-section__item {
+        position: relative;
+        padding: var(--xs-padding);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+    }
+
+    .filter-section__item:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+
+    .filter-section__item:hover > .field__hide-element-button {
+        display: block;
+        position: absolute;
+        width: 25px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .filter-section__item-title {
+        line-height: 1.2;
+    }
+
     .constructor {
         height: 450px;
     }
@@ -973,8 +985,6 @@ body {
         flex-direction: column;
         width: 5%;
         height: 450px;
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
         margin-right: var(--xs-margin);
     }
 
@@ -1007,7 +1017,14 @@ body {
     }
 
     .field__land-plot-help-info {
-        font-size: 1rem;
+        font-size: 0.7rem;
+        text-align: center;
+        line-height: 1.2;
+        white-space: break-spaces;
+        width: 50%;
+        height: 30px;
+        left: 50%;
+        top: 0%;
     }
 
     .constructor__elements {
