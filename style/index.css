@@ -148,7 +148,6 @@ body {
 .field__tile-sidewalk-img,
 .field__tile-sidewalk2-img,
 .calculator__data-container.tile-total-cost,
-.calculator__data-container.stand-total-cost,
 .title-container__titles > span,
 .stand-container__info-message,
 .stand-container__info-message2,
@@ -159,6 +158,7 @@ body {
 .constructor__element-name > span,
 .constructor__filter-section,
 .filter-section__item-title > span,
+.calculator__data-value > span,
 .field__socle-img {
     display: none;
 }
@@ -257,6 +257,7 @@ body {
 .stand-container__info-message2.active > span.active,
 .stand__error.active > span.active,
 .constructor__element-name > span.active,
+.calculator__data-value > span.active,
 .filter-section__item-title > span.active {
     display: inline;
 }
@@ -593,8 +594,7 @@ body {
 .calculator__data-container.curbs-total-cost.active,
 .calculator__data-container.socle-total-cost.active,
 .calculator__data-container.total-cost.active,
-.calculator__data-container.tile-total-cost.active,
-.calculator__data-container.stand-total-cost.active {
+.calculator__data-container.tile-total-cost.active {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -956,6 +956,7 @@ body {
         padding: var(--xs-padding);
         border: 1px solid var(--border-color);
         border-radius: var(--border-radius);
+        margin-bottom: var(--xs-margin);
     }
 
     .filter-section__item:hover {
@@ -1014,6 +1015,12 @@ body {
     .field__error.active {
         top: 14%;
         left: 10%;
+    }
+
+    .stand-container__info-message.active,
+    .stand-container__info-message2.active {
+        margin: 5px auto 0;
+        width: 120px;
     }
 
     .field__land-plot-help-info {
@@ -1079,7 +1086,8 @@ body {
         height: 410px;
     }
 
-    .stand-container.active {
+    .stand-container.active,
+    .stand-container2.active {
         top: 55%;
     }
 

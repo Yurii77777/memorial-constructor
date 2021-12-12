@@ -26,8 +26,6 @@ let isUaLanguage = true;
 let isRuLanguage = false;
 let isEngLanguage = false;
 
-let firstSelectedStand = null;
-let secondSelectedStand = null;
 let selectedStandsLengths = 0;
 let selectedStendsCount = 0;
 
@@ -107,14 +105,14 @@ const tileSidewalkImgOnConstructor = document.querySelectorAll(
 const tileSidewalk2ImgOnConstructor = document.querySelectorAll(
     ".field__tile-sidewalk2-img"
 );
-const elementsStandsNode = document.querySelectorAll(
+const $elementsStandsNode = document.querySelectorAll(
     ".constructor__elements-values.stand"
 );
-const standContainerNode = document.querySelectorAll(".stand-container");
+const $standContainerNode = document.querySelectorAll(".stand-container");
 const infoMessageNode = document.querySelectorAll(
     ".stand-container__info-message"
 );
-const standContainer2Node = document.querySelectorAll(".stand-container2");
+const $standContainer2Node = document.querySelectorAll(".stand-container2");
 const infoMessage2Node = document.querySelectorAll(
     ".stand-container__info-message2"
 );
@@ -129,6 +127,7 @@ const elementsValuesMonumentsNode = document.querySelectorAll(
 );
 
 // Калькулятор
+const $calculatorSection = document.querySelectorAll(".calculator");
 const calculatorTitleNode = document.querySelectorAll(".calculator__title");
 const calculatorDataTitleNode = document.getElementsByClassName(
     "calculator__data-container"
@@ -172,14 +171,8 @@ const dataValueCementTotalCostNode = document.querySelectorAll(
 const dataValueTileTotalCostNode = document.querySelectorAll(
     ".calculator__data-value.tile-total-cost"
 );
-const totalCostNode = document.querySelectorAll(
+const $totalCostNode = document.querySelectorAll(
     ".calculator__data-container.total-cost"
-);
-const dataContainerStandTotalCostNode = document.querySelectorAll(
-    ".calculator__data-container.stand-total-cost"
-);
-const dataValueStandTotalCostNode = document.querySelectorAll(
-    ".calculator__data-value.stand-total-cost"
 );
 const totalCostValueNode = document.querySelectorAll(
     ".calculator__data-value.total-cost"
@@ -465,7 +458,12 @@ standContainer.addEventListener("mousedown", (e) => {
     e = e || window.event;
     e.preventDefault();
 
-    const { length: standLength, height } = firstSelectedStand;
+    const selectedStandIndex = Number(
+        $standContainerNode[0].children[0].dataset.itemIndex
+    );
+    const seletedStandData = getElementData(selectedStandIndex, "stand");
+    const { length: standLength, height } = seletedStandData;
+
     const { width } = handleLandPlotSizes();
     let intViewportWidth = window.innerWidth;
 
@@ -489,7 +487,7 @@ standContainer.addEventListener("mousedown", (e) => {
         const MAX_HEIGHT_OF_AREA = 150;
         let initialLength = ((standLength / width) * 100) / 1.8;
 
-        const newCoordinates = standContainerNode[0].getBoundingClientRect();
+        const newCoordinates = $standContainerNode[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
         if (intViewportWidth > 992) {
@@ -499,8 +497,8 @@ standContainer.addEventListener("mousedown", (e) => {
                 let newHeigth = height * progress + height;
                 let newLength =
                     initialLength + initialLength * (progress / 1.2);
-                standContainerNode[0].style.width = `${newLength}%`;
-                standContainerNode[0].style.height = `${newHeigth}px`;
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth}px`;
             }
         }
     };
@@ -514,6 +512,15 @@ standContainer.addEventListener("mousedown", (e) => {
 standContainer.addEventListener("touchstart", (e) => {
     e = e || window.event;
     e.preventDefault();
+
+    const selectedStandIndex = Number(
+        $standContainerNode[0].children[0].dataset.itemIndex
+    );
+    const seletedStandData = getElementData(selectedStandIndex, "stand");
+    const { length: standLength, height } = seletedStandData;
+
+    const { width } = handleLandPlotSizes();
+    let intViewportWidth = window.innerWidth;
 
     const closeDragElement = () => {
         document.ontouchend = null;
@@ -530,6 +537,25 @@ standContainer.addEventListener("touchstart", (e) => {
         pos4 = e.touches[0].clientY;
         standContainer.style.top = standContainer.offsetTop - pos2 + "px";
         standContainer.style.left = standContainer.offsetLeft - pos1 + "px";
+
+        const INITIAL_TOP_POSITION = 320;
+        const MAX_HEIGHT_OF_AREA = 150;
+        let initialLength = ((standLength / width) * 100) / 1.8;
+
+        const newCoordinates = $standContainerNode[0].getBoundingClientRect();
+        const { top } = newCoordinates;
+
+        if (intViewportWidth > 992) {
+            if (top > INITIAL_TOP_POSITION) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLength + initialLength * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth}px`;
+            }
+        }
     };
 
     pos3 = e.touches[0].clientX;
@@ -549,9 +575,14 @@ standContainer2.addEventListener("mousedown", (e) => {
     e = e || window.event;
     e.preventDefault();
 
-    const { length: standLength } = secondSelectedStand;
     const { width } = handleLandPlotSizes();
     let intViewportWidth = window.innerWidth;
+
+    const selectedStandIndex = Number(
+        $standContainer2Node[0].children[0].dataset.itemIndex
+    );
+    const seletedStandData = getElementData(selectedStandIndex, "stand");
+    const { length: standLength, height } = seletedStandData;
 
     const closeDragElement = () => {
         document.onmouseup = null;
@@ -575,7 +606,7 @@ standContainer2.addEventListener("mousedown", (e) => {
         const MAX_HEIGHT_OF_AREA = 150;
         let initialLength = ((standLength / width) * 100) / 1.8;
 
-        const newCoordinates = standContainer2Node[0].getBoundingClientRect();
+        const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
         if (intViewportWidth > 992) {
@@ -585,8 +616,8 @@ standContainer2.addEventListener("mousedown", (e) => {
                 let newHeigth = height * progress + height;
                 let newLength =
                     initialLength + initialLength * (progress / 1.2);
-                standContainer2Node[0].style.width = `${newLength}%`;
-                standContainer2Node[0].style.height = `${newHeigth}px`;
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth}px`;
             }
         }
     };
@@ -600,6 +631,15 @@ standContainer2.addEventListener("mousedown", (e) => {
 standContainer2.addEventListener("touchstart", (e) => {
     e = e || window.event;
     e.preventDefault();
+
+    const { width } = handleLandPlotSizes();
+    let intViewportWidth = window.innerWidth;
+
+    const selectedStandIndex = Number(
+        $standContainer2Node[0].children[0].dataset.itemIndex
+    );
+    const seletedStandData = getElementData(selectedStandIndex, "stand");
+    const { length: standLength, height } = seletedStandData;
 
     const closeDragElement = () => {
         document.ontouchend = null;
@@ -618,6 +658,25 @@ standContainer2.addEventListener("touchstart", (e) => {
             standContainer2.offsetTop - pos2Container2 + "px";
         standContainer2.style.left =
             standContainer2.offsetLeft - pos1Container2 + "px";
+
+        const INITIAL_TOP_POSITION = 320;
+        const MAX_HEIGHT_OF_AREA = 150;
+        let initialLength = ((standLength / width) * 100) / 1.8;
+
+        const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
+        const { top } = newCoordinates;
+
+        if (intViewportWidth > 992) {
+            if (top > INITIAL_TOP_POSITION) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLength + initialLength * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth}px`;
+            }
+        }
     };
 
     pos3Container2 = e.touches[0].clientX;
@@ -840,6 +899,32 @@ const handleSubmitLandPlotInputsData = () => {
     }
 };
 
+const createCalculatorDataNode = (
+    category,
+    selectedItemIndex,
+    siteNameUa,
+    siteNameRu,
+    siteNameEng,
+    price
+) => {
+    let result = `<div class="calculator__data-container" 
+                        data-category="${category}" 
+                        data-item-index="${selectedItemIndex}">
+                    <p class="calculator__data-title">
+                        <span data-lang="ua" class="active">${siteNameUa}</span>
+                        <span data-lang="ru">${siteNameRu}</span>
+                        <span data-lang="eng">${siteNameEng}</span>
+                    </p>
+                    <p class="calculator__data-value">
+                        <span data-lang="ua" class="active">${price} грн.</span>
+                        <span data-lang="ru">${price} грн.</span>
+                        <span data-lang="eng">${price} UAH</span>
+                    </p>
+                 </div>`;
+
+    return result;
+};
+
 /**
  * Блок Фільтр
  */
@@ -851,19 +936,88 @@ filterNode[0].addEventListener("click", (e) => {
     const filterElements = Array.from(filterNode[0].children);
     selectedItem = filterElements.indexOf(userClick.parentNode);
 
-    filterNode[0].removeChild(filterElements[selectedItem]);
-
-    if (filterElements[selectedItem].dataset.category === "stand") {
+    if (
+        selectedItem !== -1 &&
+        filterElements[selectedItem].dataset.category === "stand"
+    ) {
         let selectedStand = getElementData(selectedItem, "stand");
+        const id = filterElements[selectedItem].dataset.itemIndex;
+
+        const firstStandIndex =
+            $standContainerNode[0].children[0].dataset.itemIndex;
+        const secondStandIndex =
+            $standContainer2Node[0].children[0].dataset.itemIndex;
+
         const { length: standLength } = selectedStand;
         selectedStendsCount -= 1;
         selectedStandsLengths -= standLength * 2;
         selectedStendsCount === 0 && (isStandHidden = true);
 
-        const standsItems = Array.from(elementsStandsNode[0].children);
-        standsItems[standContainerNode[0].children[0].dataset.itemIndex].classList.remove("active");
+        if (firstStandIndex !== secondStandIndex) {
+            const standsItems = Array.from($elementsStandsNode[0].children);
+            standsItems[id].classList.remove("active");
 
-        //TODO: Remove Img Stand on Constructor
+            const firstImgStandOnConstructor =
+                $standContainerNode[0].children[0];
+            firstImgStandOnConstructor.dataset.itemIndex === id &&
+                $standContainerNode[0].removeChild(firstImgStandOnConstructor);
+
+            const secondImgStandOnConstructor =
+                $standContainer2Node[0].children[0];
+            secondImgStandOnConstructor.dataset.itemIndex === id &&
+                $standContainer2Node[0].removeChild(
+                    secondImgStandOnConstructor
+                );
+
+            const calculatorNodes = Array.from($calculatorSection[0].children);
+
+            for (let i = 0; i < calculatorNodes.length; i++) {
+                if (calculatorNodes[i].dataset.itemIndex === String(id)) {
+                    $calculatorSection[0].removeChild(calculatorNodes[i]);
+                }
+            }
+
+            for (let i = 0; i < seceltedItems.length; i++) {
+                const { category, id: standId } = seceltedItems[i];
+                category === "stand" &&
+                    standId === +id &&
+                    seceltedItems.splice(i, 1);
+            }
+
+            calculate();
+
+            filterNode[0].removeChild(filterElements[selectedItem]);
+        }
+
+        if (firstStandIndex === secondStandIndex) {
+            filterNode[0].removeChild(filterElements[selectedItem]);
+
+            for (let i = 0; i < seceltedItems.length; i++) {
+                const { category, id: standId } = seceltedItems[i];
+                category === "stand" &&
+                    standId === +id &&
+                    seceltedItems.splice(i, 1);
+                continue;
+            }
+
+            calculate();
+
+            const secondImgStandOnConstructor =
+                $standContainer2Node[0].children[0];
+            secondImgStandOnConstructor.dataset.itemIndex === id &&
+                $standContainer2Node[0].removeChild(
+                    secondImgStandOnConstructor
+                );
+
+            const calculatorNodes = Array.from($calculatorSection[0].children);
+
+            for (let i = 0; i < calculatorNodes.length; i++) {
+                if (calculatorNodes[i].dataset.itemIndex === String(id)) {
+                    $calculatorSection[0].removeChild(calculatorNodes[i]);
+                    return;
+                }
+            }
+        }
     }
 });
 
@@ -875,7 +1029,7 @@ filterNode[0].addEventListener("click", (e) => {
 
 /**
  *
- * @param {Number} selectedElement index of userc click
+ * @param {Number} selectedElement index of user click
  * @param {String} categoryToSearch name of category from "priceList" file
  * @returns Object
  */
@@ -902,14 +1056,15 @@ const getElementData = (selectedElement, categoryToSearch) => {
     return selectedElementData;
 };
 
-elementsStandsNode[0].addEventListener("click", (e) => {
+$elementsStandsNode[0].addEventListener("click", (e) => {
     let selectedStand = null;
     let userClick = e.target;
-    const elementsStands = Array.from(elementsStandsNode[0].children);
+    const elementsStands = Array.from($elementsStandsNode[0].children);
     selectedStand = elementsStands.indexOf(userClick.parentNode);
     const { width } = handleLandPlotSizes();
 
     let userSelectStand = getElementData(selectedStand, "stand");
+
     const {
         length: standLength,
         height,
@@ -919,6 +1074,7 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         siteNameRu,
         siteNameEng,
         category,
+        price,
     } = userSelectStand;
     standLength && (selectedStandsLengths += standLength);
 
@@ -931,8 +1087,7 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         isStandHidden = false;
         startHelper();
 
-        firstSelectedStand = userSelectStand;
-        seceltedItems.push(firstSelectedStand);
+        seceltedItems.push(userSelectStand);
         let imgStandOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
                                         alt="${siteNameUa}" 
                                         class="stand-container__stand-img"
@@ -955,23 +1110,37 @@ elementsStandsNode[0].addEventListener("click", (e) => {
                                 </div>`;
 
         elementsStands[selectedStand].classList.add("active");
-        standContainerNode[0].classList.add("active");
-        standContainerNode[0].insertAdjacentHTML(
+        $standContainerNode[0].classList.add("active");
+        $standContainerNode[0].insertAdjacentHTML(
             "afterbegin",
             imgStandOnConstructor
         );
-        filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
 
         let widthOfStand = ((standLength / width) * 100) / 1.8;
-        standContainerNode[0].style.width = `${widthOfStand}%`;
-        standContainerNode[0].style.height = `${height}px`;
+        $standContainerNode[0].style.width = `${widthOfStand}%`;
+        $standContainerNode[0].style.height = `${height}px`;
+        $standContainerNode[0].style.top = "225px";
 
         handleInfoAndErrorMessages(infoMessageNode, {
             isUaLanguage,
             isRuLanguage,
             isEngLanguage,
         });
-        dataContainerStandTotalCostNode[0].classList.add("active");
+
+        const standNodeToCalculator = createCalculatorDataNode(
+            category,
+            selectedStand,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            price
+        );
+
+        filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
+        $totalCostNode[0].insertAdjacentHTML(
+            "beforebegin",
+            standNodeToCalculator
+        );
 
         calculate();
     } else if (
@@ -981,27 +1150,96 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStandsLengths <= width
     ) {
         selectedStendsCount += 1;
-        secondSelectedStand = userSelectStand;
+        seceltedItems.push(userSelectStand);
 
         let imgStandOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
                                         alt="${siteNameUa}" 
-                                        class="stand-container__stand-img2"
+                                        class="stand-container__stand-img"
+                                        data-category="${category}"
+                                        data-item-index="${selectedStand}"
                                     />`;
-        elementsStands[selectedStand].classList.add("active");
-        standContainer2Node[0].classList.add("active");
-        standContainer2Node[0].insertAdjacentHTML(
-            "afterbegin",
-            imgStandOnConstructor
-        );
-        let widthOfStand = ((standLength / width) * 100) / 1.8;
-        standContainerNode[0].style.width = `${widthOfStand}%`;
-        standContainerNode[0].style.height = "25px";
+        let imgStandOnFilter = `<div class="filter-section__item" data-category="${category}" data-item-index="${selectedStand}">
+                                    <img src="./img/items${imgUrl}" 
+                                         alt="${siteNameUa}" 
+                                         class="filter-section__item-img"
+                                    />
+                                    <p class="filter-section__item-title">
+                                        <span data-lang="ua" class="active">${siteNameUa}</span>
+                                        <span data-lang="ru">${siteNameRu}</span>
+                                        <span data-lang="eng">${siteNameEng}</span>
+                                    </p>
+                                    <img src="./img/icons/close.svg" 
+                                         alt="Приховати елемент" 
+                                         class="field__hide-element-button">
+                                </div>`;
 
-        handleInfoAndErrorMessages(infoMessage2Node, {
-            isUaLanguage,
-            isRuLanguage,
-            isEngLanguage,
-        });
+        elementsStands[selectedStand].classList.add("active");
+
+        if ($standContainerNode[0].children.length === 2) {
+            $standContainer2Node[0].classList.add("active");
+            $standContainer2Node[0].insertAdjacentHTML(
+                "afterbegin",
+                imgStandOnConstructor
+            );
+
+            let widthOfStand = ((standLength / width) * 100) / 1.8;
+            $standContainer2Node[0].style.width = `${widthOfStand}%`;
+            $standContainer2Node[0].style.height = `${height}px`;
+            $standContainer2Node[0].style.top = "225px";
+
+            handleInfoAndErrorMessages(infoMessage2Node, {
+                isUaLanguage,
+                isRuLanguage,
+                isEngLanguage,
+            });
+
+            const standNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedStand,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                standNodeToCalculator
+            );
+        } else if ($standContainer2Node[0].children.length === 2) {
+            $standContainerNode[0].classList.add("active");
+            $standContainerNode[0].insertAdjacentHTML(
+                "afterbegin",
+                imgStandOnConstructor
+            );
+
+            let widthOfStand = ((standLength / width) * 100) / 1.8;
+            $standContainerNode[0].style.width = `${widthOfStand}%`;
+            $standContainerNode[0].style.height = `${height}px`;
+            $standContainerNode[0].style.top = "225px";
+
+            handleInfoAndErrorMessages(infoMessageNode, {
+                isUaLanguage,
+                isRuLanguage,
+                isEngLanguage,
+            });
+
+            const standNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedStand,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                standNodeToCalculator
+            );
+        }
 
         calculate();
     } else if (
@@ -1041,27 +1279,15 @@ elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.remove("active");
 
-        if (
-            standContainerNode[0].classList.contains("active") &&
-            standContainerNode[0].children.length === 2
-        ) {
-            const imgNodeOnConstructor = document.querySelectorAll(
-                ".stand-container__stand-img"
-            );
-            standContainerNode[0].removeChild(imgNodeOnConstructor[0]);
-            standContainerNode[0].classList.remove("active");
-        }
+        const firstImgStandOnConstructor = $standContainerNode[0].children[0];
+        firstImgStandOnConstructor.dataset.itemIndex ===
+            String(selectedStand) &&
+            $standContainerNode[0].removeChild(firstImgStandOnConstructor);
 
-        if (
-            standContainer2Node[0].classList.contains("active") &&
-            standContainer2Node[0].children.length === 2
-        ) {
-            const img2NodeOnConstructor = document.querySelectorAll(
-                ".stand-container__stand-img2"
-            );
-            standContainer2Node[0].removeChild(img2NodeOnConstructor[0]);
-            standContainer2Node[0].classList.remove("active");
-        }
+        const secondImgStandOnConstructor = $standContainer2Node[0].children[0];
+        secondImgStandOnConstructor.dataset.itemIndex ===
+            String(selectedStand) &&
+            $standContainer2Node[0].removeChild(secondImgStandOnConstructor);
 
         const itemsInFilterSection = Array.from(filterNode[0].children);
 
@@ -1075,8 +1301,22 @@ elementsStandsNode[0].addEventListener("click", (e) => {
             }
         }
 
-        dataValueStandTotalCostNode[0].innerText = 0;
-        dataContainerStandTotalCostNode[0].classList.remove("active");
+        for (let i = 0; i < seceltedItems.length; i++) {
+            const { category, id } = seceltedItems[i];
+            category === "stand" &&
+                id === selectedStand &&
+                seceltedItems.splice(i, 1);
+        }
+
+        const calculatorNodes = Array.from($calculatorSection[0].children);
+
+        for (let i = 0; i < calculatorNodes.length; i++) {
+            if (
+                calculatorNodes[i].dataset.itemIndex === String(selectedStand)
+            ) {
+                $calculatorSection[0].removeChild(calculatorNodes[i]);
+            }
+        }
 
         calculate();
     } else if (
@@ -1085,29 +1325,126 @@ elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStendsCount === 2
     ) {
         selectedStandsLengths -= standLength * 2;
-        const selectedStandsIndexes = getActiveElements(elementsStandsNode);
+        selectedStendsCount -= 1;
+        isStandHidden = false;
 
-        if (selectedStendsCount === 2 && selectedStandsIndexes.length === 1) {
-            standContainer2Node[0].classList.remove("active");
+        const firstStandIndex =
+            $standContainerNode[0].children[0].dataset.itemIndex;
+        const secondStandIndex =
+            $standContainer2Node[0].children[0].dataset.itemIndex;
 
-            selectedStendsCount -= 1;
-        }
+        if (firstStandIndex !== secondStandIndex) {
+            elementsStands[selectedStand].classList.remove("active");
 
-        if (selectedStendsCount === 2 && selectedStandsIndexes.length === 2) {
-            for (let i = 0; i < selectedStandsIndexes.length; i++) {
-                if (selectedStandsIndexes[i] === selectedStand) {
-                    elementsStands[selectedStand].classList.remove("active");
+            const firstImgStandOnConstructor =
+                $standContainerNode[0].children[0];
+            firstImgStandOnConstructor.dataset.itemIndex ===
+                String(selectedStand) &&
+                $standContainerNode[0].removeChild(firstImgStandOnConstructor);
 
-                    i === 0 && standContainerNode[0].classList.remove("active");
-                    i === 1 &&
-                        standContainer2Node[0].classList.remove("active");
+            const secondImgStandOnConstructor =
+                $standContainer2Node[0].children[0];
+            secondImgStandOnConstructor.dataset.itemIndex ===
+                String(selectedStand) &&
+                $standContainer2Node[0].removeChild(
+                    secondImgStandOnConstructor
+                );
+
+            const itemsInFilterSection = Array.from(filterNode[0].children);
+
+            for (let i = 0; i < itemsInFilterSection.length; i++) {
+                if (
+                    itemsInFilterSection[i].dataset.category === "stand" &&
+                    itemsInFilterSection[i].dataset.itemIndex ===
+                        String(selectedStand)
+                ) {
+                    filterNode[0].removeChild(itemsInFilterSection[i]);
                 }
             }
 
-            selectedStendsCount -= 1;
+            for (let i = 0; i < seceltedItems.length; i++) {
+                const { category, id } = seceltedItems[i];
+                category === "stand" &&
+                    id === selectedStand &&
+                    seceltedItems.splice(i, 1);
+            }
+
+            const calculatorNodes = Array.from($calculatorSection[0].children);
+
+            for (let i = 0; i < calculatorNodes.length; i++) {
+                if (
+                    calculatorNodes[i].dataset.itemIndex ===
+                    String(selectedStand)
+                ) {
+                    $calculatorSection[0].removeChild(calculatorNodes[i]);
+                }
+            }
+
+            for (let i = 0; i < seceltedItems.length; i++) {
+                const { category, id: standId } = seceltedItems[i];
+                category === "stand" &&
+                    standId === selectedStand &&
+                    seceltedItems.splice(i, 1);
+            }
+
+            calculate();
         }
 
-        calculate();
+        if (firstStandIndex === secondStandIndex) {
+            for (let i = 0; i < seceltedItems.length; i++) {
+                const { category, id: standId } = seceltedItems[i];
+                category === "stand" &&
+                    standId === selectedStand &&
+                    seceltedItems.splice(i, 1);
+                continue;
+            }
+
+            calculate();
+
+            const itemsInFilterSection = Array.from(filterNode[0].children);
+
+            const itemToRemove = itemsInFilterSection.findIndex((el) => {
+                if (
+                    el.dataset.category === "stand" &&
+                    el.dataset.itemIndex === String(selectedStand)
+                ) {
+                    return el;
+                }
+            });
+
+            filterNode[0].removeChild(filterNode[0].children[itemToRemove]);
+
+            const secondImgStandOnConstructor =
+                $standContainer2Node[0].children[0];
+            secondImgStandOnConstructor.dataset.itemIndex ===
+                String(selectedStand) &&
+                $standContainer2Node[0].removeChild(
+                    secondImgStandOnConstructor
+                );
+
+            const calculatorNodes = Array.from($calculatorSection[0].children);
+
+            for (let i = 0; i < calculatorNodes.length; i++) {
+                if (
+                    calculatorNodes[i].dataset.itemIndex ===
+                    String(selectedStand)
+                ) {
+                    $calculatorSection[0].removeChild(calculatorNodes[i]);
+                    return;
+                }
+            }
+
+            for (let i = 0; i < itemsInFilterSection.length; i++) {
+                if (
+                    itemsInFilterSection[i].dataset.category === "stand" &&
+                    itemsInFilterSection[i].dataset.itemIndex ===
+                        String(selectedStand)
+                ) {
+                    filterNode[0].removeChild(itemsInFilterSection[i]);
+                    return;
+                }
+            }
+        }
     }
 });
 
@@ -1130,7 +1467,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
         if (id === selectedMonument) {
             console.log("Yes");
-            standContainerNode[0].insertAdjacentHTML(
+            $standContainerNode[0].insertAdjacentHTML(
                 "afterbegin",
                 imgOnConstructor
             );
@@ -1167,7 +1504,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         dataContainerCurbsNode[0].classList.add("active");
         dataContainerCurbsTotalCostNode[0].classList.add("active");
 
-        calculate();
+        calculate({});
     }
 
     if (
@@ -1181,7 +1518,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         dataContainerCurbsTotalCostNode[0].classList.remove("active");
         selectedBorder = null;
 
-        calculate();
+        calculate({});
     }
 });
 
@@ -1214,7 +1551,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         dataValueCementTotalCostNode[0].classList.add("active");
         landPlotNode[0].classList.add("hide");
 
-        calculate();
+        calculate({});
     }
 
     if (
@@ -1250,7 +1587,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         isTileHidden = true;
         selectedSocle = null;
 
-        calculate();
+        calculate({});
     }
 });
 
@@ -1387,7 +1724,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 totalCostTileNode[0].classList.add("active");
                 isTileHidden = false;
 
-                calculate();
+                calculate({});
             }
         });
     }
@@ -1409,7 +1746,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
         // landPlotNode[0].classList.remove("hide");
         isTileHidden = true;
 
-        calculate();
+        calculate({});
     }
 });
 
@@ -1470,95 +1807,30 @@ const calculate = () => {
     area = (width * length) / 10000;
     landPlotAreaNode[0].innerText = area;
 
-    // Рахуємо к-сть і вартість бордюр
+    // Рахуємо загальну вартість
+    if (seceltedItems.length) {
+        const totalCostNode =
+            '<p class="calculator__data-value total-cost">[price]</p>';
+        $totalCostNode[0].classList.add("active");
 
-    const selectedBorder = getActiveElements(elementsBordersNode);
-    let totalCostBorders = 0;
-    if (selectedBorder.length && selectedBorder.length === 1) {
-        const borders = priceList.map((el) => el.curbs);
+        let totalCost = 0;
 
-        borders[0].forEach(({ id, length, price }) => {
-            if (selectedBorder[0] === id) {
-                const borderPcs = Math.ceil((perimeter * 100) / length);
-                dataValueCurbsNode[0].innerText = borderPcs;
-
-                totalCostBorders = borderPcs * price;
-                dataValueCurbsTotalCostNode[0].innerText = totalCostBorders;
-            }
-        });
-    }
-
-    // Рахуємо вартість цоколю
-    let totalScoleCost = 0;
-    const selectedSocle = getActiveElements(elementsValuesSocleNode);
-
-    if (selectedSocle.length && selectedSocle.length === 1) {
-        const soclesElements = priceList.filter(({ socle }) => socle);
-        const { socle } = soclesElements[0];
-
-        socle.forEach(({ id, price }) => {
-            if (selectedSocle[0] === id) {
-                totalScoleCost = area * price;
-                dataValueCementTotalCostNode[0].innerText = totalScoleCost;
-            }
-        });
-    }
-
-    // Рахуємо вартість плитки
-    let totaTileCost = 0;
-    const selectedTile = getActiveElements(elementsBeautyNode);
-
-    if (selectedTile.length && selectedTile.length === 1) {
-        const beautyElements = priceList.filter(({ beauty }) => beauty);
-        const { beauty } = beautyElements[0];
-
-        beauty.forEach(({ id, price, type }) => {
-            if (selectedTile[0] === id && type === "tile") {
-                totaTileCost = area * price;
-                dataValueTileTotalCostNode[0].innerText = totaTileCost;
-            }
-        });
-    }
-
-    // Рахуємо вартість тумб
-    let totalStandsCost = 0;
-    const selectedStands = getActiveElements(elementsStandsNode);
-
-    if (selectedStands.length) {
-        const standsElements = priceList.filter(({ stand }) => stand);
-        const { stand } = standsElements[0];
-
-        if (selectedStendsCount === 2 && selectedStands.length === 1) {
-            stand.forEach(({ id, price }) => {
-                for (let i = 0; i < selectedStands.length; i++) {
-                    selectedStands[i] === id && (totalStandsCost += price * 2);
-                }
-            });
-        } else {
-            stand.forEach(({ id, price }) => {
-                for (let i = 0; i < selectedStands.length; i++) {
-                    selectedStands[i] === id && (totalStandsCost += price);
-                }
-            });
+        for (let i = 0; i < seceltedItems.length; i++) {
+            let { price } = seceltedItems[i];
+            totalCost += price;
         }
 
-        dataValueStandTotalCostNode[0].innerText = totalStandsCost;
-    }
+        $totalCostNode[0].children.length === 2 &&
+            $totalCostNode[0].removeChild($totalCostNode[0].children[1]);
 
-    // Рахуємо загальну вартість замовлення
-    if (
-        selectedBorder.length ||
-        selectedSocle.length ||
-        selectedStands.length
-    ) {
-        totalCostNode[0].classList.add("active");
-
-        let totalCost =
-            totalCostBorders + totalScoleCost + totaTileCost + totalStandsCost;
-        totalCostValueNode[0].innerText = totalCost;
+        $totalCostNode[0].insertAdjacentHTML(
+            "beforeend",
+            totalCostNode.replace(/\[price\]/g, totalCost)
+        );
     } else {
-        totalCostValueNode[0].innerText = "";
-        totalCostNode[0].classList.remove("active");
+        $totalCostNode[0].children.length === 2 &&
+            $totalCostNode[0].removeChild($totalCostNode[0].children[1]);
+        $totalCostNode[0].classList.remove("active");
     }
 };
 
