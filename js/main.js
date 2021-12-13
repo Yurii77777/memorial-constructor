@@ -483,22 +483,70 @@ standContainer.addEventListener("mousedown", (e) => {
         standContainer.style.top = standContainer.offsetTop - pos2 + "px";
         standContainer.style.left = standContainer.offsetLeft - pos1 + "px";
 
-        const INITIAL_TOP_POSITION = 320;
-        const MAX_HEIGHT_OF_AREA = 150;
-        let initialLength = ((standLength / width) * 100) / 1.8;
+        const INITIAL_TOP_POSITION_S = 180;
+        const MAX_HEIGHT_OF_AREA_S = 89;
+        let initialLengthS = ((standLength / width) * 100) / 2.1;
+
+        const INITIAL_TOP_POSITION_M = 220;
+        const MAX_HEIGHT_OF_AREA_M = 130;
+        let initialLengthM = ((standLength / width) * 100) / 1.9;
+
+        const INITIAL_TOP_POSITION_L = 270;
+        const MAX_HEIGHT_OF_AREA_L = 135;
+        let initialLengthL = ((standLength / width) * 100) / 2;
+
+        const INITIAL_TOP_POSITION_XL = 320;
+        const MAX_HEIGHT_OF_AREA_XL = 150;
+        let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainerNode[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
-        if (intViewportWidth > 992) {
-            if (top > INITIAL_TOP_POSITION) {
+        if (intViewportWidth < 576) {
+            if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
-                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                    (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
                 let newHeigth = height * progress + height;
                 let newLength =
-                    initialLength + initialLength * (progress / 1.2);
+                    initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth}px`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+            }
+        }
+
+        if (intViewportWidth > 576) {
+            if (top > INITIAL_TOP_POSITION_M) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthM + initialLengthM * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.7}px`;
+            }
+        }
+
+        if (intViewportWidth > 768) {
+            if (top > INITIAL_TOP_POSITION_L) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthL + initialLengthL * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+            }
+        }
+
+        if (intViewportWidth > 992) {
+            if (top > INITIAL_TOP_POSITION_XL) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthXL + initialLengthXL * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.8}px`;
             }
         }
     };
@@ -538,22 +586,70 @@ standContainer.addEventListener("touchstart", (e) => {
         standContainer.style.top = standContainer.offsetTop - pos2 + "px";
         standContainer.style.left = standContainer.offsetLeft - pos1 + "px";
 
-        const INITIAL_TOP_POSITION = 320;
-        const MAX_HEIGHT_OF_AREA = 150;
-        let initialLength = ((standLength / width) * 100) / 1.8;
+        const INITIAL_TOP_POSITION_S = 180;
+        const MAX_HEIGHT_OF_AREA_S = 89;
+        let initialLengthS = ((standLength / width) * 100) / 2.1;
+
+        const INITIAL_TOP_POSITION_M = 220;
+        const MAX_HEIGHT_OF_AREA_M = 130;
+        let initialLengthM = ((standLength / width) * 100) / 1.9;
+
+        const INITIAL_TOP_POSITION_L = 270;
+        const MAX_HEIGHT_OF_AREA_L = 135;
+        let initialLengthL = ((standLength / width) * 100) / 2;
+
+        const INITIAL_TOP_POSITION_XL = 320;
+        const MAX_HEIGHT_OF_AREA_XL = 150;
+        let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainerNode[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
-        if (intViewportWidth > 992) {
-            if (top > INITIAL_TOP_POSITION) {
+        if (intViewportWidth < 576) {
+            if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
-                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                    (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
                 let newHeigth = height * progress + height;
                 let newLength =
-                    initialLength + initialLength * (progress / 1.2);
+                    initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth}px`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+            }
+        }
+
+        if (intViewportWidth > 576) {
+            if (top > INITIAL_TOP_POSITION_M) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthM + initialLengthM * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.7}px`;
+            }
+        }
+
+        if (intViewportWidth > 768) {
+            if (top > INITIAL_TOP_POSITION_L) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthL + initialLengthL * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+            }
+        }
+
+        if (intViewportWidth > 992) {
+            if (top > INITIAL_TOP_POSITION_XL) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthXL + initialLengthXL * (progress / 1.2);
+                $standContainerNode[0].style.width = `${newLength}%`;
+                $standContainerNode[0].style.height = `${newHeigth * 0.8}px`;
             }
         }
     };
@@ -602,22 +698,70 @@ standContainer2.addEventListener("mousedown", (e) => {
         standContainer2.style.left =
             standContainer2.offsetLeft - pos1Container2 + "px";
 
-        const INITIAL_TOP_POSITION = 320;
-        const MAX_HEIGHT_OF_AREA = 150;
-        let initialLength = ((standLength / width) * 100) / 1.8;
+        const INITIAL_TOP_POSITION_S = 180;
+        const MAX_HEIGHT_OF_AREA_S = 89;
+        let initialLengthS = ((standLength / width) * 100) / 2.1;
+
+        const INITIAL_TOP_POSITION_M = 220;
+        const MAX_HEIGHT_OF_AREA_M = 130;
+        let initialLengthM = ((standLength / width) * 100) / 1.9;
+
+        const INITIAL_TOP_POSITION_L = 270;
+        const MAX_HEIGHT_OF_AREA_L = 135;
+        let initialLengthL = ((standLength / width) * 100) / 2;
+
+        const INITIAL_TOP_POSITION_XL = 320;
+        const MAX_HEIGHT_OF_AREA_XL = 150;
+        let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
         const { top } = newCoordinates;
 
-        if (intViewportWidth > 992) {
-            if (top > INITIAL_TOP_POSITION) {
+        if (intViewportWidth < 576) {
+            if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
-                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
+                    (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
                 let newHeigth = height * progress + height;
                 let newLength =
-                    initialLength + initialLength * (progress / 1.2);
+                    initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth}px`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+            }
+        }
+
+        if (intViewportWidth > 576) {
+            if (top > INITIAL_TOP_POSITION_M) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthM + initialLengthM * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.7}px`;
+            }
+        }
+
+        if (intViewportWidth > 768) {
+            if (top > INITIAL_TOP_POSITION_L) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthL + initialLengthL * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+            }
+        }
+
+        if (intViewportWidth > 992) {
+            if (top > INITIAL_TOP_POSITION_XL) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
+                let newHeigth = height * progress + height;
+                let newLength =
+                initialLengthXL + initialLengthXL * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
             }
         }
     };
@@ -659,24 +803,72 @@ standContainer2.addEventListener("touchstart", (e) => {
         standContainer2.style.left =
             standContainer2.offsetLeft - pos1Container2 + "px";
 
-        const INITIAL_TOP_POSITION = 320;
-        const MAX_HEIGHT_OF_AREA = 150;
-        let initialLength = ((standLength / width) * 100) / 1.8;
-
-        const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
-        const { top } = newCoordinates;
-
-        if (intViewportWidth > 992) {
-            if (top > INITIAL_TOP_POSITION) {
-                let progress =
-                    (top - INITIAL_TOP_POSITION) / MAX_HEIGHT_OF_AREA;
-                let newHeigth = height * progress + height;
-                let newLength =
-                    initialLength + initialLength * (progress / 1.2);
-                $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth}px`;
+            const INITIAL_TOP_POSITION_S = 180;
+            const MAX_HEIGHT_OF_AREA_S = 89;
+            let initialLengthS = ((standLength / width) * 100) / 2.1;
+    
+            const INITIAL_TOP_POSITION_M = 220;
+            const MAX_HEIGHT_OF_AREA_M = 130;
+            let initialLengthM = ((standLength / width) * 100) / 1.9;
+    
+            const INITIAL_TOP_POSITION_L = 270;
+            const MAX_HEIGHT_OF_AREA_L = 135;
+            let initialLengthL = ((standLength / width) * 100) / 2;
+    
+            const INITIAL_TOP_POSITION_XL = 320;
+            const MAX_HEIGHT_OF_AREA_XL = 150;
+            let initialLengthXL = ((standLength / width) * 100) / 2;
+    
+            const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
+            const { top } = newCoordinates;
+    
+            if (intViewportWidth < 576) {
+                if (top > INITIAL_TOP_POSITION_S) {
+                    let progress =
+                        (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
+                    let newHeigth = height * progress + height;
+                    let newLength =
+                        initialLengthS + initialLengthS * (progress / 1.2);
+                    $standContainer2Node[0].style.width = `${newLength}%`;
+                    $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+                }
             }
-        }
+    
+            if (intViewportWidth > 576) {
+                if (top > INITIAL_TOP_POSITION_M) {
+                    let progress =
+                        (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
+                    let newHeigth = height * progress + height;
+                    let newLength =
+                        initialLengthM + initialLengthM * (progress / 1.2);
+                    $standContainer2Node[0].style.width = `${newLength}%`;
+                    $standContainer2Node[0].style.height = `${newHeigth * 0.7}px`;
+                }
+            }
+    
+            if (intViewportWidth > 768) {
+                if (top > INITIAL_TOP_POSITION_L) {
+                    let progress =
+                        (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
+                    let newHeigth = height * progress + height;
+                    let newLength =
+                        initialLengthL + initialLengthL * (progress / 1.2);
+                    $standContainer2Node[0].style.width = `${newLength}%`;
+                    $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+                }
+            }
+    
+            if (intViewportWidth > 992) {
+                if (top > INITIAL_TOP_POSITION_XL) {
+                    let progress =
+                        (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
+                    let newHeigth = height * progress + height;
+                    let newLength =
+                    initialLengthXL + initialLengthXL * (progress / 1.2);
+                    $standContainer2Node[0].style.width = `${newLength}%`;
+                    $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
+                }
+            }
     };
 
     pos3Container2 = e.touches[0].clientX;
@@ -1111,15 +1303,32 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.add("active");
         $standContainerNode[0].classList.add("active");
+
+        let widthOfStand = null;
+        let intViewportWidth = window.innerWidth;
+
+        if (intViewportWidth < 576) {
+            widthOfStand = ((standLength / width) * 100) / 2.1;
+            $standContainerNode[0].style.height = `${height * 0.6}px`;
+
+        } else if (intViewportWidth > 576) {
+            widthOfStand = ((standLength / width) * 100) / 1.9;
+            $standContainerNode[0].style.height = `${height * 0.7}px`;
+
+        } else if (intViewportWidth > 768) {
+            widthOfStand = ((standLength / width) * 100) / 2;
+            $standContainerNode[0].style.height = `${height * 0.6}px`;
+
+        } else if (intViewportWidth > 992) {
+            widthOfStand = ((standLength / width) * 100) / 1.8;
+            $standContainerNode[0].style.height = `${height * 0.8}px`;
+        }
+
+        $standContainerNode[0].style.width = `${widthOfStand}%`;
         $standContainerNode[0].insertAdjacentHTML(
             "afterbegin",
             imgStandOnConstructor
         );
-
-        let widthOfStand = ((standLength / width) * 100) / 1.8;
-        $standContainerNode[0].style.width = `${widthOfStand}%`;
-        $standContainerNode[0].style.height = `${height}px`;
-        $standContainerNode[0].style.top = "225px";
 
         handleInfoAndErrorMessages(infoMessageNode, {
             isUaLanguage,
@@ -1177,15 +1386,32 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
 
         if ($standContainerNode[0].children.length === 2) {
             $standContainer2Node[0].classList.add("active");
+
+            let widthOfStand = null;
+            let intViewportWidth = window.innerWidth;
+
+            if (intViewportWidth < 576) {
+                widthOfStand = ((standLength / width) * 100) / 2.1;
+                $standContainer2Node[0].style.height = `${height * 0.6}px`;
+
+            } else if (intViewportWidth > 576) {
+                widthOfStand = ((standLength / width) * 100) / 1.9;
+                $standContainer2Node[0].style.height = `${height * 0.7}px`;
+
+            } else if (intViewportWidth > 768) {
+                widthOfStand = ((standLength / width) * 100) / 2;
+                $standContainer2Node[0].style.height = `${height * 0.6}px`;
+
+            } else if (intViewportWidth > 992) {
+                widthOfStand = ((standLength / width) * 100) / 1.8;
+                $standContainer2Node[0].style.height = `${height * 0.8}px`;
+            }
+
+            $standContainer2Node[0].style.width = `${widthOfStand}%`;
             $standContainer2Node[0].insertAdjacentHTML(
                 "afterbegin",
                 imgStandOnConstructor
             );
-
-            let widthOfStand = ((standLength / width) * 100) / 1.8;
-            $standContainer2Node[0].style.width = `${widthOfStand}%`;
-            $standContainer2Node[0].style.height = `${height}px`;
-            $standContainer2Node[0].style.top = "225px";
 
             handleInfoAndErrorMessages(infoMessage2Node, {
                 isUaLanguage,
@@ -1209,15 +1435,32 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             );
         } else if ($standContainer2Node[0].children.length === 2) {
             $standContainerNode[0].classList.add("active");
+
+            let widthOfStand = null;
+            let intViewportWidth = window.innerWidth;
+
+            if (intViewportWidth < 576) {
+                widthOfStand = ((standLength / width) * 100) / 2.1;
+                $standContainerNode[0].style.height = `${height * 0.6}px`;
+
+            } else if (intViewportWidth > 576) {
+                widthOfStand = ((standLength / width) * 100) / 1.9;
+                $standContainerNode[0].style.height = `${height * 0.7}px`;
+
+            } else if (intViewportWidth > 768) {
+                widthOfStand = ((standLength / width) * 100) / 2;
+                $standContainerNode[0].style.height = `${height * 0.6}px`;
+
+            } else if (intViewportWidth > 992) {
+                widthOfStand = ((standLength / width) * 100) / 1.8;
+                $standContainerNode[0].style.height = `${height * 0.8}px`;
+            }
+
+            $standContainerNode[0].style.width = `${widthOfStand}%`;
             $standContainerNode[0].insertAdjacentHTML(
                 "afterbegin",
                 imgStandOnConstructor
             );
-
-            let widthOfStand = ((standLength / width) * 100) / 1.8;
-            $standContainerNode[0].style.width = `${widthOfStand}%`;
-            $standContainerNode[0].style.height = `${height}px`;
-            $standContainerNode[0].style.top = "225px";
 
             handleInfoAndErrorMessages(infoMessageNode, {
                 isUaLanguage,
