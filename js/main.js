@@ -117,6 +117,10 @@ const infoMessage2Node = document.querySelectorAll(
     ".stand-container__info-message2"
 );
 const standErrorNode = document.querySelectorAll(".stand__error");
+const $monumentError = document.querySelectorAll(".monument__error");
+const $monumentErrorLength = document.querySelectorAll(
+    ".monument__error-length"
+);
 
 const tileErrorNode = document.querySelectorAll(
     ".elements-container__tile-error"
@@ -458,11 +462,48 @@ standContainer.addEventListener("mousedown", (e) => {
     e = e || window.event;
     e.preventDefault();
 
-    const selectedStandIndex = Number(
-        $standContainerNode[0].children[0].dataset.itemIndex
+    let selectedStandIndex = null;
+    let selectedMonumentsIndexes = [];
+    const childrenOfStandContainer1 = Array.from(
+        $standContainerNode[0].children
     );
+
+    for (let i = 0; i < childrenOfStandContainer1.length; i++) {
+        if (childrenOfStandContainer1[i].dataset.category === "stand") {
+            selectedStandIndex = Number(
+                childrenOfStandContainer1[i].dataset.itemIndex
+            );
+        }
+
+        if (childrenOfStandContainer1[i].dataset.category === "monuments") {
+            selectedMonumentsIndexes.push(
+                Number(childrenOfStandContainer1[i].dataset.itemIndex)
+            );
+        }
+    }
+
     const seletedStandData = getElementData(selectedStandIndex, "stand");
-    const { length: standLength, height } = seletedStandData;
+    const { length: standLength, height: standHeight } = seletedStandData;
+
+    let $firstMonument = null;
+    let firstMonumentLength = null;
+    let firstMonumentHeight = null;
+    let firstMonumentWidthProportion = null;
+    let firstMonumentHeightProportion = null;
+
+    if (selectedMonumentsIndexes.length === 1) {
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
+        const { length, height } = getElementData(
+            indexOfFirstMonumentImg,
+            "monuments"
+        );
+        firstMonumentLength = length;
+        firstMonumentHeight = height;
+
+        $firstMonument = document.querySelectorAll(`.monument-img${indexOfFirstMonumentImg}`);
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion = firstMonumentHeight / firstMonumentLength;
+    }
 
     const { width } = handleLandPlotSizes();
     let intViewportWidth = window.innerWidth;
@@ -500,13 +541,13 @@ standContainer.addEventListener("mousedown", (e) => {
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainerNode[0].getBoundingClientRect();
-        const { top } = newCoordinates;
+        const { top, width: standWidthOnConstructor } = newCoordinates;
 
         if (intViewportWidth < 576) {
             if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
-                let newHeigth = height * progress + height;
+                let newHeigth = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
@@ -518,7 +559,7 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_M) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
-                let newHeigth = height * progress + height;
+                let newHeigth = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthM + initialLengthM * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
@@ -530,7 +571,7 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_L) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
-                let newHeigth = height * progress + height;
+                let newHeigth = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthL + initialLengthL * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
@@ -542,13 +583,23 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_XL) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
-                let newHeigth = height * progress + height;
+                let newHeigth = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthXL + initialLengthXL * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
                 $standContainerNode[0].style.height = `${newHeigth * 0.8}px`;
             }
         }
+
+        if ($firstMonument) {
+            const monumentWidthOnStand = standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand = monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${monumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${monumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument[0].style.left = `${(standWidthOnConstructor / 2) - (monumentWidthOnStand / 2)}px`;
+        }
+        
     };
 
     pos3 = e.clientX;
@@ -759,7 +810,7 @@ standContainer2.addEventListener("mousedown", (e) => {
                     (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
                 let newHeigth = height * progress + height;
                 let newLength =
-                initialLengthXL + initialLengthXL * (progress / 1.2);
+                    initialLengthXL + initialLengthXL * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
                 $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
             }
@@ -803,72 +854,72 @@ standContainer2.addEventListener("touchstart", (e) => {
         standContainer2.style.left =
             standContainer2.offsetLeft - pos1Container2 + "px";
 
-            const INITIAL_TOP_POSITION_S = 180;
-            const MAX_HEIGHT_OF_AREA_S = 89;
-            let initialLengthS = ((standLength / width) * 100) / 2.1;
-    
-            const INITIAL_TOP_POSITION_M = 220;
-            const MAX_HEIGHT_OF_AREA_M = 130;
-            let initialLengthM = ((standLength / width) * 100) / 1.9;
-    
-            const INITIAL_TOP_POSITION_L = 270;
-            const MAX_HEIGHT_OF_AREA_L = 135;
-            let initialLengthL = ((standLength / width) * 100) / 2;
-    
-            const INITIAL_TOP_POSITION_XL = 320;
-            const MAX_HEIGHT_OF_AREA_XL = 150;
-            let initialLengthXL = ((standLength / width) * 100) / 2;
-    
-            const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
-            const { top } = newCoordinates;
-    
-            if (intViewportWidth < 576) {
-                if (top > INITIAL_TOP_POSITION_S) {
-                    let progress =
-                        (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
-                    let newHeigth = height * progress + height;
-                    let newLength =
-                        initialLengthS + initialLengthS * (progress / 1.2);
-                    $standContainer2Node[0].style.width = `${newLength}%`;
-                    $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
-                }
+        const INITIAL_TOP_POSITION_S = 180;
+        const MAX_HEIGHT_OF_AREA_S = 89;
+        let initialLengthS = ((standLength / width) * 100) / 2.1;
+
+        const INITIAL_TOP_POSITION_M = 220;
+        const MAX_HEIGHT_OF_AREA_M = 130;
+        let initialLengthM = ((standLength / width) * 100) / 1.9;
+
+        const INITIAL_TOP_POSITION_L = 270;
+        const MAX_HEIGHT_OF_AREA_L = 135;
+        let initialLengthL = ((standLength / width) * 100) / 2;
+
+        const INITIAL_TOP_POSITION_XL = 320;
+        const MAX_HEIGHT_OF_AREA_XL = 150;
+        let initialLengthXL = ((standLength / width) * 100) / 2;
+
+        const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
+        const { top } = newCoordinates;
+
+        if (intViewportWidth < 576) {
+            if (top > INITIAL_TOP_POSITION_S) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthS + initialLengthS * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
             }
-    
-            if (intViewportWidth > 576) {
-                if (top > INITIAL_TOP_POSITION_M) {
-                    let progress =
-                        (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
-                    let newHeigth = height * progress + height;
-                    let newLength =
-                        initialLengthM + initialLengthM * (progress / 1.2);
-                    $standContainer2Node[0].style.width = `${newLength}%`;
-                    $standContainer2Node[0].style.height = `${newHeigth * 0.7}px`;
-                }
+        }
+
+        if (intViewportWidth > 576) {
+            if (top > INITIAL_TOP_POSITION_M) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthM + initialLengthM * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.7}px`;
             }
-    
-            if (intViewportWidth > 768) {
-                if (top > INITIAL_TOP_POSITION_L) {
-                    let progress =
-                        (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
-                    let newHeigth = height * progress + height;
-                    let newLength =
-                        initialLengthL + initialLengthL * (progress / 1.2);
-                    $standContainer2Node[0].style.width = `${newLength}%`;
-                    $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
-                }
+        }
+
+        if (intViewportWidth > 768) {
+            if (top > INITIAL_TOP_POSITION_L) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
+                let newHeigth = height * progress + height;
+                let newLength =
+                    initialLengthL + initialLengthL * (progress / 1.2);
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
             }
-    
-            if (intViewportWidth > 992) {
-                if (top > INITIAL_TOP_POSITION_XL) {
-                    let progress =
-                        (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
-                    let newHeigth = height * progress + height;
-                    let newLength =
+        }
+
+        if (intViewportWidth > 992) {
+            if (top > INITIAL_TOP_POSITION_XL) {
+                let progress =
+                    (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
+                let newHeigth = height * progress + height;
+                let newLength =
                     initialLengthXL + initialLengthXL * (progress / 1.2);
-                    $standContainer2Node[0].style.width = `${newLength}%`;
-                    $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
-                }
+                $standContainer2Node[0].style.width = `${newLength}%`;
+                $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
             }
+        }
     };
 
     pos3Container2 = e.touches[0].clientX;
@@ -1310,15 +1361,12 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         if (intViewportWidth < 576) {
             widthOfStand = ((standLength / width) * 100) / 2.1;
             $standContainerNode[0].style.height = `${height * 0.6}px`;
-
         } else if (intViewportWidth > 576) {
             widthOfStand = ((standLength / width) * 100) / 1.9;
             $standContainerNode[0].style.height = `${height * 0.7}px`;
-
         } else if (intViewportWidth > 768) {
             widthOfStand = ((standLength / width) * 100) / 2;
             $standContainerNode[0].style.height = `${height * 0.6}px`;
-
         } else if (intViewportWidth > 992) {
             widthOfStand = ((standLength / width) * 100) / 1.8;
             $standContainerNode[0].style.height = `${height * 0.8}px`;
@@ -1393,15 +1441,12 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             if (intViewportWidth < 576) {
                 widthOfStand = ((standLength / width) * 100) / 2.1;
                 $standContainer2Node[0].style.height = `${height * 0.6}px`;
-
             } else if (intViewportWidth > 576) {
                 widthOfStand = ((standLength / width) * 100) / 1.9;
                 $standContainer2Node[0].style.height = `${height * 0.7}px`;
-
             } else if (intViewportWidth > 768) {
                 widthOfStand = ((standLength / width) * 100) / 2;
                 $standContainer2Node[0].style.height = `${height * 0.6}px`;
-
             } else if (intViewportWidth > 992) {
                 widthOfStand = ((standLength / width) * 100) / 1.8;
                 $standContainer2Node[0].style.height = `${height * 0.8}px`;
@@ -1442,15 +1487,12 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             if (intViewportWidth < 576) {
                 widthOfStand = ((standLength / width) * 100) / 2.1;
                 $standContainerNode[0].style.height = `${height * 0.6}px`;
-
             } else if (intViewportWidth > 576) {
                 widthOfStand = ((standLength / width) * 100) / 1.9;
                 $standContainerNode[0].style.height = `${height * 0.7}px`;
-
             } else if (intViewportWidth > 768) {
                 widthOfStand = ((standLength / width) * 100) / 2;
                 $standContainerNode[0].style.height = `${height * 0.6}px`;
-
             } else if (intViewportWidth > 992) {
                 widthOfStand = ((standLength / width) * 100) / 1.8;
                 $standContainerNode[0].style.height = `${height * 0.8}px`;
@@ -1700,22 +1742,80 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         elementsValuesMonumentsNode[0].children
     );
     let selectedMonument = elementsMonuments.indexOf(userClick.parentNode);
-    const filteredMonuments = priceList.filter(({ monuments }) => monuments);
-    const { monuments } = filteredMonuments[0];
+    let selectedMonumentData = null;
+    selectedMonument !== -1 &&
+        (selectedMonumentData = getElementData(selectedMonument, "monuments"));
 
-    monuments.forEach(({ id, titleUa, length, imgConstructorUrl }) => {
-        let imgOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
-            alt="${titleUa}" 
-            class="stand-container__monument-img"/>`;
+    selectedMonument !== -1 &&
+        selectedStendsCount === 0 &&
+        handleInfoAndErrorMessages($monumentError, {
+            isUaLanguage,
+            isRuLanguage,
+            isEngLanguage,
+        });
 
-        if (id === selectedMonument) {
-            console.log("Yes");
-            $standContainerNode[0].insertAdjacentHTML(
-                "afterbegin",
-                imgOnConstructor
-            );
+    // Якщо вибрана одна тумба
+    if (selectedMonument !== -1 && selectedStendsCount === 1) {
+        elementsMonuments[selectedMonument].classList.add("active");
+        
+        // Якщо ця тумба знаходиться в першому контейнері
+        if ($standContainerNode[0].children.length === 2) {
+            // Отримуємо фактичні дані тумби в конструкторі
+            const initialStandPosition =
+                $standContainerNode[0].getBoundingClientRect();
+            const { width: initialStandWidth } = initialStandPosition;
+
+            const indexOfStand =
+                $standContainerNode[0].children[0].dataset.itemIndex;
+            const standData = getElementData(+indexOfStand, "stand");
+
+            // Отримуємо довжину тумби в прайсі (щоб згенерувати пропорції для рендеру)
+            const { length: standLength } = standData;
+
+            // Отримуємо дані по стеллі
+            const {
+                length: monumentLength,
+                height: monumentHeight,
+                id,
+                category,
+                imgConstructorUrl,
+                titleUa,
+            } = selectedMonumentData;
+
+            // Показати помилку, якщо довжина стелли > довжину тумби
+            monumentLength > standLength &&
+                handleInfoAndErrorMessages($monumentErrorLength, {
+                    isUaLanguage,
+                    isRuLanguage,
+                    isEngLanguage,
+                });
+
+            const monumentStringNode = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${id}" data-item-index="${id}" data-category="${category}" />`;
+
+            if (monumentLength <= standLength) {
+                const proportion = monumentLength / standLength;
+                const monumentWidthOnStand = initialStandWidth * proportion;
+                const monumentHeightProportion =
+                    monumentHeight / monumentLength;
+                const monumentHeightOnStand =
+                    monumentWidthOnStand * monumentHeightProportion;
+
+                $standContainerNode[0].insertAdjacentHTML(
+                    "afterbegin",
+                    monumentStringNode
+                );
+                const $monument1Img =
+                    document.querySelectorAll(`.monument-img${id}`);
+                $monument1Img[0].style.width = `${monumentWidthOnStand}px`;
+                $monument1Img[0].style.height = `${monumentHeightOnStand}px`;
+                $monument1Img[0].style.top = `${-monumentHeightOnStand + 3}px`;
+                $monument1Img[0].style.left = `${
+                    initialStandWidth / 2 - monumentWidthOnStand / 2
+                }px`;
+                $monument1Img[0].style.position = "absolute";
+            }
         }
-    });
+    }
 });
 
 /**

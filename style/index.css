@@ -159,6 +159,8 @@ body {
 .constructor__filter-section,
 .filter-section__item-title > span,
 .calculator__data-value > span,
+.monument__error > span,
+.monument__error-length > span,
 .field__socle-img {
     display: none;
 }
@@ -256,6 +258,8 @@ body {
 .stand-container__info-message.active > span.active,
 .stand-container__info-message2.active > span.active,
 .stand__error.active > span.active,
+.monument__error.active > span.active,
+.monument__error-length.active > span.active,
 .constructor__element-name > span.active,
 .calculator__data-value > span.active,
 .filter-section__item-title > span.active {
@@ -542,11 +546,6 @@ body {
     cursor: move;
 }
 
-.stand-container__monument-img {
-    position: absolute;
-    top: -310%;
-}
-
 .calculator {
     display: flex;
     flex-direction: column;
@@ -711,7 +710,9 @@ body {
     text-align: center;
 }
 
-.stand__error.active {
+.stand__error.active,
+.monument__error.active,
+.monument__error-length.active {
     position: absolute;
     display: block;
     z-index: 100;
@@ -744,10 +745,6 @@ body {
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
-    }
-
-    .stand-container__monument-img {
-        top: -404%;
     }
 }
 
@@ -847,10 +844,6 @@ body {
         bottom: 2%;
     }
 
-    .stand-container__monument-img {
-        top: -400%;
-    }
-
     .calculator__attention-paragraph.active {
         font-size: 0.75rem;
         width: 400px;
@@ -892,10 +885,6 @@ body {
     .stand-container.active,
     .stand-container2.active {
         top: 175px;
-    }
-
-    .stand-container__monument-img {
-        top: -280%;
     }
 
     .field__tile-granite-black-img.active,
@@ -1086,10 +1075,6 @@ body {
     .draggable-elements {
         bottom: 1%;
         height: 410px;
-    }
-
-    .stand-container__monument-img {
-        top: -404%;
     }
 
     .calculator {
