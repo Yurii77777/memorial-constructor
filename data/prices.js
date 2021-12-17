@@ -611,7 +611,7 @@ const prices = [
                 "tabId": 2,
                 "category": "monuments",
                 "imgUrl": "/mobile/monuments/B110x60x8.png",
-                "imgConstructorUrl": "/mobile/monuments/B110x60x8_on_contruct.png",
+                "imgConstructorUrl": "/mobile/monuments/B110x60x8_on_contructor.png",
                 "siteNameUa": "Стелла Б110х60х8",
                 "siteNameRu": "Стелла Б110х60х8",
                 "siteNameEng": "Monument Б110х60х8"

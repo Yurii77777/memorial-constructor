@@ -32,7 +32,7 @@ let selectedStendsCount = 0;
 /**
  * Сховище для зберігання всіх вибранних елементів в одному місці
  */
-let seceltedItems = [];
+let selectedItems = [];
 
 /**
  * Отримуємо всі вузли, з якими будемо працювати
@@ -449,6 +449,39 @@ const setLanguage = (parentElement, language) => {
 };
 
 /**
+ * Функція для відображення вибраного елементу в зоні Фільтр
+ * приймає об єкт з параметрами для рендеру
+ * @param {Object} props
+ */
+const handleAddFilterNode = (props) => {
+    const {
+        category,
+        selectedItemIndex,
+        imgUrl,
+        siteNameUa,
+        siteNameRu,
+        siteNameEng,
+    } = props;
+
+    let htmlNodeOnFilter = `<div class="filter-section__item" data-category="${category}" data-item-index="${selectedItemIndex}">
+                                <img src="./img/items${imgUrl}" 
+                                     alt="${siteNameUa}" 
+                                     class="filter-section__item-img"
+                                />
+                                <p class="filter-section__item-title">
+                                    <span data-lang="ua" class="active">${siteNameUa}</span>
+                                    <span data-lang="ru">${siteNameRu}</span>
+                                    <span data-lang="eng">${siteNameEng}</span>
+                                </p>
+                                <img src="./img/icons/close.svg" 
+                                     alt="Приховати елемент" 
+                                     class="field__hide-element-button">
+                                </div>`;
+
+    filterNode[0].insertAdjacentHTML("afterbegin", htmlNodeOnFilter);
+};
+
+/**
  * Функція для пересування елементів - Тумби
  */
 const standContainer = document.getElementById("stand-container");
@@ -500,9 +533,12 @@ standContainer.addEventListener("mousedown", (e) => {
         firstMonumentLength = length;
         firstMonumentHeight = height;
 
-        $firstMonument = document.querySelectorAll(`.monument-img${indexOfFirstMonumentImg}`);
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
         firstMonumentWidthProportion = firstMonumentLength / standLength;
-        firstMonumentHeightProportion = firstMonumentHeight / firstMonumentLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
     }
 
     const { width } = handleLandPlotSizes();
@@ -536,7 +572,7 @@ standContainer.addEventListener("mousedown", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 320;
+        const INITIAL_TOP_POSITION_XL = 300;
         const MAX_HEIGHT_OF_AREA_XL = 150;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
@@ -547,11 +583,11 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
-                let newHeigth = standHeight * progress + standHeight;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.6}px`;
             }
         }
 
@@ -559,11 +595,11 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_M) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
-                let newHeigth = standHeight * progress + standHeight;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthM + initialLengthM * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.7}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.7}px`;
             }
         }
 
@@ -571,11 +607,11 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_L) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
-                let newHeigth = standHeight * progress + standHeight;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthL + initialLengthL * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.8}px`;
             }
         }
 
@@ -583,23 +619,26 @@ standContainer.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_XL) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
-                let newHeigth = standHeight * progress + standHeight;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthXL + initialLengthXL * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.8}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.9}px`;
             }
         }
 
         if ($firstMonument) {
-            const monumentWidthOnStand = standWidthOnConstructor * firstMonumentWidthProportion;
-            const monumentHeightOnStand = monumentWidthOnStand * firstMonumentHeightProportion;
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
             $firstMonument[0].style.width = `${monumentWidthOnStand}px`;
             $firstMonument[0].style.height = `${monumentHeightOnStand}px`;
             $firstMonument[0].style.top = `${-monumentHeightOnStand + 3}px`;
-            $firstMonument[0].style.left = `${(standWidthOnConstructor / 2) - (monumentWidthOnStand / 2)}px`;
+            $firstMonument[0].style.left = `${
+                standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
         }
-        
     };
 
     pos3 = e.clientX;
@@ -612,11 +651,51 @@ standContainer.addEventListener("touchstart", (e) => {
     e = e || window.event;
     e.preventDefault();
 
-    const selectedStandIndex = Number(
-        $standContainerNode[0].children[0].dataset.itemIndex
+    let selectedStandIndex = null;
+    let selectedMonumentsIndexes = [];
+    const childrenOfStandContainer1 = Array.from(
+        $standContainerNode[0].children
     );
+
+    for (let i = 0; i < childrenOfStandContainer1.length; i++) {
+        if (childrenOfStandContainer1[i].dataset.category === "stand") {
+            selectedStandIndex = Number(
+                childrenOfStandContainer1[i].dataset.itemIndex
+            );
+        }
+
+        if (childrenOfStandContainer1[i].dataset.category === "monuments") {
+            selectedMonumentsIndexes.push(
+                Number(childrenOfStandContainer1[i].dataset.itemIndex)
+            );
+        }
+    }
+
     const seletedStandData = getElementData(selectedStandIndex, "stand");
-    const { length: standLength, height } = seletedStandData;
+    const { length: standLength, height: standHeight } = seletedStandData;
+
+    let $firstMonument = null;
+    let firstMonumentLength = null;
+    let firstMonumentHeight = null;
+    let firstMonumentWidthProportion = null;
+    let firstMonumentHeightProportion = null;
+
+    if (selectedMonumentsIndexes.length === 1) {
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
+        const { length, height } = getElementData(
+            indexOfFirstMonumentImg,
+            "monuments"
+        );
+        firstMonumentLength = length;
+        firstMonumentHeight = height;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+    }
 
     const { width } = handleLandPlotSizes();
     let intViewportWidth = window.innerWidth;
@@ -649,22 +728,22 @@ standContainer.addEventListener("touchstart", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 320;
+        const INITIAL_TOP_POSITION_XL = 300;
         const MAX_HEIGHT_OF_AREA_XL = 150;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainerNode[0].getBoundingClientRect();
-        const { top } = newCoordinates;
+        const { top, width: standWidthOnConstructor } = newCoordinates;
 
         if (intViewportWidth < 576) {
             if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.6}px`;
             }
         }
 
@@ -672,11 +751,11 @@ standContainer.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_M) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthM + initialLengthM * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.7}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.7}px`;
             }
         }
 
@@ -684,11 +763,11 @@ standContainer.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_L) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthL + initialLengthL * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.8}px`;
             }
         }
 
@@ -696,12 +775,25 @@ standContainer.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_XL) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthXL + initialLengthXL * (progress / 1.2);
                 $standContainerNode[0].style.width = `${newLength}%`;
-                $standContainerNode[0].style.height = `${newHeigth * 0.8}px`;
+                $standContainerNode[0].style.height = `${newHeight * 0.9}px`;
             }
+        }
+
+        if ($firstMonument) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${monumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${monumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument[0].style.left = `${
+                standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
         }
     };
 
@@ -722,14 +814,54 @@ standContainer2.addEventListener("mousedown", (e) => {
     e = e || window.event;
     e.preventDefault();
 
+    let selectedStandIndex = null;
+    let selectedMonumentsIndexes = [];
+    const childrenOfStandContainer2 = Array.from(
+        $standContainer2Node[0].children
+    );
+
+    for (let i = 0; i < childrenOfStandContainer2.length; i++) {
+        if (childrenOfStandContainer2[i].dataset.category === "stand") {
+            selectedStandIndex = Number(
+                childrenOfStandContainer2[i].dataset.itemIndex
+            );
+        }
+
+        if (childrenOfStandContainer2[i].dataset.category === "monuments") {
+            selectedMonumentsIndexes.push(
+                Number(childrenOfStandContainer2[i].dataset.itemIndex)
+            );
+        }
+    }
+
+    const seletedStandData = getElementData(selectedStandIndex, "stand");
+    const { length: standLength, height: standHeight } = seletedStandData;
+
+    let $firstMonument = null;
+    let firstMonumentLength = null;
+    let firstMonumentHeight = null;
+    let firstMonumentWidthProportion = null;
+    let firstMonumentHeightProportion = null;
+
+    if (selectedMonumentsIndexes.length === 1) {
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
+        const { length, height } = getElementData(
+            indexOfFirstMonumentImg,
+            "monuments"
+        );
+        firstMonumentLength = length;
+        firstMonumentHeight = height;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+    }
+
     const { width } = handleLandPlotSizes();
     let intViewportWidth = window.innerWidth;
-
-    const selectedStandIndex = Number(
-        $standContainer2Node[0].children[0].dataset.itemIndex
-    );
-    const seletedStandData = getElementData(selectedStandIndex, "stand");
-    const { length: standLength, height } = seletedStandData;
 
     const closeDragElement = () => {
         document.onmouseup = null;
@@ -761,22 +893,22 @@ standContainer2.addEventListener("mousedown", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 320;
+        const INITIAL_TOP_POSITION_XL = 300;
         const MAX_HEIGHT_OF_AREA_XL = 150;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
-        const { top } = newCoordinates;
+        const { top, width: standWidthOnConstructor } = newCoordinates;
 
         if (intViewportWidth < 576) {
             if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.6}px`;
             }
         }
 
@@ -784,11 +916,11 @@ standContainer2.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_M) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthM + initialLengthM * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.7}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.7}px`;
             }
         }
 
@@ -796,11 +928,11 @@ standContainer2.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_L) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthL + initialLengthL * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.8}px`;
             }
         }
 
@@ -808,12 +940,25 @@ standContainer2.addEventListener("mousedown", (e) => {
             if (top > INITIAL_TOP_POSITION_XL) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthXL + initialLengthXL * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.9}px`;
             }
+        }
+
+        if ($firstMonument) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${monumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${monumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument[0].style.left = `${
+                standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
         }
     };
 
@@ -834,7 +979,7 @@ standContainer2.addEventListener("touchstart", (e) => {
         $standContainer2Node[0].children[0].dataset.itemIndex
     );
     const seletedStandData = getElementData(selectedStandIndex, "stand");
-    const { length: standLength, height } = seletedStandData;
+    const { length: standLength, height: standHeight } = seletedStandData;
 
     const closeDragElement = () => {
         document.ontouchend = null;
@@ -866,7 +1011,7 @@ standContainer2.addEventListener("touchstart", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 320;
+        const INITIAL_TOP_POSITION_XL = 300;
         const MAX_HEIGHT_OF_AREA_XL = 150;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
@@ -877,11 +1022,11 @@ standContainer2.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_S) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_S) / MAX_HEIGHT_OF_AREA_S;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthS + initialLengthS * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.6}px`;
             }
         }
 
@@ -889,11 +1034,11 @@ standContainer2.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_M) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_M) / MAX_HEIGHT_OF_AREA_M;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthM + initialLengthM * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.7}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.7}px`;
             }
         }
 
@@ -901,11 +1046,11 @@ standContainer2.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_L) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_L) / MAX_HEIGHT_OF_AREA_L;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthL + initialLengthL * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.6}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.8}px`;
             }
         }
 
@@ -913,11 +1058,11 @@ standContainer2.addEventListener("touchstart", (e) => {
             if (top > INITIAL_TOP_POSITION_XL) {
                 let progress =
                     (top - INITIAL_TOP_POSITION_XL) / MAX_HEIGHT_OF_AREA_XL;
-                let newHeigth = height * progress + height;
+                let newHeight = standHeight * progress + standHeight;
                 let newLength =
                     initialLengthXL + initialLengthXL * (progress / 1.2);
                 $standContainer2Node[0].style.width = `${newLength}%`;
-                $standContainer2Node[0].style.height = `${newHeigth * 0.8}px`;
+                $standContainer2Node[0].style.height = `${newHeight * 0.9}px`;
             }
         }
     };
@@ -1184,91 +1329,13 @@ filterNode[0].addEventListener("click", (e) => {
         filterElements[selectedItem].dataset.category === "stand"
     ) {
         let selectedStand = getElementData(selectedItem, "stand");
-        const id = filterElements[selectedItem].dataset.itemIndex;
-
-        const firstStandIndex =
-            $standContainerNode[0].children[0].dataset.itemIndex;
-        const secondStandIndex =
-            $standContainer2Node[0].children[0].dataset.itemIndex;
 
         const { length: standLength } = selectedStand;
         selectedStendsCount -= 1;
         selectedStandsLengths -= standLength * 2;
         selectedStendsCount === 0 && (isStandHidden = true);
-
-        if (firstStandIndex !== secondStandIndex) {
-            const standsItems = Array.from($elementsStandsNode[0].children);
-            standsItems[id].classList.remove("active");
-
-            const firstImgStandOnConstructor =
-                $standContainerNode[0].children[0];
-            firstImgStandOnConstructor.dataset.itemIndex === id &&
-                $standContainerNode[0].removeChild(firstImgStandOnConstructor);
-
-            const secondImgStandOnConstructor =
-                $standContainer2Node[0].children[0];
-            secondImgStandOnConstructor.dataset.itemIndex === id &&
-                $standContainer2Node[0].removeChild(
-                    secondImgStandOnConstructor
-                );
-
-            const calculatorNodes = Array.from($calculatorSection[0].children);
-
-            for (let i = 0; i < calculatorNodes.length; i++) {
-                if (calculatorNodes[i].dataset.itemIndex === String(id)) {
-                    $calculatorSection[0].removeChild(calculatorNodes[i]);
-                }
-            }
-
-            for (let i = 0; i < seceltedItems.length; i++) {
-                const { category, id: standId } = seceltedItems[i];
-                category === "stand" &&
-                    standId === +id &&
-                    seceltedItems.splice(i, 1);
-            }
-
-            calculate();
-
-            filterNode[0].removeChild(filterElements[selectedItem]);
-        }
-
-        if (firstStandIndex === secondStandIndex) {
-            filterNode[0].removeChild(filterElements[selectedItem]);
-
-            for (let i = 0; i < seceltedItems.length; i++) {
-                const { category, id: standId } = seceltedItems[i];
-                category === "stand" &&
-                    standId === +id &&
-                    seceltedItems.splice(i, 1);
-                continue;
-            }
-
-            calculate();
-
-            const secondImgStandOnConstructor =
-                $standContainer2Node[0].children[0];
-            secondImgStandOnConstructor.dataset.itemIndex === id &&
-                $standContainer2Node[0].removeChild(
-                    secondImgStandOnConstructor
-                );
-
-            const calculatorNodes = Array.from($calculatorSection[0].children);
-
-            for (let i = 0; i < calculatorNodes.length; i++) {
-                if (calculatorNodes[i].dataset.itemIndex === String(id)) {
-                    $calculatorSection[0].removeChild(calculatorNodes[i]);
-                    return;
-                }
-            }
-        }
     }
 });
-
-/**
- * Обробник елементів блоку "Тумби"
- * Handler of elements "Stands"
- * Обработчик элементом блока "Тумбы"
- */
 
 /**
  *
@@ -1299,6 +1366,11 @@ const getElementData = (selectedElement, categoryToSearch) => {
     return selectedElementData;
 };
 
+/**
+ * Обробник елементів блоку "Тумби"
+ * Handler of elements "Stands"
+ * Обработчик элементом блока "Тумбы"
+ */
 $elementsStandsNode[0].addEventListener("click", (e) => {
     let selectedStand = null;
     let userClick = e.target;
@@ -1309,6 +1381,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     let userSelectStand = getElementData(selectedStand, "stand");
 
     const {
+        id,
         length: standLength,
         height,
         imgUrl,
@@ -1330,27 +1403,22 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         isStandHidden = false;
         startHelper();
 
-        seceltedItems.push(userSelectStand);
+        selectedItems.push(userSelectStand);
+
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedStand;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
+
         let imgStandOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
                                         alt="${siteNameUa}" 
-                                        class="stand-container__stand-img"
+                                        class="stand-container__stand-img${id}"
                                         data-category="${category}"
                                         data-item-index="${selectedStand}"
                                     />`;
-        let imgStandOnFilter = `<div class="filter-section__item" data-category="${category}" data-item-index="${selectedStand}">
-                                    <img src="./img/items${imgUrl}" 
-                                         alt="${siteNameUa}" 
-                                         class="filter-section__item-img"
-                                    />
-                                    <p class="filter-section__item-title">
-                                        <span data-lang="ua" class="active">${siteNameUa}</span>
-                                        <span data-lang="ru">${siteNameRu}</span>
-                                        <span data-lang="eng">${siteNameEng}</span>
-                                    </p>
-                                    <img src="./img/icons/close.svg" 
-                                         alt="Приховати елемент" 
-                                         class="field__hide-element-button">
-                                </div>`;
 
         elementsStands[selectedStand].classList.add("active");
         $standContainerNode[0].classList.add("active");
@@ -1366,10 +1434,10 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             $standContainerNode[0].style.height = `${height * 0.7}px`;
         } else if (intViewportWidth > 768) {
             widthOfStand = ((standLength / width) * 100) / 2;
-            $standContainerNode[0].style.height = `${height * 0.6}px`;
+            $standContainerNode[0].style.height = `${height * 0.8}px`;
         } else if (intViewportWidth > 992) {
             widthOfStand = ((standLength / width) * 100) / 1.8;
-            $standContainerNode[0].style.height = `${height * 0.8}px`;
+            $standContainerNode[0].style.height = `${height * 0.9}px`;
         }
 
         $standContainerNode[0].style.width = `${widthOfStand}%`;
@@ -1393,7 +1461,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             price
         );
 
-        filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
+        handleAddFilterNode(propsForFilterNode);
         $totalCostNode[0].insertAdjacentHTML(
             "beforebegin",
             standNodeToCalculator
@@ -1407,28 +1475,22 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         selectedStandsLengths <= width
     ) {
         selectedStendsCount += 1;
-        seceltedItems.push(userSelectStand);
+        selectedItems.push(userSelectStand);
+
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedStand;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
 
         let imgStandOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
                                         alt="${siteNameUa}" 
-                                        class="stand-container__stand-img"
+                                        class="stand-container__stand-img${id}"
                                         data-category="${category}"
                                         data-item-index="${selectedStand}"
                                     />`;
-        let imgStandOnFilter = `<div class="filter-section__item" data-category="${category}" data-item-index="${selectedStand}">
-                                    <img src="./img/items${imgUrl}" 
-                                         alt="${siteNameUa}" 
-                                         class="filter-section__item-img"
-                                    />
-                                    <p class="filter-section__item-title">
-                                        <span data-lang="ua" class="active">${siteNameUa}</span>
-                                        <span data-lang="ru">${siteNameRu}</span>
-                                        <span data-lang="eng">${siteNameEng}</span>
-                                    </p>
-                                    <img src="./img/icons/close.svg" 
-                                         alt="Приховати елемент" 
-                                         class="field__hide-element-button">
-                                </div>`;
 
         elementsStands[selectedStand].classList.add("active");
 
@@ -1446,10 +1508,10 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 $standContainer2Node[0].style.height = `${height * 0.7}px`;
             } else if (intViewportWidth > 768) {
                 widthOfStand = ((standLength / width) * 100) / 2;
-                $standContainer2Node[0].style.height = `${height * 0.6}px`;
+                $standContainer2Node[0].style.height = `${height * 0.8}px`;
             } else if (intViewportWidth > 992) {
                 widthOfStand = ((standLength / width) * 100) / 1.8;
-                $standContainer2Node[0].style.height = `${height * 0.8}px`;
+                $standContainer2Node[0].style.height = `${height * 0.9}px`;
             }
 
             $standContainer2Node[0].style.width = `${widthOfStand}%`;
@@ -1473,7 +1535,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 price
             );
 
-            filterNode[0].insertAdjacentHTML("afterbegin", imgStandOnFilter);
+            handleAddFilterNode(propsForFilterNode);
             $totalCostNode[0].insertAdjacentHTML(
                 "beforebegin",
                 standNodeToCalculator
@@ -1492,10 +1554,10 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 $standContainerNode[0].style.height = `${height * 0.7}px`;
             } else if (intViewportWidth > 768) {
                 widthOfStand = ((standLength / width) * 100) / 2;
-                $standContainerNode[0].style.height = `${height * 0.6}px`;
+                $standContainerNode[0].style.height = `${height * 0.8}px`;
             } else if (intViewportWidth > 992) {
                 widthOfStand = ((standLength / width) * 100) / 1.8;
-                $standContainerNode[0].style.height = `${height * 0.8}px`;
+                $standContainerNode[0].style.height = `${height * 0.9}px`;
             }
 
             $standContainerNode[0].style.width = `${widthOfStand}%`;
@@ -1563,17 +1625,68 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         startHelper();
 
         elementsStands[selectedStand].classList.remove("active");
+        //Отримуємо перше і єдине зображення тумби в конструкторі
+        const firstImgStandOnConstructor = document.querySelectorAll(
+            `.stand-container__stand-img${selectedStand}`
+        );
 
-        const firstImgStandOnConstructor = $standContainerNode[0].children[0];
-        firstImgStandOnConstructor.dataset.itemIndex ===
-            String(selectedStand) &&
-            $standContainerNode[0].removeChild(firstImgStandOnConstructor);
+        // Перевіряємо в якому з двох контейнерів воно знаходиться і видаляємо його з документу
+        const standContainer1Children = Array.from(
+            $standContainerNode[0].children
+        );
+        let monumentsIndexesToRemoveFromFilter = [];
 
-        const secondImgStandOnConstructor = $standContainer2Node[0].children[0];
-        secondImgStandOnConstructor.dataset.itemIndex ===
-            String(selectedStand) &&
-            $standContainer2Node[0].removeChild(secondImgStandOnConstructor);
+        for (let i = 0; i < standContainer1Children.length; i++) {
+            standContainer1Children[i].dataset.category === "stand" &&
+                standContainer1Children[i].dataset.itemIndex ===
+                    String(selectedStand) &&
+                $standContainerNode[0].removeChild(
+                    firstImgStandOnConstructor[0]
+                );
 
+            // Перевіряємо чи є стелли в першому контейнері і видаляємо їх
+            if (standContainer1Children[i].dataset.category === "monuments") {
+                let monumentIndex =
+                    +standContainer1Children[i].dataset.itemIndex;
+                monumentsIndexesToRemoveFromFilter.push(monumentIndex);
+                elementsValuesMonumentsNode[0].children[
+                    monumentIndex
+                ].classList.remove("active");
+                let monumentNode = document.querySelectorAll(
+                    `.monument-img${monumentIndex}`
+                );
+                $standContainerNode[0].removeChild(monumentNode[0]);
+            }
+        }
+
+        const standContainer2Children = Array.from(
+            $standContainer2Node[0].children
+        );
+
+        for (let i = 0; i < standContainer2Children.length; i++) {
+            standContainer1Children[i].dataset.category === "stand" &&
+                standContainer2Children[i].dataset.itemIndex ===
+                    String(selectedStand) &&
+                $standContainer2Node[0].removeChild(
+                    firstImgStandOnConstructor[0]
+                );
+
+            // Перевіряємо чи є стелли в другому контейнері і видаляємо їх
+            if (standContainer2Children[i].dataset.category === "monuments") {
+                let monumentIndex =
+                    +standContainer2Children[i].dataset.itemIndex;
+                monumentsIndexesToRemoveFromFilter.push(monumentIndex);
+                elementsValuesMonumentsNode[0].children[
+                    monumentIndex
+                ].classList.remove("active");
+                let monumentNode = document.querySelectorAll(
+                    `.monument-img${monumentIndex}`
+                );
+                $standContainerNode[0].removeChild(monumentNode[0]);
+            }
+        }
+
+        // Видаляємо елемент вибраної тумби із зони фільтра
         const itemsInFilterSection = Array.from(filterNode[0].children);
 
         for (let i = 0; i < itemsInFilterSection.length; i++) {
@@ -1584,15 +1697,39 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             ) {
                 filterNode[0].removeChild(itemsInFilterSection[i]);
             }
+
+            // Якщо на даній тумбі стоять стелли, видаляємо і їх
+            if (itemsInFilterSection[i].dataset.category === "monuments") {
+                monumentsIndexesToRemoveFromFilter.forEach((el) => {
+                    el === +itemsInFilterSection[i].dataset.itemIndex &&
+                        filterNode[0].removeChild(itemsInFilterSection[i]);
+                });
+            }
         }
 
-        for (let i = 0; i < seceltedItems.length; i++) {
-            const { category, id } = seceltedItems[i];
-            category === "stand" &&
-                id === selectedStand &&
-                seceltedItems.splice(i, 1);
+        // Знаходимо індекси всіх елементів для видалення з масиву selectedItems
+        let indexesForUpdselectedItems = [];
+        for (let i = 0; i < selectedItems.length; i++) {
+            const { category, id } = selectedItems[i];
+
+            if (category === "stand") {
+                id !== selectedStand &&
+                    indexesForUpdselectedItems.push(selectedItems[i]);
+            } else if (category === "monuments") {
+                monumentsIndexesToRemoveFromFilter.forEach((el) => {
+                    el !== id &&
+                        indexesForUpdselectedItems.push(selectedItems[i]);
+                });
+            } else {
+                indexesForUpdselectedItems.push(selectedItems[i]);
+            }
         }
 
+        // Трансформуємо масив, видаляючи з нього непотрібні елементи
+        selectedItems = [];
+        selectedItems.concat(indexesForUpdselectedItems);
+
+        // Видаляємо запис вибраної тумби і стелл на ній із зони калькулятора
         const calculatorNodes = Array.from($calculatorSection[0].children);
 
         for (let i = 0; i < calculatorNodes.length; i++) {
@@ -1647,11 +1784,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 }
             }
 
-            for (let i = 0; i < seceltedItems.length; i++) {
-                const { category, id } = seceltedItems[i];
+            for (let i = 0; i < selectedItems.length; i++) {
+                const { category, id } = selectedItems[i];
                 category === "stand" &&
                     id === selectedStand &&
-                    seceltedItems.splice(i, 1);
+                    selectedItems.splice(i, 1);
             }
 
             const calculatorNodes = Array.from($calculatorSection[0].children);
@@ -1665,22 +1802,22 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 }
             }
 
-            for (let i = 0; i < seceltedItems.length; i++) {
-                const { category, id: standId } = seceltedItems[i];
+            for (let i = 0; i < selectedItems.length; i++) {
+                const { category, id: standId } = selectedItems[i];
                 category === "stand" &&
                     standId === selectedStand &&
-                    seceltedItems.splice(i, 1);
+                    selectedItems.splice(i, 1);
             }
 
             calculate();
         }
 
         if (firstStandIndex === secondStandIndex) {
-            for (let i = 0; i < seceltedItems.length; i++) {
-                const { category, id: standId } = seceltedItems[i];
+            for (let i = 0; i < selectedItems.length; i++) {
+                const { category, id: standId } = selectedItems[i];
                 category === "stand" &&
                     standId === selectedStand &&
-                    seceltedItems.splice(i, 1);
+                    selectedItems.splice(i, 1);
                 continue;
             }
 
@@ -1746,6 +1883,21 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
     selectedMonument !== -1 &&
         (selectedMonumentData = getElementData(selectedMonument, "monuments"));
 
+    const {
+        id,
+        length: monumentLength,
+        height: monumentHeight,
+        imgUrl,
+        imgConstructorUrl,
+        siteNameUa,
+        siteNameRu,
+        siteNameEng,
+        category,
+        price,
+        titleUa,
+    } = selectedMonumentData;
+
+    // Якщо не вибрана жодна тумба, показуємо помилку вибору стелли
     selectedMonument !== -1 &&
         selectedStendsCount === 0 &&
         handleInfoAndErrorMessages($monumentError, {
@@ -1756,8 +1908,17 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
     // Якщо вибрана одна тумба
     if (selectedMonument !== -1 && selectedStendsCount === 1) {
+        selectedItems.push(selectedMonumentData);
         elementsMonuments[selectedMonument].classList.add("active");
-        
+
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedMonument;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
+
         // Якщо ця тумба знаходиться в першому контейнері
         if ($standContainerNode[0].children.length === 2) {
             // Отримуємо фактичні дані тумби в конструкторі
@@ -1771,16 +1932,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
             // Отримуємо довжину тумби в прайсі (щоб згенерувати пропорції для рендеру)
             const { length: standLength } = standData;
-
-            // Отримуємо дані по стеллі
-            const {
-                length: monumentLength,
-                height: monumentHeight,
-                id,
-                category,
-                imgConstructorUrl,
-                titleUa,
-            } = selectedMonumentData;
 
             // Показати помилку, якщо довжина стелли > довжину тумби
             monumentLength > standLength &&
@@ -1804,8 +1955,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                     "afterbegin",
                     monumentStringNode
                 );
-                const $monument1Img =
-                    document.querySelectorAll(`.monument-img${id}`);
+                const $monument1Img = document.querySelectorAll(
+                    `.monument-img${id}`
+                );
                 $monument1Img[0].style.width = `${monumentWidthOnStand}px`;
                 $monument1Img[0].style.height = `${monumentHeightOnStand}px`;
                 $monument1Img[0].style.top = `${-monumentHeightOnStand + 3}px`;
@@ -1815,6 +1967,73 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 $monument1Img[0].style.position = "absolute";
             }
         }
+
+        // Якщо ця тумба знаходиться в другому контейнері
+        if ($standContainer2Node[0].children.length === 2) {
+            // Отримуємо фактичні дані тумби в конструкторі
+            const initialStandPosition =
+                $standContainer2Node[0].getBoundingClientRect();
+            const { width: initialStandWidth } = initialStandPosition;
+
+            const indexOfStand =
+                $standContainer2Node[0].children[0].dataset.itemIndex;
+            const standData = getElementData(+indexOfStand, "stand");
+
+            // Отримуємо довжину тумби в прайсі (щоб згенерувати пропорції для рендеру)
+            const { length: standLength } = standData;
+
+            // Показати помилку, якщо довжина стелли > довжину тумби
+            monumentLength > standLength &&
+                handleInfoAndErrorMessages($monumentErrorLength, {
+                    isUaLanguage,
+                    isRuLanguage,
+                    isEngLanguage,
+                });
+
+            const monumentStringNode = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${id}" data-item-index="${id}" data-category="${category}" />`;
+
+            if (monumentLength <= standLength) {
+                const proportion = monumentLength / standLength;
+                const monumentWidthOnStand = initialStandWidth * proportion;
+                const monumentHeightProportion =
+                    monumentHeight / monumentLength;
+                const monumentHeightOnStand =
+                    monumentWidthOnStand * monumentHeightProportion;
+
+                $standContainer2Node[0].insertAdjacentHTML(
+                    "afterbegin",
+                    monumentStringNode
+                );
+                const $monument1Img = document.querySelectorAll(
+                    `.monument-img${id}`
+                );
+                $monument1Img[0].style.width = `${monumentWidthOnStand}px`;
+                $monument1Img[0].style.height = `${monumentHeightOnStand}px`;
+                $monument1Img[0].style.top = `${-monumentHeightOnStand + 3}px`;
+                $monument1Img[0].style.left = `${
+                    initialStandWidth / 2 - monumentWidthOnStand / 2
+                }px`;
+                $monument1Img[0].style.position = "absolute";
+            }
+        }
+
+        handleAddFilterNode(propsForFilterNode);
+
+        const monumentNodeToCalculator = createCalculatorDataNode(
+            category,
+            selectedMonument,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            price
+        );
+
+        $totalCostNode[0].insertAdjacentHTML(
+            "beforebegin",
+            monumentNodeToCalculator
+        );
+
+        calculate();
     }
 });
 
@@ -2151,15 +2370,15 @@ const calculate = () => {
     landPlotAreaNode[0].innerText = area;
 
     // Рахуємо загальну вартість
-    if (seceltedItems.length) {
+    if (selectedItems.length) {
         const totalCostNode =
             '<p class="calculator__data-value total-cost">[price]</p>';
         $totalCostNode[0].classList.add("active");
 
         let totalCost = 0;
 
-        for (let i = 0; i < seceltedItems.length; i++) {
-            let { price } = seceltedItems[i];
+        for (let i = 0; i < selectedItems.length; i++) {
+            let { price } = selectedItems[i];
             totalCost += price;
         }
 
