@@ -524,6 +524,12 @@ standContainer.addEventListener("mousedown", (e) => {
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
 
+    let $secondMonument = null;
+    let secondMonumentLength = null;
+    let secondMonumentHeight = null;
+    let secondMonumentWidthProportion = null;
+    let secondMonumentHeightProportion = null;
+
     if (selectedMonumentsIndexes.length === 1) {
         const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
         const { length, height } = getElementData(
@@ -539,6 +545,39 @@ standContainer.addEventListener("mousedown", (e) => {
         firstMonumentWidthProportion = firstMonumentLength / standLength;
         firstMonumentHeightProportion =
             firstMonumentHeight / firstMonumentLength;
+    }
+
+    if (selectedMonumentsIndexes.length === 2) {
+        // Розрахунки для масштабування першої стелли
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
+        const { length: firstMonumentLengthFromPrice, height: firstMonumentHeightFromPrice } = getElementData(
+            indexOfFirstMonumentImg,
+            "monuments"
+        );
+        firstMonumentLength = firstMonumentLengthFromPrice;
+        firstMonumentHeight = firstMonumentHeightFromPrice;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+
+        // Розрахунки для масштабування другої стелли
+        const indexOfSecondMonumentImg = selectedMonumentsIndexes[1];
+        const { length: secondMonumentLengthFromPrice, height: secondMonumentHeightFromPrice } = getElementData(
+            indexOfSecondMonumentImg,
+            "monuments"
+        );
+        secondMonumentLength = secondMonumentLengthFromPrice;
+        secondMonumentHeight = secondMonumentHeightFromPrice;
+        $secondMonument = document.querySelectorAll(
+            `.monument-img${indexOfSecondMonumentImg}`
+        );
+        secondMonumentWidthProportion = secondMonumentLength / standLength;
+        secondMonumentHeightProportion =
+        secondMonumentHeight / secondMonumentLength;
     }
 
     const { width } = handleLandPlotSizes();
@@ -627,7 +666,32 @@ standContainer.addEventListener("mousedown", (e) => {
             }
         }
 
-        if ($firstMonument) {
+        if ($firstMonument && $secondMonument) {
+            const firstMonumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const firstMonumentHeightOnStand =
+            firstMonumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${firstMonumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${firstMonumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${-firstMonumentHeightOnStand + 3}px`;
+            const leftPositionOfFirstStella =
+                    (standWidthOnConstructor / 2 - firstMonumentWidthOnStand) / 2;
+            $firstMonument[0].style.left = `${leftPositionOfFirstStella}px`;
+
+            const secondMonumentWidthOnStand =
+                standWidthOnConstructor * secondMonumentWidthProportion;
+            const secondMonumentHeightOnStand =
+            secondMonumentWidthOnStand * secondMonumentHeightProportion;
+            $secondMonument[0].style.width = `${secondMonumentWidthOnStand}px`;
+            $secondMonument[0].style.height = `${secondMonumentHeightOnStand}px`;
+            $secondMonument[0].style.top = `${-secondMonumentHeightOnStand + 3}px`;
+            const leftPositionOfSecondStella =
+                    leftPositionOfFirstStella * 2 +
+                    firstMonumentWidthOnStand +
+                    (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
+            $secondMonument[0].style.left = `${leftPositionOfSecondStella}px`;
+
+        } else if ($firstMonument) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -1496,7 +1560,28 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
 
         elementsStands[selectedStand].classList.add("active");
 
-        if ($standContainerNode[0].children.length === 2) {
+        // Перевіряємо в якому саме контейнері знаходиться перша тумба
+        const firstStandContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
+        let isStandInFirstContainer = false;
+
+        for (let i = 0; i < firstStandContainerChildren.length; i++) {
+            firstStandContainerChildren[i].dataset.category === "stand" &&
+                (isStandInFirstContainer = true);
+        }
+
+        const secondStandContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
+        let isStandInSecondContainer = false;
+
+        for (let i = 0; i < secondStandContainerChildren.length; i++) {
+            secondStandContainerChildren[i].dataset.category === "stand" &&
+                (isStandInSecondContainer = true);
+        }
+
+        if (isStandInFirstContainer) {
             $standContainer2Node[0].classList.add("active");
 
             let widthOfStand = null;
@@ -1542,7 +1627,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 "beforebegin",
                 standNodeToCalculator
             );
-        } else if ($standContainer2Node[0].children.length === 2) {
+        } else if (isStandInSecondContainer) {
             $standContainerNode[0].classList.add("active");
 
             let widthOfStand = null;
@@ -1737,11 +1822,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         for (let i = 0; i < calculatorNodes.length; i++) {
             if (
                 calculatorNodes[i].dataset.category === "stand" &&
-                    calculatorNodes[i].dataset.itemIndex === String(selectedStand)
+                calculatorNodes[i].dataset.itemIndex === String(selectedStand)
             ) {
                 $calculatorSection[0].removeChild(calculatorNodes[i]);
             } else if (calculatorNodes[i].dataset.category === "monuments") {
-                monumentsIndexesToRemoveFromFilter.forEach(el => {
+                monumentsIndexesToRemoveFromFilter.forEach((el) => {
                     el === +calculatorNodes[i].dataset.itemIndex &&
                         $calculatorSection[0].removeChild(calculatorNodes[i]);
                 });
@@ -1925,31 +2010,47 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         propsForFilterNode["siteNameEng"] = siteNameEng;
 
         // Якщо ця тумба знаходиться в першому контейнері
-        const firstStandContainerChildren = Array.from($standContainerNode[0].children);
+        const firstStandContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
         let isStandInFirstContainer = false;
+        let indexOfFirstStand = null;
 
-        // Тут же перевіряємо чи є вже на даній тумбі стелли
-        let isSteles = false;
+        // Тут же перевіряємо чи є вже на даній тумбі стелли і їх сумарна довжина
+        let isStelesInFirstContainer = false;
+        let monumentsLengthInFirstContainer = 0;
+        let monumentIndexOnFirstStand = null;
 
         for (let i = 0; i < firstStandContainerChildren.length; i++) {
-            firstStandContainerChildren[i].dataset.category === "stand" &&
-                (isStandInFirstContainer = true);
+            if (firstStandContainerChildren[i].dataset.category === "stand") {
+                isStandInFirstContainer = true;
+                indexOfFirstStand =
+                    +firstStandContainerChildren[i].dataset.itemIndex;
+            }
 
-            if (firstStandContainerChildren[i].dataset.category === "monuments") {
-                isSteles = true;
+            if (
+                firstStandContainerChildren[i].dataset.category === "monuments"
+            ) {
+                isStelesInFirstContainer = true;
+
+                let monumentIndex =
+                    +firstStandContainerChildren[i].dataset.itemIndex;
+                monumentIndexOnFirstStand = monumentIndex;
+                let { length: monumentLength } = getElementData(
+                    monumentIndex,
+                    "monuments"
+                );
+                monumentsLengthInFirstContainer += monumentLength;
             }
         }
 
         // Якщо тумба в першому контейнері і ще не вибрана жодна стелла
-        if (isStandInFirstContainer && !isSteles) {
+        if (isStandInFirstContainer && !isStelesInFirstContainer) {
             // Отримуємо фактичні дані тумби в конструкторі
             const initialStandPosition =
                 $standContainerNode[0].getBoundingClientRect();
             const { width: initialStandWidth } = initialStandPosition;
-
-            const indexOfStand =
-                +$standContainerNode[0].children[0].dataset.itemIndex;
-            const standData = getElementData(indexOfStand, "stand");
+            const standData = getElementData(indexOfFirstStand, "stand");
 
             // Отримуємо довжину тумби в прайсі (щоб згенерувати пропорції для рендеру)
             const { length: standLength } = standData;
@@ -2000,7 +2101,148 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                     siteNameEng,
                     price
                 );
-        
+
+                $totalCostNode[0].insertAdjacentHTML(
+                    "beforebegin",
+                    monumentNodeToCalculator
+                );
+
+                calculate();
+            }
+        }
+
+        // Якщо тумба в першому контейнері і тут вже є стелли
+        if (isStandInFirstContainer && isStelesInFirstContainer) {
+            // Отримуємо фактичні дані тумби в конструкторі
+            const initialStandPosition =
+                $standContainerNode[0].getBoundingClientRect();
+            const { width: initialStandWidth } = initialStandPosition;
+            const standData = getElementData(indexOfFirstStand, "stand");
+
+            // Отримуємо довжину тумби в прайсі
+            const { length: standLength } = standData;
+
+            const selectedMonumentData = getElementData(
+                selectedMonument,
+                "monuments"
+            );
+
+            // Отримуємо довжину нової обраної стелли в прайсі
+            const {
+                length: selectedMonumentLength,
+                height: selectedMonumentHeight,
+            } = selectedMonumentData;
+            monumentsLengthInFirstContainer += selectedMonumentLength;
+
+            // Показати помилку, якщо довжина обраних стелл > довжину тумби
+            monumentsLengthInFirstContainer > standLength &&
+                handleInfoAndErrorMessages($monumentErrorLength, {
+                    isUaLanguage,
+                    isRuLanguage,
+                    isEngLanguage,
+                });
+
+            const monumentStringNode = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${id}" data-item-index="${id}" data-category="${category}" />`;
+
+            if (monumentsLengthInFirstContainer <= standLength) {
+                selectedItems.push(selectedMonumentData);
+                elementsMonuments[selectedMonument].classList.add("active");
+
+                // Видаляємо стеллу з першого контейнера
+                // щоб розмістити дві стелли і застосувати нові стилі
+                const firstMonumentOnFirstStand = document.querySelectorAll(
+                    `.monument-img${monumentIndexOnFirstStand}`
+                );
+                $standContainerNode[0].removeChild(
+                    firstMonumentOnFirstStand[0]
+                );
+
+                // Отримуємо дані по стелі, що вже повинна знаходитися на тумбі
+                const firstMonumentData = getElementData(
+                    monumentIndexOnFirstStand,
+                    "monuments"
+                );
+
+                const {
+                    length: firstMonumentLength,
+                    height: firstMonumentHeight,
+                    imgConstructorUrl,
+                    titleUa,
+                    category,
+                } = firstMonumentData;
+                const firstMonumentProportion =
+                    firstMonumentLength / standLength;
+                const firstMonumentWidthOnStand =
+                    initialStandWidth * firstMonumentProportion;
+                const firstMonumentHeightProportion =
+                    firstMonumentHeight / firstMonumentLength;
+                const firstMonumentHeightOnStand =
+                    firstMonumentWidthOnStand * firstMonumentHeightProportion;
+
+                const firstMonumentStringNode = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${monumentIndexOnFirstStand}" data-item-index="${monumentIndexOnFirstStand}" data-category="${category}" />`;
+
+                const proportionForNewMonument =
+                    selectedMonumentLength / standLength;
+                const newMonumentWidthOnStand =
+                    initialStandWidth * proportionForNewMonument;
+                const newMonumentHeightProportion =
+                    selectedMonumentHeight / selectedMonumentLength;
+                const newMonumentHeightOnStand =
+                    newMonumentWidthOnStand * newMonumentHeightProportion;
+
+                // Рендеримо першу стеллу
+                $standContainerNode[0].insertAdjacentHTML(
+                    "afterbegin",
+                    firstMonumentStringNode
+                );
+
+                // Ремндеримо другу стеллу
+                $standContainerNode[0].insertAdjacentHTML(
+                    "afterbegin",
+                    monumentStringNode
+                );
+
+                // Задаємо стилі першій стеллі
+                const $monument1Img = document.querySelectorAll(
+                    `.monument-img${monumentIndexOnFirstStand}`
+                );
+                $monument1Img[0].style.position = "absolute";
+                $monument1Img[0].style.width = `${firstMonumentWidthOnStand}px`;
+                $monument1Img[0].style.height = `${firstMonumentHeightOnStand}px`;
+                $monument1Img[0].style.top = `${
+                    -firstMonumentHeightOnStand + 3
+                }px`;
+                const leftPositionOfFirstStella =
+                    (initialStandWidth / 2 - firstMonumentWidthOnStand) / 2;
+                $monument1Img[0].style.left = `${leftPositionOfFirstStella}px`;
+
+                // Задаємо стилі другій стеллі
+                const $monument2Img = document.querySelectorAll(
+                    `.monument-img${selectedMonument}`
+                );
+                $monument2Img[0].style.position = "absolute";
+                $monument2Img[0].style.width = `${newMonumentWidthOnStand}px`;
+                $monument2Img[0].style.height = `${newMonumentHeightOnStand}px`;
+                $monument2Img[0].style.top = `${
+                    -newMonumentHeightOnStand + 3
+                }px`;
+                const leftPositionOfSecondStella =
+                    leftPositionOfFirstStella * 2 +
+                    firstMonumentWidthOnStand +
+                    (initialStandWidth / 2 - newMonumentWidthOnStand) / 2;
+                $monument2Img[0].style.left = `${leftPositionOfSecondStella}px`;
+
+                handleAddFilterNode(propsForFilterNode);
+
+                const monumentNodeToCalculator = createCalculatorDataNode(
+                    category,
+                    selectedMonument,
+                    siteNameUa,
+                    siteNameRu,
+                    siteNameEng,
+                    price
+                );
+
                 $totalCostNode[0].insertAdjacentHTML(
                     "beforebegin",
                     monumentNodeToCalculator
@@ -2011,23 +2253,35 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         }
 
         // Якщо ця тумба знаходиться в другому контейнері
-        const secondStandContainerChildren = Array.from($standContainer2Node[0].children);
+        const secondStandContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
         let isStandInSecondContainer = false;
+        let indexOfSecondStand = null;
+
+        // Тут же перевіряємо чи є вже на даній тумбі стелли
+        let isStelesSecondContainer = false;
 
         for (let i = 0; i < secondStandContainerChildren.length; i++) {
-            secondStandContainerChildren[i].dataset.category === "stand" &&
-                (isStandInSecondContainer = true);
+            if (secondStandContainerChildren[i].dataset.category === "stand") {
+                isStandInSecondContainer = true;
+                indexOfSecondStand =
+                    +secondStandContainerChildren[i].dataset.itemIndex;
+            }
+
+            if (
+                secondStandContainerChildren[i].dataset.category === "monuments"
+            ) {
+                isStelesSecondContainer = true;
+            }
         }
 
-        if (isStandInSecondContainer) {
+        if (isStandInSecondContainer && !isStelesSecondContainer) {
             // Отримуємо фактичні дані тумби в конструкторі
             const initialStandPosition =
                 $standContainer2Node[0].getBoundingClientRect();
             const { width: initialStandWidth } = initialStandPosition;
-
-            const indexOfStand =
-                $standContainer2Node[0].children[0].dataset.itemIndex;
-            const standData = getElementData(+indexOfStand, "stand");
+            const standData = getElementData(indexOfSecondStand, "stand");
 
             // Отримуємо довжину тумби в прайсі (щоб згенерувати пропорції для рендеру)
             const { length: standLength } = standData;
@@ -2077,7 +2331,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                     siteNameEng,
                     price
                 );
-        
+
                 $totalCostNode[0].insertAdjacentHTML(
                     "beforebegin",
                     monumentNodeToCalculator
