@@ -549,11 +549,11 @@ standContainer.addEventListener("mousedown", (e) => {
 
     if (selectedMonumentsIndexes.length === 2) {
         // Розрахунки для масштабування першої стелли
-        const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
-        const { length: firstMonumentLengthFromPrice, height: firstMonumentHeightFromPrice } = getElementData(
-            indexOfFirstMonumentImg,
-            "monuments"
-        );
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[1];
+        const {
+            length: firstMonumentLengthFromPrice,
+            height: firstMonumentHeightFromPrice,
+        } = getElementData(indexOfFirstMonumentImg, "monuments");
         firstMonumentLength = firstMonumentLengthFromPrice;
         firstMonumentHeight = firstMonumentHeightFromPrice;
 
@@ -565,11 +565,11 @@ standContainer.addEventListener("mousedown", (e) => {
             firstMonumentHeight / firstMonumentLength;
 
         // Розрахунки для масштабування другої стелли
-        const indexOfSecondMonumentImg = selectedMonumentsIndexes[1];
-        const { length: secondMonumentLengthFromPrice, height: secondMonumentHeightFromPrice } = getElementData(
-            indexOfSecondMonumentImg,
-            "monuments"
-        );
+        const indexOfSecondMonumentImg = selectedMonumentsIndexes[0];
+        const {
+            length: secondMonumentLengthFromPrice,
+            height: secondMonumentHeightFromPrice,
+        } = getElementData(indexOfSecondMonumentImg, "monuments");
         secondMonumentLength = secondMonumentLengthFromPrice;
         secondMonumentHeight = secondMonumentHeightFromPrice;
         $secondMonument = document.querySelectorAll(
@@ -577,7 +577,7 @@ standContainer.addEventListener("mousedown", (e) => {
         );
         secondMonumentWidthProportion = secondMonumentLength / standLength;
         secondMonumentHeightProportion =
-        secondMonumentHeight / secondMonumentLength;
+            secondMonumentHeight / secondMonumentLength;
     }
 
     const { width } = handleLandPlotSizes();
@@ -611,7 +611,7 @@ standContainer.addEventListener("mousedown", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 390;
+        const INITIAL_TOP_POSITION_XL = 360;
         const MAX_HEIGHT_OF_AREA_XL = 180;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
@@ -670,27 +670,30 @@ standContainer.addEventListener("mousedown", (e) => {
             const firstMonumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const firstMonumentHeightOnStand =
-            firstMonumentWidthOnStand * firstMonumentHeightProportion;
+                firstMonumentWidthOnStand * firstMonumentHeightProportion;
             $firstMonument[0].style.width = `${firstMonumentWidthOnStand}px`;
             $firstMonument[0].style.height = `${firstMonumentHeightOnStand}px`;
-            $firstMonument[0].style.top = `${-firstMonumentHeightOnStand + 3}px`;
+            $firstMonument[0].style.top = `${
+                -firstMonumentHeightOnStand + 3
+            }px`;
             const leftPositionOfFirstStella =
-                    (standWidthOnConstructor / 2 - firstMonumentWidthOnStand) / 2;
+                (standWidthOnConstructor / 2 - firstMonumentWidthOnStand) / 2;
             $firstMonument[0].style.left = `${leftPositionOfFirstStella}px`;
 
             const secondMonumentWidthOnStand =
                 standWidthOnConstructor * secondMonumentWidthProportion;
             const secondMonumentHeightOnStand =
-            secondMonumentWidthOnStand * secondMonumentHeightProportion;
+                secondMonumentWidthOnStand * secondMonumentHeightProportion;
             $secondMonument[0].style.width = `${secondMonumentWidthOnStand}px`;
             $secondMonument[0].style.height = `${secondMonumentHeightOnStand}px`;
-            $secondMonument[0].style.top = `${-secondMonumentHeightOnStand + 3}px`;
+            $secondMonument[0].style.top = `${
+                -secondMonumentHeightOnStand + 3
+            }px`;
             const leftPositionOfSecondStella =
-                    leftPositionOfFirstStella * 2 +
-                    firstMonumentWidthOnStand +
-                    (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
+                leftPositionOfFirstStella * 2 +
+                firstMonumentWidthOnStand +
+                (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument[0].style.left = `${leftPositionOfSecondStella}px`;
-
         } else if ($firstMonument) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -744,6 +747,12 @@ standContainer.addEventListener("touchstart", (e) => {
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
 
+    let $secondMonument = null;
+    let secondMonumentLength = null;
+    let secondMonumentHeight = null;
+    let secondMonumentWidthProportion = null;
+    let secondMonumentHeightProportion = null;
+
     if (selectedMonumentsIndexes.length === 1) {
         const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
         const { length, height } = getElementData(
@@ -759,6 +768,39 @@ standContainer.addEventListener("touchstart", (e) => {
         firstMonumentWidthProportion = firstMonumentLength / standLength;
         firstMonumentHeightProportion =
             firstMonumentHeight / firstMonumentLength;
+    }
+
+    if (selectedMonumentsIndexes.length === 2) {
+        // Розрахунки для масштабування першої стелли
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[1];
+        const {
+            length: firstMonumentLengthFromPrice,
+            height: firstMonumentHeightFromPrice,
+        } = getElementData(indexOfFirstMonumentImg, "monuments");
+        firstMonumentLength = firstMonumentLengthFromPrice;
+        firstMonumentHeight = firstMonumentHeightFromPrice;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+
+        // Розрахунки для масштабування другої стелли
+        const indexOfSecondMonumentImg = selectedMonumentsIndexes[0];
+        const {
+            length: secondMonumentLengthFromPrice,
+            height: secondMonumentHeightFromPrice,
+        } = getElementData(indexOfSecondMonumentImg, "monuments");
+        secondMonumentLength = secondMonumentLengthFromPrice;
+        secondMonumentHeight = secondMonumentHeightFromPrice;
+        $secondMonument = document.querySelectorAll(
+            `.monument-img${indexOfSecondMonumentImg}`
+        );
+        secondMonumentWidthProportion = secondMonumentLength / standLength;
+        secondMonumentHeightProportion =
+            secondMonumentHeight / secondMonumentLength;
     }
 
     const { width } = handleLandPlotSizes();
@@ -792,7 +834,7 @@ standContainer.addEventListener("touchstart", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 390;
+        const INITIAL_TOP_POSITION_XL = 360;
         const MAX_HEIGHT_OF_AREA_XL = 180;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
@@ -847,7 +889,35 @@ standContainer.addEventListener("touchstart", (e) => {
             }
         }
 
-        if ($firstMonument) {
+        if ($firstMonument && $secondMonument) {
+            const firstMonumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const firstMonumentHeightOnStand =
+                firstMonumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${firstMonumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${firstMonumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${
+                -firstMonumentHeightOnStand + 3
+            }px`;
+            const leftPositionOfFirstStella =
+                (standWidthOnConstructor / 2 - firstMonumentWidthOnStand) / 2;
+            $firstMonument[0].style.left = `${leftPositionOfFirstStella}px`;
+
+            const secondMonumentWidthOnStand =
+                standWidthOnConstructor * secondMonumentWidthProportion;
+            const secondMonumentHeightOnStand =
+                secondMonumentWidthOnStand * secondMonumentHeightProportion;
+            $secondMonument[0].style.width = `${secondMonumentWidthOnStand}px`;
+            $secondMonument[0].style.height = `${secondMonumentHeightOnStand}px`;
+            $secondMonument[0].style.top = `${
+                -secondMonumentHeightOnStand + 3
+            }px`;
+            const leftPositionOfSecondStella =
+                leftPositionOfFirstStella * 2 +
+                firstMonumentWidthOnStand +
+                (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
+            $secondMonument[0].style.left = `${leftPositionOfSecondStella}px`;
+        } else if ($firstMonument) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -907,6 +977,12 @@ standContainer2.addEventListener("mousedown", (e) => {
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
 
+    let $secondMonument = null;
+    let secondMonumentLength = null;
+    let secondMonumentHeight = null;
+    let secondMonumentWidthProportion = null;
+    let secondMonumentHeightProportion = null;
+
     if (selectedMonumentsIndexes.length === 1) {
         const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
         const { length, height } = getElementData(
@@ -922,6 +998,39 @@ standContainer2.addEventListener("mousedown", (e) => {
         firstMonumentWidthProportion = firstMonumentLength / standLength;
         firstMonumentHeightProportion =
             firstMonumentHeight / firstMonumentLength;
+    }
+
+    if (selectedMonumentsIndexes.length === 2) {
+        // Розрахунки для масштабування першої стелли
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[1];
+        const {
+            length: firstMonumentLengthFromPrice,
+            height: firstMonumentHeightFromPrice,
+        } = getElementData(indexOfFirstMonumentImg, "monuments");
+        firstMonumentLength = firstMonumentLengthFromPrice;
+        firstMonumentHeight = firstMonumentHeightFromPrice;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+
+        // Розрахунки для масштабування другої стелли
+        const indexOfSecondMonumentImg = selectedMonumentsIndexes[0];
+        const {
+            length: secondMonumentLengthFromPrice,
+            height: secondMonumentHeightFromPrice,
+        } = getElementData(indexOfSecondMonumentImg, "monuments");
+        secondMonumentLength = secondMonumentLengthFromPrice;
+        secondMonumentHeight = secondMonumentHeightFromPrice;
+        $secondMonument = document.querySelectorAll(
+            `.monument-img${indexOfSecondMonumentImg}`
+        );
+        secondMonumentWidthProportion = secondMonumentLength / standLength;
+        secondMonumentHeightProportion =
+            secondMonumentHeight / secondMonumentLength;
     }
 
     const { width } = handleLandPlotSizes();
@@ -957,12 +1066,14 @@ standContainer2.addEventListener("mousedown", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 390;
+        const INITIAL_TOP_POSITION_XL = 360;
         const MAX_HEIGHT_OF_AREA_XL = 180;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
         const newCoordinates = $standContainer2Node[0].getBoundingClientRect();
         const { top, width: standWidthOnConstructor } = newCoordinates;
+        console.log('[top]', top);
+        
 
         if (intViewportWidth < 576) {
             if (top > INITIAL_TOP_POSITION_S) {
@@ -1012,7 +1123,35 @@ standContainer2.addEventListener("mousedown", (e) => {
             }
         }
 
-        if ($firstMonument) {
+        if ($firstMonument && $secondMonument) {
+            const firstMonumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const firstMonumentHeightOnStand =
+                firstMonumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${firstMonumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${firstMonumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${
+                -firstMonumentHeightOnStand + 3
+            }px`;
+            const leftPositionOfFirstStella =
+                (standWidthOnConstructor / 2 - firstMonumentWidthOnStand) / 2;
+            $firstMonument[0].style.left = `${leftPositionOfFirstStella}px`;
+
+            const secondMonumentWidthOnStand =
+                standWidthOnConstructor * secondMonumentWidthProportion;
+            const secondMonumentHeightOnStand =
+                secondMonumentWidthOnStand * secondMonumentHeightProportion;
+            $secondMonument[0].style.width = `${secondMonumentWidthOnStand}px`;
+            $secondMonument[0].style.height = `${secondMonumentHeightOnStand}px`;
+            $secondMonument[0].style.top = `${
+                -secondMonumentHeightOnStand + 3
+            }px`;
+            const leftPositionOfSecondStella =
+                leftPositionOfFirstStella * 2 +
+                firstMonumentWidthOnStand +
+                (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
+            $secondMonument[0].style.left = `${leftPositionOfSecondStella}px`;
+        } else if ($firstMonument) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -1036,14 +1175,93 @@ standContainer2.addEventListener("touchstart", (e) => {
     e = e || window.event;
     e.preventDefault();
 
-    const { width } = handleLandPlotSizes();
-    let intViewportWidth = window.innerWidth;
-
-    const selectedStandIndex = Number(
-        $standContainer2Node[0].children[0].dataset.itemIndex
+    let selectedStandIndex = null;
+    let selectedMonumentsIndexes = [];
+    const childrenOfStandContainer2 = Array.from(
+        $standContainer2Node[0].children
     );
+
+    for (let i = 0; i < childrenOfStandContainer2.length; i++) {
+        if (childrenOfStandContainer2[i].dataset.category === "stand") {
+            selectedStandIndex = Number(
+                childrenOfStandContainer2[i].dataset.itemIndex
+            );
+        }
+
+        if (childrenOfStandContainer2[i].dataset.category === "monuments") {
+            selectedMonumentsIndexes.push(
+                Number(childrenOfStandContainer2[i].dataset.itemIndex)
+            );
+        }
+    }
+
     const seletedStandData = getElementData(selectedStandIndex, "stand");
     const { length: standLength, height: standHeight } = seletedStandData;
+
+    let $firstMonument = null;
+    let firstMonumentLength = null;
+    let firstMonumentHeight = null;
+    let firstMonumentWidthProportion = null;
+    let firstMonumentHeightProportion = null;
+
+    let $secondMonument = null;
+    let secondMonumentLength = null;
+    let secondMonumentHeight = null;
+    let secondMonumentWidthProportion = null;
+    let secondMonumentHeightProportion = null;
+
+    if (selectedMonumentsIndexes.length === 1) {
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[0];
+        const { length, height } = getElementData(
+            indexOfFirstMonumentImg,
+            "monuments"
+        );
+        firstMonumentLength = length;
+        firstMonumentHeight = height;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+    }
+
+    if (selectedMonumentsIndexes.length === 2) {
+        // Розрахунки для масштабування першої стелли
+        const indexOfFirstMonumentImg = selectedMonumentsIndexes[1];
+        const {
+            length: firstMonumentLengthFromPrice,
+            height: firstMonumentHeightFromPrice,
+        } = getElementData(indexOfFirstMonumentImg, "monuments");
+        firstMonumentLength = firstMonumentLengthFromPrice;
+        firstMonumentHeight = firstMonumentHeightFromPrice;
+
+        $firstMonument = document.querySelectorAll(
+            `.monument-img${indexOfFirstMonumentImg}`
+        );
+        firstMonumentWidthProportion = firstMonumentLength / standLength;
+        firstMonumentHeightProportion =
+            firstMonumentHeight / firstMonumentLength;
+
+        // Розрахунки для масштабування другої стелли
+        const indexOfSecondMonumentImg = selectedMonumentsIndexes[0];
+        const {
+            length: secondMonumentLengthFromPrice,
+            height: secondMonumentHeightFromPrice,
+        } = getElementData(indexOfSecondMonumentImg, "monuments");
+        secondMonumentLength = secondMonumentLengthFromPrice;
+        secondMonumentHeight = secondMonumentHeightFromPrice;
+        $secondMonument = document.querySelectorAll(
+            `.monument-img${indexOfSecondMonumentImg}`
+        );
+        secondMonumentWidthProportion = secondMonumentLength / standLength;
+        secondMonumentHeightProportion =
+            secondMonumentHeight / secondMonumentLength;
+    }
+
+    const { width } = handleLandPlotSizes();
+    let intViewportWidth = window.innerWidth;
 
     const closeDragElement = () => {
         document.ontouchend = null;
@@ -1075,7 +1293,7 @@ standContainer2.addEventListener("touchstart", (e) => {
         const MAX_HEIGHT_OF_AREA_L = 135;
         let initialLengthL = ((standLength / width) * 100) / 2;
 
-        const INITIAL_TOP_POSITION_XL = 390;
+        const INITIAL_TOP_POSITION_XL = 360;
         const MAX_HEIGHT_OF_AREA_XL = 180;
         let initialLengthXL = ((standLength / width) * 100) / 2;
 
@@ -1128,6 +1346,47 @@ standContainer2.addEventListener("touchstart", (e) => {
                 $standContainer2Node[0].style.width = `${newLength}%`;
                 $standContainer2Node[0].style.height = `${newHeight * 0.9}px`;
             }
+        }
+
+        if ($firstMonument && $secondMonument) {
+            const firstMonumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const firstMonumentHeightOnStand =
+                firstMonumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${firstMonumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${firstMonumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${
+                -firstMonumentHeightOnStand + 3
+            }px`;
+            const leftPositionOfFirstStella =
+                (standWidthOnConstructor / 2 - firstMonumentWidthOnStand) / 2;
+            $firstMonument[0].style.left = `${leftPositionOfFirstStella}px`;
+
+            const secondMonumentWidthOnStand =
+                standWidthOnConstructor * secondMonumentWidthProportion;
+            const secondMonumentHeightOnStand =
+                secondMonumentWidthOnStand * secondMonumentHeightProportion;
+            $secondMonument[0].style.width = `${secondMonumentWidthOnStand}px`;
+            $secondMonument[0].style.height = `${secondMonumentHeightOnStand}px`;
+            $secondMonument[0].style.top = `${
+                -secondMonumentHeightOnStand + 3
+            }px`;
+            const leftPositionOfSecondStella =
+                leftPositionOfFirstStella * 2 +
+                firstMonumentWidthOnStand +
+                (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
+            $secondMonument[0].style.left = `${leftPositionOfSecondStella}px`;
+        } else if ($firstMonument) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument[0].style.width = `${monumentWidthOnStand}px`;
+            $firstMonument[0].style.height = `${monumentHeightOnStand}px`;
+            $firstMonument[0].style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument[0].style.left = `${
+                standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
         }
     };
 
@@ -2259,8 +2518,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         let isStandInSecondContainer = false;
         let indexOfSecondStand = null;
 
-        // Тут же перевіряємо чи є вже на даній тумбі стелли
+        // Тут же перевіряємо чи є вже на даній тумбі стелли і їх сумарна довжина
         let isStelesSecondContainer = false;
+        let monumentsLengthInSecondContainer = 0;
+        let monumentIndexOnSecondStand = null;
 
         for (let i = 0; i < secondStandContainerChildren.length; i++) {
             if (secondStandContainerChildren[i].dataset.category === "stand") {
@@ -2273,9 +2534,18 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 secondStandContainerChildren[i].dataset.category === "monuments"
             ) {
                 isStelesSecondContainer = true;
+                let monumentIndex =
+                    +secondStandContainerChildren[i].dataset.itemIndex;
+                monumentIndexOnSecondStand = monumentIndex;
+                let { length: monumentLength } = getElementData(
+                    monumentIndex,
+                    "monuments"
+                );
+                monumentsLengthInSecondContainer += monumentLength;
             }
         }
 
+        // Якщо тумба в другому контейнері і ще не вибрана жодна стелла
         if (isStandInSecondContainer && !isStelesSecondContainer) {
             // Отримуємо фактичні дані тумби в конструкторі
             const initialStandPosition =
@@ -2298,6 +2568,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
             if (monumentLength <= standLength) {
                 selectedItems.push(selectedMonumentData);
+                elementsMonuments[selectedMonument].classList.add("active");
 
                 const proportion = monumentLength / standLength;
                 const monumentWidthOnStand = initialStandWidth * proportion;
@@ -2320,6 +2591,147 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                     initialStandWidth / 2 - monumentWidthOnStand / 2
                 }px`;
                 $monument1Img[0].style.position = "absolute";
+
+                handleAddFilterNode(propsForFilterNode);
+
+                const monumentNodeToCalculator = createCalculatorDataNode(
+                    category,
+                    selectedMonument,
+                    siteNameUa,
+                    siteNameRu,
+                    siteNameEng,
+                    price
+                );
+
+                $totalCostNode[0].insertAdjacentHTML(
+                    "beforebegin",
+                    monumentNodeToCalculator
+                );
+
+                calculate();
+            }
+        }
+
+        // Якщо тумба в першому контейнері і тут вже є стелли
+        if (isStandInSecondContainer && isStelesSecondContainer) {
+            // Отримуємо фактичні дані тумби в конструкторі
+            const initialStandPosition =
+                $standContainer2Node[0].getBoundingClientRect();
+            const { width: initialStandWidth } = initialStandPosition;
+            const standData = getElementData(indexOfSecondStand, "stand");
+
+            // Отримуємо довжину тумби в прайсі
+            const { length: standLength } = standData;
+
+            const selectedMonumentData = getElementData(
+                selectedMonument,
+                "monuments"
+            );
+
+            // Отримуємо довжину нової обраної стелли в прайсі
+            const {
+                length: selectedMonumentLength,
+                height: selectedMonumentHeight,
+            } = selectedMonumentData;
+            monumentsLengthInSecondContainer += selectedMonumentLength;
+
+            // Показати помилку, якщо довжина обраних стелл > довжину тумби
+            monumentsLengthInSecondContainer > standLength &&
+                handleInfoAndErrorMessages($monumentErrorLength, {
+                    isUaLanguage,
+                    isRuLanguage,
+                    isEngLanguage,
+                });
+
+            const monumentStringNode = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${id}" data-item-index="${id}" data-category="${category}" />`;
+
+            if (monumentsLengthInSecondContainer <= standLength) {
+                selectedItems.push(selectedMonumentData);
+                elementsMonuments[selectedMonument].classList.add("active");
+
+                // Видаляємо стеллу з першого контейнера
+                // щоб розмістити дві стелли і застосувати нові стилі
+                const firstMonumentOnSecondStand = document.querySelectorAll(
+                    `.monument-img${monumentIndexOnSecondStand}`
+                );
+                $standContainer2Node[0].removeChild(
+                    firstMonumentOnSecondStand[0]
+                );
+
+                // Отримуємо дані по стелі, що вже повинна знаходитися на тумбі
+                const firstMonumentData = getElementData(
+                    monumentIndexOnSecondStand,
+                    "monuments"
+                );
+                const {
+                    length: firstMonumentLength,
+                    height: firstMonumentHeight,
+                    imgConstructorUrl,
+                    titleUa,
+                    category,
+                } = firstMonumentData;
+
+                const firstMonumentProportion =
+                    firstMonumentLength / standLength;
+                const firstMonumentWidthOnStand =
+                    initialStandWidth * firstMonumentProportion;
+                const firstMonumentHeightProportion =
+                    firstMonumentHeight / firstMonumentLength;
+                const firstMonumentHeightOnStand =
+                    firstMonumentWidthOnStand * firstMonumentHeightProportion;
+
+                const firstMonumentStringNode = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${monumentIndexOnSecondStand}" data-item-index="${monumentIndexOnSecondStand}" data-category="${category}" />`;
+
+                const proportionForNewMonument =
+                    selectedMonumentLength / standLength;
+                const newMonumentWidthOnStand =
+                    initialStandWidth * proportionForNewMonument;
+                const newMonumentHeightProportion =
+                    selectedMonumentHeight / selectedMonumentLength;
+                const newMonumentHeightOnStand =
+                    newMonumentWidthOnStand * newMonumentHeightProportion;
+
+                // Рендеримо першу стеллу
+                $standContainer2Node[0].insertAdjacentHTML(
+                    "afterbegin",
+                    firstMonumentStringNode
+                );
+
+                // Ремндеримо другу стеллу
+                $standContainer2Node[0].insertAdjacentHTML(
+                    "afterbegin",
+                    monumentStringNode
+                );
+
+                // Задаємо стилі першій стеллі
+                const $monument1Img = document.querySelectorAll(
+                    `.monument-img${monumentIndexOnSecondStand}`
+                );
+                $monument1Img[0].style.position = "absolute";
+                $monument1Img[0].style.width = `${firstMonumentWidthOnStand}px`;
+                $monument1Img[0].style.height = `${firstMonumentHeightOnStand}px`;
+                $monument1Img[0].style.top = `${
+                    -firstMonumentHeightOnStand + 3
+                }px`;
+                const leftPositionOfFirstStella =
+                    (initialStandWidth / 2 - firstMonumentWidthOnStand) / 2;
+                $monument1Img[0].style.left = `${leftPositionOfFirstStella}px`;
+
+                // Задаємо стилі другій стеллі
+                const $monument2Img = document.querySelectorAll(
+                    `.monument-img${selectedMonument}`
+                );
+                $monument2Img[0].style.position = "absolute";
+                $monument2Img[0].style.width = `${newMonumentWidthOnStand}px`;
+                $monument2Img[0].style.height = `${newMonumentHeightOnStand}px`;
+                $monument2Img[0].style.top = `${
+                    -newMonumentHeightOnStand + 3
+                }px`;
+                const leftPositionOfSecondStella =
+                    leftPositionOfFirstStella * 2 +
+                    firstMonumentWidthOnStand +
+                    (initialStandWidth / 2 - newMonumentWidthOnStand) / 2;
+                $monument2Img[0].style.left = `${leftPositionOfSecondStella}px`;
 
                 handleAddFilterNode(propsForFilterNode);
 
