@@ -527,11 +527,6 @@ body {
 
 .stand-container,
 .stand-container2 {
-    display: none;
-}
-
-.stand-container.active,
-.stand-container2.active {
     display: block;
     position: absolute;
     left: 50%;
@@ -540,8 +535,8 @@ body {
     cursor: move;
 }
 
-.stand-container.active > img,
-.stand-container2.active > img {
+.stand-container > img,
+.stand-container2 > img {
     width: 100%;
     height: 100%;
 }
@@ -791,8 +786,8 @@ body {
         font-size: 0.65rem;
     }
 
-    .stand-container.active,
-    .stand-container2.active {
+    .stand-container,
+    .stand-container2 {
         top: 305px;
     }
 
@@ -892,8 +887,8 @@ body {
         height: 440px;
     }
 
-    .stand-container.active,
-    .stand-container2.active {
+    .stand-container,
+    .stand-container2 {
         top: 305px;
     }
 
@@ -1024,8 +1019,8 @@ body {
         left: 10%;
     }
 
-    .stand-container.active,
-    .stand-container2.active {
+    .stand-container,
+    .stand-container2 {
         top: 345px;
     }
 
