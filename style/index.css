@@ -161,6 +161,10 @@ body {
 .calculator__data-value > span,
 .monument__error > span,
 .monument__error-length > span,
+.info-message__choose-stand,
+.info-message__choose-stand-paragraph > span,
+.first-stand__choose > span,
+.second-stand_choose > span,
 .field__socle-img {
     display: none;
 }
@@ -262,6 +266,9 @@ body {
 .monument__error-length.active > span.active,
 .constructor__element-name > span.active,
 .calculator__data-value > span.active,
+.info-message__choose-stand-paragraph > span.active,
+.first-stand__choose > span.active,
+.second-stand_choose > span.active,
 .filter-section__item-title > span.active {
     display: inline;
 }
@@ -523,6 +530,51 @@ body {
     bottom: 3%;
     overflow: hidden;
     z-index: 3;
+}
+
+.info-message__choose-stand.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7rem;
+    width: 70%;
+    position: absolute;
+    z-index: 100;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: var(--sm-padding);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: rgba(158, 158, 158, 0.13);
+}
+
+.info-message__choose-stand-paragraph {
+    margin-bottom: var(--xs-margin);
+}
+
+.stands-choose_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.first-stand__choose,
+.second-stand_choose {
+    text-align: center;
+    text-shadow: 1px 2px 3px #2a2a2a;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.first-stand__choose {
+    margin-right: var(--xs-margin);
+}
+
+.first-stand__choose:hover,
+.second-stand_choose:hover {
+    cursor: pointer;
+    opacity: 0.5;
 }
 
 .stand-container,
@@ -819,6 +871,11 @@ body {
         width: 70%;
     }
 
+    .info-message__choose-stand.active {
+        font-size: 0.8rem;
+        width: 50%;
+    }
+
     .field__socle-img.active {
         height: 243px;
         bottom: -5.5%;
@@ -1080,6 +1137,11 @@ body {
     .draggable-elements {
         bottom: 1%;
         height: 530px;
+    }
+
+    .info-message__choose-stand.active {
+        top: 40%;
+        width: 40%;
     }
 
     .calculator {
