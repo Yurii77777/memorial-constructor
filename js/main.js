@@ -1628,7 +1628,7 @@ const handleSizesForStandContainer = (props) => {
  * @param {Array} props
  */
 const handleRemoveFilterNode = (props) => {
-    let itemsToRemove = props;
+    let itemsToRemove = props.slice();
 
     const removeFilterNode = (itemsToRemove) => {
         for (let i = 0; i < itemsToRemove.length; i++) {
@@ -1661,30 +1661,29 @@ const handleRemoveFilterNode = (props) => {
  * @param {Array} props
  */
 const handleRemoveCalculatorNode = (props) => {
-    let itemsToRemove = [];
-    const calculatorNodes = Array.from($calculatorSection[0].children);
+    let itemsToRemove = props.slice();;
+    
+    const removeCalculatorNode = (itemsToRemove) => {
+        for (let i = 0; i < itemsToRemove.length; i++) {
+            const { category, index } = itemsToRemove[i];
 
-    for (let i = 0; i < calculatorNodes.length; i++) {
-        let categoryItem = null;
-        let indexItem = null;
-
-        calculatorNodes[i].dataset.category &&
-            (categoryItem = calculatorNodes[i].dataset.category);
-        calculatorNodes[i].dataset.itemIndex &&
-            (indexItem = calculatorNodes[i].dataset.itemIndex);
-
-        if (categoryItem && indexItem) {
-            for (let j = 0; j < props.length; j++) {
-                const { category, index } = props[j];
-
-                if (String(index) === indexItem && category === categoryItem) {
-                    if (!itemsToRemove.length) {
-                        itemsToRemove.push(calculatorNodes[i]);
-                        $calculatorSection[0].removeChild(calculatorNodes[i]);
-                    }
+            for (let i = 0; i < calculatorNodes.length; i++) {
+                if (
+                    calculatorNodes[i].dataset.category === category &&
+                    +calculatorNodes[i].dataset.itemIndex === index
+                ) {
+                    $calculatorSection[0].removeChild(calculatorNodes[i]);
+                    itemsToRemove.splice(itemsToRemove[i], 1);
+                    return;
                 }
             }
         }
+    };
+
+    const calculatorNodes = Array.from($calculatorSection[0].children);
+
+    while (itemsToRemove.length) {
+        removeCalculatorNode(itemsToRemove);
     }
 };
 
