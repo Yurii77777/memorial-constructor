@@ -1628,23 +1628,29 @@ const handleSizesForStandContainer = (props) => {
  * @param {Array} props
  */
 const handleRemoveFilterNode = (props) => {
-    let itemsToRemove = [];
-    const itemsInFilterSection = Array.from(filterNode[0].children);
+    let itemsToRemove = props;
 
-    for (let i = 0; i < props.length; i++) {
-        const { category, index } = props[i];
+    const removeFilterNode = (itemsToRemove) => {
+        for (let i = 0; i < itemsToRemove.length; i++) {
+            const { category, index } = itemsToRemove[i];
 
-        for (let j = 0; j < itemsInFilterSection.length; j++) {
-            if (
-                itemsInFilterSection[j].dataset.category === category &&
-                +itemsInFilterSection[j].dataset.itemIndex === index
-            ) {
-                if (!itemsToRemove.length) {
+            for (let j = 0; j < itemsInFilterSection.length; j++) {
+                if (
+                    itemsInFilterSection[j].dataset.category === category &&
+                    +itemsInFilterSection[j].dataset.itemIndex === index
+                ) {
                     filterNode[0].removeChild(itemsInFilterSection[j]);
-                    itemsToRemove.push(itemsInFilterSection[i]);
+                    itemsToRemove.splice(itemsToRemove[i], 1);
+                    return;
                 }
             }
         }
+    };
+
+    const itemsInFilterSection = Array.from(filterNode[0].children);
+
+    while (itemsToRemove.length) {
+        removeFilterNode(itemsToRemove);
     }
 };
 
