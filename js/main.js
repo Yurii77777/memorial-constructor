@@ -1603,22 +1603,33 @@ const handleSizesForStandContainer = (props) => {
     let intViewportWidth = window.innerWidth;
     let widthOfStand = null;
     let heightOfStand = null;
+    let topOfStand = null;
 
     if (intViewportWidth < 576) {
         widthOfStand = `${((standLength / widthOfLandPlot) * 100) / 2.1}%`;
         heightOfStand = `${standHeight * 0.6}px`;
-    } else if (intViewportWidth > 576) {
+        topOfStand = '170px';
+    }
+    
+    if (intViewportWidth > 576) {
         widthOfStand = `${((standLength / widthOfLandPlot) * 100) / 1.9}%`;
         heightOfStand = `${standHeight * 0.7}px`;
-    } else if (intViewportWidth > 768) {
+        topOfStand = '305px';
+    }
+    
+    if (intViewportWidth > 768) {
         widthOfStand = `${((standLength / widthOfLandPlot) * 100) / 2}%`;
         heightOfStand = `${standHeight * 0.8}px`;
-    } else if (intViewportWidth > 992) {
+        topOfStand = '305px';
+    }
+    
+    if (intViewportWidth > 992) {
         widthOfStand = `${((standLength / widthOfLandPlot) * 100) / 1.8}%`;
         heightOfStand = `${standHeight * 0.8}px`;
+        topOfStand = '345px';
     }
 
-    return { widthOfStand, heightOfStand };
+    return { widthOfStand, heightOfStand, topOfStand };
 };
 
 /**
@@ -1862,7 +1873,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     ) {
         selectedItems.push(userSelectStand);
         elementsStands[selectedStand].classList.add("active");
-        const { widthOfStand, heightOfStand } = handleSizesForStandContainer({
+        const { widthOfStand, heightOfStand, topOfStand } = handleSizesForStandContainer({
             width,
             length,
             height,
@@ -1872,6 +1883,8 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             "afterbegin",
             imgStandOnConstructor
         );
+        
+        $standContainerNode[0].style.top = `${topOfStand}`;
         $standContainerNode[0].style.width = `${widthOfStand}`;
         $standContainerNode[0].style.height = `${heightOfStand}`;
 
@@ -1907,7 +1920,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     ) {
         selectedItems.push(userSelectStand);
         elementsStands[selectedStand].classList.add("active");
-        const { widthOfStand, heightOfStand } = handleSizesForStandContainer({
+        const { widthOfStand, heightOfStand, topOfStand } = handleSizesForStandContainer({
             width,
             length,
             height,
@@ -1917,6 +1930,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             "afterbegin",
             imgStandOnConstructor
         );
+        $standContainer2Node[0].style.top = `${topOfStand}`;
         $standContainer2Node[0].style.width = `${widthOfStand}`;
         $standContainer2Node[0].style.height = `${heightOfStand}`;
 
@@ -1952,7 +1966,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     ) {
         selectedItems.push(userSelectStand);
         elementsStands[selectedStand].classList.add("active");
-        const { widthOfStand, heightOfStand } = handleSizesForStandContainer({
+        const { widthOfStand, heightOfStand, topOfStand } = handleSizesForStandContainer({
             width,
             length,
             height,
@@ -1962,6 +1976,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             "afterbegin",
             imgStandOnConstructor
         );
+        $standContainerNode[0].style.top = `${topOfStand}`;
         $standContainerNode[0].style.width = `${widthOfStand}`;
         $standContainerNode[0].style.height = `${heightOfStand}`;
 
