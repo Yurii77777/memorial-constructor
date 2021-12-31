@@ -1587,27 +1587,21 @@ const handleRemoveCalculatorNode = (props) => {
  * Функция удаления элементов из массива selectedItems.
  * @param {Array} props
  */
-const handleRemoveItemsFromSelectedItems = (itemsToRemove) => {
-    let count = itemsToRemove.length;
+const handleRemoveItemsFromSelectedItems = (props) => {
+    let itemsToRemove = props.slice();
+        
+        for (let i = 0; i < itemsToRemove.length; i++) {
+            const { category: categoryToFind, index } = itemsToRemove[i];
 
-    const spliceItems = () => {
-        for (let i = 0; i < selectedItems.length; i++) {
-            const { category: categoryToFind, id } = selectedItems[i];
-
-            for (let j = 0; j < itemsToRemove.length; j++) {
-                const { category, index } = itemsToRemove[j];
-
-                if (category === categoryToFind && index === id) {
-                    selectedItems.splice(selectedItems[i], 1);
-                    count -= 1;
-                }
+            for (let j = 0; j < selectedItems.length; j++) {
+                const { category, id } = selectedItems[j];
+                
+                if (category === categoryToFind && id === index) {
+                    // counter -= 1;
+                    selectedItems.splice(selectedItems[j]);
+                } 
             }
         }
-    };
-
-    while (count) {
-        spliceItems();
-    }
 };
 
 /**
@@ -1645,7 +1639,6 @@ const getItemsToRemove = (arrayOfNodes, node, categories) => {
     if (isMonument) {
         createItemData(arrayOfNodes, "monuments");
     }
-
     return result;
 };
 
@@ -2697,6 +2690,72 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             },
             { once: true }
         );
+    }
+
+    if (
+        selectedMonument !== -1 &&
+        userClick.className === "field__hide-element-button"
+    ) {
+        // Знайти в якому контейнері конструктора знаходиться обрана стелла
+        let isMonumentInFirstContainer = false;
+        let sameStelesCountInFirstContainer = null;
+        let isMonumentInSecondContainer = false;
+        let sameStelesCountInSecondContainer = null;
+
+        const firstContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
+
+        if (firstContainerChildren.length) {
+            for (let i = 0; i < firstContainerChildren.length; i++) {
+                if (
+                    firstContainerChildren[i].dataset.category ===
+                        "monuments" &&
+                    +firstContainerChildren[i].dataset.itemIndex ===
+                        selectedMonument
+                ) {
+                    isMonumentInFirstContainer = true;
+                    sameStelesCountInFirstContainer += 1;
+                }
+            }
+        }
+
+        const secondContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
+
+        if (secondContainerChildren.length) {
+            for (let i = 0; i < secondContainerChildren.length; i++) {
+                if (
+                    secondContainerChildren[i].dataset.category ===
+                        "monuments" &&
+                    +secondContainerChildren[i].dataset.itemIndex ===
+                        selectedMonument
+                ) {
+                    isMonumentInSecondContainer = true;
+                    sameStelesCountInSecondContainer += 1;
+                }
+            }
+        }
+
+        if (
+            isMonumentInFirstContainer &&
+            sameStelesCountInFirstContainer === 1 &&
+            !isMonumentInSecondContainer
+        ) {
+            elementsMonuments[selectedMonument].classList.remove("active");
+
+            let itemsToRemove = getItemsToRemove(
+                firstContainerChildren,
+                $standContainerNode,
+                { isStand: false, isMonument: true }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        }
     }
 });
 
