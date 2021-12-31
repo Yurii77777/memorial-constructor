@@ -63,7 +63,9 @@ const plotLengthInput = document.querySelectorAll(
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
 
-const filterNode = document.querySelectorAll(".constructor__filter-section");
+const filterNode = document.getElementsByClassName(
+    "constructor__filter-section"
+);
 
 // Елементи, котрі накладуються на земельну ділянку
 const draggableElementsNode = document.querySelectorAll(".draggable-elements");
@@ -404,6 +406,33 @@ const handleInfoAndErrorMessages = (HTMLnode, languageList) => {
 };
 
 /**
+ * Функція для закриття діалогового вікна вибору тумби
+ * Function for closing the dialog window for choosing a stand
+ * Функция для закрытия диалогового окна выбора тумбы
+ */
+const handleHideInfoMessage = () => {
+    const $chooseStandMessage = document.querySelectorAll(
+        ".info-message__choose-stand"
+    );
+
+    if ($chooseStandMessage[0].classList.contains("active")) {
+        const standMessageChildrenNodes = Array.from(
+            $chooseStandMessage[0].children
+        );
+
+        for (let i = 0; i < standMessageChildrenNodes.length; i++) {
+            standMessageChildrenNodes[i].classList.contains(
+                "stands-choose_wrapper"
+            ) &&
+                $chooseStandMessage[0].removeChild(
+                    standMessageChildrenNodes[i]
+                );
+        }
+        $chooseStandMessage[0].classList.remove("active");
+    }
+};
+
+/**
  * Фукція проходить по всьому DOM-дереву, шукає data-атрибут "lang"
  * видаляє та додає клас "active" в залежності від вибраної мови
  * The function runs throughout the DOM-tree, looking for the data attribute "lang"
@@ -476,7 +505,7 @@ const handleAddFilterNode = (props) => {
  */
 const getStandAndMonumentsIndexes = (node) => {
     let selectedStandIndex = null;
-    let selectedMonumentsIndexes = [];
+    // let selectedMonumentsIndexes = [];
 
     const childrenOfStandContainer1 = Array.from(node[0].children);
 
@@ -487,14 +516,17 @@ const getStandAndMonumentsIndexes = (node) => {
             );
         }
 
-        if (childrenOfStandContainer1[i].dataset.category === "monuments") {
-            selectedMonumentsIndexes.push(
-                Number(childrenOfStandContainer1[i].dataset.itemIndex)
-            );
-        }
+        // if (childrenOfStandContainer1[i].dataset.category === "monuments") {
+        //     selectedMonumentsIndexes.push(
+        //         Number(childrenOfStandContainer1[i].dataset.itemIndex)
+        //     );
+        // }
     }
 
-    return { selectedStandIndex, selectedMonumentsIndexes };
+    return {
+        selectedStandIndex,
+        // selectedMonumentsIndexes
+    };
 };
 
 /**
@@ -608,6 +640,8 @@ const handleStandPositionForDrag = (
 
 /**
  * Функція для пересування елементів - Тумби
+ * Function for moving elements - Stands
+ * Функция для передвижения элементов - Тумбы.
  */
 const standContainer = document.getElementById("stand-container");
 
@@ -1087,13 +1121,13 @@ standContainer2.addEventListener("touchstart", (e) => {
         standContainer2.style.left =
             standContainer2.offsetLeft - pos1Container2 + "px";
 
-            const { standWidthOnConstructor } = handleStandPositionForDrag(
-                standLength,
-                standHeight,
-                landplotWidth,
-                standContainer2,
-                intViewportWidth
-            );
+        const { standWidthOnConstructor } = handleStandPositionForDrag(
+            standLength,
+            standHeight,
+            landplotWidth,
+            standContainer2,
+            intViewportWidth
+        );
 
         if ($firstMonument && $secondMonument) {
             const firstMonumentWidthOnStand =
@@ -1233,7 +1267,10 @@ elementsNavTabs[0].addEventListener("click", (e) => {
         }
     }
 
-    if (selectedNavTabNumber !== currentActiveTab) {
+    if (
+        selectedNavTabNumber !== -1 &&
+        selectedNavTabNumber !== currentActiveTab
+    ) {
         navTabs[currentActiveTab].classList.remove("active");
         navTabsValues[currentActiveTab].classList.remove("active");
 
@@ -1489,20 +1526,20 @@ const handleRemoveFilterNode = (props) => {
         for (let i = 0; i < itemsToRemove.length; i++) {
             const { category, index } = itemsToRemove[i];
 
+            const itemsInFilterSection = Array.from(filterNode[0].children);
+
             for (let j = 0; j < itemsInFilterSection.length; j++) {
                 if (
                     itemsInFilterSection[j].dataset.category === category &&
                     +itemsInFilterSection[j].dataset.itemIndex === index
                 ) {
-                    filterNode[0].removeChild(itemsInFilterSection[j]);
+                    filterNode[0].removeChild(filterNode[0].children[j]);
                     itemsToRemove.splice(itemsToRemove[i], 1);
                     return;
                 }
             }
         }
     };
-
-    const itemsInFilterSection = Array.from(filterNode[0].children);
 
     while (itemsToRemove.length) {
         removeFilterNode(itemsToRemove);
@@ -1522,20 +1559,22 @@ const handleRemoveCalculatorNode = (props) => {
         for (let i = 0; i < itemsToRemove.length; i++) {
             const { category, index } = itemsToRemove[i];
 
-            for (let i = 0; i < calculatorNodes.length; i++) {
+            const calculatorNodes = Array.from($calculatorSection[0].children);
+
+            for (let j = 0; j < calculatorNodes.length; j++) {
                 if (
-                    calculatorNodes[i].dataset.category === category &&
-                    +calculatorNodes[i].dataset.itemIndex === index
+                    calculatorNodes[j].dataset.category === category &&
+                    +calculatorNodes[j].dataset.itemIndex === index
                 ) {
-                    $calculatorSection[0].removeChild(calculatorNodes[i]);
+                    $calculatorSection[0].removeChild(
+                        $calculatorSection[0].children[j]
+                    );
                     itemsToRemove.splice(itemsToRemove[i], 1);
                     return;
                 }
             }
         }
     };
-
-    const calculatorNodes = Array.from($calculatorSection[0].children);
 
     while (itemsToRemove.length) {
         removeCalculatorNode(itemsToRemove);
@@ -2277,7 +2316,7 @@ const handleAddChooseStandMessageNode = (props) => {
                                 </div>
                             </div>`;
 
-    if (nodeToRender[0].children.length === 2) {
+    if (nodeToRender[0].children.length > 1) {
         const nodeToRenderChildren = Array.from(nodeToRender[0].children);
 
         for (let i = 0; i < nodeToRenderChildren.length; i++) {
@@ -2292,6 +2331,8 @@ const handleAddChooseStandMessageNode = (props) => {
 
 /**
  * Обробник елементів блоку "Стелли"
+ * Stella block element handler
+ * Обработчик элементов блока "Стеллы"
  */
 elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
     let userClick = e.target;
@@ -2409,7 +2450,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             });
 
         if (
-            totalMonumentsLengthInFirstContainer <
+            totalMonumentsLengthInFirstContainer <=
             standLengthByPriceInFirstContainer
         ) {
             elementsMonuments[selectedMonument].classList.add("active");
@@ -2464,7 +2505,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             });
 
         if (
-            totalMonumentsLengthInSecondContainer <
+            totalMonumentsLengthInSecondContainer <=
             standLengthByPriceInSecondContainer
         ) {
             elementsMonuments[selectedMonument].classList.add("active");
@@ -2538,16 +2579,18 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 ) {
                     totalMonumentsLengthInFirstContainer += monumentLength;
 
-                    totalMonumentsLengthInFirstContainer >
-                        standLengthByPriceInFirstContainer &&
+                    if (
+                        totalMonumentsLengthInFirstContainer >
+                        standLengthByPriceInFirstContainer
+                    ) {
                         handleInfoAndErrorMessages($monumentErrorLength, {
                             isUaLanguage,
                             isRuLanguage,
                             isEngLanguage,
                         });
-
-                    if (
-                        totalMonumentsLengthInFirstContainer <
+                        handleHideInfoMessage();
+                    } else if (
+                        totalMonumentsLengthInFirstContainer <=
                         standLengthByPriceInFirstContainer
                     ) {
                         elementsMonuments[selectedMonument].classList.add(
@@ -2596,16 +2639,19 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                     userClick.parentElement.className === "second-stand_choose"
                 ) {
                     totalMonumentsLengthInSecondContainer += monumentLength;
-                    totalMonumentsLengthInSecondContainer >
-                        standLengthByPriceInSecondContainer &&
+
+                    if (
+                        totalMonumentsLengthInSecondContainer >
+                        standLengthByPriceInSecondContainer
+                    ) {
                         handleInfoAndErrorMessages($monumentErrorLength, {
                             isUaLanguage,
                             isRuLanguage,
                             isEngLanguage,
                         });
-
-                    if (
-                        totalMonumentsLengthInSecondContainer <
+                        handleHideInfoMessage();
+                    } else if (
+                        totalMonumentsLengthInSecondContainer <=
                         standLengthByPriceInSecondContainer
                     ) {
                         elementsMonuments[selectedMonument].classList.add(

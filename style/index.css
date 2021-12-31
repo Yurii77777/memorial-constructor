@@ -553,6 +553,14 @@ body {
     margin-bottom: var(--xs-margin);
 }
 
+.hide-info-message {
+    position: absolute;
+    right: 1%;
+    top: 1%;
+    padding: var(--xs-padding) var(--sm-padding);
+    cursor: pointer;
+}
+
 .stands-choose_wrapper {
     display: flex;
     flex-direction: row;
