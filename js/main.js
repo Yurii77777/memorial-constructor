@@ -2925,6 +2925,150 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
+        } else if (
+            !isMonumentInFirstContainer &&
+            sameStelesCountInSecondContainer === 1 &&
+            isMonumentInSecondContainer
+        ) {
+            elementsMonuments[selectedMonument].classList.remove("active");
+
+            let itemsToRemove = getItemsToRemove(
+                secondContainerChildren,
+                $standContainer2Node,
+                { isStand: false, isMonument: true },
+                selectedMonument
+            );
+
+            // Перевірити наявність стел на тумбі
+            // щоб відцентрувати стеллу, якщо вона ще тут є
+            const secondContainerChildrenAfterRemove = Array.from(
+                $standContainer2Node[0].children
+            );
+            let monumentIndexToKeep = null;
+            let standIndex = null;
+
+            if (secondContainerChildrenAfterRemove.length) {
+                for (
+                    let i = 0;
+                    i < secondContainerChildrenAfterRemove.length;
+                    i++
+                ) {
+                    if (
+                        secondContainerChildrenAfterRemove[i].dataset
+                            .category === "monuments"
+                    ) {
+                        monumentIndexToKeep =
+                            +secondContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                        $standContainer2Node[0].removeChild(
+                            secondContainerChildrenAfterRemove[i]
+                        );
+                    }
+
+                    if (
+                        secondContainerChildrenAfterRemove[i].dataset
+                            .category === "stand"
+                    ) {
+                        standIndex =
+                            +secondContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                    }
+                }
+            }
+
+            if (monumentIndexToKeep || monumentIndexToKeep === 0) {
+                const { length: standLengthByPriceInFirstContainer } =
+                    getElementData(standIndex, "stand");
+
+                const monumentDataForRender = handleSizesForMonument(
+                    $standContainer2Node,
+                    false,
+                    monumentIndexToKeep,
+                    standLengthByPriceInFirstContainer
+                );
+
+                renderMonumentOnConstructor(
+                    monumentDataForRender,
+                    monumentIndexToKeep,
+                    $standContainer2Node
+                );
+            }
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (
+            !isMonumentInFirstContainer &&
+            sameStelesCountInSecondContainer === 2 &&
+            isMonumentInSecondContainer
+        ) {
+            let itemsToRemove = getItemsToRemove(
+                secondContainerChildren,
+                $standContainer2Node,
+                { isStand: false, isMonument: true },
+                selectedMonument
+            );
+
+            // Перевірити наявність стел на тумбі
+            // щоб відцентрувати стеллу, якщо вона ще тут є
+            const secondContainerChildrenAfterRemove = Array.from(
+                $standContainer2Node[0].children
+            );
+            let monumentIndexToKeep = null;
+            let standIndex = null;
+
+            if (secondContainerChildrenAfterRemove.length) {
+                for (
+                    let i = 0;
+                    i < secondContainerChildrenAfterRemove.length;
+                    i++
+                ) {
+                    if (
+                        secondContainerChildrenAfterRemove[i].dataset
+                            .category === "monuments"
+                    ) {
+                        monumentIndexToKeep =
+                            +secondContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                        $standContainer2Node[0].removeChild(
+                            secondContainerChildrenAfterRemove[i]
+                        );
+                    }
+
+                    if (
+                        secondContainerChildrenAfterRemove[i].dataset
+                            .category === "stand"
+                    ) {
+                        standIndex =
+                            +secondContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                    }
+                }
+            }
+
+            if (monumentIndexToKeep || monumentIndexToKeep === 0) {
+                const { length: standLengthByPriceInFirstContainer } =
+                    getElementData(standIndex, "stand");
+
+                const monumentDataForRender = handleSizesForMonument(
+                    $standContainer2Node,
+                    false,
+                    monumentIndexToKeep,
+                    standLengthByPriceInFirstContainer
+                );
+
+                renderMonumentOnConstructor(
+                    monumentDataForRender,
+                    monumentIndexToKeep,
+                    $standContainer2Node
+                );
+            }
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
         }
     }
 });
