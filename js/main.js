@@ -1589,19 +1589,26 @@ const handleRemoveCalculatorNode = (props) => {
  */
 const handleRemoveItemsFromSelectedItems = (props) => {
     let itemsToRemove = props.slice();
-        
+
+    const removeItems = (itemsToRemove) => {
         for (let i = 0; i < itemsToRemove.length; i++) {
             const { category: categoryToFind, index } = itemsToRemove[i];
 
             for (let j = 0; j < selectedItems.length; j++) {
                 const { category, id } = selectedItems[j];
-                
+
                 if (category === categoryToFind && id === index) {
-                    // counter -= 1;
-                    selectedItems.splice(selectedItems[j]);
-                } 
+                    itemsToRemove.splice(i, 1);
+                    selectedItems.splice(j, 1);
+                    return;
+                }
             }
         }
+    };
+
+    while (itemsToRemove.length) {
+        removeItems(itemsToRemove);
+    }
 };
 
 /**
@@ -1612,22 +1619,57 @@ const handleRemoveItemsFromSelectedItems = (props) => {
  * @param {Node} node
  * @returns Array of items to remove
  */
-const getItemsToRemove = (arrayOfNodes, node, categories) => {
+const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
     const { isStand, isMonument } = categories;
     let result = [];
+    const createItemData = (arrayOfNodes, category, selectedItem) => {
+        if (category === "stand") {
+            for (let i = 0; i < arrayOfNodes.length; i++) {
+                let obj = {};
 
-    const createItemData = (arrayOfNodes, category) => {
-        for (let i = 0; i < arrayOfNodes.length; i++) {
-            let obj = {};
+                if (arrayOfNodes[i].dataset.category === category) {
+                    arrayOfNodes[i].dataset.category &&
+                        (obj["category"] = arrayOfNodes[i].dataset.category);
+                    arrayOfNodes[i].dataset.itemIndex &&
+                        (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
+                    Object.keys(obj).length && result.push(obj);
 
-            if (arrayOfNodes[i].dataset.category === category) {
-                arrayOfNodes[i].dataset.category &&
-                    (obj["category"] = arrayOfNodes[i].dataset.category);
-                arrayOfNodes[i].dataset.itemIndex &&
-                    (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
-                Object.keys(obj).length && result.push(obj);
+                    node[0].removeChild(arrayOfNodes[i]);
+                }
+            }
+        }
 
-                node[0].removeChild(arrayOfNodes[i]);
+        if (category === "monuments" && (selectedItem || selectedItem === 0)) {
+            for (let i = 0; i < arrayOfNodes.length; i++) {
+                let obj = {};
+
+                if (
+                    arrayOfNodes[i].dataset.category === category &&
+                    +arrayOfNodes[i].dataset.itemIndex === selectedItem
+                ) {
+                    arrayOfNodes[i].dataset.category &&
+                        (obj["category"] = arrayOfNodes[i].dataset.category);
+                    arrayOfNodes[i].dataset.itemIndex &&
+                        (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
+                    Object.keys(obj).length && result.push(obj);
+
+                    node[0].removeChild(arrayOfNodes[i]);
+                    return;
+                }
+            }
+        } else if (category === "monuments") {
+            for (let i = 0; i < arrayOfNodes.length; i++) {
+                let obj = {};
+
+                if (arrayOfNodes[i].dataset.category === category) {
+                    arrayOfNodes[i].dataset.category &&
+                        (obj["category"] = arrayOfNodes[i].dataset.category);
+                    arrayOfNodes[i].dataset.itemIndex &&
+                        (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
+                    Object.keys(obj).length && result.push(obj);
+
+                    node[0].removeChild(arrayOfNodes[i]);
+                }
             }
         }
     };
@@ -1637,8 +1679,9 @@ const getItemsToRemove = (arrayOfNodes, node, categories) => {
     }
 
     if (isMonument) {
-        createItemData(arrayOfNodes, "monuments");
+        createItemData(arrayOfNodes, "monuments", selectedItem);
     }
+
     return result;
 };
 
@@ -2748,8 +2791,135 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: false, isMonument: true }
+                { isStand: false, isMonument: true },
+                selectedMonument
             );
+
+            // Перевірити наявність стел на тумбі
+            // щоб відцентрувати стеллу, якщо вона ще тут є
+            const firstContainerChildrenAfterRemove = Array.from(
+                $standContainerNode[0].children
+            );
+            let monumentIndexToKeep = null;
+            let standIndex = null;
+
+            if (firstContainerChildrenAfterRemove.length) {
+                for (
+                    let i = 0;
+                    i < firstContainerChildrenAfterRemove.length;
+                    i++
+                ) {
+                    if (
+                        firstContainerChildrenAfterRemove[i].dataset
+                            .category === "monuments"
+                    ) {
+                        monumentIndexToKeep =
+                            +firstContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                        $standContainerNode[0].removeChild(
+                            firstContainerChildrenAfterRemove[i]
+                        );
+                    }
+
+                    if (
+                        firstContainerChildrenAfterRemove[i].dataset
+                            .category === "stand"
+                    ) {
+                        standIndex =
+                            +firstContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                    }
+                }
+            }
+
+            if (monumentIndexToKeep || monumentIndexToKeep === 0) {
+                const { length: standLengthByPriceInFirstContainer } =
+                    getElementData(standIndex, "stand");
+
+                const monumentDataForRender = handleSizesForMonument(
+                    $standContainerNode,
+                    false,
+                    monumentIndexToKeep,
+                    standLengthByPriceInFirstContainer
+                );
+
+                renderMonumentOnConstructor(
+                    monumentDataForRender,
+                    monumentIndexToKeep,
+                    $standContainerNode
+                );
+            }
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (
+            isMonumentInFirstContainer &&
+            sameStelesCountInFirstContainer === 2 &&
+            !isMonumentInSecondContainer
+        ) {
+            let itemsToRemove = getItemsToRemove(
+                firstContainerChildren,
+                $standContainerNode,
+                { isStand: false, isMonument: true },
+                selectedMonument
+            );
+
+            // Перевірити наявність стел на тумбі
+            // щоб відцентрувати стеллу, якщо вона ще тут є
+            const firstContainerChildrenAfterRemove = Array.from(
+                $standContainerNode[0].children
+            );
+            let monumentIndexToKeep = null;
+            let standIndex = null;
+
+            if (firstContainerChildrenAfterRemove.length) {
+                for (
+                    let i = 0;
+                    i < firstContainerChildrenAfterRemove.length;
+                    i++
+                ) {
+                    if (
+                        firstContainerChildrenAfterRemove[i].dataset
+                            .category === "monuments"
+                    ) {
+                        monumentIndexToKeep =
+                            +firstContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                        $standContainerNode[0].removeChild(
+                            firstContainerChildrenAfterRemove[i]
+                        );
+                    }
+
+                    if (
+                        firstContainerChildrenAfterRemove[i].dataset
+                            .category === "stand"
+                    ) {
+                        standIndex =
+                            +firstContainerChildrenAfterRemove[i].dataset
+                                .itemIndex;
+                    }
+                }
+            }
+
+            if (monumentIndexToKeep || monumentIndexToKeep === 0) {
+                const { length: standLengthByPriceInFirstContainer } =
+                    getElementData(standIndex, "stand");
+
+                const monumentDataForRender = handleSizesForMonument(
+                    $standContainerNode,
+                    false,
+                    monumentIndexToKeep,
+                    standLengthByPriceInFirstContainer
+                );
+
+                renderMonumentOnConstructor(
+                    monumentDataForRender,
+                    monumentIndexToKeep,
+                    $standContainerNode
+                );
+            }
 
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
