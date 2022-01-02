@@ -172,6 +172,7 @@ const totalCostTileNode = document.querySelectorAll(
 
 let isFirstStep = true;
 let isSecondStep = false;
+let isThirdStep = false;
 
 const startHelper = () => {
     const infoMessages = [
@@ -201,85 +202,54 @@ const startHelper = () => {
         },
     ];
 
-    // if (isFirstStep) {
-    //     infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
-    //         if (id === 0 && isUaLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
-    //         }
+    const getHelpMessage = (infoMessages, messageNumber) => {
+        infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
+            if (id === messageNumber && isUaLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
+            }
 
-    //         if (id === 0 && isRuLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
-    //         }
+            if (id === messageNumber && isRuLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
+            }
 
-    //         if (id === 0 && isEngLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
-    //         }
-    //     });
+            if (id === messageNumber && isEngLanguage) {
+                helperNode[0].hasChildNodes() &&
+                    helperNode[0].removeChild(helperNode[0].children[0]);
+                helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
+            }
+        });
+    };
 
-    //     setTimeout(() => {
-    //         landPlotEditContainer[0].classList.add("focus");
-    //     }, 5000);
+    if (isFirstStep) {
+        getHelpMessage(infoMessages, 0);
 
-    //     setTimeout(() => {
-    //         landPlotEditContainer[0].classList.remove("focus");
-    //     }, 8000);
+        setTimeout(() => {
+            landPlotEditContainer[0].classList.add("focus");
+        }, 5000);
 
-    //     setTimeout(() => {
-    //         isFirstStep = false;
-    //         isSecondStep = true;
-    //         startHelper();
-    //     }, 16000);
-    // }
+        setTimeout(() => {
+            landPlotEditContainer[0].classList.remove("focus");
+        }, 8000);
 
-    // if (isSecondStep) {
-    //     infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
-    //         if (id === 1 && isUaLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
-    //         }
+        setTimeout(() => {
+            isFirstStep = false;
+            isSecondStep = true;
+            startHelper();
+        }, 16000);
+    }
 
-    //         if (id === 1 && isRuLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
-    //         }
+    if (isSecondStep) {
+        getHelpMessage(infoMessages, 1);
+    }
 
-    //         if (id === 1 && isEngLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
-    //         }
-    //     });
-    // }
+    if (isThirdStep) {
+        getHelpMessage(infoMessages, 2);
+    }
 
-    // if (!isStandHidden) {
-    //     infoMessages.forEach(({ id, uaMessage, ruMessage, engMessage }) => {
-    //         if (id === 2 && isUaLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", uaMessage);
-    //         }
-
-    //         if (id === 2 && isRuLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", ruMessage);
-    //         }
-
-    //         if (id === 2 && isEngLanguage) {
-    //             helperNode[0].hasChildNodes() &&
-    //                 helperNode[0].removeChild(helperNode[0].children[0]);
-    //             helperNode[0].insertAdjacentHTML("afterbegin", engMessage);
-    //         }
-    //     });
-    // }
 };
 
 startHelper();
@@ -1831,6 +1801,9 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         );
 
         calculate();
+
+        isSecondStep = false;
+        isThirdStep = true;
         startHelper();
     } else if (
         selectedStand !== -1 &&
@@ -1878,7 +1851,6 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         );
 
         calculate();
-        startHelper();
     } else if (
         selectedStand !== -1 &&
         userClick.className !== "field__hide-element-button" &&
@@ -1925,7 +1897,6 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         );
 
         calculate();
-        startHelper();
     } else if (
         (selectedStand !== -1 &&
             userClick.className !== "field__hide-element-button" &&
@@ -1976,6 +1947,10 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
+
+        isSecondStep = true;
+        isThirdStep = false;
+        startHelper();
     } else if (
         selectedStand !== -1 &&
         userClick.className === "field__hide-element-button" &&
@@ -2008,6 +1983,10 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
+
+        isSecondStep = true;
+        isThirdStep = false;
+        startHelper();
     } else if (
         selectedStand !== -1 &&
         userClick.className === "field__hide-element-button" &&
