@@ -2240,7 +2240,9 @@ const renderMonumentOnConstructor = (
 
         nodeToRender[0].insertAdjacentHTML("afterbegin", nodeString);
 
-        const $monument1Img = document.querySelectorAll(
+        // Перебрать узел, найти стеллу, и динамически повесить стили
+        // убрать поиск по всему документу, искать только в контейнере
+        const $monument1Img = nodeToRender[0].querySelectorAll(
             `.monument-img${monumentId}`
         );
 
@@ -2272,7 +2274,7 @@ const renderMonumentOnConstructor = (
 
         nodeToRender[0].insertAdjacentHTML("afterbegin", nodeString);
 
-        const $monument1Img = document.querySelectorAll(
+        const $monument1Img = nodeToRender[0].querySelectorAll(
             `.monument-img${firstMonumentId}`
         );
 
@@ -2292,7 +2294,7 @@ const renderMonumentOnConstructor = (
 
         nodeToRender[0].insertAdjacentHTML("afterbegin", nodeString2);
 
-        const $monument2Img = document.querySelectorAll(
+        const $monument2Img = nodeToRender[0].querySelectorAll(
             `.monument-img${monumentId}`
         );
 
@@ -2671,7 +2673,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
                         calculate();
                     }
-                } else if (
+                }
+                
+                if (
                     userClick.parentElement.className === "second-stand_choose"
                 ) {
                     totalMonumentsLengthInSecondContainer += monumentLength;
@@ -3064,6 +3068,18 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                     $standContainer2Node
                 );
             }
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else {
+            let itemsToRemove = getItemsToRemove(
+                secondContainerChildren,
+                $standContainer2Node,
+                { isStand: false, isMonument: true },
+                selectedMonument
+            );
 
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
