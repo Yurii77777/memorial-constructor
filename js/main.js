@@ -516,7 +516,7 @@ const handleMonumentsDataForScaling = (standNode, standLength) => {
     for (let i = 0; i < standContainerChildren.length; i++) {
         if (standContainerChildren[i].dataset.category === "monuments") {
             let monumentIndex = +standContainerChildren[i].dataset.itemIndex;
-            const { length, height } = getElementData(
+            const { length, height, titleUa } = getElementData(
                 monumentIndex,
                 "monuments"
             );
@@ -524,6 +524,7 @@ const handleMonumentsDataForScaling = (standNode, standLength) => {
             monumentData["monumentNode"] = standNode[0].children[i];
             monumentData["monumentWidthProportion"] = length / standLength;
             monumentData["monumentHeightProportion"] = height / length;
+            monumentData["isDouble"] = titleUa.includes('Подвійний');
 
             result.push(monumentData);
             monumentData = {};
@@ -632,6 +633,7 @@ standContainer.addEventListener("mousedown", (e) => {
     let $firstMonument = null;
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
+    let firstMonumentIsDouble = null;
 
     let $secondMonument = null;
     let secondMonumentWidthProportion = null;
@@ -647,11 +649,13 @@ standContainer.addEventListener("mousedown", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
+            isDouble
         } = monumentData[0];
 
         $firstMonument = monumentNode;
         firstMonumentWidthProportion = monumentWidthProportion;
         firstMonumentHeightProportion = monumentHeightProportion;
+        firstMonumentIsDouble = isDouble;
     }
 
     if (monumentData.length === 2) {
@@ -702,7 +706,7 @@ standContainer.addEventListener("mousedown", (e) => {
             standContainer,
             intViewportWidth
         );
-
+        
         if ($firstMonument && $secondMonument) {
             const firstMonumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -727,7 +731,8 @@ standContainer.addEventListener("mousedown", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-        } else if ($firstMonument) {
+
+        } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -737,6 +742,17 @@ standContainer.addEventListener("mousedown", (e) => {
             $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
             $firstMonument.style.left = `${
                 standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
+        } else if ($firstMonument && firstMonumentIsDouble) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument.style.minWidth = `${monumentWidthOnStand}px`;
+            $firstMonument.style.height = `${monumentHeightOnStand}px`;
+            $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument.style.left = `${
+                -(monumentWidthOnStand - standWidthOnConstructor) / 2
             }px`;
         }
     };
@@ -760,6 +776,7 @@ standContainer.addEventListener("touchstart", (e) => {
     let $firstMonument = null;
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
+    let firstMonumentIsDouble = null;
 
     let $secondMonument = null;
     let secondMonumentWidthProportion = null;
@@ -775,11 +792,13 @@ standContainer.addEventListener("touchstart", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
+            isDouble
         } = monumentData[0];
 
         $firstMonument = monumentNode;
         firstMonumentWidthProportion = monumentWidthProportion;
         firstMonumentHeightProportion = monumentHeightProportion;
+        firstMonumentIsDouble = isDouble;
     }
 
     if (monumentData.length === 2) {
@@ -855,7 +874,8 @@ standContainer.addEventListener("touchstart", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-        } else if ($firstMonument) {
+
+        } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -865,6 +885,17 @@ standContainer.addEventListener("touchstart", (e) => {
             $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
             $firstMonument.style.left = `${
                 standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
+        } else if ($firstMonument && firstMonumentIsDouble) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument.style.minWidth = `${monumentWidthOnStand}px`;
+            $firstMonument.style.height = `${monumentHeightOnStand}px`;
+            $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument.style.left = `${
+                -(monumentWidthOnStand - standWidthOnConstructor) / 2
             }px`;
         }
     };
@@ -895,6 +926,7 @@ standContainer2.addEventListener("mousedown", (e) => {
     let $firstMonument = null;
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
+    let firstMonumentIsDouble = null;
 
     let $secondMonument = null;
     let secondMonumentWidthProportion = null;
@@ -910,11 +942,13 @@ standContainer2.addEventListener("mousedown", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
+            isDouble
         } = monumentData[0];
 
         $firstMonument = monumentNode;
         firstMonumentWidthProportion = monumentWidthProportion;
         firstMonumentHeightProportion = monumentHeightProportion;
+        firstMonumentIsDouble = isDouble;
     }
 
     if (monumentData.length === 2) {
@@ -992,7 +1026,8 @@ standContainer2.addEventListener("mousedown", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-        } else if ($firstMonument) {
+
+        } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -1002,6 +1037,17 @@ standContainer2.addEventListener("mousedown", (e) => {
             $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
             $firstMonument.style.left = `${
                 standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
+        } else if ($firstMonument && firstMonumentIsDouble) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument.style.minWidth = `${monumentWidthOnStand}px`;
+            $firstMonument.style.height = `${monumentHeightOnStand}px`;
+            $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument.style.left = `${
+                -(monumentWidthOnStand - standWidthOnConstructor) / 2
             }px`;
         }
     };
@@ -1025,6 +1071,7 @@ standContainer2.addEventListener("touchstart", (e) => {
     let $firstMonument = null;
     let firstMonumentWidthProportion = null;
     let firstMonumentHeightProportion = null;
+    let firstMonumentIsDouble = null;
 
     let $secondMonument = null;
     let secondMonumentWidthProportion = null;
@@ -1040,11 +1087,13 @@ standContainer2.addEventListener("touchstart", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
+            isDouble
         } = monumentData[0];
 
         $firstMonument = monumentNode;
         firstMonumentWidthProportion = monumentWidthProportion;
         firstMonumentHeightProportion = monumentHeightProportion;
+        firstMonumentIsDouble = isDouble;
     }
 
     if (monumentData.length === 2) {
@@ -1122,7 +1171,8 @@ standContainer2.addEventListener("touchstart", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-        } else if ($firstMonument) {
+
+        } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
             const monumentHeightOnStand =
@@ -1132,6 +1182,17 @@ standContainer2.addEventListener("touchstart", (e) => {
             $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
             $firstMonument.style.left = `${
                 standWidthOnConstructor / 2 - monumentWidthOnStand / 2
+            }px`;
+        } else if ($firstMonument && firstMonumentIsDouble) {
+            const monumentWidthOnStand =
+                standWidthOnConstructor * firstMonumentWidthProportion;
+            const monumentHeightOnStand =
+                monumentWidthOnStand * firstMonumentHeightProportion;
+            $firstMonument.style.minWidth = `${monumentWidthOnStand}px`;
+            $firstMonument.style.height = `${monumentHeightOnStand}px`;
+            $firstMonument.style.top = `${-monumentHeightOnStand + 3}px`;
+            $firstMonument.style.left = `${
+                -(monumentWidthOnStand - standWidthOnConstructor) / 2
             }px`;
         }
     };
@@ -1458,7 +1519,9 @@ filterNode[0].addEventListener("click", (e) => {
         const elementsStands = Array.from($elementsStandsNode[0].children);
 
         if (isStandInFirstContainer && !isStandInSecondContainer) {
-            elementsStands[+userClick.parentNode.dataset.itemIndex].classList.remove("active");
+            elementsStands[
+                +userClick.parentNode.dataset.itemIndex
+            ].classList.remove("active");
 
             // Зняти вибір стелли
             const monumentsElements = Array.from(
@@ -1490,7 +1553,9 @@ filterNode[0].addEventListener("click", (e) => {
             isThirdStep = false;
             startHelper();
         } else if (!isStandInFirstContainer && isStandInSecondContainer) {
-            elementsStands[+userClick.parentNode.dataset.itemIndex].classList.remove("active");
+            elementsStands[
+                +userClick.parentNode.dataset.itemIndex
+            ].classList.remove("active");
 
             const monumentsElements = Array.from(
                 elementsValuesMonumentsNode[0].children
@@ -1685,7 +1750,9 @@ filterNode[0].addEventListener("click", (e) => {
                 elementsValuesMonumentsNode[0].children
             );
 
-            monumentsElements[+userClick.parentNode.dataset.itemIndex].classList.remove("active");
+            monumentsElements[
+                +userClick.parentNode.dataset.itemIndex
+            ].classList.remove("active");
 
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
@@ -1829,7 +1896,9 @@ filterNode[0].addEventListener("click", (e) => {
             sameStelesCountInSecondContainer === 1 &&
             isMonumentInSecondContainer
         ) {
-            monumentsElements[+userClick.parentNode.dataset.itemIndex].classList.remove("active");
+            monumentsElements[
+                +userClick.parentNode.dataset.itemIndex
+            ].classList.remove("active");
 
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
@@ -2769,6 +2838,50 @@ const handleSizesForMonument = (
     return result;
 };
 
+const handleSizesForDoubleMonument = (
+    containerNode,
+    selectedMonument,
+    standLength
+) => {
+    let result = [];
+    let monumentData = {};
+
+    const { width: initialStandLength } =
+        containerNode[0].getBoundingClientRect();
+
+    const {
+        length: monumentLengthByPrice,
+        height: monumentHeightByPrice,
+        imgConstructorUrl,
+        titleUa,
+        category,
+    } = getElementData(selectedMonument, "monuments");
+
+    monumentData["monumentId"] = selectedMonument;
+    monumentData[
+        "nodeString"
+    ] = `<img src="./img/items${imgConstructorUrl}" alt="${titleUa}" class="monument-img${selectedMonument}" data-item-index="${selectedMonument}" data-category="${category}" />`;
+
+    const proportion = monumentLengthByPrice / standLength;
+    const monumentWidthOnStand = initialStandLength * proportion;
+    monumentData["monumentWidthOnStand"] = monumentWidthOnStand;
+
+    const monumentHeightProportion =
+        monumentHeightByPrice / monumentLengthByPrice;
+    const monumentHeightOnStand =
+        monumentWidthOnStand * monumentHeightProportion;
+    monumentData["monumentHeightOnStand"] = monumentHeightOnStand;
+
+    monumentData["monumentTopPosition"] = -monumentHeightOnStand + 3;
+    monumentData["monumentLeftPosition1"] =
+        (monumentWidthOnStand - initialStandLength) / 2;
+
+    result.push(monumentData);
+    monumentData = {};
+
+    return result;
+};
+
 /**
  * Функція для рендеру стели на тумбі.
  * Function for rendering the stelle on the stand.
@@ -2782,9 +2895,10 @@ const handleSizesForMonument = (
 const renderMonumentOnConstructor = (
     monumentData,
     monumentId,
+    isDoubleStele,
     nodeToRender
 ) => {
-    if (monumentData.length === 1) {
+    if (monumentData.length === 1 && !isDoubleStele) {
         const {
             monumentWidthOnStand,
             monumentHeightOnStand,
@@ -2795,8 +2909,6 @@ const renderMonumentOnConstructor = (
 
         nodeToRender[0].insertAdjacentHTML("afterbegin", nodeString);
 
-        // Перебрать узел, найти стеллу, и динамически повесить стили
-        // убрать поиск по всему документу, искать только в контейнере
         const $monument1Img = nodeToRender[0].querySelectorAll(
             `.monument-img${monumentId}`
         );
@@ -2808,7 +2920,7 @@ const renderMonumentOnConstructor = (
         $monument1Img[0].style.position = "absolute";
     }
 
-    if (monumentData.length === 2) {
+    if (monumentData.length === 2 && !isDoubleStele) {
         const nodeToRenderChildren = Array.from(nodeToRender[0].children);
         let firstMonumentId = null;
 
@@ -2858,6 +2970,28 @@ const renderMonumentOnConstructor = (
         $monument2Img[0].style.top = `${secondMonumentTopPosition}px`;
         $monument2Img[0].style.left = `${secondMonumentLeftPosition}px`;
         $monument2Img[0].style.position = "absolute";
+    }
+
+    if (isDoubleStele) {
+        const {
+            monumentWidthOnStand,
+            monumentHeightOnStand,
+            monumentTopPosition,
+            monumentLeftPosition1,
+            nodeString,
+        } = monumentData[0];
+
+        nodeToRender[0].insertAdjacentHTML("afterbegin", nodeString);
+
+        const $monument1Img = nodeToRender[0].querySelectorAll(
+            `.monument-img${monumentId}`
+        );
+
+        $monument1Img[0].style.minWidth = `${monumentWidthOnStand}px`;
+        $monument1Img[0].style.height = `${monumentHeightOnStand}px`;
+        $monument1Img[0].style.top = `${monumentTopPosition}px`;
+        $monument1Img[0].style.left = `${-monumentLeftPosition1}px`;
+        $monument1Img[0].style.position = "absolute";
     }
 };
 
@@ -2941,6 +3075,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         id,
         length: monumentLength,
         imgUrl,
+        titleUa,
         siteNameUa,
         siteNameRu,
         siteNameEng,
@@ -3016,6 +3151,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         }
     }
 
+    //Перевіряємо чи це не подвійна стелла
+    let isDoubleStele = false;
+    isDoubleStele = titleUa.includes("Подвійний");
+
     // Якщо не вибрана жодна тумба, показуємо помилку вибору стелли
     selectedMonument !== -1 &&
         !isStandInFirstContainer &&
@@ -3034,8 +3173,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         !isStandInSecondContainer
     ) {
         totalMonumentsLengthInFirstContainer += monumentLength;
+
         totalMonumentsLengthInFirstContainer >
             standLengthByPriceInFirstContainer &&
+            !isDoubleStele &&
             handleInfoAndErrorMessages($monumentErrorLength, {
                 isUaLanguage,
                 isRuLanguage,
@@ -3044,7 +3185,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
         if (
             totalMonumentsLengthInFirstContainer <=
-            standLengthByPriceInFirstContainer
+                standLengthByPriceInFirstContainer &&
+            !isDoubleStele
         ) {
             elementsMonuments[selectedMonument].classList.add("active");
             selectedItems.push(selectedMonumentData);
@@ -3059,6 +3201,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             renderMonumentOnConstructor(
                 monumentDataForRender,
                 id,
+                isDoubleStele,
                 $standContainerNode
             );
 
@@ -3079,6 +3222,46 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             );
 
             calculate();
+        } else if (isDoubleStele && !isMonumentInFirstContainer) {
+            elementsMonuments[selectedMonument].classList.add("active");
+            selectedItems.push(selectedMonumentData);
+
+            const monumentDataForRender = handleSizesForDoubleMonument(
+                $standContainerNode,
+                selectedMonument,
+                standLengthByPriceInFirstContainer
+            );
+
+            renderMonumentOnConstructor(
+                monumentDataForRender,
+                id,
+                isDoubleStele,
+                $standContainerNode
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            const monumentNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedMonument,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                monumentNodeToCalculator
+            );
+
+            calculate();
+        } else if (isDoubleStele && isMonumentInFirstContainer) {
+            handleInfoAndErrorMessages(standErrorNode, {
+                isUaLanguage,
+                isRuLanguage,
+                isEngLanguage,
+            });
         }
 
         // Якщо вибрана тумба лише у другому контейнері
@@ -3091,6 +3274,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         totalMonumentsLengthInSecondContainer += monumentLength;
         totalMonumentsLengthInSecondContainer >
             standLengthByPriceInSecondContainer &&
+            !isDoubleStele &&
             handleInfoAndErrorMessages($monumentErrorLength, {
                 isUaLanguage,
                 isRuLanguage,
@@ -3099,7 +3283,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
         if (
             totalMonumentsLengthInSecondContainer <=
-            standLengthByPriceInSecondContainer
+                standLengthByPriceInSecondContainer &&
+            !isDoubleStele
         ) {
             elementsMonuments[selectedMonument].classList.add("active");
             selectedItems.push(selectedMonumentData);
@@ -3114,6 +3299,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             renderMonumentOnConstructor(
                 monumentDataForRender,
                 id,
+                isDoubleStele,
                 $standContainer2Node
             );
 
@@ -3134,7 +3320,48 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             );
 
             calculate();
+        } else if (isDoubleStele && !isMonumentInSecondContainer) {
+            elementsMonuments[selectedMonument].classList.add("active");
+            selectedItems.push(selectedMonumentData);
+
+            const monumentDataForRender = handleSizesForDoubleMonument(
+                $standContainer2Node,
+                selectedMonument,
+                standLengthByPriceInSecondContainer
+            );
+
+            renderMonumentOnConstructor(
+                monumentDataForRender,
+                id,
+                isDoubleStele,
+                $standContainer2Node
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            const monumentNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedMonument,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                monumentNodeToCalculator
+            );
+
+            calculate();
+        } else if (isDoubleStele && isMonumentInSecondContainer) {
+            handleInfoAndErrorMessages(standErrorNode, {
+                isUaLanguage,
+                isRuLanguage,
+                isEngLanguage,
+            });
         }
+
         // Якщо тумба присутня і в першому і в другому контейнері
     } else if (
         selectedMonument !== -1 &&
@@ -3142,6 +3369,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         isStandInFirstContainer &&
         isStandInSecondContainer
     ) {
+        const { width: landPlotWidth } = handleLandPlotSizes();
+
         // Показуємо уточнення - до якої тумби добати стеллу
         const $chooseStandMessage = document.querySelectorAll(
             ".info-message__choose-stand"
@@ -3174,7 +3403,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
                     if (
                         totalMonumentsLengthInFirstContainer >
-                        standLengthByPriceInFirstContainer
+                            standLengthByPriceInFirstContainer &&
+                        !isDoubleStele
                     ) {
                         handleInfoAndErrorMessages($monumentErrorLength, {
                             isUaLanguage,
@@ -3184,7 +3414,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                         handleHideInfoMessage();
                     } else if (
                         totalMonumentsLengthInFirstContainer <=
-                        standLengthByPriceInFirstContainer
+                            standLengthByPriceInFirstContainer &&
+                        !isDoubleStele
                     ) {
                         elementsMonuments[selectedMonument].classList.add(
                             "active"
@@ -3201,6 +3432,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                         renderMonumentOnConstructor(
                             monumentDataForRender,
                             id,
+                            isDoubleStele,
                             $standContainerNode
                         );
 
@@ -3221,12 +3453,105 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             monumentNodeToCalculator
                         );
                         $chooseStandMessage[0].classList.remove("active");
-                        $modalWindowChooseStand[0].removeEventListener(
-                            "click",
-                            e
-                        ) && console.log("Done");
 
                         calculate();
+                    }
+
+                    if (
+                        isDoubleStele &&
+                        !isMonumentInFirstContainer &&
+                        !isMonumentInSecondContainer
+                    ) {
+                        elementsMonuments[selectedMonument].classList.add(
+                            "active"
+                        );
+                        selectedItems.push(selectedMonumentData);
+
+                        const monumentDataForRender =
+                            handleSizesForDoubleMonument(
+                                $standContainerNode,
+                                selectedMonument,
+                                standLengthByPriceInFirstContainer
+                            );
+
+                        renderMonumentOnConstructor(
+                            monumentDataForRender,
+                            id,
+                            isDoubleStele,
+                            $standContainerNode
+                        );
+
+                        handleAddFilterNode(propsForFilterNode);
+
+                        const monumentNodeToCalculator =
+                            createCalculatorDataNode(
+                                category,
+                                selectedMonument,
+                                siteNameUa,
+                                siteNameRu,
+                                siteNameEng,
+                                price
+                            );
+
+                        $totalCostNode[0].insertAdjacentHTML(
+                            "beforebegin",
+                            monumentNodeToCalculator
+                        );
+                        $chooseStandMessage[0].classList.remove("active");
+
+                        calculate();
+                    } else if (
+                        isDoubleStele && 
+                        isMonumentInSecondContainer &&
+                        (totalMonumentsLengthInFirstContainer + totalMonumentsLengthInSecondContainer) <= landPlotWidth
+                        ) {
+                            elementsMonuments[selectedMonument].classList.add(
+                                "active"
+                            );
+                            selectedItems.push(selectedMonumentData);
+    
+                            const monumentDataForRender =
+                                handleSizesForDoubleMonument(
+                                    $standContainerNode,
+                                    selectedMonument,
+                                    standLengthByPriceInFirstContainer
+                                );
+    
+                            renderMonumentOnConstructor(
+                                monumentDataForRender,
+                                id,
+                                isDoubleStele,
+                                $standContainerNode
+                            );
+    
+                            handleAddFilterNode(propsForFilterNode);
+    
+                            const monumentNodeToCalculator =
+                                createCalculatorDataNode(
+                                    category,
+                                    selectedMonument,
+                                    siteNameUa,
+                                    siteNameRu,
+                                    siteNameEng,
+                                    price
+                                );
+    
+                            $totalCostNode[0].insertAdjacentHTML(
+                                "beforebegin",
+                                monumentNodeToCalculator
+                            );
+                            $chooseStandMessage[0].classList.remove("active");
+    
+                            calculate();
+                    } else {
+                        handleInfoAndErrorMessages(standErrorNode, {
+                            isUaLanguage,
+                            isRuLanguage,
+                            isEngLanguage,
+                        });
+
+                        $chooseStandMessage[0].classList.contains("active") &&
+                            $chooseStandMessage[0].classList.remove("active");
                     }
                 }
 
@@ -3237,7 +3562,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
                     if (
                         totalMonumentsLengthInSecondContainer >
-                        standLengthByPriceInSecondContainer
+                            standLengthByPriceInSecondContainer &&
+                        !isDoubleStele
                     ) {
                         handleInfoAndErrorMessages($monumentErrorLength, {
                             isUaLanguage,
@@ -3247,7 +3573,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                         handleHideInfoMessage();
                     } else if (
                         totalMonumentsLengthInSecondContainer <=
-                        standLengthByPriceInSecondContainer
+                            standLengthByPriceInSecondContainer &&
+                        !isDoubleStele
                     ) {
                         elementsMonuments[selectedMonument].classList.add(
                             "active"
@@ -3265,6 +3592,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                         renderMonumentOnConstructor(
                             monumentDataForRender,
                             id,
+                            isDoubleStele,
                             $standContainer2Node
                         );
 
@@ -3287,6 +3615,103 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                         $chooseStandMessage[0].classList.remove("active");
 
                         calculate();
+                    }
+
+                    if (
+                        isDoubleStele &&
+                        !isMonumentInFirstContainer &&
+                        !isMonumentInSecondContainer
+                    ) {
+                        elementsMonuments[selectedMonument].classList.add(
+                            "active"
+                        );
+                        selectedItems.push(selectedMonumentData);
+
+                        const monumentDataForRender =
+                            handleSizesForDoubleMonument(
+                                $standContainer2Node,
+                                selectedMonument,
+                                standLengthByPriceInSecondContainer
+                            );
+
+                        renderMonumentOnConstructor(
+                            monumentDataForRender,
+                            id,
+                            isDoubleStele,
+                            $standContainer2Node
+                        );
+
+                        handleAddFilterNode(propsForFilterNode);
+
+                        const monumentNodeToCalculator =
+                            createCalculatorDataNode(
+                                category,
+                                selectedMonument,
+                                siteNameUa,
+                                siteNameRu,
+                                siteNameEng,
+                                price
+                            );
+
+                        $totalCostNode[0].insertAdjacentHTML(
+                            "beforebegin",
+                            monumentNodeToCalculator
+                        );
+                        $chooseStandMessage[0].classList.remove("active");
+
+                        calculate();
+                    } else if (
+                        isDoubleStele && 
+                        isMonumentInFirstContainer &&
+                        (totalMonumentsLengthInFirstContainer + totalMonumentsLengthInSecondContainer) <= landPlotWidth
+                        ) {
+                            elementsMonuments[selectedMonument].classList.add(
+                                "active"
+                            );
+                            selectedItems.push(selectedMonumentData);
+    
+                            const monumentDataForRender =
+                                handleSizesForDoubleMonument(
+                                    $standContainer2Node,
+                                    selectedMonument,
+                                    standLengthByPriceInSecondContainer
+                                );
+    
+                            renderMonumentOnConstructor(
+                                monumentDataForRender,
+                                id,
+                                isDoubleStele,
+                                $standContainer2Node
+                            );
+    
+                            handleAddFilterNode(propsForFilterNode);
+    
+                            const monumentNodeToCalculator =
+                                createCalculatorDataNode(
+                                    category,
+                                    selectedMonument,
+                                    siteNameUa,
+                                    siteNameRu,
+                                    siteNameEng,
+                                    price
+                                );
+    
+                            $totalCostNode[0].insertAdjacentHTML(
+                                "beforebegin",
+                                monumentNodeToCalculator
+                            );
+                            $chooseStandMessage[0].classList.remove("active");
+    
+                            calculate();
+                    } else {
+                        handleInfoAndErrorMessages(standErrorNode, {
+                            isUaLanguage,
+                            isRuLanguage,
+                            isEngLanguage,
+                        });
+
+                        $chooseStandMessage[0].classList.contains("active") &&
+                            $chooseStandMessage[0].classList.remove("active");
                     }
                 }
             },
@@ -3405,6 +3830,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    isDoubleStele,
                     $standContainerNode
                 );
             }
@@ -3476,6 +3902,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    isDoubleStele,
                     $standContainerNode
                 );
             }
@@ -3549,6 +3976,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    isDoubleStele,
                     $standContainer2Node
                 );
             }
@@ -3620,6 +4048,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    isDoubleStele,
                     $standContainer2Node
                 );
             }

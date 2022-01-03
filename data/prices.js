@@ -695,6 +695,7 @@ const prices = [
                 "tabId": 2,
                 "category": "monuments",
                 "imgUrl": "/mobile/monuments/Double_50x100x8.png",
+                "imgConstructorUrl": "/mobile/monuments/Double_50x100x8_on_constructor.png",
                 "siteNameUa": "Подвійний 50х100х8",
                 "siteNameRu": "Двойной 50х100х8",
                 "siteNameEng": "Double 50х100х8"
@@ -708,6 +709,7 @@ const prices = [
                 "tabId": 2,
                 "category": "monuments",
                 "imgUrl": "/mobile/monuments/Double_60x120x8.png",
+                "imgConstructorUrl": "/mobile/monuments/Double_60x120x8_on_constructor.png",
                 "siteNameUa": "Подвійний 60х120х8",
                 "siteNameRu": "Двойной 60х120х8",
                 "siteNameEng": "Double 60х120х8"
@@ -721,6 +723,7 @@ const prices = [
                 "tabId": 2,
                 "category": "monuments",
                 "imgUrl": "/mobile/monuments/Double_A60x120x8.png",
+                "imgConstructorUrl": "/mobile/monuments/Double_A60x120x8_on_constructor.png",
                 "siteNameUa": "Подвійний А60х120х8",
                 "siteNameRu": "Двойной А60х120х8",
                 "siteNameEng": "Double А60х120х8"
