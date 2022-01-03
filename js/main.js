@@ -249,7 +249,6 @@ const startHelper = () => {
     if (isThirdStep) {
         getHelpMessage(infoMessages, 2);
     }
-
 };
 
 startHelper();
@@ -1387,7 +1386,9 @@ const createCalculatorDataNode = (
 };
 
 /**
- * Блок Фільтр
+ * Обробники блоку Фільтр
+ * Handlers for Filter section
+ * Обработчики зоны Фильтр
  */
 filterNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1401,10 +1402,234 @@ filterNode[0].addEventListener("click", (e) => {
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "stand"
     ) {
-        let selectedStand = getElementData(selectedItem, "stand");
+        let isStandInFirstContainer = false;
+        let standIdInFirstContainer = null;
+        let isStandInSecondContainer = false;
+        let standIdInSecondContainer = null;
+        let monumentsInFirstContainer = [];
+        let monumentsInSecondContainer = [];
 
-        const { length: standLength } = selectedStand;
-        selectedStandsLengths -= standLength * 2;
+        const firstContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
+
+        if (firstContainerChildren.length) {
+            for (let i = 0; i < firstContainerChildren.length; i++) {
+                if (firstContainerChildren[i].dataset.category === "stand") {
+                    isStandInFirstContainer = true;
+                    let standIndex =
+                        +firstContainerChildren[i].dataset.itemIndex;
+                    standIdInFirstContainer = standIndex;
+                }
+
+                if (
+                    firstContainerChildren[i].dataset.category === "monuments"
+                ) {
+                    monumentsInFirstContainer.push(
+                        +firstContainerChildren[i].dataset.itemIndex
+                    );
+                }
+            }
+        }
+
+        const secondContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
+
+        if (secondContainerChildren.length) {
+            for (let i = 0; i < secondContainerChildren.length; i++) {
+                if (secondContainerChildren[i].dataset.category === "stand") {
+                    isStandInSecondContainer = true;
+                    let standIndex =
+                        +secondContainerChildren[i].dataset.itemIndex;
+                    standIdInSecondContainer = standIndex;
+                }
+
+                if (
+                    secondContainerChildren[i].dataset.category === "monuments"
+                ) {
+                    monumentsInSecondContainer.push(
+                        +secondContainerChildren[i].dataset.itemIndex
+                    );
+                }
+            }
+        }
+
+        const elementsStands = Array.from($elementsStandsNode[0].children);
+
+        if (isStandInFirstContainer && !isStandInSecondContainer) {
+            elementsStands[+userClick.parentNode.dataset.itemIndex].classList.remove("active");
+
+            // Зняти вибір стелли
+            const monumentsElements = Array.from(
+                elementsValuesMonumentsNode[0].children
+            );
+
+            for (let i = 0; i < monumentsElements.length; i++) {
+                if (monumentsElements[i].classList.contains("active")) {
+                    for (let j = 0; j < monumentsInFirstContainer.length; j++) {
+                        monumentsInFirstContainer[j] === i &&
+                            monumentsElements[i].classList.remove("active");
+                    }
+                }
+            }
+
+            // Отримуємо всі елементи, котрі потрібно видалити
+            let itemsToRemove = getItemsToRemove(
+                firstContainerChildren,
+                $standContainerNode,
+                { isStand: true, isMonument: true }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+
+            isSecondStep = true;
+            isThirdStep = false;
+            startHelper();
+        } else if (!isStandInFirstContainer && isStandInSecondContainer) {
+            elementsStands[+userClick.parentNode.dataset.itemIndex].classList.remove("active");
+
+            const monumentsElements = Array.from(
+                elementsValuesMonumentsNode[0].children
+            );
+
+            for (let i = 0; i < monumentsElements.length; i++) {
+                if (monumentsElements[i].classList.contains("active")) {
+                    for (
+                        let j = 0;
+                        j < monumentsInSecondContainer.length;
+                        j++
+                    ) {
+                        monumentsInSecondContainer[j] === i &&
+                            monumentsElements[i].classList.remove("active");
+                    }
+                }
+            }
+
+            // Отримуємо всі елементи, котрі потрібно видалити
+            let itemsToRemove = getItemsToRemove(
+                secondContainerChildren,
+                $standContainer2Node,
+                { isStand: true, isMonument: true }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+
+            isSecondStep = true;
+            isThirdStep = false;
+            startHelper();
+        } else if (isStandInFirstContainer && isStandInSecondContainer) {
+            if (standIdInFirstContainer !== standIdInSecondContainer) {
+                elementsStands[
+                    +userClick.parentNode.dataset.itemIndex
+                ].classList.remove("active");
+
+                if (
+                    +userClick.parentNode.dataset.itemIndex ===
+                    standIdInFirstContainer
+                ) {
+                    // Отримуємо всі елементи, котрі потрібно видалити
+                    let itemsToRemove = getItemsToRemove(
+                        firstContainerChildren,
+                        $standContainerNode,
+                        { isStand: true, isMonument: true }
+                    );
+
+                    const monumentsElements = Array.from(
+                        elementsValuesMonumentsNode[0].children
+                    );
+
+                    for (let i = 0; i < monumentsElements.length; i++) {
+                        if (monumentsElements[i].classList.contains("active")) {
+                            for (
+                                let j = 0;
+                                j < monumentsInFirstContainer.length;
+                                j++
+                            ) {
+                                monumentsInFirstContainer[j] === i &&
+                                    monumentsElements[i].classList.remove(
+                                        "active"
+                                    );
+                            }
+                        }
+                    }
+
+                    handleRemoveFilterNode(itemsToRemove);
+                    handleRemoveCalculatorNode(itemsToRemove);
+                    handleRemoveItemsFromSelectedItems(itemsToRemove);
+                    calculate();
+                } else if (
+                    +userClick.parentNode.dataset.itemIndex ===
+                    standIdInSecondContainer
+                ) {
+                    // Отримуємо всі елементи, котрі потрібно видалити
+                    let itemsToRemove = getItemsToRemove(
+                        secondContainerChildren,
+                        $standContainer2Node,
+                        { isStand: true, isMonument: true }
+                    );
+
+                    const monumentsElements = Array.from(
+                        elementsValuesMonumentsNode[0].children
+                    );
+
+                    for (let i = 0; i < monumentsElements.length; i++) {
+                        if (monumentsElements[i].classList.contains("active")) {
+                            for (
+                                let j = 0;
+                                j < monumentsInSecondContainer.length;
+                                j++
+                            ) {
+                                monumentsInSecondContainer[j] === i &&
+                                    monumentsElements[i].classList.remove(
+                                        "active"
+                                    );
+                            }
+                        }
+                    }
+
+                    handleRemoveFilterNode(itemsToRemove);
+                    handleRemoveCalculatorNode(itemsToRemove);
+                    handleRemoveItemsFromSelectedItems(itemsToRemove);
+                    calculate();
+                }
+            } else if (standIdInFirstContainer === standIdInSecondContainer) {
+                // Отримуємо всі елементи, котрі потрібно видалити з першого контейнера
+                let itemsToRemove = getItemsToRemove(
+                    firstContainerChildren,
+                    $standContainerNode,
+                    { isStand: true, isMonument: true }
+                );
+
+                const monumentsElements = Array.from(
+                    elementsValuesMonumentsNode[0].children
+                );
+
+                for (let i = 0; i < monumentsElements.length; i++) {
+                    if (monumentsElements[i].classList.contains("active")) {
+                        for (
+                            let j = 0;
+                            j < monumentsInFirstContainer.length;
+                            j++
+                        ) {
+                            monumentsInFirstContainer[j] === i &&
+                                monumentsElements[i].classList.remove("active");
+                        }
+                    }
+                }
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            }
+        }
     }
 });
 
@@ -2653,7 +2878,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                         calculate();
                     }
                 }
-                
+
                 if (
                     userClick.parentElement.className === "second-stand_choose"
                 ) {
