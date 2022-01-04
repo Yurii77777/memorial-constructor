@@ -140,12 +140,6 @@ body {
 .calculator__data-container.total-cost,
 .elements-container__tile-error,
 .elements-container__tile-error > span,
-.field__tile-granite-black-img,
-.field__tile-granite-gray-img,
-.field__tile-gres1-img,
-.field__tile-gres2-img,
-.field__tile-sidewalk-img,
-.field__tile-sidewalk2-img,
 .calculator__data-container.tile-total-cost,
 .title-container__titles > span,
 .stand-container__info-message,
@@ -424,11 +418,6 @@ body {
     margin-top: var(--xs-margin);
 }
 
-.elements-container__tile-error.active {
-    height: 40px;
-    top: 110%;
-}
-
 .elements-container__tile-error.active > span.active {
     display: inline;
     text-align: center;
@@ -469,33 +458,23 @@ body {
     clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
 }
 
-.field__land,
-.field__tile-granite-black-img.active,
-.field__tile-granite-gray-img.active,
-.field__tile-gres1-img.active,
-.field__tile-gres2-img.active,
-.field__tile-sidewalk-img.active,
-.field__tile-sidewalk2-img.active {
+.field__land-beauty-img {
+    position: absolute;
+    z-index: 3;
+    bottom: 9%;
+    width: 87%;
+    left: 7.5%;
+    height: 91px;
+    clip-path: polygon(20% 0%, 81% 0%, 100% 100%, 0% 100%);
+}
+
+.field__land {
     display: block;
     position: absolute;
 }
 
 .field__land.hide {
     display: none;
-}
-
-.field__tile-granite-black-img.active,
-.field__tile-granite-gray-img.active,
-.field__tile-gres1-img.active,
-.field__tile-gres2-img.active,
-.field__tile-sidewalk-img.active,
-.field__tile-sidewalk2-img.active {
-    z-index: 3;
-    bottom: -1%;
-    height: 173px;
-    width: 95.8%;
-    left: 3%;
-    clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 98%);
 }
 
 .constructor__element-container.active {
@@ -766,7 +745,8 @@ body {
 
 .stand__error.active,
 .monument__error.active,
-.monument__error-length.active {
+.monument__error-length.active,
+.elements-container__tile-error.active {
     position: absolute;
     display: block;
     z-index: 100;
@@ -864,6 +844,14 @@ body {
         bottom: 8.5%;
     }
 
+    .field__land-beauty-img {
+        height: 130px;
+        bottom: 7.5%;
+        left: 6.5%;
+        width: 88%;
+        clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    }
+
     .field__error.active {
         top: 21%;
     }
@@ -882,17 +870,6 @@ body {
     .info-message__choose-stand.active {
         font-size: 0.8rem;
         width: 50%;
-    }
-
-    .field__tile-granite-black-img.active,
-    .field__tile-granite-gray-img.active,
-    .field__tile-gres1-img.active,
-    .field__tile-gres2-img.active,
-    .field__tile-sidewalk-img.active,
-    .field__tile-sidewalk2-img.active {
-        height: 239px;
-        width: 95.8%;
-        bottom: -0.5%;
     }
 
     .draggable-elements {
@@ -935,16 +912,6 @@ body {
 
     .draggable-elements {
         height: 440px;
-    }
-
-    .field__tile-granite-black-img.active,
-    .field__tile-granite-gray-img.active,
-    .field__tile-gres1-img.active,
-    .field__tile-gres2-img.active,
-    .field__tile-sidewalk-img.active,
-    .field__tile-sidewalk2-img.active {
-        bottom: -1.5%;
-        height: 235px;
     }
 
     .field__main-container {
@@ -1051,6 +1018,11 @@ body {
         bottom: 9.5%;
     }
 
+    .field__land-beauty-img {
+        height: 180px;
+        bottom: 8.3%;
+    }
+
     .field__land-plot-container {
         flex: 1 1 0;
         width: 100%;
@@ -1087,16 +1059,6 @@ body {
     .field__land {
         height: 180px;
         bottom: 3%;
-    }
-
-    .field__tile-granite-black-img.active,
-    .field__tile-granite-gray-img.active,
-    .field__tile-gres1-img.active,
-    .field__tile-gres2-img.active,
-    .field__tile-sidewalk-img.active,
-    .field__tile-sidewalk2-img.active {
-        bottom: -1.5%;
-        height: 335px;
     }
 
     .constructor__element-container {
