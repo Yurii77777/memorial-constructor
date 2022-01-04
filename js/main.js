@@ -71,8 +71,7 @@ const filterNode = document.getElementsByClassName(
 const draggableElementsNode = document.querySelectorAll(".draggable-elements");
 
 const landPlotNode = document.querySelectorAll(".field__land");
-const borderElementOnConstructor =
-    document.querySelectorAll(".field__border-img");
+const $landElements = document.querySelectorAll(".field-elements");
 const socleImgOnConstructor = document.querySelectorAll(".field__socle-img");
 
 // Вкладки
@@ -144,18 +143,6 @@ const elementsBordersNode = document.querySelectorAll(
 );
 const elementsBeautyNode = document.querySelectorAll(
     ".constructor__elements-values.beauty"
-);
-const dataContainerCurbsNode = document.querySelectorAll(
-    ".calculator__data-container.curbs"
-);
-const dataValueCurbsNode = document.querySelectorAll(
-    ".calculator__data-value.curbs"
-);
-const dataContainerCurbsTotalCostNode = document.querySelectorAll(
-    ".calculator__data-container.curbs-total-cost"
-);
-const dataValueCurbsTotalCostNode = document.querySelectorAll(
-    ".calculator__data-value.curbs-total-cost"
 );
 const dataContainerCementTotalCostNode = document.querySelectorAll(
     ".calculator__data-container.socle-total-cost"
@@ -524,7 +511,7 @@ const handleMonumentsDataForScaling = (standNode, standLength) => {
             monumentData["monumentNode"] = standNode[0].children[i];
             monumentData["monumentWidthProportion"] = length / standLength;
             monumentData["monumentHeightProportion"] = height / length;
-            monumentData["isDouble"] = titleUa.includes('Подвійний');
+            monumentData["isDouble"] = titleUa.includes("Подвійний");
 
             result.push(monumentData);
             monumentData = {};
@@ -649,7 +636,7 @@ standContainer.addEventListener("mousedown", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
-            isDouble
+            isDouble,
         } = monumentData[0];
 
         $firstMonument = monumentNode;
@@ -706,7 +693,7 @@ standContainer.addEventListener("mousedown", (e) => {
             standContainer,
             intViewportWidth
         );
-        
+
         if ($firstMonument && $secondMonument) {
             const firstMonumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -731,7 +718,6 @@ standContainer.addEventListener("mousedown", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-
         } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -792,7 +778,7 @@ standContainer.addEventListener("touchstart", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
-            isDouble
+            isDouble,
         } = monumentData[0];
 
         $firstMonument = monumentNode;
@@ -874,7 +860,6 @@ standContainer.addEventListener("touchstart", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-
         } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -942,7 +927,7 @@ standContainer2.addEventListener("mousedown", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
-            isDouble
+            isDouble,
         } = monumentData[0];
 
         $firstMonument = monumentNode;
@@ -1026,7 +1011,6 @@ standContainer2.addEventListener("mousedown", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-
         } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -1087,7 +1071,7 @@ standContainer2.addEventListener("touchstart", (e) => {
             monumentNode,
             monumentWidthProportion,
             monumentHeightProportion,
-            isDouble
+            isDouble,
         } = monumentData[0];
 
         $firstMonument = monumentNode;
@@ -1171,7 +1155,6 @@ standContainer2.addEventListener("touchstart", (e) => {
                 firstMonumentWidthOnStand +
                 (standWidthOnConstructor / 2 - secondMonumentWidthOnStand) / 2;
             $secondMonument.style.left = `${leftPositionOfSecondStella}px`;
-
         } else if ($firstMonument && !firstMonumentIsDouble) {
             const monumentWidthOnStand =
                 standWidthOnConstructor * firstMonumentWidthProportion;
@@ -1420,6 +1403,38 @@ const handleSubmitLandPlotInputsData = () => {
     }
 };
 
+/**
+ * Функція розраховує кількість Бордюр і їх загальну вартість.
+ * The function calculates the number of curbs and their total cost.
+ * Функция рассчитывает количество Бордюр и их общую стоимость.
+ * @param {Number} selectedItemIndex 
+ * @param {Number} price 
+ * @returns Object contains "totalCurbsPcs" and "totalCurbsCost"
+ */
+const handleCurbsPcsAndCost = (selectedItemIndex, price) => {
+    let totalCurbsPcs = null;
+    let totalCurbsCost = null;
+
+    const currentPerimeter = landPlotPerimeterNode[0].innerText;
+    const { length } = getElementData(selectedItemIndex, "curbs");
+    totalCurbsPcs = Math.ceil((currentPerimeter * 100) / length);
+    totalCurbsCost = totalCurbsPcs * price;
+
+    return { totalCurbsPcs, totalCurbsCost };
+}
+
+/**
+ * Функція створює HTML вузол в вигляді рядка
+ * The function creates an HTML node as a string
+ * Функция создает HTML узел в виде строки
+ * @param {String} category 
+ * @param {Number} selectedItemIndex 
+ * @param {String} siteNameUa 
+ * @param {String} siteNameRu 
+ * @param {String} siteNameEng 
+ * @param {Number} price 
+ * @returns String contains all needs HTML tags
+ */
 const createCalculatorDataNode = (
     category,
     selectedItemIndex,
@@ -1428,7 +1443,27 @@ const createCalculatorDataNode = (
     siteNameEng,
     price
 ) => {
-    let result = `<div class="calculator__data-container" 
+    let result = null;
+
+    if (category === "curbs") {
+        const { totalCurbsPcs, totalCurbsCost } = handleCurbsPcsAndCost(selectedItemIndex, price);
+        
+        result = `<div class="calculator__data-container" 
+                        data-category="${category}" 
+                        data-item-index="${selectedItemIndex}">
+                    <p class="calculator__data-title">
+                        <span data-lang="ua" class="active">Бордюр ${siteNameUa}</span>
+                        <span data-lang="ru">Бордюр ${siteNameRu}</span>
+                        <span data-lang="eng">Curb ${siteNameEng}</span>
+                    </p>
+                    <p class="calculator__data-value">
+                        <span data-lang="ua" class="active">${totalCurbsCost} грн.</span>
+                        <span data-lang="ru">${totalCurbsCost} грн.</span>
+                        <span data-lang="eng">${totalCurbsCost} UAH</span>
+                    </p>
+                 </div>`;
+    } else {
+        result = `<div class="calculator__data-container" 
                         data-category="${category}" 
                         data-item-index="${selectedItemIndex}">
                     <p class="calculator__data-title">
@@ -1442,6 +1477,7 @@ const createCalculatorDataNode = (
                         <span data-lang="eng">${price} UAH</span>
                     </p>
                  </div>`;
+    }
 
     return result;
 };
@@ -2050,6 +2086,28 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
         }
+    } else if (
+        selectedItem !== -1 &&
+        filterElements[selectedItem].dataset.category === "curbs"
+    ) {
+        const elementsBorders = Array.from(elementsBordersNode[0].children);
+
+        for (let i = 0; i < elementsBorders.length; i++) {
+            elementsBorders[i].classList.contains("active") &&
+                elementsBorders[i].classList.remove("active");
+        }
+
+        const landElementsChildren = Array.from($landElements[0].children);
+        let itemsToRemove = getItemsToRemove(
+            landElementsChildren,
+            $landElements,
+            { isStand: false, isMonument: false, isCurb: true }
+        );
+
+        handleRemoveFilterNode(itemsToRemove);
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+        calculate();
     }
 });
 
@@ -2235,7 +2293,7 @@ const handleRemoveItemsFromSelectedItems = (props) => {
  * @returns Array of items to remove
  */
 const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
-    const { isStand, isMonument } = categories;
+    const { isStand, isMonument, isCurb } = categories;
     let result = [];
     const createItemData = (arrayOfNodes, category, selectedItem) => {
         if (category === "stand") {
@@ -2272,7 +2330,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                     return;
                 }
             }
-        } else if (category === "monuments") {
+        } else if (category === "monuments" || category === "curbs") {
             for (let i = 0; i < arrayOfNodes.length; i++) {
                 let obj = {};
 
@@ -2295,6 +2353,10 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 
     if (isMonument) {
         createItemData(arrayOfNodes, "monuments", selectedItem);
+    }
+
+    if (isCurb) {
+        createItemData(arrayOfNodes, "curbs", selectedItem);
     }
 
     return result;
@@ -3501,48 +3563,50 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
                         calculate();
                     } else if (
-                        isDoubleStele && 
+                        isDoubleStele &&
                         isMonumentInSecondContainer &&
-                        (totalMonumentsLengthInFirstContainer + totalMonumentsLengthInSecondContainer) <= landPlotWidth
-                        ) {
-                            elementsMonuments[selectedMonument].classList.add(
-                                "active"
+                        totalMonumentsLengthInFirstContainer +
+                            totalMonumentsLengthInSecondContainer <=
+                            landPlotWidth
+                    ) {
+                        elementsMonuments[selectedMonument].classList.add(
+                            "active"
+                        );
+                        selectedItems.push(selectedMonumentData);
+
+                        const monumentDataForRender =
+                            handleSizesForDoubleMonument(
+                                $standContainerNode,
+                                selectedMonument,
+                                standLengthByPriceInFirstContainer
                             );
-                            selectedItems.push(selectedMonumentData);
-    
-                            const monumentDataForRender =
-                                handleSizesForDoubleMonument(
-                                    $standContainerNode,
-                                    selectedMonument,
-                                    standLengthByPriceInFirstContainer
-                                );
-    
-                            renderMonumentOnConstructor(
-                                monumentDataForRender,
-                                id,
-                                isDoubleStele,
-                                $standContainerNode
+
+                        renderMonumentOnConstructor(
+                            monumentDataForRender,
+                            id,
+                            isDoubleStele,
+                            $standContainerNode
+                        );
+
+                        handleAddFilterNode(propsForFilterNode);
+
+                        const monumentNodeToCalculator =
+                            createCalculatorDataNode(
+                                category,
+                                selectedMonument,
+                                siteNameUa,
+                                siteNameRu,
+                                siteNameEng,
+                                price
                             );
-    
-                            handleAddFilterNode(propsForFilterNode);
-    
-                            const monumentNodeToCalculator =
-                                createCalculatorDataNode(
-                                    category,
-                                    selectedMonument,
-                                    siteNameUa,
-                                    siteNameRu,
-                                    siteNameEng,
-                                    price
-                                );
-    
-                            $totalCostNode[0].insertAdjacentHTML(
-                                "beforebegin",
-                                monumentNodeToCalculator
-                            );
-                            $chooseStandMessage[0].classList.remove("active");
-    
-                            calculate();
+
+                        $totalCostNode[0].insertAdjacentHTML(
+                            "beforebegin",
+                            monumentNodeToCalculator
+                        );
+                        $chooseStandMessage[0].classList.remove("active");
+
+                        calculate();
                     } else {
                         handleInfoAndErrorMessages(standErrorNode, {
                             isUaLanguage,
@@ -3661,48 +3725,50 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
                         calculate();
                     } else if (
-                        isDoubleStele && 
+                        isDoubleStele &&
                         isMonumentInFirstContainer &&
-                        (totalMonumentsLengthInFirstContainer + totalMonumentsLengthInSecondContainer) <= landPlotWidth
-                        ) {
-                            elementsMonuments[selectedMonument].classList.add(
-                                "active"
+                        totalMonumentsLengthInFirstContainer +
+                            totalMonumentsLengthInSecondContainer <=
+                            landPlotWidth
+                    ) {
+                        elementsMonuments[selectedMonument].classList.add(
+                            "active"
+                        );
+                        selectedItems.push(selectedMonumentData);
+
+                        const monumentDataForRender =
+                            handleSizesForDoubleMonument(
+                                $standContainer2Node,
+                                selectedMonument,
+                                standLengthByPriceInSecondContainer
                             );
-                            selectedItems.push(selectedMonumentData);
-    
-                            const monumentDataForRender =
-                                handleSizesForDoubleMonument(
-                                    $standContainer2Node,
-                                    selectedMonument,
-                                    standLengthByPriceInSecondContainer
-                                );
-    
-                            renderMonumentOnConstructor(
-                                monumentDataForRender,
-                                id,
-                                isDoubleStele,
-                                $standContainer2Node
+
+                        renderMonumentOnConstructor(
+                            monumentDataForRender,
+                            id,
+                            isDoubleStele,
+                            $standContainer2Node
+                        );
+
+                        handleAddFilterNode(propsForFilterNode);
+
+                        const monumentNodeToCalculator =
+                            createCalculatorDataNode(
+                                category,
+                                selectedMonument,
+                                siteNameUa,
+                                siteNameRu,
+                                siteNameEng,
+                                price
                             );
-    
-                            handleAddFilterNode(propsForFilterNode);
-    
-                            const monumentNodeToCalculator =
-                                createCalculatorDataNode(
-                                    category,
-                                    selectedMonument,
-                                    siteNameUa,
-                                    siteNameRu,
-                                    siteNameEng,
-                                    price
-                                );
-    
-                            $totalCostNode[0].insertAdjacentHTML(
-                                "beforebegin",
-                                monumentNodeToCalculator
-                            );
-                            $chooseStandMessage[0].classList.remove("active");
-    
-                            calculate();
+
+                        $totalCostNode[0].insertAdjacentHTML(
+                            "beforebegin",
+                            monumentNodeToCalculator
+                        );
+                        $chooseStandMessage[0].classList.remove("active");
+
+                        calculate();
                     } else {
                         handleInfoAndErrorMessages(standErrorNode, {
                             isUaLanguage,
@@ -4081,42 +4147,98 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 elementsBordersNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
-    let isBorderHidden = true;
-    let selectedBorder = null;
     let userClick = e.target;
     const elementsBorders = Array.from(elementsBordersNode[0].children);
+    let selectedBorder = elementsBorders.indexOf(userClick.parentNode);
+    const landElementsChildren = Array.from($landElements[0].children);
 
-    if (userClick) {
-        selectedBorder = elementsBorders.indexOf(userClick.parentNode);
-    }
-
-    if (selectedBorder !== -1) {
-        isBorderHidden = false;
-
+    if (
+        selectedBorder !== -1 &&
+        userClick.className !== "field__hide-element-button"
+    ) {
         for (let i = 0; i < elementsBorders.length; i++) {
-            elementsBorders[i].classList.remove("active");
+            if (elementsBorders[i].classList.contains("active")) {
+                elementsBorders[i].classList.remove("active");
+
+                let itemsToRemove = getItemsToRemove(
+                    landElementsChildren,
+                    $landElements,
+                    { isStand: false, isMonument: false, isCurb: true }
+                );
+        
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            }
         }
 
         elementsBorders[selectedBorder].classList.add("active");
-        borderElementOnConstructor[0].classList.add("active");
-        dataContainerCurbsNode[0].classList.add("active");
-        dataContainerCurbsTotalCostNode[0].classList.add("active");
+        let selectedBorderElement = getElementData(selectedBorder, "curbs");
+        const {
+            imgUrl,
+            imgConstructorUrl,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            category,
+            price,
+        } = selectedBorderElement;
 
-        calculate({});
-    }
+        const { totalCurbsCost } = handleCurbsPcsAndCost(selectedBorder, price);
+        selectedBorderElement['totalElementCost'] = totalCurbsCost;
+        selectedItems.push(selectedBorderElement);
 
-    if (
-        !isBorderHidden &&
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedBorder;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
+
+        let imgBorderOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
+                                        alt="${siteNameUa}" 
+                                        class="field__land-border-img"
+                                        data-category="${category}"
+                                        data-item-index="${selectedBorder}"
+                                    />`;
+        
+        $landElements[0].insertAdjacentHTML("afterbegin", imgBorderOnConstructor);
+
+        const standNodeToCalculator = createCalculatorDataNode(
+            category,
+            selectedBorder,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            price
+        );
+
+        handleAddFilterNode(propsForFilterNode);
+
+        $totalCostNode[0].insertAdjacentHTML(
+            "beforebegin",
+            standNodeToCalculator
+        );
+
+        calculate();
+    } else if (
+        selectedBorder !== -1 &&
         userClick.className === "field__hide-element-button"
     ) {
-        isBorderHidden = true;
-        borderElementOnConstructor[0].classList.remove("active");
         elementsBorders[selectedBorder].classList.remove("active");
-        dataContainerCurbsNode[0].classList.remove("active");
-        dataContainerCurbsTotalCostNode[0].classList.remove("active");
-        selectedBorder = null;
 
-        calculate({});
+        let itemsToRemove = getItemsToRemove(
+            landElementsChildren,
+            $landElements,
+            { isStand: false, isMonument: false, isCurb: true }
+        );
+
+        handleRemoveFilterNode(itemsToRemove);
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+        calculate();
     }
 });
 
@@ -4414,8 +4536,14 @@ const calculate = () => {
         let totalCost = 0;
 
         for (let i = 0; i < selectedItems.length; i++) {
-            let { price } = selectedItems[i];
-            totalCost += price;
+            let { price, category, totalElementCost } = selectedItems[i];
+            
+            if (category !== "curbs") {
+                totalCost += price;
+
+            } else {
+                totalCost += totalElementCost;
+            }
         }
 
         $totalCostNode[0].children.length === 2 &&

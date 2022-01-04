@@ -133,7 +133,6 @@ body {
 .calculator__title > span,
 .calculator__attention-paragraph,
 .calculator__data-title > span,
-.field__border-img,
 .calculator__data-container.curbs,
 .constructor__element-price > span,
 .calculator__data-container.curbs-total-cost,
@@ -446,14 +445,19 @@ body {
 .field__land {
     background-image: url(../img/land-plot.svg);
     background-size: cover;
-}
-
-.field__land {
     width: 85%;
     height: 89px;
     left: 7%;
     bottom: 4%;
     clip-path: polygon(22% 0%, 81% 0%, 100% 100%, 0% 100%);
+}
+
+.field__land-border-img {
+    position: absolute;
+    width: 88%;
+    height: 110px;
+    bottom: 2%;
+    left: 7%;
 }
 
 .field__land,
@@ -492,16 +496,6 @@ body {
     width: 95.8%;
     left: 3%;
     clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 98%);
-}
-
-.field__border-img.active {
-    display: block;
-    position: absolute;
-    bottom: -4%;
-    height: 170px;
-    left: 3%;
-    width: 95%;
-    z-index: 2;
 }
 
 .constructor__element-container.active {
@@ -858,6 +852,12 @@ body {
         width: 50%;
     }
 
+    .field__land-border-img {
+        width: 89%;
+        height: 155px;
+        left: 6%;
+    }
+
     .field__error.active {
         top: 21%;
     }
@@ -892,11 +892,6 @@ body {
         height: 239px;
         width: 95.8%;
         bottom: -0.5%;
-    }
-
-    .field__border-img.active {
-        height: 235px;
-        bottom: -4%;
     }
 
     .draggable-elements {
@@ -958,10 +953,6 @@ body {
 
     .field__main-container {
         height: 450px;
-    }
-
-    .field__border-img.active {
-        height: 230px;
     }
 
     .constructor__elements {
@@ -1055,6 +1046,10 @@ body {
         height: 30px;
     }
 
+    .field__land-border-img {
+        height: 215px;
+    }
+
     .field__land-plot-container {
         flex: 1 1 0;
         width: 100%;
@@ -1106,10 +1101,6 @@ body {
     .field__tile-sidewalk2-img.active {
         bottom: -1.5%;
         height: 335px;
-    }
-
-    .field__border-img.active {
-        height: 325px;
     }
 
     .constructor__element-container {
