@@ -163,8 +163,7 @@ body {
 .info-message__choose-stand,
 .info-message__choose-stand-paragraph > span,
 .first-stand__choose > span,
-.second-stand_choose > span,
-.field__socle-img {
+.second-stand_choose > span {
     display: none;
 }
 
@@ -460,8 +459,17 @@ body {
     left: 7%;
 }
 
+.field__land-socle-img {
+    position: absolute;
+    bottom: 9.5%;
+    z-index: 2;
+    width: 84%;
+    left: 9%;
+    height: 88px;
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+
 .field__land,
-.field__socle-img.active,
 .field__tile-granite-black-img.active,
 .field__tile-granite-gray-img.active,
 .field__tile-gres1-img.active,
@@ -474,14 +482,6 @@ body {
 
 .field__land.hide {
     display: none;
-}
-
-.field__socle-img.active {
-    z-index: 2;
-    width: 97%;
-    height: 178px;
-    left: 2%;
-    bottom: -6%;
 }
 
 .field__tile-granite-black-img.active,
@@ -858,6 +858,12 @@ body {
         left: 6%;
     }
 
+    .field__land-socle-img {
+        height: 123px;
+        width: 83%;
+        bottom: 8.5%;
+    }
+
     .field__error.active {
         top: 21%;
     }
@@ -876,11 +882,6 @@ body {
     .info-message__choose-stand.active {
         font-size: 0.8rem;
         width: 50%;
-    }
-
-    .field__socle-img.active {
-        height: 243px;
-        bottom: -5.5%;
     }
 
     .field__tile-granite-black-img.active,
@@ -930,11 +931,6 @@ body {
 
     .field__land-plot {
         height: 40px;
-    }
-
-    .field__socle-img.active {
-        bottom: -5%;
-        height: 236px;
     }
 
     .draggable-elements {
@@ -1050,6 +1046,11 @@ body {
         height: 215px;
     }
 
+    .field__land-socle-img {
+        height: 170px;
+        bottom: 9.5%;
+    }
+
     .field__land-plot-container {
         flex: 1 1 0;
         width: 100%;
@@ -1086,11 +1087,6 @@ body {
     .field__land {
         height: 180px;
         bottom: 3%;
-    }
-
-    .field__socle-img.active {
-        bottom: -5%;
-        height: 335px;
     }
 
     .field__tile-granite-black-img.active,

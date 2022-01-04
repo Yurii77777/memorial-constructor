@@ -50,8 +50,9 @@ const prices = [
                 "price": 1400,
                 "height": "7-10см",
                 "tabId": 6,
+                "category": "socle",
                 "imgUrl": "/mobile/socle/socle.png",
-                "type": "socle",
+                "imgConstructorUrl": "/mobile/socle/socle-on-constructor.png",
                 "siteNameUa": "Цоколь (бетон) h 7-10см",
                 "siteNameRu": "Цоколь (бетон) h 7-10см",
                 "siteNameEng": "Socle (concrete) h 7-10cm"
@@ -62,8 +63,9 @@ const prices = [
                 "price": 2000,
                 "height": "15см",
                 "tabId": 6,
+                "category": "socle",
                 "imgUrl": "/mobile/socle/socle.png",
-                "type": "socle",
+                "imgConstructorUrl": "/mobile/socle/socle-on-constructor.png",
                 "siteNameUa": "Цоколь (бетон) h 15см",
                 "siteNameRu": "Цоколь (бетон) h 15см",
                 "siteNameEng": "Socle (concrete) h 15cm"

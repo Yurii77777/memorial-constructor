@@ -132,7 +132,7 @@ const $calculatorSection = document.querySelectorAll(".calculator");
 const calculatorLandPlotNode = document.querySelectorAll(
     ".calculator__data-value.land-plot"
 );
-const landPlotAreaNode = document.querySelectorAll(
+const $landPlotAreaNode = document.querySelectorAll(
     ".calculator__data-value.land-pot-square"
 );
 const landPlotPerimeterNode = document.querySelectorAll(
@@ -1407,8 +1407,8 @@ const handleSubmitLandPlotInputsData = () => {
  * Функція розраховує кількість Бордюр і їх загальну вартість.
  * The function calculates the number of curbs and their total cost.
  * Функция рассчитывает количество Бордюр и их общую стоимость.
- * @param {Number} selectedItemIndex 
- * @param {Number} price 
+ * @param {Number} selectedItemIndex
+ * @param {Number} price
  * @returns Object contains "totalCurbsPcs" and "totalCurbsCost"
  */
 const handleCurbsPcsAndCost = (selectedItemIndex, price) => {
@@ -1421,18 +1421,34 @@ const handleCurbsPcsAndCost = (selectedItemIndex, price) => {
     totalCurbsCost = totalCurbsPcs * price;
 
     return { totalCurbsPcs, totalCurbsCost };
-}
+};
+
+/**
+ * Функція розраховує загальну вартість цоколю
+ * The function calculates the total cost of the socle
+ * Функция рассчитывает общую стоимость цоколя
+ * @param {Number} price 
+ * @returns Numder = socle total cost
+ */
+const handleSocleCost = (price) => {
+    let totalSocleCost = null;
+
+    const currentPerimeter = $landPlotAreaNode[0].innerText;
+    totalSocleCost = currentPerimeter * price;
+
+    return totalSocleCost;
+};
 
 /**
  * Функція створює HTML вузол в вигляді рядка
  * The function creates an HTML node as a string
  * Функция создает HTML узел в виде строки
- * @param {String} category 
- * @param {Number} selectedItemIndex 
- * @param {String} siteNameUa 
- * @param {String} siteNameRu 
- * @param {String} siteNameEng 
- * @param {Number} price 
+ * @param {String} category
+ * @param {Number} selectedItemIndex
+ * @param {String} siteNameUa
+ * @param {String} siteNameRu
+ * @param {String} siteNameEng
+ * @param {Number} price
  * @returns String contains all needs HTML tags
  */
 const createCalculatorDataNode = (
@@ -1446,8 +1462,11 @@ const createCalculatorDataNode = (
     let result = null;
 
     if (category === "curbs") {
-        const { totalCurbsPcs, totalCurbsCost } = handleCurbsPcsAndCost(selectedItemIndex, price);
-        
+        const { totalCurbsPcs, totalCurbsCost } = handleCurbsPcsAndCost(
+            selectedItemIndex,
+            price
+        );
+
         result = `<div class="calculator__data-container" 
                         data-category="${category}" 
                         data-item-index="${selectedItemIndex}">
@@ -1460,6 +1479,23 @@ const createCalculatorDataNode = (
                         <span data-lang="ua" class="active">${totalCurbsCost} грн.</span>
                         <span data-lang="ru">${totalCurbsCost} грн.</span>
                         <span data-lang="eng">${totalCurbsCost} UAH</span>
+                    </p>
+                 </div>`;
+    } else if (category === "socle") {
+        const totalSocleCost = handleSocleCost(price);
+
+        result = `<div class="calculator__data-container" 
+                        data-category="${category}" 
+                        data-item-index="${selectedItemIndex}">
+                    <p class="calculator__data-title">
+                        <span data-lang="ua" class="active">Бордюр ${siteNameUa}</span>
+                        <span data-lang="ru">Бордюр ${siteNameRu}</span>
+                        <span data-lang="eng">Curb ${siteNameEng}</span>
+                    </p>
+                    <p class="calculator__data-value">
+                        <span data-lang="ua" class="active">${totalSocleCost} грн.</span>
+                        <span data-lang="ru">${totalSocleCost} грн.</span>
+                        <span data-lang="eng">${totalSocleCost} UAH</span>
                     </p>
                  </div>`;
     } else {
@@ -2108,6 +2144,32 @@ filterNode[0].addEventListener("click", (e) => {
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
+    } else if (
+        selectedItem !== -1 &&
+        filterElements[selectedItem].dataset.category === "socle"
+    ) {
+        const elementsSocles = Array.from(elementsValuesSocleNode[0].children);
+
+        for (let i = 0; i < elementsSocles.length; i++) {
+            elementsSocles[i].classList.contains("active") &&
+                elementsSocles[i].classList.remove("active");
+        }
+
+        const landElementsChildren = Array.from($landElements[0].children);
+
+        let itemsToRemove = getItemsToRemove(
+            landElementsChildren,
+            $landElements,
+            { isStand: false, isMonument: false, isCurb: false, isSocle: true }
+        );
+
+        landPlotNode[0].classList.contains("hide") &&
+            landPlotNode[0].classList.remove("hide");
+
+        handleRemoveFilterNode(itemsToRemove);
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+        calculate();
     }
 });
 
@@ -2293,7 +2355,7 @@ const handleRemoveItemsFromSelectedItems = (props) => {
  * @returns Array of items to remove
  */
 const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
-    const { isStand, isMonument, isCurb } = categories;
+    const { isStand, isMonument, isCurb, isSocle } = categories;
     let result = [];
     const createItemData = (arrayOfNodes, category, selectedItem) => {
         if (category === "stand") {
@@ -2330,7 +2392,11 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                     return;
                 }
             }
-        } else if (category === "monuments" || category === "curbs") {
+        } else if (
+            category === "monuments" ||
+            category === "curbs" ||
+            category === "socle"
+        ) {
             for (let i = 0; i < arrayOfNodes.length; i++) {
                 let obj = {};
 
@@ -2357,6 +2423,10 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 
     if (isCurb) {
         createItemData(arrayOfNodes, "curbs", selectedItem);
+    }
+
+    if (isSocle) {
+        createItemData(arrayOfNodes, "socle", selectedItem);
     }
 
     return result;
@@ -4165,7 +4235,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
                     $landElements,
                     { isStand: false, isMonument: false, isCurb: true }
                 );
-        
+
                 handleRemoveFilterNode(itemsToRemove);
                 handleRemoveCalculatorNode(itemsToRemove);
                 handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -4186,7 +4256,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         } = selectedBorderElement;
 
         const { totalCurbsCost } = handleCurbsPcsAndCost(selectedBorder, price);
-        selectedBorderElement['totalElementCost'] = totalCurbsCost;
+        selectedBorderElement["totalElementCost"] = totalCurbsCost;
         selectedItems.push(selectedBorderElement);
 
         let propsForFilterNode = {};
@@ -4203,10 +4273,13 @@ elementsBordersNode[0].addEventListener("click", (e) => {
                                         data-category="${category}"
                                         data-item-index="${selectedBorder}"
                                     />`;
-        
-        $landElements[0].insertAdjacentHTML("afterbegin", imgBorderOnConstructor);
 
-        const standNodeToCalculator = createCalculatorDataNode(
+        $landElements[0].insertAdjacentHTML(
+            "afterbegin",
+            imgBorderOnConstructor
+        );
+
+        const curbNodeToCalculator = createCalculatorDataNode(
             category,
             selectedBorder,
             siteNameUa,
@@ -4219,7 +4292,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
 
         $totalCostNode[0].insertAdjacentHTML(
             "beforebegin",
-            standNodeToCalculator
+            curbNodeToCalculator
         );
 
         calculate();
@@ -4250,64 +4323,108 @@ elementsBordersNode[0].addEventListener("click", (e) => {
 elementsValuesSocleNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
-    let selectedSocle = null;
     let userClick = e.target;
     const elementsSocles = Array.from(elementsValuesSocleNode[0].children);
+    let selectedSocle = elementsSocles.indexOf(userClick.parentNode);
+    const landElementsChildren = Array.from($landElements[0].children);
 
-    if (userClick) {
-        selectedSocle = elementsSocles.indexOf(userClick.parentNode);
-    }
-
-    if (selectedSocle !== -1) {
-        isSocleHidden = false;
-
+    if (
+        selectedSocle !== -1 &&
+        userClick.className !== "field__hide-element-button"
+    ) {
         for (let i = 0; i < elementsSocles.length; i++) {
-            elementsSocles[i].classList.remove("active");
+            if (elementsSocles[i].classList.contains("active")) {
+                elementsSocles[i].classList.remove("active");
+
+                let itemsToRemove = getItemsToRemove(
+                    landElementsChildren,
+                    $landElements,
+                    { isStand: false, isMonument: false, isCurb: false, isSocle: true }
+                );
+        
+                landPlotNode[0].classList.contains("hide") &&
+                    landPlotNode[0].classList.remove("hide");
+        
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            }
         }
 
         elementsSocles[selectedSocle].classList.add("active");
-        socleImgOnConstructor[0].classList.add("active");
-        dataContainerCementTotalCostNode[0].classList.add("active");
-        dataValueCementTotalCostNode[0].classList.add("active");
+
+        let selectedSocleElement = getElementData(selectedSocle, "socle");
+        const {
+            imgUrl,
+            imgConstructorUrl,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            category,
+            price,
+        } = selectedSocleElement;
+
+        const totalSocleCost = handleSocleCost(price);
+        selectedSocleElement["totalElementCost"] = totalSocleCost;
+        selectedItems.push(selectedSocleElement);
+
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedSocle;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
+
+        let imgSocleOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
+                                        alt="${siteNameUa}" 
+                                        class="field__land-socle-img"
+                                        data-category="${category}"
+                                        data-item-index="${selectedSocle}"
+                                    />`;
         landPlotNode[0].classList.add("hide");
-
-        calculate({});
-    }
-
-    if (
-        !isSocleHidden &&
-        userClick.className === "field__hide-element-button"
-    ) {
-        isSocleHidden = true;
-        socleImgOnConstructor[0].classList.remove("active");
-        elementsSocles[selectedSocle].classList.remove("active");
-        dataContainerCementTotalCostNode[0].classList.remove("active");
-        dataValueCementTotalCostNode[0].classList.remove("active");
-        landPlotNode[0].classList.remove("hide");
-
-        // Якщо випадково видалили цоколь, тоді видаляємо і плитку
-        const activeTileElement = getActiveElements(elementsBeautyNode);
-        const elementsBeautification = Array.from(
-            elementsBeautyNode[0].children
+        $landElements[0].insertAdjacentHTML(
+            "afterbegin",
+            imgSocleOnConstructor
         );
 
-        if (activeTileElement || activeTileElement === 0) {
-            elementsBeautification[activeTileElement].classList.remove(
-                "active"
-            );
-            tileGraniteBlackImgOnConstructor[0].classList.remove("active");
-            tileGraniteGrayImgOnConstructor[0].classList.remove("active");
-            tileGres1ImgOnConstructor[0].classList.remove("active");
-            tileGres2ImgOnConstructor[0].classList.remove("active");
-            tileSidewalkImgOnConstructor[0].classList.remove("active");
-            tileSidewalk2ImgOnConstructor[0].classList.remove("active");
-            totalCostTileNode[0].classList.remove("active");
-        }
+        const socleNodeToCalculator = createCalculatorDataNode(
+            category,
+            selectedSocle,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            price
+        );
 
-        isTileHidden = true;
-        selectedSocle = null;
+        handleAddFilterNode(propsForFilterNode);
 
-        calculate({});
+        $totalCostNode[0].insertAdjacentHTML(
+            "beforebegin",
+            socleNodeToCalculator
+        );
+
+        calculate();
+    } else if (
+        selectedSocle !== -1 &&
+        userClick.className === "field__hide-element-button"
+    ) {
+        elementsSocles[selectedSocle].classList.remove("active");
+
+        let itemsToRemove = getItemsToRemove(
+            landElementsChildren,
+            $landElements,
+            { isStand: false, isMonument: false, isCurb: false, isSocle: true }
+        );
+
+        landPlotNode[0].classList.contains("hide") &&
+            landPlotNode[0].classList.remove("hide");
+
+        handleRemoveFilterNode(itemsToRemove);
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+        calculate();
     }
 });
 
@@ -4525,7 +4642,7 @@ const calculate = () => {
     // Рахуємо площу. Calculate area. Считаем площадь
     let area = null;
     area = (width * length) / 10000;
-    landPlotAreaNode[0].innerText = area;
+    $landPlotAreaNode[0].innerText = area;
 
     // Рахуємо загальну вартість
     if (selectedItems.length) {
@@ -4537,10 +4654,9 @@ const calculate = () => {
 
         for (let i = 0; i < selectedItems.length; i++) {
             let { price, category, totalElementCost } = selectedItems[i];
-            
-            if (category !== "curbs") {
-                totalCost += price;
 
+            if (category !== "curbs" && category !== "socle") {
+                totalCost += price;
             } else {
                 totalCost += totalElementCost;
             }
