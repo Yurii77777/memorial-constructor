@@ -1375,6 +1375,122 @@ const handleSubmitLandPlotInputsData = () => {
         plotWidthInput[0].value = "";
         plotLengthInput[0].value = "";
         editPlotSizesNode[0].classList.remove("active");
+
+        // Отримати вже вибрані елементи в конструкторі
+        // знайти елементи, котрі залежать від периметру та площі
+        let isCurbsSelected = false;
+        let curbIndex = null;
+        let isSocleSeletced = false;
+        let socleIndex = null;
+        let isTileSelected = false;
+        let tileIndex = null;
+        const landElementsChildren = Array.from($landElements[0].children);
+
+        for (let i = 0; i < landElementsChildren.length; i++) {
+            if (landElementsChildren[i].dataset.category === "curbs") {
+                isCurbsSelected = true;
+                curbIndex = +landElementsChildren[i].dataset.itemIndex;
+            } else if (landElementsChildren[i].dataset.category === "socle") {
+                isSocleSeletced = true;
+                socleIndex = +landElementsChildren[i].dataset.itemIndex;
+            } else if (landElementsChildren[i].dataset.category === "beauty") {
+                isTileSelected = true;
+                tileIndex = +landElementsChildren[i].dataset.itemIndex;
+            }
+        }
+
+        // Вибалити старі дані з зони калькулятора і масиву selectedItems
+        let itemsToRemove = getItemsToRemove(
+            landElementsChildren,
+            $landElements,
+            {
+                isStand: false,
+                isMonument: false,
+                isCurb: isCurbsSelected,
+                isSocle: isSocleSeletced,
+                isBeauty: isTileSelected,
+                mustRemoveElementOnConstructor: false,
+            }
+        );
+
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+
+        // Замінити значення в калькуляторі де це потрібно
+        if (isCurbsSelected) {
+            let selectedBorderElement = getElementData(curbIndex, "curbs");
+            const { siteNameUa, siteNameRu, siteNameEng, category, price } =
+                selectedBorderElement;
+
+            const { totalCurbsCost } = handleCurbsPcsAndCost(curbIndex, price);
+            selectedBorderElement["totalElementCost"] = totalCurbsCost;
+            selectedItems.push(selectedBorderElement);
+
+            const curbNodeToCalculator = createCalculatorDataNode(
+                category,
+                curbIndex,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                curbNodeToCalculator
+            );
+        }
+
+        if (isSocleSeletced) {
+            let selectedSocleElement = getElementData(socleIndex, "socle");
+            const { siteNameUa, siteNameRu, siteNameEng, category, price } =
+                selectedSocleElement;
+
+            const totalSocleCost = handleSocleCost(price);
+            selectedSocleElement["totalElementCost"] = totalSocleCost;
+            selectedItems.push(selectedSocleElement);
+
+            const socleNodeToCalculator = createCalculatorDataNode(
+                category,
+                socleIndex,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                socleNodeToCalculator
+            );
+        }
+
+        if (isTileSelected) {
+            let selectedBeautyElementData = getElementData(tileIndex, "beauty");
+            const { siteNameUa, siteNameRu, siteNameEng, category, price } =
+                selectedBeautyElementData;
+
+            const totalBeutyElementCost = handleSocleCost(price);
+            selectedBeautyElementData["totalElementCost"] =
+                totalBeutyElementCost;
+            selectedItems.push(selectedBeautyElementData);
+
+            const beautyNodeToCalculator = createCalculatorDataNode(
+                category,
+                tileIndex,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                beautyNodeToCalculator
+            );
+        }
+
+        calculate();
     } else {
         handleInfoAndErrorMessages(plotInputErrorMessage, {
             isUaLanguage,
@@ -1594,7 +1710,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: true, isMonument: true }
+                {
+                    isStand: true,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                }
             );
 
             handleRemoveFilterNode(itemsToRemove);
@@ -1631,7 +1751,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: true, isMonument: true }
+                {
+                    isStand: true,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                }
             );
 
             handleRemoveFilterNode(itemsToRemove);
@@ -1656,7 +1780,11 @@ filterNode[0].addEventListener("click", (e) => {
                     let itemsToRemove = getItemsToRemove(
                         firstContainerChildren,
                         $standContainerNode,
-                        { isStand: true, isMonument: true }
+                        {
+                            isStand: true,
+                            isMonument: true,
+                            mustRemoveElementOnConstructor: true,
+                        }
                     );
 
                     const monumentsElements = Array.from(
@@ -1690,7 +1818,11 @@ filterNode[0].addEventListener("click", (e) => {
                     let itemsToRemove = getItemsToRemove(
                         secondContainerChildren,
                         $standContainer2Node,
-                        { isStand: true, isMonument: true }
+                        {
+                            isStand: true,
+                            isMonument: true,
+                            mustRemoveElementOnConstructor: true,
+                        }
                     );
 
                     const monumentsElements = Array.from(
@@ -1722,7 +1854,11 @@ filterNode[0].addEventListener("click", (e) => {
                 let itemsToRemove = getItemsToRemove(
                     firstContainerChildren,
                     $standContainerNode,
-                    { isStand: true, isMonument: true }
+                    {
+                        isStand: true,
+                        isMonument: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
                 );
 
                 const monumentsElements = Array.from(
@@ -1810,7 +1946,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 +userClick.parentNode.dataset.itemIndex
             );
 
@@ -1881,7 +2021,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 +userClick.parentNode.dataset.itemIndex
             );
 
@@ -1956,7 +2100,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 +userClick.parentNode.dataset.itemIndex
             );
 
@@ -2027,7 +2175,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 +userClick.parentNode.dataset.itemIndex
             );
 
@@ -2094,7 +2246,11 @@ filterNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 +userClick.parentNode.dataset.itemIndex
             );
 
@@ -2118,7 +2274,12 @@ filterNode[0].addEventListener("click", (e) => {
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
             $landElements,
-            { isStand: false, isMonument: false, isCurb: true }
+            {
+                isStand: false,
+                isMonument: false,
+                isCurb: true,
+                mustRemoveElementOnConstructor: true,
+            }
         );
 
         handleRemoveFilterNode(itemsToRemove);
@@ -2141,7 +2302,13 @@ filterNode[0].addEventListener("click", (e) => {
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
             $landElements,
-            { isStand: false, isMonument: false, isCurb: false, isSocle: true }
+            {
+                isStand: false,
+                isMonument: false,
+                isCurb: false,
+                isSocle: true,
+                mustRemoveElementOnConstructor: true,
+            }
         );
 
         landPlotNode[0].classList.contains("hide") &&
@@ -2175,6 +2342,7 @@ filterNode[0].addEventListener("click", (e) => {
                 isCurb: false,
                 isSocle: false,
                 isBeauty: true,
+                mustRemoveElementOnConstructor: true,
             }
         );
 
@@ -2367,7 +2535,14 @@ const handleRemoveItemsFromSelectedItems = (props) => {
  * @returns Array of items to remove
  */
 const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
-    const { isStand, isMonument, isCurb, isSocle, isBeauty } = categories;
+    const {
+        isStand,
+        isMonument,
+        isCurb,
+        isSocle,
+        isBeauty,
+        mustRemoveElementOnConstructor,
+    } = categories;
     let result = [];
     const createItemData = (arrayOfNodes, category, selectedItem) => {
         if (category === "stand") {
@@ -2381,7 +2556,8 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                         (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
                     Object.keys(obj).length && result.push(obj);
 
-                    node[0].removeChild(arrayOfNodes[i]);
+                    mustRemoveElementOnConstructor &&
+                        node[0].removeChild(arrayOfNodes[i]);
                 }
             }
         }
@@ -2400,7 +2576,8 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                         (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
                     Object.keys(obj).length && result.push(obj);
 
-                    node[0].removeChild(arrayOfNodes[i]);
+                    mustRemoveElementOnConstructor &&
+                        node[0].removeChild(arrayOfNodes[i]);
                     return;
                 }
             }
@@ -2420,7 +2597,8 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                         (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
                     Object.keys(obj).length && result.push(obj);
 
-                    node[0].removeChild(arrayOfNodes[i]);
+                    mustRemoveElementOnConstructor &&
+                        node[0].removeChild(arrayOfNodes[i]);
                 }
             }
         }
@@ -2734,7 +2912,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         let itemsToRemove = getItemsToRemove(
             firstContainerChildren,
             $standContainerNode,
-            { isStand: true, isMonument: true }
+            {
+                isStand: true,
+                isMonument: true,
+                mustRemoveElementOnConstructor: true,
+            }
         );
 
         handleRemoveFilterNode(itemsToRemove);
@@ -2770,7 +2952,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         let itemsToRemove = getItemsToRemove(
             secondContainerChildren,
             $standContainer2Node,
-            { isStand: true, isMonument: true }
+            {
+                isStand: true,
+                isMonument: true,
+                mustRemoveElementOnConstructor: true,
+            }
         );
 
         handleRemoveFilterNode(itemsToRemove);
@@ -2795,7 +2981,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 let itemsToRemove = getItemsToRemove(
                     firstContainerChildren,
                     $standContainerNode,
-                    { isStand: true, isMonument: true }
+                    {
+                        isStand: true,
+                        isMonument: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
                 );
 
                 const monumentsElements = Array.from(
@@ -2824,7 +3014,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 let itemsToRemove = getItemsToRemove(
                     secondContainerChildren,
                     $standContainer2Node,
-                    { isStand: true, isMonument: true }
+                    {
+                        isStand: true,
+                        isMonument: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
                 );
 
                 const monumentsElements = Array.from(
@@ -2854,7 +3048,11 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: true, isMonument: true }
+                {
+                    isStand: true,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                }
             );
 
             const monumentsElements = Array.from(
@@ -3928,7 +4126,11 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 selectedMonument
             );
 
@@ -4000,7 +4202,11 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
                 $standContainerNode,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 selectedMonument
             );
 
@@ -4074,7 +4280,11 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 selectedMonument
             );
 
@@ -4146,7 +4356,11 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 selectedMonument
             );
 
@@ -4214,7 +4428,11 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
                 $standContainer2Node,
-                { isStand: false, isMonument: true },
+                {
+                    isStand: false,
+                    isMonument: true,
+                    mustRemoveElementOnConstructor: true,
+                },
                 selectedMonument
             );
 
@@ -4250,7 +4468,12 @@ elementsBordersNode[0].addEventListener("click", (e) => {
                 let itemsToRemove = getItemsToRemove(
                     landElementsChildren,
                     $landElements,
-                    { isStand: false, isMonument: false, isCurb: true }
+                    {
+                        isStand: false,
+                        isMonument: false,
+                        isCurb: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
                 );
 
                 handleRemoveFilterNode(itemsToRemove);
@@ -4322,7 +4545,12 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
             $landElements,
-            { isStand: false, isMonument: false, isCurb: true }
+            {
+                isStand: false,
+                isMonument: false,
+                isCurb: true,
+                mustRemoveElementOnConstructor: true,
+            }
         );
 
         handleRemoveFilterNode(itemsToRemove);
@@ -4361,6 +4589,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
                         isMonument: false,
                         isCurb: false,
                         isSocle: true,
+                        mustRemoveElementOnConstructor: true,
                     }
                 );
 
@@ -4437,7 +4666,13 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
             $landElements,
-            { isStand: false, isMonument: false, isCurb: false, isSocle: true }
+            {
+                isStand: false,
+                isMonument: false,
+                isCurb: false,
+                isSocle: true,
+                mustRemoveElementOnConstructor: true,
+            }
         );
 
         landPlotNode[0].classList.contains("hide") &&
@@ -4482,6 +4717,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                         isCurb: false,
                         isSocle: false,
                         isBeauty: true,
+                        mustRemoveElementOnConstructor: true,
                     }
                 );
 
@@ -4584,6 +4820,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 isCurb: false,
                 isSocle: false,
                 isBeauty: true,
+                mustRemoveElementOnConstructor: true,
             }
         );
 
