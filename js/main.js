@@ -4671,6 +4671,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
                 isMonument: false,
                 isCurb: false,
                 isSocle: true,
+                isBeauty: true,
                 mustRemoveElementOnConstructor: true,
             }
         );
