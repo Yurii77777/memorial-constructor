@@ -35,6 +35,7 @@
 
     /* Загальні кольори */
     --input-error-border-color: #dc3545;
+    --main-label-color: #6b6b73;
 
     /* Налаштування повідомлення про помилку */
     --error-text-color: #842029;

@@ -4445,6 +4445,19 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 });
 
 /**
+ * Блок для обробки елементів оформлення стелли
+ */
+const $steleDecorationForm = document.querySelectorAll('.constructor__form');
+
+const handleSubmitSteleForm = (e) => {
+    e.preventDefault();
+
+    console.log('Yes')
+}
+
+$steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
+
+/**
  * Обробник елементів блоку "Бордюри"
  * Handler of elements "Borders"
  * Обработчик элементов блока "Бордюры"
