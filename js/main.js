@@ -137,6 +137,7 @@ const $totalCostNode = document.querySelectorAll(
 const totalCostTileNode = document.querySelectorAll(
     ".calculator__data-container.tile-total-cost"
 );
+const $selectStele = document.getElementById("selectStele");
 
 let isFirstStep = true;
 let isSecondStep = false;
@@ -1717,6 +1718,7 @@ filterNode[0].addEventListener("click", (e) => {
                 }
             );
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -1758,6 +1760,7 @@ filterNode[0].addEventListener("click", (e) => {
                 }
             );
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -1806,6 +1809,7 @@ filterNode[0].addEventListener("click", (e) => {
                         }
                     }
 
+                    removeStellaFromDecorationForm(itemsToRemove);
                     handleRemoveFilterNode(itemsToRemove);
                     handleRemoveCalculatorNode(itemsToRemove);
                     handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -1844,6 +1848,7 @@ filterNode[0].addEventListener("click", (e) => {
                         }
                     }
 
+                    removeStellaFromDecorationForm(itemsToRemove);
                     handleRemoveFilterNode(itemsToRemove);
                     handleRemoveCalculatorNode(itemsToRemove);
                     handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -1878,6 +1883,7 @@ filterNode[0].addEventListener("click", (e) => {
                     }
                 }
 
+                removeStellaFromDecorationForm(itemsToRemove);
                 handleRemoveFilterNode(itemsToRemove);
                 handleRemoveCalculatorNode(itemsToRemove);
                 handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2005,10 +2011,12 @@ filterNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    false, // Явно не подвійна стелла
                     $standContainerNode
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2080,10 +2088,12 @@ filterNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    false, // явно не подвійна стелла
                     $standContainerNode
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2093,9 +2103,13 @@ filterNode[0].addEventListener("click", (e) => {
             sameStelesCountInSecondContainer === 1 &&
             isMonumentInSecondContainer
         ) {
+            const monumentsElements = Array.from(
+                elementsValuesMonumentsNode[0].children
+            );
+
             monumentsElements[
-                +userClick.parentNode.dataset.itemIndex
-            ].classList.remove("active");
+                    +userClick.parentNode.dataset.itemIndex
+                ].classList.remove("active");
 
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
@@ -2159,10 +2173,12 @@ filterNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    false, // явно не подвійна стелла
                     $standContainer2Node
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2234,10 +2250,12 @@ filterNode[0].addEventListener("click", (e) => {
                 renderMonumentOnConstructor(
                     monumentDataForRender,
                     monumentIndexToKeep,
+                    false, // явно не подвійна стелла
                     $standContainer2Node
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2254,6 +2272,7 @@ filterNode[0].addEventListener("click", (e) => {
                 +userClick.parentNode.dataset.itemIndex
             );
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2919,6 +2938,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             }
         );
 
+        removeStellaFromDecorationForm(itemsToRemove);
         handleRemoveFilterNode(itemsToRemove);
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -2959,6 +2979,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             }
         );
 
+        removeStellaFromDecorationForm(itemsToRemove);
         handleRemoveFilterNode(itemsToRemove);
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -3005,6 +3026,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     }
                 }
 
+                removeStellaFromDecorationForm(itemsToRemove);
                 handleRemoveFilterNode(itemsToRemove);
                 handleRemoveCalculatorNode(itemsToRemove);
                 handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -3038,6 +3060,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     }
                 }
 
+                removeStellaFromDecorationForm(itemsToRemove);
                 handleRemoveFilterNode(itemsToRemove);
                 handleRemoveCalculatorNode(itemsToRemove);
                 handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -3068,6 +3091,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 }
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -3404,6 +3428,58 @@ const handleAddChooseStandMessageNode = (props) => {
 };
 
 /**
+ * Функція додає вибрану стеллу в форму декорації стелли
+ * The function adds the selected stele to the stele decoration form.
+ * Функция добавляет выбранную стеллу в форму декорации стеллы.
+ * @param {Object} props
+ */
+const addStellaToDecorationForm = (props) => {
+    const { selectList, siteNameUa, siteNameRu, siteNameEng, itemIndex } =
+        props;
+
+    let newItem = `<li class="select-stele-item" data-item-index="${itemIndex}">
+                            <span data-lang="ua" class="active">${siteNameUa}</span>
+                            <span data-lang="ru">${siteNameRu}</span>
+                            <span data-lang="eng">${siteNameEng}</span>
+                        </li>`;
+    selectList.insertAdjacentHTML("beforeend", newItem);
+};
+
+/**
+ * Функція видалення стелли із форми декорації стелли
+ * The function of removing the stele from the stele decoration form
+ * Функция удаления стеллы из формы декорации стеллы
+ * @param {Array} itemsToRemove
+ */
+const removeStellaFromDecorationForm = (props) => {
+    let itemsToRemove = props.filter(
+        ({ category }) => category === "monuments"
+    );
+
+    const removeSteleItem = (itemsToRemove) => {
+        for (let i = 0; i < itemsToRemove.length; i++) {
+            const { index } = itemsToRemove[i];
+
+            const itemsInSteleForm = Array.from($selectStele.children);
+
+            for (let j = 0; j < itemsInSteleForm.length; j++) {
+                const itemIndex = +itemsInSteleForm[j].dataset.itemIndex;
+
+                if (itemIndex === index) {
+                    $selectStele.removeChild($selectStele.children[j]);
+                    itemsToRemove.splice(itemsToRemove[i], 1);
+                    return;
+                }
+            }
+        }
+    };
+
+    while (itemsToRemove.length) {
+        removeSteleItem(itemsToRemove);
+    }
+};
+
+/**
  * Обробник елементів блоку "Стелли"
  * Stella block element handler
  * Обработчик элементов блока "Стеллы"
@@ -3552,6 +3628,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 $standContainerNode
             );
 
+            addStellaToDecorationForm({
+                selectList: $selectStele,
+                itemIndex: selectedMonument,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+            });
+
             handleAddFilterNode(propsForFilterNode);
 
             const monumentNodeToCalculator = createCalculatorDataNode(
@@ -3585,6 +3669,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 isDoubleStele,
                 $standContainerNode
             );
+
+            addStellaToDecorationForm({
+                selectList: $selectStele,
+                itemIndex: selectedMonument,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+            });
 
             handleAddFilterNode(propsForFilterNode);
 
@@ -3650,6 +3742,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 $standContainer2Node
             );
 
+            addStellaToDecorationForm({
+                selectList: $selectStele,
+                itemIndex: selectedMonument,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+            });
+
             handleAddFilterNode(propsForFilterNode);
 
             const monumentNodeToCalculator = createCalculatorDataNode(
@@ -3683,6 +3783,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 isDoubleStele,
                 $standContainer2Node
             );
+
+            addStellaToDecorationForm({
+                selectList: $selectStele,
+                itemIndex: selectedMonument,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+            });
 
             handleAddFilterNode(propsForFilterNode);
 
@@ -3783,6 +3891,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             $standContainerNode
                         );
 
+                        addStellaToDecorationForm({
+                            selectList: $selectStele,
+                            itemIndex: selectedMonument,
+                            siteNameUa,
+                            siteNameRu,
+                            siteNameEng,
+                        });
+
                         handleAddFilterNode(propsForFilterNode);
 
                         const monumentNodeToCalculator =
@@ -3827,6 +3943,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             isDoubleStele,
                             $standContainerNode
                         );
+
+                        addStellaToDecorationForm({
+                            selectList: $selectStele,
+                            itemIndex: selectedMonument,
+                            siteNameUa,
+                            siteNameRu,
+                            siteNameEng,
+                        });
 
                         handleAddFilterNode(propsForFilterNode);
 
@@ -3945,6 +4069,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             $standContainer2Node
                         );
 
+                        addStellaToDecorationForm({
+                            selectList: $selectStele,
+                            itemIndex: selectedMonument,
+                            siteNameUa,
+                            siteNameRu,
+                            siteNameEng,
+                        });
+
                         handleAddFilterNode(propsForFilterNode);
 
                         const monumentNodeToCalculator =
@@ -3990,6 +4122,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             $standContainer2Node
                         );
 
+                        addStellaToDecorationForm({
+                            selectList: $selectStele,
+                            itemIndex: selectedMonument,
+                            siteNameUa,
+                            siteNameRu,
+                            siteNameEng,
+                        });
+
                         handleAddFilterNode(propsForFilterNode);
 
                         const monumentNodeToCalculator =
@@ -4034,6 +4174,14 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             isDoubleStele,
                             $standContainer2Node
                         );
+
+                        addStellaToDecorationForm({
+                            selectList: $selectStele,
+                            itemIndex: selectedMonument,
+                            siteNameUa,
+                            siteNameRu,
+                            siteNameEng,
+                        });
 
                         handleAddFilterNode(propsForFilterNode);
 
@@ -4190,6 +4338,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -4266,6 +4415,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -4344,6 +4494,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -4420,6 +4571,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 );
             }
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -4436,6 +4588,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 selectedMonument
             );
 
+            removeStellaFromDecorationForm(itemsToRemove);
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -4447,15 +4600,80 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 /**
  * Блок для обробки елементів оформлення стелли
  */
-const $steleDecorationForm = document.querySelectorAll('.constructor__form');
 
-const handleSubmitSteleForm = (e) => {
+const handleActiveStelesListElements = (node) => {
+    const nodeChildren = Array.from(node.children);
+
+    for (let i = 0; i < nodeChildren.length; i++) {
+        nodeChildren[i].classList.contains("selected") &&
+            nodeChildren[i].classList.remove("selected");
+    }
+};
+
+$selectStele.addEventListener("click", (e) => {
     e.preventDefault();
 
-    console.log('Yes')
-}
+    let userClick = e.target;
 
-$steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
+    const nodeChildren = Array.from($selectStele.children);
+    const selectedStele = nodeChildren.indexOf(userClick);
+    const selectedSteleVariant1 = nodeChildren.indexOf(
+        userClick.parentNode.parentNode
+    );
+    const selectedSteleVariant2 = nodeChildren.indexOf(userClick.parentNode);
+
+    if (
+        selectedStele === 0 ||
+        selectedSteleVariant1 === 0 ||
+        selectedSteleVariant2 === 0
+    ) {
+        $selectStele.classList.contains("active")
+            ? $selectStele.classList.remove("active")
+            : $selectStele.classList.add("active");
+    } else if (
+        selectedStele === 1 ||
+        selectedSteleVariant1 === 1 ||
+        selectedSteleVariant2 === 1
+    ) {
+        handleActiveStelesListElements($selectStele);
+        $selectStele.children[1].classList.add("selected");
+        $selectStele.classList.remove("active");
+    } else if (
+        selectedStele === 2 ||
+        selectedSteleVariant1 === 2 ||
+        selectedSteleVariant2 === 2
+    ) {
+        handleActiveStelesListElements($selectStele);
+        $selectStele.children[2].classList.add("selected");
+        $selectStele.classList.remove("active");
+    } else if (
+        selectedStele === 3 ||
+        selectedSteleVariant1 === 3 ||
+        selectedSteleVariant2 === 3
+    ) {
+        handleActiveStelesListElements($selectStele);
+        $selectStele.children[3].classList.add("selected");
+        $selectStele.classList.remove("active");
+    } else if (
+        selectedStele === 4 ||
+        selectedSteleVariant1 === 4 ||
+        selectedSteleVariant2 === 4
+    ) {
+        handleActiveStelesListElements($selectStele);
+        $selectStele.children[4].classList.add("selected");
+        $selectStele.classList.remove("active");
+    }
+});
+
+// const $steleDecorationForm = document.querySelectorAll(".constructor__form");
+
+// const handleSubmitSteleForm = (e) => {
+//     e.preventDefault();
+
+//     console.log("Yes");
+// };
+
+// $steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
 
 /**
  * Обробник елементів блоку "Бордюри"
