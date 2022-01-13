@@ -2108,8 +2108,8 @@ filterNode[0].addEventListener("click", (e) => {
             );
 
             monumentsElements[
-                    +userClick.parentNode.dataset.itemIndex
-                ].classList.remove("active");
+                +userClick.parentNode.dataset.itemIndex
+            ].classList.remove("active");
 
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
@@ -2316,6 +2316,15 @@ filterNode[0].addEventListener("click", (e) => {
                 elementsSocles[i].classList.remove("active");
         }
 
+        const elementsBeautification = Array.from(
+            elementsBeautyNode[0].children
+        );
+
+        for (let i = 0; i < elementsBeautification.length; i++) {
+            elementsBeautification[i].classList.contains("active") &&
+                elementsBeautification[i].classList.remove("active");
+        }
+
         const landElementsChildren = Array.from($landElements[0].children);
 
         let itemsToRemove = getItemsToRemove(
@@ -2326,6 +2335,7 @@ filterNode[0].addEventListener("click", (e) => {
                 isMonument: false,
                 isCurb: false,
                 isSocle: true,
+                isBeauty: true,
                 mustRemoveElementOnConstructor: true,
             }
         );
@@ -4665,15 +4675,182 @@ $selectStele.addEventListener("click", (e) => {
     }
 });
 
-// const $steleDecorationForm = document.querySelectorAll(".constructor__form");
+const getSteleFormInputsData = (props) => {
+    const {
+        steleSurnameNode,
+        steleNameNode,
+        steleSecondNameNode,
+        steleDatesNode,
+    } = props;
 
-// const handleSubmitSteleForm = (e) => {
-//     e.preventDefault();
+    let steleSurname = null;
+    let steleName = null;
+    let steleSecondName = null;
+    let steleDates = null;
 
-//     console.log("Yes");
-// };
+    const $steleSurnameInput = document.getElementById(steleSurnameNode);
+    steleSurname = $steleSurnameInput.value;
+    $steleSurnameInput.value = '';
 
-// $steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
+    const $steleNameInput = document.getElementById(steleNameNode);
+    steleName = $steleNameInput.value;
+    $steleNameInput.value = '';
+
+    const $steleSecondNameInput = document.getElementById(steleSecondNameNode);
+    steleSecondName = $steleSecondNameInput.value;
+    $steleSecondNameInput.value = '';
+
+    const $steleDatesInput = document.getElementById(steleDatesNode);
+    steleDates = $steleDatesInput.value;
+    $steleDatesInput.value = '';
+
+    return { steleSurname, steleName, steleSecondName, steleDates };
+};
+
+const createLetteringsForSteles = (props) => {
+    const { steleSurname, steleName, steleSecondName, steleDates } = props;
+
+    let letteringStellaSurname = null;
+    let letteringStellaName = null;
+    let letteringStellaSecondName = null;
+    let letteringStellaDates = null;
+
+    let letteringString = `<div class="stella-lettering" data-stella-prefix-lettering>
+                                <p>value</p>
+                           </div>`;
+
+    steleSurname &&
+        (letteringStellaSurname = letteringString
+            .slice()
+            .replace("value", steleSurname)
+            .replace("prefix", 'surname'));
+
+    steleName &&
+        (letteringStellaName = letteringString
+            .slice()
+            .replace("value", steleName)
+            .replace("prefix", 'name'));
+
+    steleSecondName &&
+        (letteringStellaSecondName = letteringString
+            .slice()
+            .replace("value", steleSecondName)
+            .replace("prefix", 'secondname'));
+
+    steleDates &&
+        (letteringStellaDates = letteringString
+            .slice()
+            .replace("value", steleDates)
+            .replace("prefix", 'dates'));
+
+    return {
+        letteringStellaSurname,
+        letteringStellaName,
+        letteringStellaSecondName,
+        letteringStellaDates,
+    };
+};
+
+const renderStellaLettering = ({
+    letteringStellaSurname,
+    letteringStellaName,
+    letteringStellaSecondName,
+    letteringStellaDates,
+    node,
+}) => {
+    letteringStellaSurname &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaSurname);
+
+    letteringStellaName &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaName);
+
+    letteringStellaSecondName &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaSecondName);
+
+    letteringStellaDates &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaDates);
+};
+
+const handleSubmitSteleForm = (e) => {
+    e.preventDefault();
+
+    // Яка саме стелла вибрана
+    let selectedStellaIndex = null;
+
+    const stelesList = Array.from($selectStele.children);
+    for (let i = 0; i < stelesList.length; i++) {
+        if (stelesList[i].classList.contains("selected")) {
+            selectedStellaIndex = +stelesList[i].dataset.itemIndex;
+        }
+    }
+
+    // В якому контейнері знаходиться вибрана стелла
+    let stellaInFirstContainer = false;
+    let stellaInSecondContainer = false;
+    const firstContainerChildren = Array.from($standContainerNode[0].children);
+    const secondContainerChildren = Array.from(
+        $standContainer2Node[0].children
+    );
+
+    for (let i = 0; i < firstContainerChildren.length; i++) {
+        if (
+            +firstContainerChildren[i].dataset.itemIndex ===
+                selectedStellaIndex &&
+            firstContainerChildren[i].dataset.category === "monuments"
+        ) {
+            stellaInFirstContainer = true;
+        }
+    }
+
+    for (let i = 0; i < secondContainerChildren.length; i++) {
+        if (
+            +secondContainerChildren[i].dataset.itemIndex ===
+                selectedStellaIndex &&
+            secondContainerChildren[i].dataset.category === "monuments"
+        ) {
+            stellaInSecondContainer = true;
+        }
+    }
+
+    if (selectedStellaIndex || selectedStellaIndex === 0) {
+        // Дістаємо дані із заповнених інпутів
+        const { steleSurname, steleName, steleSecondName, steleDates } =
+            getSteleFormInputsData({
+                steleSurnameNode: "steleSurname",
+                steleNameNode: "steleName",
+                steleSecondNameNode: "steleSecondName",
+                steleDatesNode: "steleDates",
+            });
+
+        // Генеруємо дані для відображення на стеллі
+        const {
+            letteringStellaSurname,
+            letteringStellaName,
+            letteringStellaSecondName,
+            letteringStellaDates,
+        } = createLetteringsForSteles({
+            steleSurname,
+            steleName,
+            steleSecondName,
+            steleDates,
+        });
+
+        // Якщо обрана стелла лише в першому контейнері
+        if (stellaInFirstContainer) {
+            // Рендеримо надписи введені користувачем
+            renderStellaLettering({
+                letteringStellaSurname,
+                letteringStellaName,
+                letteringStellaSecondName,
+                letteringStellaDates,
+                node: $standContainerNode,
+            });
+        }
+    }
+};
+
+const $steleDecorationForm = document.querySelectorAll(".constructor__form");
+$steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
 
 /**
  * Обробник елементів блоку "Бордюри"

@@ -950,6 +950,15 @@ body {
     margin-top: var(--xs-margin);
 }
 
+.stella-lettering {
+    position: absolute;
+    font-size: 0.7rem;
+    color: #fff;
+    z-index: 5;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
@@ -1309,6 +1318,25 @@ body {
 
     .calculator {
         width: 1000px;
+    }
+
+    .stella-lettering[data-stella-surname-lettering] {
+        top: -520%;
+    }
+
+    .stella-lettering[data-stella-name-lettering] {
+        top: -390%;
+    }
+
+    .stella-lettering[data-stella-secondname-lettering] {
+        top: -270%;
+    }
+
+    .stella-lettering[data-stella-dates-lettering] {
+        font-size: 0.6rem;
+        text-align: center;
+        top: -100%;
+        width: 100%;
     }
 }
 
