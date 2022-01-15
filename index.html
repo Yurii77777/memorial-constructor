@@ -231,19 +231,13 @@
 
                         <form method="post" class="constructor__form">
                             <div class="stele-form-left-container">
-                                    <ul id="selectStele" class="select-stele-list">
-                                        <li class="select-stele-item">
-                                            <p class="select-stele-title">
-                                                <span data-lang="ua" class="active">Виберіть стеллу</span>
-                                                <span data-lang="ru">Выберите стеллу</span>
-                                                <span data-lang="eng">Choose a stella</span>
-                                            </p>
-                                            &#5121;
-                                        </li>
-                                    </ul>
-    
                                 <div class="stele-form-input-wrapper">
-                                    <input type="text" name="steleSurname" id="steleSurname">
+                                    <input 
+                                        type="text" 
+                                        name="steleSurname" 
+                                        id="steleSurname" 
+                                        onblur="hasInputValue()"
+                                    >
                                     <label for="steleSurname" class="steleSurname">
                                         <span data-lang="ua" class="active">Фамілія</span>
                                         <span data-lang="ru">Фамилия</span>
@@ -252,7 +246,12 @@
                                 </div>
     
                                 <div class="stele-form-input-wrapper">
-                                    <input type="text" name="steleName" id="steleName">
+                                    <input 
+                                        type="text" 
+                                        name="steleName" 
+                                        id="steleName" 
+                                        onblur="hasInputValue()"
+                                    >
                                     <label for="steleName" class="steleName">
                                         <span data-lang="ua" class="active">Ім'я</span>
                                         <span data-lang="ru">Имя</span>
@@ -261,7 +260,12 @@
                                 </div>
     
                                 <div class="stele-form-input-wrapper">
-                                    <input type="text" name="steleSecondName" id="steleSecondName">
+                                    <input 
+                                        type="text" 
+                                        name="steleSecondName" 
+                                        id="steleSecondName" 
+                                        onblur="hasInputValue()"
+                                    >
                                     <label for="steleSecondName" class="steleSecondName">
                                         <span data-lang="ua" class="active">Прізвище</span>
                                         <span data-lang="ru">Отчество</span>
@@ -270,7 +274,12 @@
                                 </div>
     
                                 <div class="stele-form-input-wrapper">
-                                    <input type="text" name="steleDates" id="steleDates">
+                                    <input 
+                                        type="text" 
+                                        name="steleDates" 
+                                        id="steleDates" 
+                                        onblur="hasInputValue()"
+                                    >
                                     <label for="steleDates" class="steleDates">
                                         <span data-lang="ua" class="active">Дати</span>
                                         <span data-lang="ru">Даты</span>

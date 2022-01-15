@@ -312,51 +312,6 @@ body {
     margin-top: 25px;
 }
 
-.select-stele-list {
-    position: relative;
-}
-
-.select-stele-list > li:not(:first-child) {
-    display: none;
-}
-
-.select-stele-list.active > li:not(:first-child),
-.select-stele-list > li.selected {
-    display: flex;
-    position: absolute;
-    z-index: 1;
-    font-size: 0.8rem;
-    width: 100%;
-    padding: 3px;
-    background-color: #dee2e6;
-}
-
-.select-stele-list.active > li:not(:first-child):hover,
-.select-stele-list.active > li:not(:first-child):focus,
-.select-stele-list.active > li:not(:first-child):active {
-    background-color: #b3b4b6;
-}
-
-.select-stele-list.active > .select-stele-item > span.active {
-    display: block;
-}
-
-.select-stele-list.active > li:nth-child(2) {
-    top: 17px;
-}
-
-.select-stele-list.active > li:nth-child(3) {
-    top: 35px;
-}
-
-.select-stele-list.active > li:nth-child(4) {
-    top: 53px;
-}
-
-.select-stele-list.active > li:nth-child(5) {
-    top: 72px;
-}
-
 .select-stele-item {
     display: flex;
     flex-direction: row;
@@ -910,6 +865,14 @@ body {
     transition: all 0.2s ease;
 }
 
+#steleSurname.has-value ~ label,
+#steleName.has-value ~ label,
+#steleSecondName.has-value ~ label,
+#steleDates.has-value ~ label {
+    top: 18px;
+    left: 80%;
+}
+
 .constructor__form-title {
     font-size: 0.8rem;
     font-weight: 700;
@@ -954,9 +917,25 @@ body {
     position: absolute;
     font-size: 0.7rem;
     color: #fff;
+    text-shadow: black -2px 2px 10px;
     z-index: 5;
-    left: 50%;
+    left: 10%;
     transform: translate(-50%, -50%);
+    cursor: move;
+}
+
+.stella-lettering__remove {
+    display: none;
+}
+
+.stella-lettering.active > .stella-lettering__remove {
+    display: block;
+    position: absolute;
+    width: 15px;
+    top: -15px;
+    right: -15px;
+    cursor: pointer;
+    z-index: 500;
 }
 
 @media (min-width: 440px) {
@@ -1320,23 +1299,20 @@ body {
         width: 1000px;
     }
 
-    .stella-lettering[data-stella-surname-lettering] {
-        top: -520%;
+    .stella-lettering[data-stella-lettering="surname"] {
+        top: 50%;
     }
 
-    .stella-lettering[data-stella-name-lettering] {
-        top: -390%;
+    .stella-lettering[data-stella-lettering="name"] {
+        top: 53%;
     }
 
-    .stella-lettering[data-stella-secondname-lettering] {
-        top: -270%;
+    .stella-lettering[data-stella-lettering="secondname"] {
+        top: 56%;
     }
 
-    .stella-lettering[data-stella-dates-lettering] {
-        font-size: 0.6rem;
-        text-align: center;
-        top: -100%;
-        width: 100%;
+    .stella-lettering[data-stella-lettering="dates"] {
+        top: 59%;
     }
 }
 
