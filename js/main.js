@@ -4466,17 +4466,37 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
 /**
  * Блок для обробки елементів оформлення стелли
+ * Section for handle stele design elements
+ * Блок для обработки элементов оформления стеллы
  */
 
-const handleActiveStelesListElements = (node) => {
-    const nodeChildren = Array.from(node.children);
+/**
+ * Функція перевіряє чи є дані в інпуті, для того щоб задати стилі лейблу
+ * The function checks if there is data in the input in order to set the label styles
+ * Функция проверяет есть ли данные в инпуте, для того чтобы задать стили лейблу
+ */
+ const hasInputValue = () => {
+    const inputs = $steleDecorationForm[0].getElementsByTagName("input");
 
-    for (let i = 0; i < nodeChildren.length; i++) {
-        nodeChildren[i].classList.contains("selected") &&
-            nodeChildren[i].classList.remove("selected");
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].value && inputs[i].value !== "") {
+            inputs[i].classList.add("has-value");
+        }
+
+        if (!inputs[i].value || inputs[i].value === "") {
+            inputs[i].classList.contains("has-value") &&
+                inputs[i].classList.remove("has-value");
+        }
     }
 };
 
+/**
+ * Функція дістає дані з інпутів форми для декорації стелли
+ * The function receives data from the form to decorate the stele.
+ * Функция извлекает данные из инпутов формы для декорации стеллы.
+ * @param {Object} props 
+ * @returns Object contains data as { steleSurname, steleName, steleSecondName, steleDates }
+ */
 const getSteleFormInputsData = (props) => {
     const {
         steleSurnameNode,
@@ -4511,6 +4531,13 @@ const getSteleFormInputsData = (props) => {
     return { steleSurname, steleName, steleSecondName, steleDates };
 };
 
+/**
+ * Функція для створення вузлів написів для стелли
+ * Function for creating lettering nodes for the stele
+ * Функция для создания узлов надписей для стеллы
+ * @param {Object} props 
+ * @returns 
+ */
 const createLetteringsForSteles = (props) => {
     const { steleSurname, steleName, steleSecondName, steleDates } = props;
 
@@ -4556,13 +4583,21 @@ const createLetteringsForSteles = (props) => {
     };
 };
 
-const renderStellaLettering = ({
-    letteringStellaSurname,
-    letteringStellaName,
-    letteringStellaSecondName,
-    letteringStellaDates,
-    node,
-}) => {
+/**
+ * Функція для рендеру написів для стелли в конструкторі
+ * Function for rendering letterings for the stella in the constructor
+ * Функция для рендер надписей для стеллы в конструкторе
+ * @param {Object} props
+ */
+const renderStellaLettering = (props) => {
+    const {
+        letteringStellaSurname,
+        letteringStellaName,
+        letteringStellaSecondName,
+        letteringStellaDates,
+        node,
+    } = props;
+
     letteringStellaSurname &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaSurname);
 
@@ -4581,12 +4616,19 @@ let letteringPos2 = 0;
 let letteringPos3 = 0;
 let letteringPos4 = 0;
 
-let letteringTouchPos1 = 0;
-let letteringTouchPos2 = 0;
-let letteringTouchPos3 = 0;
-let letteringTouchPos4 = 0;
+let letteringTouchPos1 = null;
+let letteringTouchPos2 = null;
+let letteringTouchPos3 = null;
+let letteringTouchPos4 = null;
 
-const handleDragLetterings = (e, currentIterableElement, userEvent) => {
+/**
+ * Функція для переміщення написів стелли (за допомогою миші)
+ * Function to move the letterings of the stele (using the mouse)
+ * Функция для перемещения надписей стеллы (при помощи мыши)
+ * @param {Event} e 
+ * @param {HTMLNode} currentIterableElement 
+ */
+const handleDragLetterings = (e, currentIterableElement) => {
     e = e || window.event;
     e.preventDefault();
 
@@ -4609,64 +4651,56 @@ const handleDragLetterings = (e, currentIterableElement, userEvent) => {
             currentIterableElement.offsetLeft - letteringPos1 + "px";
     };
 
-    const elementTouchDrag = (e) => {
+    letteringPos3 = e.clientX;
+    letteringPos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementMouseDrag;
+};
+
+/**
+ * Функція для переміщення написів стелли (для сенсорного екрану)
+ * Function to move the letterings of the stele (for touchscreen)
+ * Функция для перемещения надписей стеллы (для сенсорного экрана)
+ * @param {Event} e 
+ * @param {HTMLNode} currentIterableElement 
+ */
+const handleTouchDragLetterings = (e, currentIterableElement) => {
+    e = e || window.event;
+    // e.preventDefault();
+
+    const closeDragElement = () => {
+        document.ontouchend = null;
+        document.ontouchmove = null;
+    };
+
+    const elementDrag = (e) => {
         e = e || window.event;
-        e.preventDefault();
+        // e.preventDefault();
 
         letteringTouchPos1 = letteringTouchPos3 - e.touches[0].clientX;
         letteringTouchPos2 = letteringTouchPos4 - e.touches[0].clientY;
         letteringTouchPos3 = e.touches[0].clientX;
         letteringTouchPos4 = e.touches[0].clientY;
-        currentIterableElement.style.top =
-            currentIterableElement.offsetTop - letteringTouchPos2 + "px";
-        currentIterableElement.style.left =
-            currentIterableElement.offsetLeft - letteringTouchPos1 + "px";
-    };
-
-    if (userEvent === "mousedown") {
-        letteringPos3 = e.clientX;
-        letteringPos4 = e.clientY;
+        currentIterableElement.style.top = currentIterableElement.offsetTop - letteringTouchPos2 + "px";
+        currentIterableElement.style.left = currentIterableElement.offsetLeft - letteringTouchPos1 + "px";
     }
-
-    if (userEvent === "touchstart") {
-        letteringTouchPos3 = e.touches[0].clientX;
-        letteringTouchPos4 = e.touches[0].clientY;
-    }
-
-    document.onmouseup = closeDragElement;
+    
+    
+    letteringTouchPos3 = e.touches[0].clientX;
+    letteringTouchPos4 = e.touches.clientY;
     document.ontouchend = closeDragElement;
-    document.onmousemove = elementMouseDrag;
-    document.ontouchmove = elementTouchDrag;
-};
+    document.ontouchmove = elementDrag;
+}
 
-const hasInputValue = () => {
-    const inputs = $steleDecorationForm[0].getElementsByTagName("input");
-
-    for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].value && inputs[i].value !== "") {
-            inputs[i].classList.add("has-value");
-        }
-
-        if (!inputs[i].value || inputs[i].value === "") {
-            inputs[i].classList.contains("has-value") &&
-                inputs[i].classList.remove("has-value");
-        }
-    }
-};
-
-const handleClickOnLettering = (e, currentIterableElement, node) => {
-    e.stopPropagation();
-
-    currentIterableElement.classList.contains("active")
-        ? currentIterableElement.classList.remove("active")
-        : currentIterableElement.classList.add("active");
-
-    const hideLetteringClick =
-        e.target.className === "stella-lettering__remove";
-
-    hideLetteringClick && node[0].removeChild(currentIterableElement);
-};
-
+/**
+ * Функція для обробки події Submit - 
+ * дістає дані з інпутів, генерує та рендерить відповідні вузли, вішає на них прослуховувачі
+ * Function to handle the Submit event -
+ * receives data from inputs, creates and renders the nodes, add listeners on them
+ * Функция для обработки события Submit -
+ * получает данные из инпутов, генерирует и рендерит соответствующие узлы, вешает на них слушатели
+ * @param {Event} e 
+ */
 const handleSubmitSteleForm = (e) => {
     e.preventDefault();
 
@@ -4721,25 +4755,17 @@ const handleSubmitSteleForm = (e) => {
                 );
                 draggableElementsChildren[i].removeEventListener(
                     "touchstart",
-                    handleDragLetterings
+                    handleTouchDragLetterings
                 );
                 draggableElementsChildren[i].dataset.listener = "false";
             } else if (
                 draggableElementsChildren[i].dataset.listener === "false"
             ) {
                 draggableElementsChildren[i].addEventListener("mousedown", () =>
-                    handleDragLetterings(
-                        e,
-                        draggableElementsChildren[i],
-                        "mousedown"
-                    )
+                    handleDragLetterings(e, draggableElementsChildren[i])
                 );
-                draggableElementsChildren[i].addEventListener("touchstart", () =>
-                    handleDragLetterings(
-                        e,
-                        draggableElementsChildren[i],
-                        "touchstart"
-                    )
+                draggableElementsChildren[i].addEventListener("touchstart", (e) =>
+                    handleTouchDragLetterings(e, draggableElementsChildren[i])
                 );
                 draggableElementsChildren[i].dataset.listener = "true";
             }
@@ -4751,8 +4777,6 @@ $steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
 
 $draggableElementsNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
-
-    console.log(e.target.className);
 
     if (
         e.target.parentNode.classList.contains("active") &&
