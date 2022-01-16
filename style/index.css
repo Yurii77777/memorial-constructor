@@ -242,7 +242,8 @@ body {
     padding: var(--sm-padding);
 }
 
-.field__land-plot-container.focus {
+.field__land-plot-container.focus,
+.constructor__form.focus {
     border: 3px solid #842029;
     border-radius: 5px;
 }

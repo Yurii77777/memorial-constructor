@@ -143,6 +143,7 @@ const $selectStele = document.getElementById("selectStele");
 let isFirstStep = true;
 let isSecondStep = false;
 let isThirdStep = false;
+let isFourthStep = false;
 
 const startHelper = () => {
     const infoMessages = [
@@ -169,6 +170,12 @@ const startHelper = () => {
             uaMessage: "<p>Тепер Ви можете вибрати стеллу</p>",
             ruMessage: "<p>Теперь Вы можете выбрать стеллу</p>",
             engMessage: "<p>Now you can choose a stele</p>",
+        },
+        {
+            id: 3,
+            uaMessage: "<p>На макет можна додати максимум 4 стелли. Наразі у Вас є можливість додати елементи оформлення стелли</p>",
+            ruMessage: "<p>На макет можно добавить максимум 4 стеллы. Теперь у Вас есть возможность добавить элементы оформления стеллы</p>",
+            engMessage: "<p>You can add a maximum of 4 stella to the mockup. And now you have the opportunity to add elements of the design of the stella</p>",
         },
     ];
 
@@ -218,6 +225,16 @@ const startHelper = () => {
 
     if (isThirdStep) {
         getHelpMessage(infoMessages, 2);
+    }
+
+    if (isFourthStep) {
+        getHelpMessage(infoMessages, 3);
+
+        $steleDecorationForm[0].classList.add("focus");
+
+        setTimeout(() => {
+            $steleDecorationForm[0].classList.remove("focus");
+        }, 3000);
     }
 };
 
@@ -1726,6 +1743,7 @@ filterNode[0].addEventListener("click", (e) => {
 
             isSecondStep = true;
             isThirdStep = false;
+            isFourthStep = false;
             startHelper();
         } else if (!isStandInFirstContainer && isStandInSecondContainer) {
             elementsStands[
@@ -1767,6 +1785,7 @@ filterNode[0].addEventListener("click", (e) => {
 
             isSecondStep = true;
             isThirdStep = false;
+            isFourthStep = false;
             startHelper();
         } else if (isStandInFirstContainer && isStandInSecondContainer) {
             if (standIdInFirstContainer !== standIdInSecondContainer) {
@@ -2015,6 +2034,10 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
+
+            isFourthStep = false;
+            startHelper();
+
             calculate();
         } else if (
             isMonumentInFirstContainer &&
@@ -2175,6 +2198,10 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
+
+            isFourthStep = false;
+            startHelper();
+
             calculate();
         } else if (
             !isMonumentInFirstContainer &&
@@ -3588,6 +3615,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 monumentNodeToCalculator
             );
 
+            isFourthStep = true;
+            startHelper();
+
             calculate();
         } else if (isDoubleStele && !isMonumentInFirstContainer) {
             elementsMonuments[selectedMonument].classList.add("active");
@@ -3621,6 +3651,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 "beforebegin",
                 monumentNodeToCalculator
             );
+
+            isFourthStep = true;
+            startHelper();
 
             calculate();
         } else if (isDoubleStele && isMonumentInFirstContainer) {
@@ -3686,6 +3719,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 monumentNodeToCalculator
             );
 
+            isFourthStep = true;
+            startHelper();
+
             calculate();
         } else if (isDoubleStele && !isMonumentInSecondContainer) {
             elementsMonuments[selectedMonument].classList.add("active");
@@ -3719,6 +3755,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 "beforebegin",
                 monumentNodeToCalculator
             );
+
+            isFourthStep = true;
+            startHelper();
 
             calculate();
         } else if (isDoubleStele && isMonumentInSecondContainer) {
@@ -3820,6 +3859,9 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             monumentNodeToCalculator
                         );
                         $chooseStandMessage[0].classList.remove("active");
+
+                        isFourthStep = true;
+                        startHelper();
 
                         calculate();
                     }
@@ -4213,6 +4255,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
+
+            isFourthStep = false;
+            startHelper();
+
             calculate();
         } else if (
             isMonumentInFirstContainer &&
@@ -4367,6 +4413,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
+
+            isFourthStep = false;
+            startHelper();
+
             calculate();
         } else if (
             !isMonumentInFirstContainer &&
