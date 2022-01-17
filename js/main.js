@@ -62,6 +62,7 @@ const plotLengthInput = document.querySelectorAll(
     ".land-plot-user-edit__plot-length"
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
+const $stellaLetteringInfoMessage = document.querySelectorAll(".stella-lettering-info");
 
 const filterNode = document.getElementsByClassName(
     "constructor__filter-section"
@@ -4817,10 +4818,24 @@ const handleSubmitSteleForm = (e) => {
                 draggableElementsChildren[i].addEventListener("touchstart", (e) =>
                     handleTouchDragLetterings(e, draggableElementsChildren[i])
                 );
+                
+                // На посмотреть, - "Надо ли выделять элементы при рендере"?
+                draggableElementsChildren[i].classList.add("focus");
+
+                setTimeout(() => {
+                    draggableElementsChildren[i].classList.contains("focus") &&
+                        draggableElementsChildren[i].classList.remove("focus");
+                }, 2000);
                 draggableElementsChildren[i].dataset.listener = "true";
             }
         }
     }
+
+    handleInfoAndErrorMessages($stellaLetteringInfoMessage, {
+        isUaLanguage,
+        isRuLanguage,
+        isEngLanguage,
+    });
 };
 
 $steleDecorationForm[0].onsubmit = handleSubmitSteleForm;

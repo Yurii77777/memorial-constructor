@@ -151,6 +151,8 @@ body {
 .constructor__element-name > span,
 .constructor__filter-section,
 .filter-section__item-title > span,
+.stella-lettering-info,
+.stella-lettering-info > span,
 .calculator__data-value > span,
 .monument__error > span,
 .monument__error-length > span,
@@ -243,7 +245,8 @@ body {
 }
 
 .field__land-plot-container.focus,
-.constructor__form.focus {
+.constructor__form.focus,
+.stella-lettering.focus {
     border: 3px solid #842029;
     border-radius: 5px;
 }
@@ -263,6 +266,7 @@ body {
 .title-container__titles > span.active,
 .stand-container__info-message.active > span.active,
 .stand-container__info-message2.active > span.active,
+.stella-lettering-info > span.active,
 .stand__error.active > span.active,
 .monument__error.active > span.active,
 .monument__error-length.active > span.active,
@@ -914,15 +918,48 @@ body {
     margin-top: var(--xs-margin);
 }
 
+.stella-lettering-info.active {
+    display: block;
+    font-size: 0.6rem;
+    line-height: 1.3;
+    text-align: center;
+    color: #084298;
+    width: 140px;
+    background-color: #cfe2ff;
+    border-color: #b6d4fe;
+    padding: var(--sm-padding);
+    border-radius: var(--border-radius);
+    position: absolute;
+    top: 45%;
+    left: 22%;
+    z-index: 50;
+}
+
 .stella-lettering {
     position: absolute;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     color: #fff;
     text-shadow: black -2px 2px 10px;
     z-index: 5;
     left: 10%;
     transform: translate(-50%, -50%);
     cursor: move;
+}
+
+.stella-lettering[data-stella-lettering="surname"] {
+    top: 50%;
+}
+
+.stella-lettering[data-stella-lettering="name"] {
+    top: 55%;
+}
+
+.stella-lettering[data-stella-lettering="secondname"] {
+    top: 60%;
+}
+
+.stella-lettering[data-stella-lettering="dates"] {
+    top: 66%;
 }
 
 .stella-lettering__remove {
@@ -1139,6 +1176,10 @@ body {
     .wrapper {
         max-width: 1250px;
         margin: 0 auto;
+    }
+
+    .stella-lettering {
+        font-size: 0.6rem;
     }
 
     .constructor__filter-section {
