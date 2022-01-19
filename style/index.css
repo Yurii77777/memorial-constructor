@@ -936,6 +936,10 @@ body {
 }
 
 .stella-lettering {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     font-size: 0.5rem;
     color: #fff;
@@ -970,10 +974,41 @@ body {
     display: block;
     position: absolute;
     width: 15px;
-    top: -15px;
-    right: -15px;
+    top: -20px;
+    right: -20px;
     cursor: pointer;
     z-index: 500;
+}
+
+.stella-lettering.active > .resizer {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #084298;
+}
+
+.top-left {
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize;
+}
+
+.top-right {
+    top: -5px;
+    right: -5px;
+    cursor: ne-resize;
+}
+
+.bottom-left {
+    bottom: -5px;
+    left: -5px;
+    cursor: ne-resize;
+}
+
+.bottom-right {
+    bottom: -5px;
+    right: -5px;
+    cursor: nw-resize;
 }
 
 @media (min-width: 440px) {
@@ -1179,7 +1214,7 @@ body {
     }
 
     .stella-lettering {
-        font-size: 0.6rem;
+        font-size: 0.7rem;
     }
 
     .constructor__filter-section {

@@ -62,7 +62,9 @@ const plotLengthInput = document.querySelectorAll(
     ".land-plot-user-edit__plot-length"
 );
 const plotInputErrorMessage = document.querySelectorAll(".field__error");
-const $stellaLetteringInfoMessage = document.querySelectorAll(".stella-lettering-info");
+const $stellaLetteringInfoMessage = document.querySelectorAll(
+    ".stella-lettering-info"
+);
 
 const filterNode = document.getElementsByClassName(
     "constructor__filter-section"
@@ -174,9 +176,12 @@ const startHelper = () => {
         },
         {
             id: 3,
-            uaMessage: "<p>На макет можна додати максимум 4 стелли. Наразі у Вас є можливість додати елементи оформлення стелли</p>",
-            ruMessage: "<p>На макет можно добавить максимум 4 стеллы. Теперь у Вас есть возможность добавить элементы оформления стеллы</p>",
-            engMessage: "<p>You can add a maximum of 4 stella to the mockup. And now you have the opportunity to add elements of the design of the stella</p>",
+            uaMessage:
+                "<p>На макет можна додати максимум 4 стелли. Наразі у Вас є можливість додати елементи оформлення стелли</p>",
+            ruMessage:
+                "<p>На макет можно добавить максимум 4 стеллы. Теперь у Вас есть возможность добавить элементы оформления стеллы</p>",
+            engMessage:
+                "<p>You can add a maximum of 4 stella to the mockup. And now you have the opportunity to add elements of the design of the stella</p>",
         },
     ];
 
@@ -4526,7 +4531,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
  * The function checks if there is data in the input in order to set the label styles
  * Функция проверяет есть ли данные в инпуте, для того чтобы задать стили лейблу
  */
- const hasInputValue = () => {
+const hasInputValue = () => {
     const inputs = $steleDecorationForm[0].getElementsByTagName("input");
 
     for (let i = 0; i < inputs.length; i++) {
@@ -4545,7 +4550,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
  * Функція дістає дані з інпутів форми для декорації стелли
  * The function receives data from the form to decorate the stele.
  * Функция извлекает данные из инпутов формы для декорации стеллы.
- * @param {Object} props 
+ * @param {Object} props
  * @returns Object contains data as { steleSurname, steleName, steleSecondName, steleDates }
  */
 const getSteleFormInputsData = (props) => {
@@ -4586,8 +4591,8 @@ const getSteleFormInputsData = (props) => {
  * Функція для створення вузлів написів для стелли
  * Function for creating lettering nodes for the stele
  * Функция для создания узлов надписей для стеллы
- * @param {Object} props 
- * @returns 
+ * @param {Object} props
+ * @returns
  */
 const createLetteringsForSteles = (props) => {
     const { steleSurname, steleName, steleSecondName, steleDates } = props;
@@ -4598,8 +4603,13 @@ const createLetteringsForSteles = (props) => {
     let letteringStellaDates = null;
 
     let letteringString = `<div class="stella-lettering" data-stella-lettering="prefix" data-listener="false">
-                                <p>value</p>
+                                <p class="stella-lettering__data">value</p>
                                 <img src="./img/icons/close.svg" class="stella-lettering__remove" />
+
+                                <div class='resizer top-left'></div>
+                                <div class='resizer top-right'></div>
+                                <div class='resizer bottom-left'></div>
+                                <div class='resizer bottom-right'></div>
                            </div>`;
 
     steleSurname &&
@@ -4676,8 +4686,8 @@ let letteringTouchPos4 = null;
  * Функція для переміщення написів стелли (за допомогою миші)
  * Function to move the letterings of the stele (using the mouse)
  * Функция для перемещения надписей стеллы (при помощи мыши)
- * @param {Event} e 
- * @param {HTMLNode} currentIterableElement 
+ * @param {Event} e
+ * @param {HTMLNode} currentIterableElement
  */
 const handleDragLetterings = (e, currentIterableElement) => {
     e = e || window.event;
@@ -4712,8 +4722,8 @@ const handleDragLetterings = (e, currentIterableElement) => {
  * Функція для переміщення написів стелли (для сенсорного екрану)
  * Function to move the letterings of the stele (for touchscreen)
  * Функция для перемещения надписей стеллы (для сенсорного экрана)
- * @param {Event} e 
- * @param {HTMLNode} currentIterableElement 
+ * @param {Event} e
+ * @param {HTMLNode} currentIterableElement
  */
 const handleTouchDragLetterings = (e, currentIterableElement) => {
     e = e || window.event;
@@ -4732,25 +4742,112 @@ const handleTouchDragLetterings = (e, currentIterableElement) => {
         letteringTouchPos2 = letteringTouchPos4 - e.touches[0].clientY;
         letteringTouchPos3 = e.touches[0].clientX;
         letteringTouchPos4 = e.touches[0].clientY;
-        currentIterableElement.style.top = currentIterableElement.offsetTop - letteringTouchPos2 + "px";
-        currentIterableElement.style.left = currentIterableElement.offsetLeft - letteringTouchPos1 + "px";
-    }
-    
-    
+        currentIterableElement.style.top =
+            currentIterableElement.offsetTop - letteringTouchPos2 + "px";
+        currentIterableElement.style.left =
+            currentIterableElement.offsetLeft - letteringTouchPos1 + "px";
+    };
+
     letteringTouchPos3 = e.touches[0].clientX;
     letteringTouchPos4 = e.touches.clientY;
     document.ontouchend = closeDragElement;
     document.ontouchmove = elementDrag;
-}
+};
 
 /**
- * Функція для обробки події Submit - 
+ * Функція для зміни розмірів написів стелли
+ * Function for resizing stele letterings
+ * Функция для изменения размеров надписей стеллы
+ * @param {HTMLNode} node
+ * @param {Event} e
+ */
+const makeResizableElement = (node, e) => {
+    let startElementWidth = 0;
+    let startElementHeight = 0;
+    let clientX = 0;
+    let clientY = 0;
+    let startMouseX = 0;
+    let startMouseY = 0;
+    let elementForScale = null;
+
+    const children = Array.from(node.children);
+
+    for (let i = 0; i < children.length; i++) {
+        const currentResizer = children[i];
+
+        currentResizer.className === "stella-lettering__data" &&
+            (elementForScale = currentResizer);
+
+        if (currentResizer.className.includes("resizer")) {
+            currentResizer.addEventListener("mousedown", function (e) {
+                e.preventDefault();
+
+                startElementWidth = parseFloat(
+                    getComputedStyle(node, null)
+                        .getPropertyValue("width")
+                        .replace("px", "")
+                );
+                startElementHeight = parseFloat(
+                    getComputedStyle(node, null)
+                        .getPropertyValue("height")
+                        .replace("px", "")
+                );
+                clientX = node.getBoundingClientRect().left;
+                clientY = node.getBoundingClientRect().top;
+                startMouseX = e.clientX;
+                startMouseY = e.clientY;
+
+                document.addEventListener("mousemove", resize);
+                document.addEventListener("mouseup", stopResize);
+            });
+        }
+
+        function resize(e) {
+            if (currentResizer.classList.contains("bottom-right")) {
+                const width = startElementWidth + (e.clientX - startMouseX);
+                const height = startElementHeight + (e.clientY - startMouseY);
+                node.style.width = width + "px";
+                node.style.height = height + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            } else if (currentResizer.classList.contains("bottom-left")) {
+                const width = startElementWidth - (e.clientX - startMouseX);
+                const height = startElementHeight + (e.clientY - startMouseY);
+                node.style.height = height + "px";
+                node.style.width = width + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            } else if (currentResizer.classList.contains("top-right")) {
+                const width = startElementWidth + (e.pageX - startMouseX);
+                const height = startElementHeight - (e.pageY - startMouseY);
+                node.style.width = width + "px";
+                node.style.height = height + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            } else if (currentResizer.classList.contains("top-left")) {
+                const width = startElementWidth - (e.pageX - startMouseX);
+                const height = startElementHeight - (e.pageY - startMouseY);
+                node.style.width = width + "px";
+                node.style.height = height + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            }
+        }
+
+        function stopResize() {
+            document.removeEventListener("mousemove", resize);
+        }
+    }
+};
+
+/**
+ * Функція для обробки події Submit -
  * дістає дані з інпутів, генерує та рендерить відповідні вузли, вішає на них прослуховувачі
  * Function to handle the Submit event -
  * receives data from inputs, creates and renders the nodes, add listeners on them
  * Функция для обработки события Submit -
  * получает данные из инпутов, генерирует и рендерит соответствующие узлы, вешает на них слушатели
- * @param {Event} e 
+ * @param {Event} e
  */
 const handleSubmitSteleForm = (e) => {
     e.preventDefault();
@@ -4815,10 +4912,15 @@ const handleSubmitSteleForm = (e) => {
                 draggableElementsChildren[i].addEventListener("mousedown", () =>
                     handleDragLetterings(e, draggableElementsChildren[i])
                 );
-                draggableElementsChildren[i].addEventListener("touchstart", (e) =>
-                    handleTouchDragLetterings(e, draggableElementsChildren[i])
+                draggableElementsChildren[i].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            draggableElementsChildren[i]
+                        )
                 );
-                
+
                 // На посмотреть, - "Надо ли выделять элементы при рендере"?
                 draggableElementsChildren[i].classList.add("focus");
 
@@ -4845,7 +4947,8 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
 
     if (
         e.target.parentNode.classList.contains("active") &&
-        e.target.className !== "stella-lettering__remove"
+        e.target.className !== "stella-lettering__remove" &&
+        !e.target.classList.contains("resizer")
     ) {
         e.target.parentNode.classList.remove("active");
     } else if (
@@ -4864,6 +4967,17 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
             $draggableElementsNode[0].removeChild(
                 $draggableElementsNode[0].children[itemToRemove]
             );
+    }
+});
+
+$draggableElementsNode[0].addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+
+    if (e.target.classList.contains("resizer")) {
+        let userSelectElement = null;
+
+        userSelectElement = e.target.parentNode;
+        makeResizableElement(userSelectElement, e);
     }
 });
 
