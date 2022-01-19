@@ -4561,10 +4561,23 @@ const getSteleFormInputsData = (props) => {
         steleDatesNode,
     } = props;
 
+    let checkedGender = null;
     let steleSurname = null;
     let steleName = null;
     let steleSecondName = null;
     let steleDates = null;
+
+    // Отримуємо вибрану стать (вибрану радіокнопку)
+    checkedGender = document.querySelector(
+        'input[name="gender"]:checked'
+    )?.value;
+
+    // Знімаємо вибір з радіокнопок,
+    // щоб не дублювати зображення обраної статі при вводі/зміні інших інпутів
+    const genderInputs = document.querySelectorAll('input[name="gender"]');
+    for (let i = 0; i < genderInputs.length; i++) {
+        genderInputs[i].checked && (genderInputs[i].checked = false);
+    }
 
     const $steleSurnameInput = document.getElementById(steleSurnameNode);
     steleSurname = $steleSurnameInput.value;
@@ -4584,7 +4597,13 @@ const getSteleFormInputsData = (props) => {
 
     hasInputValue();
 
-    return { steleSurname, steleName, steleSecondName, steleDates };
+    return {
+        checkedGender,
+        steleSurname,
+        steleName,
+        steleSecondName,
+        steleDates,
+    };
 };
 
 /**
@@ -4595,8 +4614,15 @@ const getSteleFormInputsData = (props) => {
  * @returns
  */
 const createLetteringsForSteles = (props) => {
-    const { steleSurname, steleName, steleSecondName, steleDates } = props;
+    const {
+        checkedGender,
+        steleSurname,
+        steleName,
+        steleSecondName,
+        steleDates,
+    } = props;
 
+    let letteringStellaGenderImg = null;
     let letteringStellaSurname = null;
     let letteringStellaName = null;
     let letteringStellaSecondName = null;
@@ -4611,6 +4637,24 @@ const createLetteringsForSteles = (props) => {
                                 <div class='resizer bottom-left'></div>
                                 <div class='resizer bottom-right'></div>
                            </div>`;
+
+    checkedGender === "male" &&
+        (letteringStellaGenderImg = letteringString
+            .slice()
+            .replace(
+                "value",
+                '<img src="./img/icons/man.png" class="stella-lettering__gender" />'
+            )
+            .replace("prefix", "gender"));
+
+    checkedGender === "female" &&
+        (letteringStellaGenderImg = letteringString
+            .slice()
+            .replace(
+                "value",
+                '<img src="./img/icons/woman.png" class="stella-lettering__gender" />'
+            )
+            .replace("prefix", "gender"));
 
     steleSurname &&
         (letteringStellaSurname = letteringString
@@ -4637,6 +4681,7 @@ const createLetteringsForSteles = (props) => {
             .replace("prefix", "dates"));
 
     return {
+        letteringStellaGenderImg,
         letteringStellaSurname,
         letteringStellaName,
         letteringStellaSecondName,
@@ -4652,12 +4697,16 @@ const createLetteringsForSteles = (props) => {
  */
 const renderStellaLettering = (props) => {
     const {
+        letteringStellaGenderImg,
         letteringStellaSurname,
         letteringStellaName,
         letteringStellaSecondName,
         letteringStellaDates,
         node,
     } = props;
+
+    letteringStellaGenderImg &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaGenderImg);
 
     letteringStellaSurname &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaSurname);
@@ -4853,21 +4902,28 @@ const handleSubmitSteleForm = (e) => {
     e.preventDefault();
 
     // Дістаємо дані із заповнених інпутів
-    const { steleSurname, steleName, steleSecondName, steleDates } =
-        getSteleFormInputsData({
-            steleSurnameNode: "steleSurname",
-            steleNameNode: "steleName",
-            steleSecondNameNode: "steleSecondName",
-            steleDatesNode: "steleDates",
-        });
+    const {
+        checkedGender,
+        steleSurname,
+        steleName,
+        steleSecondName,
+        steleDates,
+    } = getSteleFormInputsData({
+        steleSurnameNode: "steleSurname",
+        steleNameNode: "steleName",
+        steleSecondNameNode: "steleSecondName",
+        steleDatesNode: "steleDates",
+    });
 
     // Генеруємо дані для відображення на стеллі
     const {
+        letteringStellaGenderImg,
         letteringStellaSurname,
         letteringStellaName,
         letteringStellaSecondName,
         letteringStellaDates,
     } = createLetteringsForSteles({
+        checkedGender,
         steleSurname,
         steleName,
         steleSecondName,
@@ -4876,6 +4932,7 @@ const handleSubmitSteleForm = (e) => {
 
     // Рендеримо надписи введені користувачем
     renderStellaLettering({
+        letteringStellaGenderImg,
         letteringStellaSurname,
         letteringStellaName,
         letteringStellaSecondName,
@@ -4889,6 +4946,7 @@ const handleSubmitSteleForm = (e) => {
 
     for (let i = 0; i < draggableElementsChildren.length; i++) {
         if (
+            draggableElementsChildren[i].dataset.stellaLettering === "gender" ||
             draggableElementsChildren[i].dataset.stellaLettering ===
                 "surname" ||
             draggableElementsChildren[i].dataset.stellaLettering === "name" ||
@@ -4945,17 +5003,34 @@ $steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
 $draggableElementsNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
-    if (
-        e.target.parentNode.classList.contains("active") &&
+    let userClickVariant1 = e.target;
+    let userClickVariant2 = e.target.parentElement;
+    let userClickVariant3 = e.target.parentElement.parentElement;
+
+    if (userClickVariant1.className === "stella-lettering") {
+        userClickVariant1.classList.add("active");
+    } else if (
+        userClickVariant1.className === "stella-lettering active" &&
         e.target.className !== "stella-lettering__remove" &&
         !e.target.classList.contains("resizer")
     ) {
-        e.target.parentNode.classList.remove("active");
+        userClickVariant1.classList.remove("active");
+    } else if (userClickVariant2.className === "stella-lettering") {
+        userClickVariant2.classList.add("active");
     } else if (
-        !e.target.parentNode.classList.contains("active") &&
-        e.target.className !== "stella-lettering__remove"
+        userClickVariant2.className === "stella-lettering active" &&
+        e.target.className !== "stella-lettering__remove" &&
+        !e.target.classList.contains("resizer")
     ) {
-        e.target.parentNode.classList.add("active");
+        userClickVariant2.classList.remove("active");
+    } else if (userClickVariant3.className === "stella-lettering") {
+        userClickVariant3.classList.add("active");
+    } else if (
+        userClickVariant3.className === "stella-lettering active" &&
+        e.target.className !== "stella-lettering__remove" &&
+        !e.target.classList.contains("resizer")
+    ) {
+        userClickVariant3.classList.remove("active");
     } else if (e.target.className === "stella-lettering__remove") {
         const draggableElementsChildren = Array.from(
             $draggableElementsNode[0].children

@@ -168,6 +168,8 @@ body {
 .button-cancel-data-to-stele > span,
 .select-stele-title > span,
 .select-stele-item > span,
+.stele-form-gender__label > span,
+.stele-form-gender-inputs-container > span,
 .second-stand_choose > span {
     display: none;
 }
@@ -283,6 +285,8 @@ body {
 .button-cancel-data-to-stele > span.active,
 .select-stele-title > span.active,
 .select-stele-item > span.active,
+.stele-form-gender__label > span.active,
+.stele-form-gender-inputs-container > span.active,
 .steleDates > span.active {
     display: inline;
 }
@@ -950,6 +954,24 @@ body {
     cursor: move;
 }
 
+.stele-form-gender-wrapper {
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--xs-margin);
+}
+
+#gender-male {
+    margin-right: var(--sm-margin);
+}
+
+.stella-lettering[data-stella-lettering="gender"] {
+    width: 50px;
+    top: 30%;
+}
+
 .stella-lettering[data-stella-lettering="surname"] {
     top: 50%;
 }
@@ -1374,6 +1396,10 @@ body {
 
     .calculator {
         width: 1000px;
+    }
+
+    .stella-lettering[data-stella-lettering="gender"] {
+        top: 40%;
     }
 
     .stella-lettering[data-stella-lettering="surname"] {
