@@ -114,6 +114,7 @@ const $steleDecorationForm = document.querySelectorAll(".constructor__form");
 const $epitaphListNode = document.getElementById("epitaph-list");
 const $crossListNode = document.getElementById("cross-list");
 const $flowerListNode = document.getElementById("flower-list");
+const $candleListNode = document.getElementById("candle-list");
 
 // Калькулятор
 const $calculatorSection = document.querySelectorAll(".calculator");
@@ -4626,6 +4627,7 @@ const createLetteringsForSteles = (props) => {
         steleEpitaph,
         steleCross,
         steleFlower,
+        steleCandle,
     } = props;
 
     let letteringStellaGenderImg = null;
@@ -4636,6 +4638,7 @@ const createLetteringsForSteles = (props) => {
     let letteringStellaEpitaph = null;
     let letteringStellaCross = null;
     let letteringStellaFlower = null;
+    let letteringStellaCandle = null;
 
     let letteringString = `<div class="stella-lettering" data-stella-lettering="prefix" data-listener="false">
                                 <p class="stella-lettering__data">value</p>
@@ -4716,6 +4719,15 @@ const createLetteringsForSteles = (props) => {
             )
             .replace("prefix", "epitaph"));
 
+    steleCandle &&
+        (letteringStellaCandle = letteringString
+            .slice()
+            .replace(
+                "value",
+                `<img src="./img/items${steleCandle}" class="stella-lettering__epitaph" />`
+            )
+            .replace("prefix", "epitaph"));
+
     return {
         letteringStellaGenderImg,
         letteringStellaSurname,
@@ -4725,6 +4737,7 @@ const createLetteringsForSteles = (props) => {
         letteringStellaEpitaph,
         letteringStellaCross,
         letteringStellaFlower,
+        letteringStellaCandle,
     };
 };
 
@@ -4744,6 +4757,7 @@ const renderStellaLettering = (props) => {
         letteringStellaEpitaph,
         letteringStellaCross,
         letteringStellaFlower,
+        letteringStellaCandle,
         node,
     } = props;
 
@@ -4770,6 +4784,9 @@ const renderStellaLettering = (props) => {
 
     letteringStellaFlower &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaFlower);
+
+    letteringStellaCandle &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaCandle);
 };
 
 let letteringPos1 = 0;
@@ -5187,6 +5204,30 @@ const createDecorationList = (props) => {
                 );
             }
         }
+    } else if (listName === "candle") {
+        const candleList = Array.from($candleListNode.children);
+
+        if (candleList.length === 1) {
+            const candleData = prices
+                .filter((el) => el.candle)
+                .map((el) => el.candle)[0];
+
+            for (let i = 0; i < candleData.length; i++) {
+                const { id, category, imgUrl, titleUa } = candleData[i];
+
+                const itemNodeToRender = listItem
+                    .slice()
+                    .replace(/\[url\]/g, `${imgUrl}`)
+                    .replace("altName", `${titleUa}`)
+                    .replace(/\[category\]/g, `${category}`)
+                    .replace(/\[index\]/g, `${id}`);
+
+                $candleListNode.insertAdjacentHTML(
+                    "beforeend",
+                    itemNodeToRender
+                );
+            }
+        }
     }
 };
 
@@ -5419,6 +5460,76 @@ const handleSteleDecorationLists = (e) => {
 
                 renderStellaLettering({
                     letteringStellaFlower,
+                    node: $draggableElementsNode,
+                });
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "mousedown",
+                    (e) =>
+                        handleDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+            }
+        }
+    }
+
+    if (
+        userClickVariant1.className === "candle-item" ||
+        userClickVariant2.className === "candle-item"
+    ) {
+        createDecorationList({
+            listName: "candle",
+        });
+
+        handleList({
+            flag: false,
+            node: $candleListNode,
+            imgArrowDown: ".candle-list__arrow-down",
+            imgArrowUp: ".candle-list__arrow-up",
+        });
+    } else if (
+        userClickVariant1.className === "candle-item active" ||
+        userClickVariant2.className === "candle-item active"
+    ) {
+        handleList({
+            flag: true,
+            node: $candleListNode,
+            imgArrowDown: ".candle-list__arrow-down",
+            imgArrowUp: ".candle-list__arrow-up",
+        });
+
+        const candleListUpd = Array.from($candleListNode.children);
+
+        if (
+            candleListUpd.indexOf(userClickVariant2) !== -1 &&
+            candleListUpd.indexOf(userClickVariant2) !== 0
+        ) {
+            let indexOfSelectedCandle =
+                candleListUpd.indexOf(userClickVariant2);
+
+            const { imgUrl } = getElementData(
+                indexOfSelectedCandle - 1,
+                "candle"
+            );
+
+            if (imgUrl) {
+                const { letteringStellaCandle } = createLetteringsForSteles({
+                    steleCandle: imgUrl,
+                });
+
+                renderStellaLettering({
+                    letteringStellaCandle,
                     node: $draggableElementsNode,
                 });
 

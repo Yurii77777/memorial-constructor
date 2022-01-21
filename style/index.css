@@ -176,12 +176,16 @@ body {
 .cross-item > span,
 .flower-item,
 .flower-item > span,
+.candle-item,
+.candle-item > span,
 .epitaph-list__arrow-down,
 .epitaph-list__arrow-up,
 .cross-list__arrow-down,
 .cross-list__arrow-up,
 .flower-list__arrow-down,
 .flower-list__arrow-up,
+.candle-list__arrow-down,
+.candle-list__arrow-up,
 .second-stand_choose > span {
     display: none;
 }
@@ -302,6 +306,7 @@ body {
 .epitaph-item > span.active,
 .cross-item > span.active,
 .flower-item > span.active,
+.candle-item > span.active,
 .steleDates > span.active {
     display: inline;
 }
@@ -312,7 +317,9 @@ body {
 .cross-list__arrow-down.active,
 .cross-list__arrow-up.active,
 .flower-list__arrow-down.active,
-.flower-list__arrow-up.active {
+.flower-list__arrow-up.active,
+.candle-list__arrow-down.active,
+.candle-list__arrow-up.active {
     display: block;
 }
 
@@ -321,7 +328,9 @@ body {
 .cross-list__arrow-down.active,
 .cross-list__arrow-up.active,
 .flower-list__arrow-down.active,
-.flower-list__arrow-up.active {
+.flower-list__arrow-up.active,
+.candle-list__arrow-down.active,
+.candle-list__arrow-up.active {
     position: absolute;
     right: 0;
     width: 20px;
@@ -330,13 +339,15 @@ body {
 
 .epitaph-list__arrow-down.active,
 .cross-list__arrow-down.active,
-.flower-list__arrow-down.active {
+.flower-list__arrow-down.active,
+.candle-list__arrow-down.active {
     top: -35%;
 }
 
 .epitaph-list__arrow-up.active,
 .cross-list__arrow-up.active,
-.flower-list__arrow-up.active {
+.flower-list__arrow-up.active,
+.candle-list__arrow-up.active {
     top: 35%;
 }
 
@@ -351,9 +362,11 @@ body {
 .epitaph-item.active,
 .cross-item.active,
 .flower-item.active,
+.candle-item.active,
 .epitaph-list li:first-child,
 .cross-list li:first-child,
-.flower-list li:first-child {
+.flower-list li:first-child,
+.candle-list li:first-child {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -363,13 +376,15 @@ body {
 
 .epitaph-list li:first-child,
 .cross-list li:first-child,
-.flower-list li:first-child {
+.flower-list li:first-child,
+.candle-list li:first-child {
     top: 3px;
 }
 
 .epitaph-list,
 .cross-list,
-.flower-list {
+.flower-list,
+.candle-list {
     position: absolute;
     z-index: 1;
     top: 0;
@@ -378,13 +393,15 @@ body {
 
 .epitaph-list li:not(:first-child),
 .cross-list li:not(:first-child),
-.flower-list li:not(:first-child) {
+.flower-list li:not(:first-child),
+.candle-list li:not(:first-child) {
     background-color: #000;
     top: 7px;
 }
 
 .cross-list li:not(:first-child),
-.flower-list li:not(:first-child) {
+.flower-list li:not(:first-child),
+.candle-list li:not(:first-child) {
     width: 25%;
     height: 90px;
     float: left;
@@ -392,7 +409,8 @@ body {
 
 .epitaph-list li:not(:first-child):hover,
 .cross-list li:not(:first-child):hover,
-.flower-list li:not(:first-child):hover {
+.flower-list li:not(:first-child):hover,
+.candle-list li:not(:first-child):hover {
     background-color: rgb(54, 54, 54);
 }
 
@@ -1073,7 +1091,8 @@ body {
 .stele-form-gender-wrapper,
 .epitaph-wrapper,
 .cross-wrapper,
-.flower-wrapper {
+.flower-wrapper,
+.candle-wrapper {
     font-size: 0.8rem;
     display: flex;
     flex-direction: row;
@@ -1084,7 +1103,8 @@ body {
 
 .epitaph-wrapper,
 .cross-wrapper,
-.flower-wrapper {
+.flower-wrapper,
+.candle-wrapper {
     border: 1px solid #ced4da;
     border-radius: 3px;
     padding: 2px;

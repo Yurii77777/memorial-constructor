@@ -936,4 +936,56 @@ const prices = [
             },
         ],
     },
+    {
+        candle: [
+            {
+                id: 0,
+                titleUa: "Свічки 1",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_1.png",
+            },
+            {
+                id: 1,
+                titleUa: "Свічки 2",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_2.png",
+            },
+            {
+                id: 2,
+                titleUa: "Свічки 3",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_3.png",
+            },
+            {
+                id: 3,
+                titleUa: "Свічки 4",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_4.png",
+            },
+            {
+                id: 4,
+                titleUa: "Свічки 5",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_5.png",
+            },
+            {
+                id: 5,
+                titleUa: "Свічки 6",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_6.png",
+            },
+            {
+                id: 6,
+                titleUa: "Свічки 7",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_7.png",
+            },
+            {
+                id: 7,
+                titleUa: "Свічки 8",
+                category: "candle",
+                imgUrl: "/mobile/candle/candle_8.png",
+            },
+        ],
+    },
 ];
