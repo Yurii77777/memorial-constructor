@@ -988,4 +988,56 @@ const prices = [
             },
         ],
     },
+    {
+        vignette: [
+            {
+                id: 0,
+                titleUa: "Віньєтка 1",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_1.png",
+            },
+            {
+                id: 1,
+                titleUa: "Віньєтка 2",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_2.png",
+            },
+            {
+                id: 2,
+                titleUa: "Віньєтка 3",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_3.png",
+            },
+            {
+                id: 3,
+                titleUa: "Віньєтка 4",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_4.png",
+            },
+            {
+                id: 4,
+                titleUa: "Віньєтка 5",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_5.png",
+            },
+            {
+                id: 5,
+                titleUa: "Віньєтка 6",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_6.png",
+            },
+            {
+                id: 6,
+                titleUa: "Віньєтка 7",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_7.png",
+            },
+            {
+                id: 7,
+                titleUa: "Віньєтка 8",
+                category: "vignette",
+                imgUrl: "/mobile/vignette/vignette_8.png",
+            },
+        ],
+    },
 ];

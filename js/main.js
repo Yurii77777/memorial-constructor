@@ -115,6 +115,7 @@ const $epitaphListNode = document.getElementById("epitaph-list");
 const $crossListNode = document.getElementById("cross-list");
 const $flowerListNode = document.getElementById("flower-list");
 const $candleListNode = document.getElementById("candle-list");
+const $vignetteListNode = document.getElementById("vignette-list");
 
 // Калькулятор
 const $calculatorSection = document.querySelectorAll(".calculator");
@@ -4628,6 +4629,7 @@ const createLetteringsForSteles = (props) => {
         steleCross,
         steleFlower,
         steleCandle,
+        steleVingette,
     } = props;
 
     let letteringStellaGenderImg = null;
@@ -4639,6 +4641,7 @@ const createLetteringsForSteles = (props) => {
     let letteringStellaCross = null;
     let letteringStellaFlower = null;
     let letteringStellaCandle = null;
+    let letteringStellaVengette = null;
 
     let letteringString = `<div class="stella-lettering" data-stella-lettering="prefix" data-listener="false">
                                 <p class="stella-lettering__data">value</p>
@@ -4728,6 +4731,15 @@ const createLetteringsForSteles = (props) => {
             )
             .replace("prefix", "epitaph"));
 
+    steleVingette &&
+        (letteringStellaVengette = letteringString
+            .slice()
+            .replace(
+                "value",
+                `<img src="./img/items${steleVingette}" class="stella-lettering__epitaph" />`
+            )
+            .replace("prefix", "epitaph"));
+
     return {
         letteringStellaGenderImg,
         letteringStellaSurname,
@@ -4738,6 +4750,7 @@ const createLetteringsForSteles = (props) => {
         letteringStellaCross,
         letteringStellaFlower,
         letteringStellaCandle,
+        letteringStellaVengette,
     };
 };
 
@@ -4758,6 +4771,7 @@ const renderStellaLettering = (props) => {
         letteringStellaCross,
         letteringStellaFlower,
         letteringStellaCandle,
+        letteringStellaVengette,
         node,
     } = props;
 
@@ -4787,6 +4801,9 @@ const renderStellaLettering = (props) => {
 
     letteringStellaCandle &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaCandle);
+
+    letteringStellaVengette &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaVengette);
 };
 
 let letteringPos1 = 0;
@@ -5228,6 +5245,30 @@ const createDecorationList = (props) => {
                 );
             }
         }
+    } else if (listName === "vignette") {
+        const vignetteList = Array.from($vignetteListNode.children);
+
+        if (vignetteList.length === 1) {
+            const vignetteData = prices
+                .filter((el) => el.vignette)
+                .map((el) => el.vignette)[0];
+
+            for (let i = 0; i < vignetteData.length; i++) {
+                const { id, category, imgUrl, titleUa } = vignetteData[i];
+
+                const itemNodeToRender = listItem
+                    .slice()
+                    .replace(/\[url\]/g, `${imgUrl}`)
+                    .replace("altName", `${titleUa}`)
+                    .replace(/\[category\]/g, `${category}`)
+                    .replace(/\[index\]/g, `${id}`);
+
+                $vignetteListNode.insertAdjacentHTML(
+                    "beforeend",
+                    itemNodeToRender
+                );
+            }
+        }
     }
 };
 
@@ -5530,6 +5571,76 @@ const handleSteleDecorationLists = (e) => {
 
                 renderStellaLettering({
                     letteringStellaCandle,
+                    node: $draggableElementsNode,
+                });
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "mousedown",
+                    (e) =>
+                        handleDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+            }
+        }
+    }
+
+    if (
+        userClickVariant1.className === "vignette-item" ||
+        userClickVariant2.className === "vignette-item"
+    ) {
+        createDecorationList({
+            listName: "vignette",
+        });
+
+        handleList({
+            flag: false,
+            node: $vignetteListNode,
+            imgArrowDown: ".vignette-list__arrow-down",
+            imgArrowUp: ".vignette-list__arrow-up",
+        });
+    } else if (
+        userClickVariant1.className === "vignette-item active" ||
+        userClickVariant2.className === "vignette-item active"
+    ) {
+        handleList({
+            flag: true,
+            node: $vignetteListNode,
+            imgArrowDown: ".vignette-list__arrow-down",
+            imgArrowUp: ".vignette-list__arrow-up",
+        });
+
+        const vignetteListUpd = Array.from($vignetteListNode.children);
+
+        if (
+            vignetteListUpd.indexOf(userClickVariant2) !== -1 &&
+            vignetteListUpd.indexOf(userClickVariant2) !== 0
+        ) {
+            let indexOfSelectedVingette =
+                vignetteListUpd.indexOf(userClickVariant2);
+
+            const { imgUrl } = getElementData(
+                indexOfSelectedVingette - 1,
+                "vignette"
+            );
+
+            if (imgUrl) {
+                const { letteringStellaVengette } = createLetteringsForSteles({
+                    steleVingette: imgUrl,
+                });
+
+                renderStellaLettering({
+                    letteringStellaVengette,
                     node: $draggableElementsNode,
                 });
 
