@@ -236,95 +236,112 @@
                         </p>
 
                         <form method="post" class="constructor__form">
-                            <div class="stele-form-left-container">
-                                <div class="stele-form-gender-wrapper">
-                                    <label for="gender" class="stele-form-gender__label">
-                                        <span data-lang="ua" class="active">Стать</span>
-                                        <span data-lang="ru">Пол</span>
-                                        <span data-lang="eng">Gender</span>
-                                    </label>
-                                    <div class="stele-form-gender-inputs-container">
-                                        <span data-lang="ua" class="active">Ч</span>
-                                        <span data-lang="ru">М</span>
-                                        <span data-lang="eng">M</span>
-                                        <input type="radio" name="gender" id="gender-male" value="male">
-                                        
-                                        <span data-lang="ua" class="active">Ж</span>
-                                        <span data-lang="ru">Ж</span>
-                                        <span data-lang="eng">F</span>
-                                        <input type="radio" name="gender" id="gender-female" value="female">
+                            <div class="stele-form-general-container">
+                                <div class="stele-form-left-container">
+                                    <div class="stele-form-gender-wrapper">
+                                        <label for="gender" class="stele-form-gender__label">
+                                            <span data-lang="ua" class="active">Стать</span>
+                                            <span data-lang="ru">Пол</span>
+                                            <span data-lang="eng">Gender</span>
+                                        </label>
+                                        <div class="stele-form-gender-inputs-container">
+                                            <span data-lang="ua" class="active">Ч</span>
+                                            <span data-lang="ru">М</span>
+                                            <span data-lang="eng">M</span>
+                                            <input type="radio" name="gender" id="gender-male" value="male">
+                                            
+                                            <span data-lang="ua" class="active">Ж</span>
+                                            <span data-lang="ru">Ж</span>
+                                            <span data-lang="eng">F</span>
+                                            <input type="radio" name="gender" id="gender-female" value="female">
+                                        </div>
+                                    </div>
+    
+                                    <div class="stele-form-input-wrapper">
+                                        <input 
+                                            type="text" 
+                                            name="steleSurname" 
+                                            id="steleSurname" 
+                                            onblur="hasInputValue()"
+                                        >
+                                        <label for="steleSurname" class="steleSurname">
+                                            <span data-lang="ua" class="active">Фамілія</span>
+                                            <span data-lang="ru">Фамилия</span>
+                                            <span data-lang="eng">Surname</span>
+                                        </label>
+                                    </div>
+        
+                                    <div class="stele-form-input-wrapper">
+                                        <input 
+                                            type="text" 
+                                            name="steleName" 
+                                            id="steleName" 
+                                            onblur="hasInputValue()"
+                                        >
+                                        <label for="steleName" class="steleName">
+                                            <span data-lang="ua" class="active">Ім'я</span>
+                                            <span data-lang="ru">Имя</span>
+                                            <span data-lang="eng">Name</span>
+                                        </label>
+                                    </div>
+        
+                                    <div class="stele-form-input-wrapper">
+                                        <input 
+                                            type="text" 
+                                            name="steleSecondName" 
+                                            id="steleSecondName" 
+                                            onblur="hasInputValue()"
+                                        >
+                                        <label for="steleSecondName" class="steleSecondName">
+                                            <span data-lang="ua" class="active">Прізвище</span>
+                                            <span data-lang="ru">Отчество</span>
+                                            <span data-lang="eng">Second Name</span>
+                                        </label>
+                                    </div>
+        
+                                    <div class="stele-form-input-wrapper">
+                                        <input 
+                                            type="text" 
+                                            name="steleDates" 
+                                            id="steleDates" 
+                                            onblur="hasInputValue()"
+                                        >
+                                        <label for="steleDates" class="steleDates">
+                                            <span data-lang="ua" class="active">Дати</span>
+                                            <span data-lang="ru">Даты</span>
+                                            <span data-lang="eng">Dates</span>
+                                        </label>
+                                    </div>
+        
+                                </div>
+    
+                                <div class="stele-form-right-container">
+                                    <div class="epitaph-wrapper">
+                                        <ul id="epitaph-list" class="epitaph-list">
+                                            <li class="epitaph-item">
+                                                <span data-lang="ua" class="active">Епітафія</span>
+                                                <span data-lang="ru">Эпитафия</span>
+                                                <span data-lang="eng">Epitaph</span>
+
+                                                <img src="./img/icons/arrow-down.svg" 
+                                                     alt="Показати поля для вводу данних" 
+                                                     class="epitaph-list__arrow-down active" 
+                                                />
+                                                <img src="./img/icons/arrow-up.svg" 
+                                                     alt="Приховати поля для вводу данних" 
+                                                     class="epitaph-list__arrow-up" 
+                                                />
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-
-                                <div class="stele-form-input-wrapper">
-                                    <input 
-                                        type="text" 
-                                        name="steleSurname" 
-                                        id="steleSurname" 
-                                        onblur="hasInputValue()"
-                                    >
-                                    <label for="steleSurname" class="steleSurname">
-                                        <span data-lang="ua" class="active">Фамілія</span>
-                                        <span data-lang="ru">Фамилия</span>
-                                        <span data-lang="eng">Surname</span>
-                                    </label>
-                                </div>
-    
-                                <div class="stele-form-input-wrapper">
-                                    <input 
-                                        type="text" 
-                                        name="steleName" 
-                                        id="steleName" 
-                                        onblur="hasInputValue()"
-                                    >
-                                    <label for="steleName" class="steleName">
-                                        <span data-lang="ua" class="active">Ім'я</span>
-                                        <span data-lang="ru">Имя</span>
-                                        <span data-lang="eng">Name</span>
-                                    </label>
-                                </div>
-    
-                                <div class="stele-form-input-wrapper">
-                                    <input 
-                                        type="text" 
-                                        name="steleSecondName" 
-                                        id="steleSecondName" 
-                                        onblur="hasInputValue()"
-                                    >
-                                    <label for="steleSecondName" class="steleSecondName">
-                                        <span data-lang="ua" class="active">Прізвище</span>
-                                        <span data-lang="ru">Отчество</span>
-                                        <span data-lang="eng">Second Name</span>
-                                    </label>
-                                </div>
-    
-                                <div class="stele-form-input-wrapper">
-                                    <input 
-                                        type="text" 
-                                        name="steleDates" 
-                                        id="steleDates" 
-                                        onblur="hasInputValue()"
-                                    >
-                                    <label for="steleDates" class="steleDates">
-                                        <span data-lang="ua" class="active">Дати</span>
-                                        <span data-lang="ru">Даты</span>
-                                        <span data-lang="eng">Dates</span>
-                                    </label>
-                                </div>
-    
-                                <div class="buttons_container">
-                                    <button class="button-add-data-to-stele">
-                                        <span data-lang="ua" class="active">Додати</span>
-                                        <span data-lang="ru">Добавить</span>
-                                        <span data-lang="eng">Add</span>
-                                    </button>
-                                    <button class="button-cancel-data-to-stele">
-                                        <span data-lang="ua" class="active">Відміна</span>
-                                        <span data-lang="ru">Отмена</span>
-                                        <span data-lang="eng">Cancel</span>
-                                    </button>
-                                </div>
                             </div>
+
+                            <button class="button-add-data-to-stele">
+                                <span data-lang="ua" class="active">Додати</span>
+                                <span data-lang="ru">Добавить</span>
+                                <span data-lang="eng">Add</span>
+                            </button>
                         </form>
                     </div>
                 </div>

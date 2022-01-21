@@ -4620,6 +4620,7 @@ const createLetteringsForSteles = (props) => {
         steleName,
         steleSecondName,
         steleDates,
+        steleEpitaph,
     } = props;
 
     let letteringStellaGenderImg = null;
@@ -4627,6 +4628,7 @@ const createLetteringsForSteles = (props) => {
     let letteringStellaName = null;
     let letteringStellaSecondName = null;
     let letteringStellaDates = null;
+    let letteringStellaEpitaph = null;
 
     let letteringString = `<div class="stella-lettering" data-stella-lettering="prefix" data-listener="false">
                                 <p class="stella-lettering__data">value</p>
@@ -4680,12 +4682,22 @@ const createLetteringsForSteles = (props) => {
             .replace("value", steleDates)
             .replace("prefix", "dates"));
 
+    steleEpitaph &&
+        (letteringStellaEpitaph = letteringString
+            .slice()
+            .replace(
+                "value",
+                `<img src="./img/items${steleEpitaph}" class="stella-lettering__epitaph" />`
+            )
+            .replace("prefix", "epitaph"));
+
     return {
         letteringStellaGenderImg,
         letteringStellaSurname,
         letteringStellaName,
         letteringStellaSecondName,
         letteringStellaDates,
+        letteringStellaEpitaph,
     };
 };
 
@@ -4702,6 +4714,7 @@ const renderStellaLettering = (props) => {
         letteringStellaName,
         letteringStellaSecondName,
         letteringStellaDates,
+        letteringStellaEpitaph,
         node,
     } = props;
 
@@ -4719,6 +4732,9 @@ const renderStellaLettering = (props) => {
 
     letteringStellaDates &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaDates);
+
+    letteringStellaEpitaph &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaEpitaph);
 };
 
 let letteringPos1 = 0;
@@ -4755,6 +4771,7 @@ const handleDragLetterings = (e, currentIterableElement) => {
         letteringPos2 = letteringPos4 - e.clientY;
         letteringPos3 = e.clientX;
         letteringPos4 = e.clientY;
+
         currentIterableElement.style.top =
             currentIterableElement.offsetTop - letteringPos2 + "px";
         currentIterableElement.style.left =
@@ -5054,6 +5071,146 @@ $draggableElementsNode[0].addEventListener("mousedown", (e) => {
         userSelectElement = e.target.parentNode;
         makeResizableElement(userSelectElement, e);
     }
+});
+
+const $epitaphListNode = document.getElementById("epitaph-list");
+
+const createDecorationList = (props) => {
+    const { listName } = props;
+
+    const listItem =
+        '<li class="epitaph-item"><img src="./img/items[url]" alt="altName" class="epitaph-list__item-img" data-category="[category]" data-item-index="[index]" /></li>';
+
+    if (listName === "epitaph") {
+        const epitaphList = Array.from($epitaphListNode.children);
+
+        if (epitaphList.length === 1) {
+            const epitaphData = prices
+                .filter((el) => el.epitaph)
+                .map((el) => el.epitaph)[0];
+
+            for (let i = 0; i < epitaphData.length; i++) {
+                const { id, category, imgUrl, titleUa } = epitaphData[i];
+
+                const itemNodeToRender = listItem
+                    .slice()
+                    .replace(/\[url\]/g, `${imgUrl}`)
+                    .replace("altName", `${titleUa}`)
+                    .replace(/\[category\]/g, `${category}`)
+                    .replace(/\[index\]/g, `${id}`);
+
+                $epitaphListNode.insertAdjacentHTML(
+                    "beforeend",
+                    itemNodeToRender
+                );
+            }
+        }
+    }
+};
+
+const handleSteleDecorationLists = (e) => {
+    e.stopPropagation();
+
+    let userClickVariant1 = e.target;
+    let userClickVariant2 = e.target.parentElement;
+
+    if (
+        userClickVariant1.className === "epitaph-item" ||
+        userClickVariant2.className === "epitaph-item"
+    ) {
+        createDecorationList({
+            listName: "epitaph",
+        });
+
+        const epitaphListUpd = Array.from($epitaphListNode.children);
+
+        for (let i = 0; i < epitaphListUpd.length; i++) {
+            epitaphListUpd[i].classList.contains("active")
+                ? epitaphListUpd[i].classList.remove("active")
+                : epitaphListUpd[i].classList.add("active");
+        }
+
+        const $listArrowDown = document.querySelectorAll(
+            ".epitaph-list__arrow-down"
+        );
+        $listArrowDown[0].classList.contains("active") &&
+            $listArrowDown[0].classList.remove("active");
+
+        const $listArrowUp = document.querySelectorAll(
+            ".epitaph-list__arrow-up"
+        );
+        !$listArrowUp[0].classList.contains("active") &&
+            $listArrowUp[0].classList.add("active");
+    } else if (
+        userClickVariant1.className === "epitaph-item active" ||
+        userClickVariant2.className === "epitaph-item active"
+    ) {
+        const epitaphListUpd = Array.from($epitaphListNode.children);
+
+        for (let i = 0; i < epitaphListUpd.length; i++) {
+            epitaphListUpd[i].classList.contains("active")
+                ? epitaphListUpd[i].classList.remove("active")
+                : epitaphListUpd[i].classList.add("active");
+        }
+
+        const $listArrowUp = document.querySelectorAll(
+            ".epitaph-list__arrow-up"
+        );
+        $listArrowUp[0].classList.contains("active") &&
+            $listArrowUp[0].classList.remove("active");
+
+        const $listArrowDown = document.querySelectorAll(
+            ".epitaph-list__arrow-down"
+        );
+        !$listArrowDown[0].classList.contains("active") &&
+            $listArrowDown[0].classList.add("active");
+
+        if (
+            epitaphListUpd.indexOf(userClickVariant2) !== -1 &&
+            epitaphListUpd.indexOf(userClickVariant2) !== 0
+        ) {
+            let indexOfSelectedEpitaph =
+                epitaphListUpd.indexOf(userClickVariant2);
+
+            const { imgUrl } = getElementData(
+                indexOfSelectedEpitaph,
+                "epitaph"
+            );
+
+            if (imgUrl) {
+                const { letteringStellaEpitaph } = createLetteringsForSteles({
+                    steleEpitaph: imgUrl,
+                });
+
+                renderStellaLettering({
+                    letteringStellaEpitaph,
+                    node: $draggableElementsNode,
+                });
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "mousedown",
+                    (e) =>
+                        handleDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+            }
+        }
+    }
+};
+
+$steleDecorationForm[0].addEventListener("click", (e) => {
+    handleSteleDecorationLists(e);
 });
 
 /**

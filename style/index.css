@@ -170,6 +170,10 @@ body {
 .select-stele-item > span,
 .stele-form-gender__label > span,
 .stele-form-gender-inputs-container > span,
+.epitaph-item,
+.epitaph-item > span,
+.epitaph-list__arrow-down,
+.epitaph-list__arrow-up,
 .second-stand_choose > span {
     display: none;
 }
@@ -287,12 +291,31 @@ body {
 .select-stele-item > span.active,
 .stele-form-gender__label > span.active,
 .stele-form-gender-inputs-container > span.active,
+.epitaph-item > span.active,
 .steleDates > span.active {
     display: inline;
 }
 
-.constructor__form-title > span.active {
+.constructor__form-title > span.active,
+.epitaph-list__arrow-down.active,
+.epitaph-list__arrow-up.active {
     display: block;
+}
+
+.epitaph-list__arrow-down.active,
+.epitaph-list__arrow-up.active {
+    position: absolute;
+    right: 0;
+    width: 20px;
+    height: 15px;
+}
+
+.epitaph-list__arrow-down.active {
+    top: -35%;
+}
+
+.epitaph-list__arrow-up.active {
+    top: 35%;
 }
 
 .select-stele-title {
@@ -301,6 +324,34 @@ body {
     justify-content: center;
     font-size: 0.75rem;
     margin-bottom: var(--xs-margin);
+}
+
+.epitaph-item.active,
+.epitaph-list li:first-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.epitaph-list li:first-child {
+    top: 3px;
+}
+
+.epitaph-list {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.epitaph-list li:not(:first-child) {
+    background-color: #000;
+    top: 7px;
+}
+
+.epitaph-list li:not(:first-child):hover {
+    background-color: rgb(54, 54, 54);
 }
 
 .select-stele-title > select {
@@ -337,6 +388,32 @@ body {
     top: 15px;
     left: 10px;
     color: var(--main-label-color);
+}
+
+#steleSurname,
+#steleName,
+#steleSecondName,
+#steleDates {
+    width: 100%;
+}
+
+.button-add-data-to-stele {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    width: 100px;
+}
+
+.button-add-data-to-stele:hover,
+.button-add-data-to-stele:focus,
+.button-add-data-to-stele:active {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
 }
 
 .title-container__titles > span.active {
@@ -841,6 +918,13 @@ body {
     border-top: 1px solid var(--border-color);
 }
 
+.constructor__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .constructor__form > select {
     font-size: 0.75rem;
     margin-bottom: var(--xs-margin);
@@ -870,7 +954,7 @@ body {
 .stele-form-input-wrapper > input:active ~ label {
     font-size: 0.5rem;
     top: 20px;
-    left: 80%;
+    left: 60%;
     transition: all 0.2s ease;
 }
 
@@ -879,7 +963,7 @@ body {
 #steleSecondName.has-value ~ label,
 #steleDates.has-value ~ label {
     top: 18px;
-    left: 80%;
+    left: 60%;
 }
 
 .constructor__form-title {
@@ -895,16 +979,6 @@ body {
     flex-direction: row;
     justify-content: center;
     font-size: 0.8rem;
-}
-
-.button-add-data-to-stele {
-    margin-right: var(--sm-margin);
-}
-
-.button-add-data-to-stele,
-.button-cancel-data-to-stele {
-    padding: var(--xs-padding);
-    cursor: pointer;
 }
 
 .stand-container__info-message.active,
@@ -954,13 +1028,23 @@ body {
     cursor: move;
 }
 
-.stele-form-gender-wrapper {
+.stele-form-gender-wrapper,
+.epitaph-wrapper {
     font-size: 0.8rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--xs-margin);
+}
+
+.epitaph-wrapper {
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    padding: 2px;
+    cursor: pointer;
+    position: relative;
+    height: 20px;
 }
 
 #gender-male {
@@ -986,6 +1070,12 @@ body {
 
 .stella-lettering[data-stella-lettering="dates"] {
     top: 66%;
+}
+
+.stella-lettering[data-stella-lettering="epitaph"] {
+    background-color: #0000000f;
+    width: 100px;
+    top: 50%;
 }
 
 .stella-lettering__remove {
@@ -1134,8 +1224,21 @@ body {
         bottom: 2%;
     }
 
-    .stele-form-left-container {
+    .stele-form-general-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: var(--sm-margin);
+    }
+
+    .stele-form-left-container,
+    .stele-form-right-container {
         width: 50%;
+    }
+
+    .stele-form-left-container {
+        margin-right: var(--xs-margin);
     }
 
     .calculator__attention-paragraph.active {
@@ -1220,10 +1323,6 @@ body {
         margin-top: var(--sm-margin);
     }
 
-    .stele-form-left-container {
-        width: 100%;
-    }
-
     .calculator {
         width: 700px;
     }
@@ -1233,6 +1332,27 @@ body {
     .wrapper {
         max-width: 1250px;
         margin: 0 auto;
+    }
+
+    .constructor__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .stele-form-general-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .stele-form-left-container,
+    .stele-form-right-container {
+        width: 50%;
+    }
+
+    .stele-form-left-container {
+        margin-right: var(--xs-margin);
     }
 
     .stella-lettering {
