@@ -884,4 +884,56 @@ const prices = [
             },
         ],
     },
+    {
+        flower: [
+            {
+                id: 0,
+                titleUa: "Квіти 1",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_1.png",
+            },
+            {
+                id: 1,
+                titleUa: "Квіти 2",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_2.png",
+            },
+            {
+                id: 2,
+                titleUa: "Квіти 3",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_3.png",
+            },
+            {
+                id: 3,
+                titleUa: "Квіти 4",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_4.png",
+            },
+            {
+                id: 4,
+                titleUa: "Квіти 5",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_5.png",
+            },
+            {
+                id: 5,
+                titleUa: "Квіти 6",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_6.png",
+            },
+            {
+                id: 6,
+                titleUa: "Квіти 7",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_7.png",
+            },
+            {
+                id: 7,
+                titleUa: "Квіти 8",
+                category: "flower",
+                imgUrl: "/mobile/flower/flower_8.png",
+            },
+        ],
+    },
 ];

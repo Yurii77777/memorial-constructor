@@ -113,6 +113,7 @@ const elementsValuesMonumentsNode = document.querySelectorAll(
 const $steleDecorationForm = document.querySelectorAll(".constructor__form");
 const $epitaphListNode = document.getElementById("epitaph-list");
 const $crossListNode = document.getElementById("cross-list");
+const $flowerListNode = document.getElementById("flower-list");
 
 // Калькулятор
 const $calculatorSection = document.querySelectorAll(".calculator");
@@ -4624,6 +4625,7 @@ const createLetteringsForSteles = (props) => {
         steleDates,
         steleEpitaph,
         steleCross,
+        steleFlower,
     } = props;
 
     let letteringStellaGenderImg = null;
@@ -4633,6 +4635,7 @@ const createLetteringsForSteles = (props) => {
     let letteringStellaDates = null;
     let letteringStellaEpitaph = null;
     let letteringStellaCross = null;
+    let letteringStellaFlower = null;
 
     let letteringString = `<div class="stella-lettering" data-stella-lettering="prefix" data-listener="false">
                                 <p class="stella-lettering__data">value</p>
@@ -4704,6 +4707,15 @@ const createLetteringsForSteles = (props) => {
             )
             .replace("prefix", "epitaph"));
 
+    steleFlower &&
+        (letteringStellaFlower = letteringString
+            .slice()
+            .replace(
+                "value",
+                `<img src="./img/items${steleFlower}" class="stella-lettering__epitaph" />`
+            )
+            .replace("prefix", "epitaph"));
+
     return {
         letteringStellaGenderImg,
         letteringStellaSurname,
@@ -4712,6 +4724,7 @@ const createLetteringsForSteles = (props) => {
         letteringStellaDates,
         letteringStellaEpitaph,
         letteringStellaCross,
+        letteringStellaFlower,
     };
 };
 
@@ -4730,6 +4743,7 @@ const renderStellaLettering = (props) => {
         letteringStellaDates,
         letteringStellaEpitaph,
         letteringStellaCross,
+        letteringStellaFlower,
         node,
     } = props;
 
@@ -4753,6 +4767,9 @@ const renderStellaLettering = (props) => {
 
     letteringStellaCross &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaCross);
+
+    letteringStellaFlower &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaFlower);
 };
 
 let letteringPos1 = 0;
@@ -5146,6 +5163,30 @@ const createDecorationList = (props) => {
                 );
             }
         }
+    } else if (listName === "flower") {
+        const flowerList = Array.from($flowerListNode.children);
+
+        if (flowerList.length === 1) {
+            const flowerData = prices
+                .filter((el) => el.flower)
+                .map((el) => el.flower)[0];
+
+            for (let i = 0; i < flowerData.length; i++) {
+                const { id, category, imgUrl, titleUa } = flowerData[i];
+
+                const itemNodeToRender = listItem
+                    .slice()
+                    .replace(/\[url\]/g, `${imgUrl}`)
+                    .replace("altName", `${titleUa}`)
+                    .replace(/\[category\]/g, `${category}`)
+                    .replace(/\[index\]/g, `${id}`);
+
+                $flowerListNode.insertAdjacentHTML(
+                    "beforeend",
+                    itemNodeToRender
+                );
+            }
+        }
     }
 };
 
@@ -5308,6 +5349,76 @@ const handleSteleDecorationLists = (e) => {
 
                 renderStellaLettering({
                     letteringStellaCross,
+                    node: $draggableElementsNode,
+                });
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "mousedown",
+                    (e) =>
+                        handleDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+            }
+        }
+    }
+
+    if (
+        userClickVariant1.className === "flower-item" ||
+        userClickVariant2.className === "flower-item"
+    ) {
+        createDecorationList({
+            listName: "flower",
+        });
+
+        handleList({
+            flag: false,
+            node: $flowerListNode,
+            imgArrowDown: ".flower-list__arrow-down",
+            imgArrowUp: ".flower-list__arrow-up",
+        });
+    } else if (
+        userClickVariant1.className === "flower-item active" ||
+        userClickVariant2.className === "flower-item active"
+    ) {
+        handleList({
+            flag: true,
+            node: $flowerListNode,
+            imgArrowDown: ".flower-list__arrow-down",
+            imgArrowUp: ".flower-list__arrow-up",
+        });
+
+        const flowerListUpd = Array.from($flowerListNode.children);
+
+        if (
+            flowerListUpd.indexOf(userClickVariant2) !== -1 &&
+            flowerListUpd.indexOf(userClickVariant2) !== 0
+        ) {
+            let indexOfSelectedFlower =
+                flowerListUpd.indexOf(userClickVariant2);
+
+            const { imgUrl } = getElementData(
+                indexOfSelectedFlower - 1,
+                "flower"
+            );
+
+            if (imgUrl) {
+                const { letteringStellaFlower } = createLetteringsForSteles({
+                    steleFlower: imgUrl,
+                });
+
+                renderStellaLettering({
+                    letteringStellaFlower,
                     node: $draggableElementsNode,
                 });
 
