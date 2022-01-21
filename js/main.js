@@ -111,6 +111,8 @@ const elementsValuesMonumentsNode = document.querySelectorAll(
     ".constructor__elements-values.monuments"
 );
 const $steleDecorationForm = document.querySelectorAll(".constructor__form");
+const $epitaphListNode = document.getElementById("epitaph-list");
+const $crossListNode = document.getElementById("cross-list");
 
 // Калькулятор
 const $calculatorSection = document.querySelectorAll(".calculator");
@@ -4621,6 +4623,7 @@ const createLetteringsForSteles = (props) => {
         steleSecondName,
         steleDates,
         steleEpitaph,
+        steleCross,
     } = props;
 
     let letteringStellaGenderImg = null;
@@ -4629,6 +4632,7 @@ const createLetteringsForSteles = (props) => {
     let letteringStellaSecondName = null;
     let letteringStellaDates = null;
     let letteringStellaEpitaph = null;
+    let letteringStellaCross = null;
 
     let letteringString = `<div class="stella-lettering" data-stella-lettering="prefix" data-listener="false">
                                 <p class="stella-lettering__data">value</p>
@@ -4691,6 +4695,15 @@ const createLetteringsForSteles = (props) => {
             )
             .replace("prefix", "epitaph"));
 
+    steleCross &&
+        (letteringStellaCross = letteringString
+            .slice()
+            .replace(
+                "value",
+                `<img src="./img/items${steleCross}" class="stella-lettering__epitaph" />`
+            )
+            .replace("prefix", "epitaph"));
+
     return {
         letteringStellaGenderImg,
         letteringStellaSurname,
@@ -4698,6 +4711,7 @@ const createLetteringsForSteles = (props) => {
         letteringStellaSecondName,
         letteringStellaDates,
         letteringStellaEpitaph,
+        letteringStellaCross,
     };
 };
 
@@ -4715,6 +4729,7 @@ const renderStellaLettering = (props) => {
         letteringStellaSecondName,
         letteringStellaDates,
         letteringStellaEpitaph,
+        letteringStellaCross,
         node,
     } = props;
 
@@ -4735,6 +4750,9 @@ const renderStellaLettering = (props) => {
 
     letteringStellaEpitaph &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaEpitaph);
+
+    letteringStellaCross &&
+        node[0].insertAdjacentHTML("afterbegin", letteringStellaCross);
 };
 
 let letteringPos1 = 0;
@@ -5073,13 +5091,12 @@ $draggableElementsNode[0].addEventListener("mousedown", (e) => {
     }
 });
 
-const $epitaphListNode = document.getElementById("epitaph-list");
-
 const createDecorationList = (props) => {
     const { listName } = props;
 
-    const listItem =
-        '<li class="epitaph-item"><img src="./img/items[url]" alt="altName" class="epitaph-list__item-img" data-category="[category]" data-item-index="[index]" /></li>';
+    const listItem = `<li class="${listName}-item">
+            <img src="./img/items[url]" alt="altName" class="${listName}-list__item-img" data-category="[category]" data-item-index="[index]" />
+        </li>`;
 
     if (listName === "epitaph") {
         const epitaphList = Array.from($epitaphListNode.children);
@@ -5105,6 +5122,68 @@ const createDecorationList = (props) => {
                 );
             }
         }
+    } else if (listName === "cross") {
+        const crossList = Array.from($crossListNode.children);
+
+        if (crossList.length === 1) {
+            const crosshData = prices
+                .filter((el) => el.cross)
+                .map((el) => el.cross)[0];
+
+            for (let i = 0; i < crosshData.length; i++) {
+                const { id, category, imgUrl, titleUa } = crosshData[i];
+
+                const itemNodeToRender = listItem
+                    .slice()
+                    .replace(/\[url\]/g, `${imgUrl}`)
+                    .replace("altName", `${titleUa}`)
+                    .replace(/\[category\]/g, `${category}`)
+                    .replace(/\[index\]/g, `${id}`);
+
+                $crossListNode.insertAdjacentHTML(
+                    "beforeend",
+                    itemNodeToRender
+                );
+            }
+        }
+    }
+};
+
+const handleList = (props) => {
+    const { flag, node, imgArrowDown, imgArrowUp } = props;
+
+    if (!flag) {
+        const nodeChildren = Array.from(node.children);
+
+        for (let i = 0; i < nodeChildren.length; i++) {
+            nodeChildren[i].classList.contains("active")
+                ? nodeChildren[i].classList.remove("active")
+                : nodeChildren[i].classList.add("active");
+        }
+
+        const $listArrowDown = document.querySelectorAll(`${imgArrowDown}`);
+        $listArrowDown[0].classList.contains("active") &&
+            $listArrowDown[0].classList.remove("active");
+
+        const $listArrowUp = document.querySelectorAll(`${imgArrowUp}`);
+        !$listArrowUp[0].classList.contains("active") &&
+            $listArrowUp[0].classList.add("active");
+    } else if (flag) {
+        const nodeChildren = Array.from(node.children);
+
+        for (let i = 0; i < nodeChildren.length; i++) {
+            nodeChildren[i].classList.contains("active")
+                ? nodeChildren[i].classList.remove("active")
+                : nodeChildren[i].classList.add("active");
+        }
+
+        const $listArrowUp = document.querySelectorAll(`${imgArrowUp}`);
+        $listArrowUp[0].classList.contains("active") &&
+            $listArrowUp[0].classList.remove("active");
+
+        const $listArrowDown = document.querySelectorAll(`${imgArrowDown}`);
+        !$listArrowDown[0].classList.contains("active") &&
+            $listArrowDown[0].classList.add("active");
     }
 };
 
@@ -5122,48 +5201,24 @@ const handleSteleDecorationLists = (e) => {
             listName: "epitaph",
         });
 
-        const epitaphListUpd = Array.from($epitaphListNode.children);
-
-        for (let i = 0; i < epitaphListUpd.length; i++) {
-            epitaphListUpd[i].classList.contains("active")
-                ? epitaphListUpd[i].classList.remove("active")
-                : epitaphListUpd[i].classList.add("active");
-        }
-
-        const $listArrowDown = document.querySelectorAll(
-            ".epitaph-list__arrow-down"
-        );
-        $listArrowDown[0].classList.contains("active") &&
-            $listArrowDown[0].classList.remove("active");
-
-        const $listArrowUp = document.querySelectorAll(
-            ".epitaph-list__arrow-up"
-        );
-        !$listArrowUp[0].classList.contains("active") &&
-            $listArrowUp[0].classList.add("active");
+        handleList({
+            flag: false,
+            node: $epitaphListNode,
+            imgArrowDown: ".epitaph-list__arrow-down",
+            imgArrowUp: ".epitaph-list__arrow-up",
+        });
     } else if (
         userClickVariant1.className === "epitaph-item active" ||
         userClickVariant2.className === "epitaph-item active"
     ) {
+        handleList({
+            flag: true,
+            node: $epitaphListNode,
+            imgArrowDown: ".epitaph-list__arrow-down",
+            imgArrowUp: ".epitaph-list__arrow-up",
+        });
+
         const epitaphListUpd = Array.from($epitaphListNode.children);
-
-        for (let i = 0; i < epitaphListUpd.length; i++) {
-            epitaphListUpd[i].classList.contains("active")
-                ? epitaphListUpd[i].classList.remove("active")
-                : epitaphListUpd[i].classList.add("active");
-        }
-
-        const $listArrowUp = document.querySelectorAll(
-            ".epitaph-list__arrow-up"
-        );
-        $listArrowUp[0].classList.contains("active") &&
-            $listArrowUp[0].classList.remove("active");
-
-        const $listArrowDown = document.querySelectorAll(
-            ".epitaph-list__arrow-down"
-        );
-        !$listArrowDown[0].classList.contains("active") &&
-            $listArrowDown[0].classList.add("active");
 
         if (
             epitaphListUpd.indexOf(userClickVariant2) !== -1 &&
@@ -5173,7 +5228,7 @@ const handleSteleDecorationLists = (e) => {
                 epitaphListUpd.indexOf(userClickVariant2);
 
             const { imgUrl } = getElementData(
-                indexOfSelectedEpitaph,
+                indexOfSelectedEpitaph - 1,
                 "epitaph"
             );
 
@@ -5184,6 +5239,75 @@ const handleSteleDecorationLists = (e) => {
 
                 renderStellaLettering({
                     letteringStellaEpitaph,
+                    node: $draggableElementsNode,
+                });
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "mousedown",
+                    (e) =>
+                        handleDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+
+                $draggableElementsNode[0].children[0].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            $draggableElementsNode[0].children[0]
+                        )
+                );
+            }
+        }
+    }
+
+    if (
+        userClickVariant1.className === "cross-item" ||
+        userClickVariant2.className === "cross-item"
+    ) {
+        createDecorationList({
+            listName: "cross",
+        });
+
+        handleList({
+            flag: false,
+            node: $crossListNode,
+            imgArrowDown: ".cross-list__arrow-down",
+            imgArrowUp: ".cross-list__arrow-up",
+        });
+    } else if (
+        userClickVariant1.className === "cross-item active" ||
+        userClickVariant2.className === "cross-item active"
+    ) {
+        handleList({
+            flag: true,
+            node: $crossListNode,
+            imgArrowDown: ".cross-list__arrow-down",
+            imgArrowUp: ".cross-list__arrow-up",
+        });
+
+        const crossListUpd = Array.from($crossListNode.children);
+
+        if (
+            crossListUpd.indexOf(userClickVariant2) !== -1 &&
+            crossListUpd.indexOf(userClickVariant2) !== 0
+        ) {
+            let indexOfSelectedCross = crossListUpd.indexOf(userClickVariant2);
+
+            const { imgUrl } = getElementData(
+                indexOfSelectedCross - 1,
+                "cross"
+            );
+
+            if (imgUrl) {
+                const { letteringStellaCross } = createLetteringsForSteles({
+                    steleCross: imgUrl,
+                });
+
+                renderStellaLettering({
+                    letteringStellaCross,
                     node: $draggableElementsNode,
                 });
 

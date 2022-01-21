@@ -832,4 +832,56 @@ const prices = [
             },
         ],
     },
+    {
+        cross: [
+            {
+                id: 0,
+                titleUa: "Хрест 1",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_1.png",
+            },
+            {
+                id: 1,
+                titleUa: "Хрест 2",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_2.png",
+            },
+            {
+                id: 2,
+                titleUa: "Хрест 3",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_3.png",
+            },
+            {
+                id: 3,
+                titleUa: "Хрест 4",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_4.png",
+            },
+            {
+                id: 4,
+                titleUa: "Хрест 5",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_5.png",
+            },
+            {
+                id: 5,
+                titleUa: "Хрест 6",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_6.png",
+            },
+            {
+                id: 6,
+                titleUa: "Хрест 7",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_7.png",
+            },
+            {
+                id: 7,
+                titleUa: "Хрест 8",
+                category: "cross",
+                imgUrl: "/mobile/cross/cross_8.png",
+            },
+        ],
+    },
 ];
