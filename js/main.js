@@ -19,8 +19,6 @@ const priceList = prices;
  * Important toggle switches!
  * Важные тумблеры!
  */
-let isSocleHidden = true;
-let isTileHidden = true;
 let isUaLanguage = true;
 let isRuLanguage = false;
 let isEngLanguage = false;
@@ -3132,6 +3130,10 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             calculate();
         }
     }
+
+    isUaLanguage && setLanguage(document, "ua");
+    isRuLanguage && setLanguage(document, "ru");
+    isEngLanguage && setLanguage(document, "eng");
 });
 
 /**
@@ -4138,6 +4140,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             $chooseStandMessage[0].classList.remove("active");
                     }
                 }
+
+                isUaLanguage && setLanguage(document, "ua");
+                isRuLanguage && setLanguage(document, "ru");
+                isEngLanguage && setLanguage(document, "eng");
             },
             { once: true }
         );
@@ -4523,6 +4529,10 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             calculate();
         }
     }
+
+    isUaLanguage && setLanguage(document, "ua");
+    isRuLanguage && setLanguage(document, "ru");
+    isEngLanguage && setLanguage(document, "eng");
 });
 
 /**
@@ -5957,6 +5967,10 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
     }
+
+    isUaLanguage && setLanguage(document, "ua");
+    isRuLanguage && setLanguage(document, "ru");
+    isEngLanguage && setLanguage(document, "eng");
 });
 
 /**
@@ -6083,6 +6097,10 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
     }
+
+    isUaLanguage && setLanguage(document, "ua");
+    isRuLanguage && setLanguage(document, "ru");
+    isEngLanguage && setLanguage(document, "eng");
 });
 
 /**
@@ -6229,6 +6247,10 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
     }
+
+    isUaLanguage && setLanguage(document, "ua");
+    isRuLanguage && setLanguage(document, "ru");
+    isEngLanguage && setLanguage(document, "eng");
 });
 
 /**
