@@ -4975,6 +4975,93 @@ const makeResizableElement = (node, e) => {
     }
 };
 
+const makeResizableElementByTouch = (node, e) => {
+    let startElementWidth = 0;
+    let startElementHeight = 0;
+    let clientX = 0;
+    let clientY = 0;
+    let startMouseX = 0;
+    let startMouseY = 0;
+    let elementForScale = null;
+
+    const children = Array.from(node.children);
+
+    for (let i = 0; i < children.length; i++) {
+        const currentResizer = children[i];
+
+        currentResizer.className === "stella-lettering__data" &&
+            (elementForScale = currentResizer);
+
+        if (currentResizer.className.includes("resizer")) {
+            currentResizer.addEventListener("touchstart", function (e) {
+                e.preventDefault();
+
+                startElementWidth = parseFloat(
+                    getComputedStyle(node, null)
+                        .getPropertyValue("width")
+                        .replace("px", "")
+                );
+                startElementHeight = parseFloat(
+                    getComputedStyle(node, null)
+                        .getPropertyValue("height")
+                        .replace("px", "")
+                );
+                clientX = node.getBoundingClientRect().left;
+                clientY = node.getBoundingClientRect().top;
+                startMouseX = e.touches[0].clientX;
+                startMouseY = e.touches[0].clientY;
+
+                document.addEventListener("touchmove", resize);
+                document.addEventListener("touchend", stopResize);
+            });
+        }
+
+        function resize(e) {
+            if (currentResizer.classList.contains("bottom-right")) {
+                const width =
+                    startElementWidth + (e.touches[0].clientX - startMouseX);
+                const height =
+                    startElementHeight + (e.touches[0].clientY - startMouseY);
+                node.style.width = width + "px";
+                node.style.height = height + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            } else if (currentResizer.classList.contains("bottom-left")) {
+                const width =
+                    startElementWidth - (e.touches[0].clientX - startMouseX);
+                const height =
+                    startElementHeight + (e.touches[0].clientY - startMouseY);
+                node.style.height = height + "px";
+                node.style.width = width + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            } else if (currentResizer.classList.contains("top-right")) {
+                const width =
+                    startElementWidth + (e.touches[0].pageX - startMouseX);
+                const height =
+                    startElementHeight - (e.touches[0].pageY - startMouseY);
+                node.style.width = width + "px";
+                node.style.height = height + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            } else if (currentResizer.classList.contains("top-left")) {
+                const width =
+                    startElementWidth - (e.touches[0].pageX - startMouseX);
+                const height =
+                    startElementHeight - (e.touches[0].pageY - startMouseY);
+                node.style.width = width + "px";
+                node.style.height = height + "px";
+                const scaleIndex = width - startElementWidth;
+                elementForScale.style.transform = `scale(${100 + scaleIndex}%)`;
+            }
+        }
+
+        function stopResize() {
+            document.removeEventListener("touchmove", resize);
+        }
+    }
+};
+
 /**
  * Функція для обробки події Submit -
  * дістає дані з інпутів, генерує та рендерить відповідні вузли, вішає на них прослуховувачі
@@ -5095,6 +5182,8 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
 
     if (userClickVariant1.className === "stella-lettering") {
         userClickVariant1.classList.add("active");
+        makeResizableElement(userClickVariant1, e);
+        makeResizableElementByTouch(userClickVariant1, e);
     } else if (
         userClickVariant1.className === "stella-lettering active" &&
         e.target.className !== "stella-lettering__remove" &&
@@ -5103,6 +5192,8 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
         userClickVariant1.classList.remove("active");
     } else if (userClickVariant2.className === "stella-lettering") {
         userClickVariant2.classList.add("active");
+        makeResizableElement(userClickVariant2, e);
+        makeResizableElementByTouch(userClickVariant2, e);
     } else if (
         userClickVariant2.className === "stella-lettering active" &&
         e.target.className !== "stella-lettering__remove" &&
@@ -5111,6 +5202,8 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
         userClickVariant2.classList.remove("active");
     } else if (userClickVariant3.className === "stella-lettering") {
         userClickVariant3.classList.add("active");
+        makeResizableElement(userClickVariant3, e);
+        makeResizableElementByTouch(userClickVariant3, e);
     } else if (
         userClickVariant3.className === "stella-lettering active" &&
         e.target.className !== "stella-lettering__remove" &&
@@ -5131,14 +5224,20 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
     }
 });
 
-$draggableElementsNode[0].addEventListener("mousedown", (e) => {
+$draggableElementsNode[0].addEventListener("touchstart", (e) => {
     e.stopPropagation();
 
-    if (e.target.classList.contains("resizer")) {
-        let userSelectElement = null;
-
-        userSelectElement = e.target.parentNode;
-        makeResizableElement(userSelectElement, e);
+    if (e.target.className === "stella-lettering__remove") {
+        const draggableElementsChildren = Array.from(
+            $draggableElementsNode[0].children
+        );
+        let itemToRemove = draggableElementsChildren.indexOf(
+            e.target.parentNode
+        );
+        itemToRemove !== -1 &&
+            $draggableElementsNode[0].removeChild(
+                $draggableElementsNode[0].children[itemToRemove]
+            );
     }
 });
 
