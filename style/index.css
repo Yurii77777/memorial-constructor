@@ -233,7 +233,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 735px;
+    height: 900px;
     margin-bottom: var(--xs-margin);
 }
 
@@ -402,8 +402,9 @@ body {
 .vignette-list {
     position: absolute;
     z-index: 1;
-    top: 0;
-    width: 100%;
+    top: 6px;
+    left: 6px;
+    width: 95%;
 }
 
 .epitaph-list li:not(:first-child),
@@ -412,7 +413,7 @@ body {
 .candle-list li:not(:first-child),
 .vignette-list li:not(:first-child) {
     background-color: #000;
-    top: 7px;
+    top: 14px;
 }
 
 .cross-list li:not(:first-child),
@@ -868,7 +869,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 415px;
+    height: 580px;
     border: 1px solid var(--border-color);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
@@ -1074,6 +1075,10 @@ body {
     margin-top: var(--xs-margin);
 }
 
+.stele-form-right-container {
+    position: relative;
+}
+
 .stella-lettering-info.active {
     display: block;
     font-size: 0.6rem;
@@ -1130,7 +1135,7 @@ body {
     padding: 2px;
     cursor: pointer;
     position: relative;
-    height: 20px;
+    height: 32px;
 }
 
 #gender-male {
@@ -1327,6 +1332,21 @@ body {
         margin-right: var(--xs-margin);
     }
 
+    .epitaph-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        top: -3px;
+    }
+
+    .epitaph-list {
+        top: 0;
+    }
+
+    .cross-wrapper {
+        margin-top: 21px;
+    }
+
     .calculator__attention-paragraph.active {
         font-size: 0.75rem;
         width: 400px;
@@ -1430,6 +1450,10 @@ body {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+    }
+
+    .constructor__elements-values.active {
+        height: 255px;
     }
 
     .stele-form-left-container,

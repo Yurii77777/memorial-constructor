@@ -5275,6 +5275,31 @@ const createDecorationList = (props) => {
 const handleList = (props) => {
     const { flag, node, imgArrowDown, imgArrowUp } = props;
 
+    const FIRST_LISTS_ITEMS = [
+        {
+            arrowImgClass: ".epitaph-list__arrow-down",
+            firstItemClass: ".epitaph-item",
+        },
+        {
+            arrowImgClass: ".cross-list__arrow-down",
+            firstItemClass: ".cross-item",
+        },
+        {
+            arrowImgClass: ".flower-list__arrow-down",
+            firstItemClass: ".flower-item",
+        },
+        {
+            arrowImgClass: ".candle-list__arrow-down",
+            firstItemClass: ".candle-item",
+        },
+        {
+            arrowImgClass: ".vignette-list__arrow-down",
+            firstItemClass: ".vignette-item",
+        },
+    ];
+
+    let activeArrowPosition = null;
+
     if (!flag) {
         const nodeChildren = Array.from(node.children);
 
@@ -5291,6 +5316,30 @@ const handleList = (props) => {
         const $listArrowUp = document.querySelectorAll(`${imgArrowUp}`);
         !$listArrowUp[0].classList.contains("active") &&
             $listArrowUp[0].classList.add("active");
+
+        // !INFO! Наполнение данных списков = png изображения
+        // под ними (списками) просвечиваются стрелки (черный фон их не скрывает)
+        // Задача = скрыть стрелки под активным (открытым) листом
+
+        for (let i = 0; i < FIRST_LISTS_ITEMS.length; i++) {
+            const { arrowImgClass } = FIRST_LISTS_ITEMS[i];
+
+            if (arrowImgClass !== imgArrowDown) {
+                continue;
+            } else if (arrowImgClass === imgArrowDown) {
+                activeArrowPosition = i;
+            }
+        }
+
+        for (let i = activeArrowPosition; i < FIRST_LISTS_ITEMS.length; i++) {
+            if (i + 1 < FIRST_LISTS_ITEMS.length) {
+                const { firstItemClass } = FIRST_LISTS_ITEMS[i + 1];
+                const $arrowElement = document.querySelectorAll(
+                    `${firstItemClass}`
+                );
+                $arrowElement[0].style.display = "none";
+            }
+        }
     } else if (flag) {
         const nodeChildren = Array.from(node.children);
 
@@ -5307,6 +5356,31 @@ const handleList = (props) => {
         const $listArrowDown = document.querySelectorAll(`${imgArrowDown}`);
         !$listArrowDown[0].classList.contains("active") &&
             $listArrowDown[0].classList.add("active");
+
+        // !INFO! Наполнение данных списков = png изображения
+        // под ними (списками) просвечиваются стрелки (черный фон их не скрывает)
+        // Задача = скрыть стрелки под активным (открытым) листом
+        // let activeArrowPosition = null;
+
+        for (let i = 0; i < FIRST_LISTS_ITEMS.length; i++) {
+            const { arrowImgClass } = FIRST_LISTS_ITEMS[i];
+
+            if (arrowImgClass !== imgArrowDown) {
+                continue;
+            } else if (arrowImgClass === imgArrowDown) {
+                activeArrowPosition = i;
+            }
+        }
+
+        for (let i = activeArrowPosition; i < FIRST_LISTS_ITEMS.length; i++) {
+            if (i + 1 < FIRST_LISTS_ITEMS.length) {
+                const { firstItemClass } = FIRST_LISTS_ITEMS[i + 1];
+                const $arrowElement = document.querySelectorAll(
+                    `${firstItemClass}`
+                );
+                $arrowElement[0].style.display = "flex";
+            }
+        }
     }
 };
 
