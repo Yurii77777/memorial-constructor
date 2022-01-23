@@ -6345,4 +6345,32 @@ const calculate = () => {
     }
 };
 
+const hideMockupImg = () => {
+    const $mockupCanvas = document.querySelectorAll(".mockup-canvas");
+    document.body.removeChild($mockupCanvas[0]);
+};
+
+const createShotNode = () => {
+    const div = document.createElement("div");
+    div.setAttribute("class", "mockup-canvas");
+
+    const img = document.createElement("img");
+    img.setAttribute("src", "./img/icons/close.svg");
+    img.setAttribute("alt", "Закрити макет");
+    img.setAttribute("class", "mockup-canvas_close-button active");
+    img.setAttribute("onclick", "hideMockupImg()");
+
+    div.appendChild(img);
+    document.body.appendChild(div);
+};
+
+const takeshot = () => {
+    createShotNode();
+    const $mockup = document.querySelectorAll(".constructor__field");
+
+    html2canvas($mockup[0]).then(function (canvas) {
+        document.querySelectorAll(".mockup-canvas")[0].appendChild(canvas);
+    });
+};
+
 calculate();
