@@ -6348,6 +6348,130 @@ const calculate = () => {
 const hideMockupImg = () => {
     const $mockupCanvas = document.querySelectorAll(".mockup-canvas");
     document.body.removeChild($mockupCanvas[0]);
+
+    const $constructorField = document.querySelectorAll(".constructor__field");
+    const $mockupData = document.querySelectorAll(".mockup-data");
+    $constructorField[0].removeChild($mockupData[0]);
+};
+
+const createDataNodesForFinalMockup = () => {
+    let dataList = document.createElement("ul");
+
+    dataList.setAttribute("class", "mockup-data");
+
+    const { width, length } = handleLandPlotSizes();
+
+    const perimeter = 2 * (width / 100 + length / 100);
+    const dataItemPerimeter = document.createElement("li");
+    dataItemPerimeter.setAttribute("class", "mockup-data__item");
+    const paragraphTitle = document.createElement("p");
+    paragraphTitle.setAttribute("class", "mockup-data__item-title");
+    const paragraphValue = document.createElement("p");
+    paragraphValue.setAttribute("class", "mockup-data__item-value");
+    isUaLanguage && (paragraphTitle.innerText = "Периметр, м = ");
+    isUaLanguage && (paragraphValue.innerText = perimeter);
+    isRuLanguage && (paragraphTitle.innerText = "Периметр, м = ");
+    isRuLanguage && (paragraphValue.innerText = perimeter);
+    isEngLanguage && (paragraphTitle.innerText = "Perimeter, m = ");
+    isEngLanguage && (paragraphValue.innerText = perimeter);
+    dataItemPerimeter.appendChild(paragraphTitle);
+    dataItemPerimeter.appendChild(paragraphValue);
+    dataList.appendChild(dataItemPerimeter);
+
+    const area = (width * length) / 10000;
+    const dataItemArea = document.createElement("li");
+    dataItemArea.setAttribute("class", "mockup-data__item");
+    const paragraphTitleArea = document.createElement("p");
+    paragraphTitleArea.setAttribute("class", "mockup-data__item-title");
+    const paragraphValueArea = document.createElement("p");
+    paragraphValueArea.setAttribute("class", "mockup-data__item-value");
+    isUaLanguage && (paragraphTitleArea.innerText = "Площа, м2 = ");
+    isUaLanguage && (paragraphValueArea.innerText = area);
+    isRuLanguage && (paragraphTitleArea.innerText = "Площадь, м2 = ");
+    isRuLanguage && (paragraphValueArea.innerText = area);
+    isEngLanguage && (paragraphTitleArea.innerText = "Area, m2 = ");
+    isEngLanguage && (paragraphValueArea.innerText = area);
+    dataItemArea.appendChild(paragraphTitleArea);
+    dataItemArea.appendChild(paragraphValueArea);
+    dataList.appendChild(dataItemArea);
+
+    let totalCost = null;
+
+    for (let i = 0; i < selectedItems.length; i++) {
+        const { siteNameUa, siteNameRu, siteNameEng, price, length, category } =
+            selectedItems[i];
+        const dataItem = document.createElement("li");
+        dataItem.setAttribute("class", "mockup-data__item");
+        const paragraphTitle = document.createElement("p");
+        paragraphTitle.setAttribute("class", "mockup-data__item-title");
+        const paragraphValue = document.createElement("p");
+        paragraphValue.setAttribute("class", "mockup-data__item-value");
+
+        if (category === "curbs") {
+            const totalCurbsCost =
+                Math.ceil((perimeter * 100) / length) * price;
+            totalCost += totalCurbsCost;
+
+            isUaLanguage && (paragraphTitle.innerText = `Бордюр ${siteNameUa}`);
+            isUaLanguage &&
+                (paragraphValue.innerText = `${totalCurbsCost} грн.`);
+            isRuLanguage && (paragraphTitle.innerText = `Бордюр ${siteNameRu}`);
+            isRuLanguage &&
+                (paragraphValue.innerText = `${totalCurbsCost} грн.`);
+            isEngLanguage && (paragraphTitle.innerText = `Curb ${siteNameEng}`);
+            isEngLanguage &&
+                (paragraphValue.innerText = `${totalCurbsCost} грн.`);
+            dataItem.appendChild(paragraphTitle);
+            dataItem.appendChild(paragraphValue);
+            dataList.appendChild(dataItem);
+        } else if (category === "socle" || category === "beauty") {
+            const totalSocleCost = area * price;
+            totalCost += totalSocleCost;
+
+            isUaLanguage && (paragraphTitle.innerText = siteNameUa);
+            isUaLanguage &&
+                (paragraphValue.innerText = `${totalSocleCost} грн.`);
+            isRuLanguage && (paragraphTitle.innerText = siteNameRu);
+            isRuLanguage &&
+                (paragraphValue.innerText = `${totalSocleCost} грн.`);
+            isEngLanguage && (paragraphTitle.innerText = siteNameEng);
+            isEngLanguage &&
+                (paragraphValue.innerText = `${totalSocleCost} грн.`);
+            dataItem.appendChild(paragraphTitle);
+            dataItem.appendChild(paragraphValue);
+            dataList.appendChild(dataItem);
+        } else {
+            totalCost += price;
+
+            isUaLanguage && (paragraphTitle.innerText = siteNameUa);
+            isUaLanguage && (paragraphValue.innerText = `${price} грн.`);
+            isRuLanguage && (paragraphTitle.innerText = siteNameRu);
+            isRuLanguage && (paragraphValue.innerText = `${price} грн.`);
+            isEngLanguage && (paragraphTitle.innerText = siteNameEng);
+            isEngLanguage && (paragraphValue.innerText = `${price} грн.`);
+            dataItem.appendChild(paragraphTitle);
+            dataItem.appendChild(paragraphValue);
+            dataList.appendChild(dataItem);
+        }
+    }
+
+    const dataItemTotalCost = document.createElement("li");
+    dataItemTotalCost.setAttribute("class", "mockup-data__item");
+    const paragraphTitleTotalCost = document.createElement("p");
+    paragraphTitleTotalCost.setAttribute("class", "mockup-data__item-title");
+    const paragraphValueTotalCost = document.createElement("p");
+    paragraphValueTotalCost.setAttribute("class", "mockup-data__item-value");
+    isUaLanguage && (paragraphTitleTotalCost.innerText = "Загальная вартість ");
+    isUaLanguage && (paragraphValueTotalCost.innerText = `${totalCost} грн.`);
+    isRuLanguage && (paragraphTitleTotalCost.innerText = "Общая стоимость ");
+    isRuLanguage && (paragraphValueTotalCost.innerText = `${totalCost} грн.`);
+    isEngLanguage && (paragraphTitleTotalCost.innerText = "Total cost ");
+    isEngLanguage && (paragraphValueTotalCost.innerText = `${totalCost} грн.`);
+    dataItemTotalCost.appendChild(paragraphTitleTotalCost);
+    dataItemTotalCost.appendChild(paragraphValueTotalCost);
+    dataList.appendChild(dataItemTotalCost);
+
+    return dataList;
 };
 
 const createShotNode = () => {
@@ -6362,6 +6486,10 @@ const createShotNode = () => {
 
     div.appendChild(img);
     document.body.appendChild(div);
+
+    const dataToRender = createDataNodesForFinalMockup();
+    const $constructorField = document.querySelectorAll(".constructor__field");
+    $constructorField[0].appendChild(dataToRender);
 };
 
 const takeshot = () => {

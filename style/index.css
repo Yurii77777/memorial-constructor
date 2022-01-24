@@ -1257,6 +1257,25 @@ body {
     border-color: #0a58ca;
 }
 
+.mockup-data {
+    font-size: 0.6rem;
+    position: absolute;
+    top: 10%;
+    left: 1%;
+    width: 25%;
+}
+
+.mockup-data__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mockup-data li:last-child {
+    font-weight: 700;
+    margin-top: var(--sm-margin);
+}
+
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
