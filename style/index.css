@@ -157,6 +157,7 @@ body {
 .calculator__data-value > span,
 .monument__error > span,
 .monument__error-length > span,
+.flower-garden__error > span,
 .info-message__choose-stand,
 .info-message__choose-stand-paragraph > span,
 .first-stand__choose > span,
@@ -294,6 +295,7 @@ body {
 .stand__error.active > span.active,
 .monument__error.active > span.active,
 .monument__error-length.active > span.active,
+.flower-garden__error.active > span.active,
 .constructor__element-name > span.active,
 .calculator__data-value > span.active,
 .info-message__choose-stand-paragraph > span.active,
@@ -979,6 +981,7 @@ body {
 .stand__error.active,
 .monument__error.active,
 .monument__error-length.active,
+.flower-garden__error.active,
 .elements-container__tile-error.active {
     position: absolute;
     display: block;
@@ -1276,6 +1279,18 @@ body {
     margin-top: var(--sm-margin);
 }
 
+.flower-garden__img {
+    position: absolute;
+    top: 7px;
+    left: -5%;
+}
+
+.stand-container > .flower-garden__img,
+.stand-container2 > .flower-garden__img {
+    min-width: 120%;
+    height: 60px;
+}
+
 @media (min-width: 440px) {
     .field__error.active {
         left: 17%;
@@ -1298,7 +1313,7 @@ body {
     }
 
     .constructor__field {
-        height: 475px;
+        height: 665px;
     }
 
     .field__error.active {
@@ -1491,6 +1506,11 @@ body {
         margin-top: var(--sm-margin);
     }
 
+    .stand-container > .flower-garden__img,
+    .stand-container2 > .flower-garden__img {
+        height: 90px;
+    }
+
     .calculator {
         width: 700px;
     }
@@ -1658,6 +1678,11 @@ body {
     .info-message__choose-stand.active {
         top: 40%;
         width: 40%;
+    }
+
+    .stand-container > .flower-garden__img,
+    .stand-container2 > .flower-garden__img {
+        height: 110px;
     }
 
     .calculator {

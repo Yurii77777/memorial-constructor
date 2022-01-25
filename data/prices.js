@@ -807,8 +807,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_1.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/A80x40x5_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_1_on_constructor.png",
                 siteNameUa: "Квітник 1",
                 siteNameRu: "Цветник 1",
                 siteNameEng: "Flower garden 1",
@@ -820,8 +820,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_2.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/B80x40x5_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_2_on_constructor.png",
                 siteNameUa: "Квітник 2",
                 siteNameRu: "Цветник 2",
                 siteNameEng: "Flower garden 2",
@@ -833,8 +833,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_3.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/V80x40x5_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_3_on_constructor.png",
                 siteNameUa: "Квітник 3",
                 siteNameRu: "Цветник 3",
                 siteNameEng: "Flower garden 3",
@@ -846,8 +846,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_4.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/P80x40x5_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_4_on_constructor.png",
                 siteNameUa: "Квітник 4",
                 siteNameRu: "Цветник 4",
                 siteNameEng: "Flower garden 4",
@@ -859,8 +859,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_5.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/A90x45x6_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_5_on_constructor.png",
                 siteNameUa: "Квітник 5",
                 siteNameRu: "Цветник 5",
                 siteNameEng: "Flower garden 5",
@@ -872,8 +872,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_6.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/P80x40x5_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_6_on_constructor.png",
                 siteNameUa: "Квітник 6",
                 siteNameRu: "Цветник 6",
                 siteNameEng: "Flower garden 6",
@@ -885,8 +885,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_7.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/A100x50x8_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_7_on_constructor.png",
                 siteNameUa: "Квітник 7",
                 siteNameRu: "Цветник 7",
                 siteNameEng: "Flower garden 7",
@@ -898,8 +898,8 @@ const prices = [
                 tabId: 3,
                 category: "flowerGarden",
                 imgUrl: "/mobile/flower_garden/flower_garden_8.png",
-                // imgConstructorUrl:
-                //     "/mobile/monuments/B80x40x5_on_constructor.png",
+                imgConstructorUrl:
+                    "/mobile/flower_garden/flower_garden_8_on_constructor.png",
                 siteNameUa: "Квітник 8",
                 siteNameRu: "Цветник 8",
                 siteNameEng: "Flower garden 8",

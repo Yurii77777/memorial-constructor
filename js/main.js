@@ -100,6 +100,7 @@ const $monumentError = document.querySelectorAll(".monument__error");
 const $monumentErrorLength = document.querySelectorAll(
     ".monument__error-length"
 );
+const $flowerGardenError = document.querySelectorAll(".flower-garden__error");
 
 const $tileErrorNode = document.querySelectorAll(
     ".elements-container__tile-error"
@@ -107,6 +108,9 @@ const $tileErrorNode = document.querySelectorAll(
 
 const elementsValuesMonumentsNode = document.querySelectorAll(
     ".constructor__elements-values.monuments"
+);
+const $elementsValuesFlowerGardensNode = document.querySelectorAll(
+    ".constructor__elements-values.flower-garden"
 );
 const $steleDecorationForm = document.querySelectorAll(".constructor__form");
 const $epitaphListNode = document.getElementById("epitaph-list");
@@ -145,6 +149,14 @@ const totalCostTileNode = document.querySelectorAll(
     ".calculator__data-container.tile-total-cost"
 );
 const $selectStele = document.getElementById("selectStele");
+
+// Модальне вікно вибору тумби для обраної стелли
+const $modalWindowChooseStand = document.querySelectorAll(
+    ".info-message__choose-stand"
+);
+const $chooseStandMessage = document.querySelectorAll(
+    ".info-message__choose-stand"
+);
 
 let isFirstStep = true;
 let isSecondStep = false;
@@ -2597,6 +2609,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
         isCurb,
         isSocle,
         isBeauty,
+        isFlowerGarden,
         mustRemoveElementOnConstructor,
     } = categories;
     let result = [];
@@ -2641,7 +2654,8 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
             category === "monuments" ||
             category === "curbs" ||
             category === "socle" ||
-            category === "beauty"
+            category === "beauty" ||
+            category === "flowerGarden"
         ) {
             for (let i = 0; i < arrayOfNodes.length; i++) {
                 let obj = {};
@@ -2678,6 +2692,10 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 
     if (isBeauty) {
         createItemData(arrayOfNodes, "beauty", selectedItem);
+    }
+
+    if (isFlowerGarden) {
+        createItemData(arrayOfNodes, "flowerGarden", selectedItem);
     }
 
     return result;
@@ -3791,10 +3809,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         const { width: landPlotWidth } = handleLandPlotSizes();
 
         // Показуємо уточнення - до якої тумби добати стеллу
-        const $chooseStandMessage = document.querySelectorAll(
-            ".info-message__choose-stand"
-        );
-
         $chooseStandMessage[0].classList.add("active");
 
         handleAddChooseStandMessageNode({
@@ -3802,11 +3816,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             secondStandIndex,
             nodeToRender: $chooseStandMessage,
         });
-
-        // Модальне вікно вибору тумби для обраної стелли
-        const $modalWindowChooseStand = document.querySelectorAll(
-            ".info-message__choose-stand"
-        );
 
         $modalWindowChooseStand[0].addEventListener(
             "click",
@@ -4533,6 +4542,566 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
     isUaLanguage && setLanguage(document, "ua");
     isRuLanguage && setLanguage(document, "ru");
     isEngLanguage && setLanguage(document, "eng");
+});
+
+/**
+ * Обробник елементів блоку "Квітники"
+ * Flower garden block element handler
+ * Обработчик элементов блока "Цветники"
+ */
+$elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    const elementsFlowerGardens = Array.from(
+        $elementsValuesFlowerGardensNode[0].children
+    );
+    let selectedFlowerGarden = elementsFlowerGardens.indexOf(
+        userClick.parentNode
+    );
+
+    if (
+        selectedFlowerGarden !== -1 &&
+        userClick.className !== "field__hide-element-button"
+    ) {
+        let isStandInFirstContainer = false;
+        let firstStandIndex = null;
+        let isFlowerGardenInFirstContainer = false;
+        let isStandInSecondContainer = false;
+        let secondStandIndex = null;
+        let isFlowerGardenInSecondContainer = false;
+
+        const firstContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
+
+        if (firstContainerChildren.length) {
+            for (let i = 0; i < firstContainerChildren.length; i++) {
+                if (firstContainerChildren[i].dataset.category === "stand") {
+                    isStandInFirstContainer = true;
+                    firstStandIndex =
+                        +firstContainerChildren[i].dataset.itemIndex;
+                }
+
+                if (
+                    firstContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInFirstContainer = true;
+                }
+            }
+        }
+
+        const secondContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
+
+        if (secondContainerChildren.length) {
+            for (let i = 0; i < secondContainerChildren.length; i++) {
+                if (secondContainerChildren[i].dataset.category === "stand") {
+                    isStandInSecondContainer = true;
+                    secondStandIndex =
+                        +secondContainerChildren[i].dataset.itemIndex;
+                }
+
+                if (
+                    secondContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInSecondContainer = true;
+                }
+            }
+        }
+
+        !isStandInFirstContainer &&
+            !isStandInSecondContainer &&
+            handleInfoAndErrorMessages($monumentError, {
+                isUaLanguage,
+                isRuLanguage,
+                isEngLanguage,
+            });
+
+        const selectedFlowerGardenData = getElementData(
+            selectedFlowerGarden,
+            "flowerGarden"
+        );
+
+        const {
+            id,
+            imgUrl,
+            imgConstructorUrl,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            category,
+            price,
+        } = selectedFlowerGardenData;
+
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedFlowerGarden;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
+
+        let constructorNodeString =
+            '<img src="./img/items[URL]" class="flower-garden__img" data-item-index="[INDEX]" data-category="[value]" />';
+
+        if (
+            isStandInFirstContainer &&
+            !isFlowerGardenInFirstContainer &&
+            !isStandInSecondContainer
+        ) {
+            elementsFlowerGardens[selectedFlowerGarden].classList.add("active");
+            selectedItems.push(selectedFlowerGardenData);
+
+            const constructorNode = constructorNodeString
+                .slice()
+                .replace(/\[URL\]/g, imgConstructorUrl)
+                .replace(/\[INDEX\]/g, id)
+                .replace(/\[value\]/g, category);
+
+            $standContainerNode[0].insertAdjacentHTML(
+                "beforeend",
+                constructorNode
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            const flowerGardenNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedFlowerGarden,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                flowerGardenNodeToCalculator
+            );
+
+            calculate();
+        } else if (
+            isStandInFirstContainer &&
+            isFlowerGardenInFirstContainer &&
+            !isStandInSecondContainer
+        ) {
+            for (let i = 0; i < elementsFlowerGardens.length; i++) {
+                if (elementsFlowerGardens[i].classList.contains("active")) {
+                    elementsFlowerGardens[i].classList.remove("active");
+
+                    let itemsToRemove = getItemsToRemove(
+                        firstContainerChildren,
+                        $standContainerNode,
+                        {
+                            isFlowerGarden: true,
+                            mustRemoveElementOnConstructor: true,
+                        }
+                    );
+
+                    handleRemoveFilterNode(itemsToRemove);
+                    handleRemoveCalculatorNode(itemsToRemove);
+                    handleRemoveItemsFromSelectedItems(itemsToRemove);
+                    calculate();
+                }
+            }
+
+            elementsFlowerGardens[selectedFlowerGarden].classList.add("active");
+            selectedItems.push(selectedFlowerGardenData);
+
+            const constructorNode = constructorNodeString
+                .slice()
+                .replace(/\[URL\]/g, imgConstructorUrl)
+                .replace(/\[INDEX\]/g, id)
+                .replace(/\[value\]/g, category);
+
+            $standContainerNode[0].insertAdjacentHTML(
+                "beforeend",
+                constructorNode
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            const flowerGardenNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedFlowerGarden,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                flowerGardenNodeToCalculator
+            );
+
+            calculate();
+        } else if (
+            !isStandInFirstContainer &&
+            isStandInSecondContainer &&
+            !isFlowerGardenInSecondContainer
+        ) {
+            elementsFlowerGardens[selectedFlowerGarden].classList.add("active");
+            selectedItems.push(selectedFlowerGardenData);
+
+            const constructorNode = constructorNodeString
+                .slice()
+                .replace(/\[URL\]/g, imgConstructorUrl)
+                .replace(/\[INDEX\]/g, id)
+                .replace(/\[value\]/g, category);
+
+            $standContainer2Node[0].insertAdjacentHTML(
+                "beforeend",
+                constructorNode
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            const flowerGardenNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedFlowerGarden,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                flowerGardenNodeToCalculator
+            );
+
+            calculate();
+        } else if (
+            !isStandInFirstContainer &&
+            isStandInSecondContainer &&
+            isFlowerGardenInSecondContainer
+        ) {
+            for (let i = 0; i < elementsFlowerGardens.length; i++) {
+                if (elementsFlowerGardens[i].classList.contains("active")) {
+                    elementsFlowerGardens[i].classList.remove("active");
+
+                    let itemsToRemove = getItemsToRemove(
+                        secondContainerChildren,
+                        $standContainer2Node,
+                        {
+                            isFlowerGarden: true,
+                            mustRemoveElementOnConstructor: true,
+                        }
+                    );
+
+                    handleRemoveFilterNode(itemsToRemove);
+                    handleRemoveCalculatorNode(itemsToRemove);
+                    handleRemoveItemsFromSelectedItems(itemsToRemove);
+                    calculate();
+                }
+            }
+
+            elementsFlowerGardens[selectedFlowerGarden].classList.add("active");
+            selectedItems.push(selectedFlowerGardenData);
+
+            const constructorNode = constructorNodeString
+                .slice()
+                .replace(/\[URL\]/g, imgConstructorUrl)
+                .replace(/\[INDEX\]/g, id)
+                .replace(/\[value\]/g, category);
+
+            $standContainer2Node[0].insertAdjacentHTML(
+                "beforeend",
+                constructorNode
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            const flowerGardenNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedFlowerGarden,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                flowerGardenNodeToCalculator
+            );
+
+            calculate();
+        } else if (isStandInFirstContainer && isStandInSecondContainer) {
+            $chooseStandMessage[0].classList.add("active");
+
+            handleAddChooseStandMessageNode({
+                firstStandIndex,
+                secondStandIndex,
+                nodeToRender: $chooseStandMessage,
+            });
+
+            $chooseStandMessage[0].addEventListener(
+                "click",
+                (e) => {
+                    e.stopPropagation();
+
+                    let userClick = e.target;
+                    // Обрана тумба з першого контейнера
+                    if (
+                        userClick.parentElement.className ===
+                        "first-stand__choose"
+                    ) {
+                        if (!isFlowerGardenInFirstContainer) {
+                            elementsFlowerGardens[
+                                selectedFlowerGarden
+                            ].classList.add("active");
+                            selectedItems.push(selectedFlowerGardenData);
+
+                            const constructorNode = constructorNodeString
+                                .slice()
+                                .replace(/\[URL\]/g, imgConstructorUrl)
+                                .replace(/\[INDEX\]/g, id)
+                                .replace(/\[value\]/g, category);
+
+                            $standContainerNode[0].insertAdjacentHTML(
+                                "beforeend",
+                                constructorNode
+                            );
+
+                            handleAddFilterNode(propsForFilterNode);
+
+                            const flowerGardenNodeToCalculator =
+                                createCalculatorDataNode(
+                                    category,
+                                    selectedFlowerGarden,
+                                    siteNameUa,
+                                    siteNameRu,
+                                    siteNameEng,
+                                    price
+                                );
+
+                            $totalCostNode[0].insertAdjacentHTML(
+                                "beforebegin",
+                                flowerGardenNodeToCalculator
+                            );
+
+                            $chooseStandMessage[0].classList.remove("active");
+
+                            calculate();
+                        } else if (isFlowerGardenInFirstContainer) {
+                            handleInfoAndErrorMessages($flowerGardenError, {
+                                isUaLanguage,
+                                isRuLanguage,
+                                isEngLanguage,
+                            });
+
+                            $chooseStandMessage[0].classList.remove("active");
+                        }
+                    } else if (
+                        userClick.parentElement.className ===
+                        "second-stand_choose"
+                    ) {
+                        if (!isFlowerGardenInSecondContainer) {
+                            elementsFlowerGardens[
+                                selectedFlowerGarden
+                            ].classList.add("active");
+                            selectedItems.push(selectedFlowerGardenData);
+
+                            const constructorNode = constructorNodeString
+                                .slice()
+                                .replace(/\[URL\]/g, imgConstructorUrl)
+                                .replace(/\[INDEX\]/g, id)
+                                .replace(/\[value\]/g, category);
+
+                            $standContainer2Node[0].insertAdjacentHTML(
+                                "beforeend",
+                                constructorNode
+                            );
+
+                            handleAddFilterNode(propsForFilterNode);
+
+                            const flowerGardenNodeToCalculator =
+                                createCalculatorDataNode(
+                                    category,
+                                    selectedFlowerGarden,
+                                    siteNameUa,
+                                    siteNameRu,
+                                    siteNameEng,
+                                    price
+                                );
+
+                            $totalCostNode[0].insertAdjacentHTML(
+                                "beforebegin",
+                                flowerGardenNodeToCalculator
+                            );
+
+                            $chooseStandMessage[0].classList.remove("active");
+
+                            calculate();
+                        } else if (isFlowerGardenInSecondContainer) {
+                            handleInfoAndErrorMessages($flowerGardenError, {
+                                isUaLanguage,
+                                isRuLanguage,
+                                isEngLanguage,
+                            });
+
+                            $chooseStandMessage[0].classList.remove("active");
+                        }
+                    }
+                },
+                { once: true }
+            );
+        }
+    } else if (
+        selectedFlowerGarden !== -1 &&
+        userClick.className === "field__hide-element-button"
+    ) {
+        let isFlowerGardenInFirstContainer = false;
+        let flowerGardenIndexInFirstContainer = null;
+        let isFlowerGardenInSecondContainer = false;
+        let flowerGardenIndexInSecondContainer = null;
+
+        const firstContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
+
+        if (firstContainerChildren.length) {
+            for (let i = 0; i < firstContainerChildren.length; i++) {
+                if (
+                    firstContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInFirstContainer = true;
+                    flowerGardenIndexInFirstContainer =
+                        +firstContainerChildren[i].dataset.itemIndex;
+                }
+            }
+        }
+
+        const secondContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
+
+        if (secondContainerChildren.length) {
+            for (let i = 0; i < secondContainerChildren.length; i++) {
+                if (
+                    secondContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInSecondContainer = true;
+                    flowerGardenIndexInSecondContainer =
+                        +secondContainerChildren[i].dataset.itemIndex;
+                }
+            }
+        }
+
+        if (
+            isFlowerGardenInFirstContainer &&
+            !isFlowerGardenInSecondContainer
+        ) {
+            elementsFlowerGardens[selectedFlowerGarden].classList.remove(
+                "active"
+            );
+
+            let itemsToRemove = getItemsToRemove(
+                firstContainerChildren,
+                $standContainerNode,
+                {
+                    isFlowerGarden: true,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (
+            !isFlowerGardenInFirstContainer &&
+            isFlowerGardenInSecondContainer
+        ) {
+            elementsFlowerGardens[selectedFlowerGarden].classList.remove(
+                "active"
+            );
+
+            let itemsToRemove = getItemsToRemove(
+                secondContainerChildren,
+                $standContainer2Node,
+                {
+                    isFlowerGarden: true,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (
+            isFlowerGardenInFirstContainer &&
+            isFlowerGardenInSecondContainer
+        ) {
+            if (
+                flowerGardenIndexInFirstContainer ===
+                flowerGardenIndexInSecondContainer
+            ) {
+                elementsFlowerGardens[selectedFlowerGarden].classList.remove(
+                    "active"
+                );
+
+                let itemsToRemove = getItemsToRemove(
+                    firstContainerChildren,
+                    $standContainerNode,
+                    {
+                        isFlowerGarden: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            } else if (
+                flowerGardenIndexInFirstContainer !==
+                    flowerGardenIndexInSecondContainer &&
+                selectedFlowerGarden === flowerGardenIndexInFirstContainer
+            ) {
+                let itemsToRemove = getItemsToRemove(
+                    firstContainerChildren,
+                    $standContainerNode,
+                    {
+                        isFlowerGarden: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            } else if (
+                flowerGardenIndexInFirstContainer !==
+                    flowerGardenIndexInSecondContainer &&
+                selectedFlowerGarden === flowerGardenIndexInSecondContainer
+            ) {
+                let itemsToRemove = getItemsToRemove(
+                    secondContainerChildren,
+                    $standContainer2Node,
+                    {
+                        isFlowerGarden: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            }
+        }
+    }
 });
 
 /**
