@@ -1674,8 +1674,12 @@ filterNode[0].addEventListener("click", (e) => {
     ) {
         let isStandInFirstContainer = false;
         let standIdInFirstContainer = null;
+        let isFlowerGardenInFirstContainer = false;
+        let flowerGardenIndexInFirstContainer = null;
         let isStandInSecondContainer = false;
         let standIdInSecondContainer = null;
+        let isFlowerGardenInSecondContainer = false;
+        let flowerGardenIndexInSecondContainer = null;
         let monumentsInFirstContainer = [];
         let monumentsInSecondContainer = [];
 
@@ -1698,6 +1702,15 @@ filterNode[0].addEventListener("click", (e) => {
                     monumentsInFirstContainer.push(
                         +firstContainerChildren[i].dataset.itemIndex
                     );
+                }
+
+                if (
+                    firstContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInFirstContainer = true;
+                    flowerGardenIndexInFirstContainer =
+                        +firstContainerChildren[i].dataset.itemIndex;
                 }
             }
         }
@@ -1722,10 +1735,22 @@ filterNode[0].addEventListener("click", (e) => {
                         +secondContainerChildren[i].dataset.itemIndex
                     );
                 }
+
+                if (
+                    secondContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInSecondContainer = true;
+                    flowerGardenIndexInSecondContainer =
+                        +secondContainerChildren[i].dataset.itemIndex;
+                }
             }
         }
 
         const elementsStands = Array.from($elementsStandsNode[0].children);
+        const elementsFlowerGardens = Array.from(
+            $elementsValuesFlowerGardensNode[0].children
+        );
 
         if (isStandInFirstContainer && !isStandInSecondContainer) {
             elementsStands[
@@ -1746,6 +1771,15 @@ filterNode[0].addEventListener("click", (e) => {
                 }
             }
 
+            //Знімаємо вибір квітника, якщо він вибраний
+            isFlowerGardenInFirstContainer &&
+                elementsFlowerGardens[
+                    flowerGardenIndexInFirstContainer
+                ].classList.contains("active") &&
+                elementsFlowerGardens[
+                    flowerGardenIndexInFirstContainer
+                ].classList.remove("active");
+
             // Отримуємо всі елементи, котрі потрібно видалити
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
@@ -1753,6 +1787,7 @@ filterNode[0].addEventListener("click", (e) => {
                 {
                     isStand: true,
                     isMonument: true,
+                    isFlowerGarden: isFlowerGardenInFirstContainer,
                     mustRemoveElementOnConstructor: true,
                 }
             );
@@ -1788,6 +1823,15 @@ filterNode[0].addEventListener("click", (e) => {
                 }
             }
 
+            //Знімаємо вибір квітника, якщо він вибраний
+            isFlowerGardenInSecondContainer &&
+                elementsFlowerGardens[
+                    flowerGardenIndexInSecondContainer
+                ].classList.contains("active") &&
+                elementsFlowerGardens[
+                    flowerGardenIndexInSecondContainer
+                ].classList.remove("active");
+
             // Отримуємо всі елементи, котрі потрібно видалити
             let itemsToRemove = getItemsToRemove(
                 secondContainerChildren,
@@ -1795,6 +1839,7 @@ filterNode[0].addEventListener("click", (e) => {
                 {
                     isStand: true,
                     isMonument: true,
+                    isFlowerGarden: isFlowerGardenInSecondContainer,
                     mustRemoveElementOnConstructor: true,
                 }
             );
@@ -1825,6 +1870,7 @@ filterNode[0].addEventListener("click", (e) => {
                         {
                             isStand: true,
                             isMonument: true,
+                            isFlowerGarden: isFlowerGardenInFirstContainer,
                             mustRemoveElementOnConstructor: true,
                         }
                     );
@@ -1848,6 +1894,18 @@ filterNode[0].addEventListener("click", (e) => {
                         }
                     }
 
+                    if (
+                        flowerGardenIndexInFirstContainer !==
+                        flowerGardenIndexInSecondContainer
+                    ) {
+                        elementsFlowerGardens[
+                            flowerGardenIndexInFirstContainer
+                        ].classList.contains("active") &&
+                            elementsFlowerGardens[
+                                flowerGardenIndexInFirstContainer
+                            ].classList.remove("active");
+                    }
+
                     handleRemoveFilterNode(itemsToRemove);
                     handleRemoveCalculatorNode(itemsToRemove);
                     handleRemoveItemsFromSelectedItems(itemsToRemove);
@@ -1863,6 +1921,7 @@ filterNode[0].addEventListener("click", (e) => {
                         {
                             isStand: true,
                             isMonument: true,
+                            isFlowerGarden: isFlowerGardenInSecondContainer,
                             mustRemoveElementOnConstructor: true,
                         }
                     );
@@ -1884,6 +1943,18 @@ filterNode[0].addEventListener("click", (e) => {
                                     );
                             }
                         }
+                    }
+
+                    if (
+                        flowerGardenIndexInFirstContainer !==
+                        flowerGardenIndexInSecondContainer
+                    ) {
+                        elementsFlowerGardens[
+                            flowerGardenIndexInSecondContainer
+                        ].classList.contains("active") &&
+                            elementsFlowerGardens[
+                                flowerGardenIndexInSecondContainer
+                            ].classList.remove("active");
                     }
 
                     handleRemoveFilterNode(itemsToRemove);
@@ -2418,6 +2489,175 @@ filterNode[0].addEventListener("click", (e) => {
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
+    } else if (
+        selectedItem !== -1 &&
+        filterElements[selectedItem].dataset.category === "flowerGarden"
+    ) {
+        let isFlowerGardenInFirstContainer = false;
+        let flowerGardenIndexInFirstContainer = null;
+        let isFlowerGardenInSecondContainer = false;
+        let flowerGardenIndexInSecondContainer = null;
+
+        const firstContainerChildren = Array.from(
+            $standContainerNode[0].children
+        );
+
+        if (firstContainerChildren.length) {
+            for (let i = 0; i < firstContainerChildren.length; i++) {
+                if (
+                    firstContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInFirstContainer = true;
+                    flowerGardenIndexInFirstContainer =
+                        +firstContainerChildren[i].dataset.itemIndex;
+                }
+            }
+        }
+
+        const secondContainerChildren = Array.from(
+            $standContainer2Node[0].children
+        );
+
+        if (secondContainerChildren.length) {
+            for (let i = 0; i < secondContainerChildren.length; i++) {
+                if (
+                    secondContainerChildren[i].dataset.category ===
+                    "flowerGarden"
+                ) {
+                    isFlowerGardenInSecondContainer = true;
+                    flowerGardenIndexInSecondContainer =
+                        +secondContainerChildren[i].dataset.itemIndex;
+                }
+            }
+        }
+        const elementsFlowerGardens = Array.from(
+            $elementsValuesFlowerGardensNode[0].children
+        );
+
+        let selectedFlowerGarden = +userClick.parentElement.dataset.itemIndex;
+
+        if (
+            isFlowerGardenInFirstContainer &&
+            !isFlowerGardenInSecondContainer
+        ) {
+            elementsFlowerGardens[selectedFlowerGarden].classList.contains(
+                "active"
+            ) &&
+                elementsFlowerGardens[selectedFlowerGarden].classList.remove(
+                    "active"
+                );
+
+            let itemsToRemove = getItemsToRemove(
+                firstContainerChildren,
+                $standContainerNode,
+                {
+                    isFlowerGarden: isFlowerGardenInFirstContainer,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (
+            !isFlowerGardenInFirstContainer &&
+            isFlowerGardenInSecondContainer
+        ) {
+            elementsFlowerGardens[selectedFlowerGarden].classList.contains(
+                "active"
+            ) &&
+                elementsFlowerGardens[selectedFlowerGarden].classList.remove(
+                    "active"
+                );
+
+            let itemsToRemove = getItemsToRemove(
+                secondContainerChildren,
+                $standContainer2Node,
+                {
+                    isFlowerGarden: isFlowerGardenInSecondContainer,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (
+            isFlowerGardenInFirstContainer &&
+            isFlowerGardenInSecondContainer
+        ) {
+            if (
+                selectedFlowerGarden === flowerGardenIndexInFirstContainer &&
+                flowerGardenIndexInFirstContainer !==
+                    flowerGardenIndexInSecondContainer
+            ) {
+                elementsFlowerGardens[selectedFlowerGarden].classList.contains(
+                    "active"
+                ) &&
+                    elementsFlowerGardens[
+                        selectedFlowerGarden
+                    ].classList.remove("active");
+
+                let itemsToRemove = getItemsToRemove(
+                    firstContainerChildren,
+                    $standContainerNode,
+                    {
+                        isFlowerGarden: isFlowerGardenInFirstContainer,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            } else if (
+                selectedFlowerGarden === flowerGardenIndexInSecondContainer &&
+                flowerGardenIndexInFirstContainer !==
+                    flowerGardenIndexInSecondContainer
+            ) {
+                elementsFlowerGardens[selectedFlowerGarden].classList.contains(
+                    "active"
+                ) &&
+                    elementsFlowerGardens[
+                        selectedFlowerGarden
+                    ].classList.remove("active");
+
+                let itemsToRemove = getItemsToRemove(
+                    secondContainerChildren,
+                    $standContainer2Node,
+                    {
+                        isFlowerGarden: isFlowerGardenInSecondContainer,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            } else if (
+                flowerGardenIndexInFirstContainer ===
+                flowerGardenIndexInSecondContainer
+            ) {
+                let itemsToRemove = getItemsToRemove(
+                    firstContainerChildren,
+                    $standContainerNode,
+                    {
+                        isFlowerGarden: isFlowerGardenInFirstContainer,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            }
+        }
     }
 });
 
@@ -2748,8 +2988,12 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     // Перевіряємо в якому контейнері вже є тумби
     let isStandInFirstContainer = false;
     let standIdInFirstContainer = null;
+    let isFlowerGardenInFirstContainer = false;
+    let flowerGardenIndexInFirstContainer = null;
     let isStandInSecondContainer = false;
     let standIdInSecondContainer = null;
+    let isFlowerGardenInSecondContainer = false;
+    let flowerGardenIndexInSecondContainer = null;
     let totalStandsLength = 0;
     let monumentsInFirstContainer = [];
     let monumentsInSecondContainer = [];
@@ -2771,6 +3015,12 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 monumentsInFirstContainer.push(
                     +firstContainerChildren[i].dataset.itemIndex
                 );
+            }
+
+            if (firstContainerChildren[i].dataset.category === "flowerGarden") {
+                isFlowerGardenInFirstContainer = true;
+                flowerGardenIndexInFirstContainer =
+                    +firstContainerChildren[i].dataset.itemIndex;
             }
         }
     }
@@ -2795,8 +3045,20 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     +secondContainerChildren[i].dataset.itemIndex
                 );
             }
+
+            if (
+                secondContainerChildren[i].dataset.category === "flowerGarden"
+            ) {
+                isFlowerGardenInSecondContainer = true;
+                flowerGardenIndexInSecondContainer =
+                    +secondContainerChildren[i].dataset.itemIndex;
+            }
         }
     }
+
+    const elementsFlowerGardens = Array.from(
+        $elementsValuesFlowerGardensNode[0].children
+    );
 
     selectedStand !== -1 && (totalStandsLength += length);
 
@@ -2982,6 +3244,14 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             }
         }
 
+        isFlowerGardenInFirstContainer &&
+            elementsFlowerGardens[
+                flowerGardenIndexInFirstContainer
+            ].classList.contains("active") &&
+            elementsFlowerGardens[
+                flowerGardenIndexInFirstContainer
+            ].classList.remove("active");
+
         // Отримуємо всі елементи, котрі потрібно видалити
         let itemsToRemove = getItemsToRemove(
             firstContainerChildren,
@@ -2989,6 +3259,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             {
                 isStand: true,
                 isMonument: true,
+                isFlowerGarden: isFlowerGardenInFirstContainer,
                 mustRemoveElementOnConstructor: true,
             }
         );
@@ -3022,6 +3293,14 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             }
         }
 
+        isFlowerGardenInSecondContainer &&
+            elementsFlowerGardens[
+                flowerGardenIndexInSecondContainer
+            ].classList.contains("active") &&
+            elementsFlowerGardens[
+                flowerGardenIndexInSecondContainer
+            ].classList.remove("active");
+
         // Отримуємо всі елементи, котрі потрібно видалити
         let itemsToRemove = getItemsToRemove(
             secondContainerChildren,
@@ -3029,6 +3308,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
             {
                 isStand: true,
                 isMonument: true,
+                isFlowerGarden: isFlowerGardenInSecondContainer,
                 mustRemoveElementOnConstructor: true,
             }
         );
@@ -3050,6 +3330,18 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         if (standIdInFirstContainer !== standIdInSecondContainer) {
             elementsStands[selectedStand].classList.remove("active");
 
+            if (
+                flowerGardenIndexInFirstContainer !==
+                flowerGardenIndexInSecondContainer
+            ) {
+                elementsFlowerGardens[
+                    flowerGardenIndexInFirstContainer
+                ].classList.contains("active") &&
+                    elementsFlowerGardens[
+                        flowerGardenIndexInFirstContainer
+                    ].classList.remove("active");
+            }
+
             if (selectedStand === standIdInFirstContainer) {
                 // Отримуємо всі елементи, котрі потрібно видалити
                 let itemsToRemove = getItemsToRemove(
@@ -3058,6 +3350,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     {
                         isStand: true,
                         isMonument: true,
+                        isFlowerGarden: isFlowerGardenInFirstContainer,
                         mustRemoveElementOnConstructor: true,
                     }
                 );
@@ -3091,6 +3384,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     {
                         isStand: true,
                         isMonument: true,
+                        isFlowerGarden: isFlowerGardenInSecondContainer,
                         mustRemoveElementOnConstructor: true,
                     }
                 );
@@ -3118,6 +3412,17 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 calculate();
             }
         } else if (standIdInFirstContainer === standIdInSecondContainer) {
+            if (
+                flowerGardenIndexInFirstContainer !==
+                flowerGardenIndexInSecondContainer
+            ) {
+                elementsFlowerGardens[
+                    flowerGardenIndexInFirstContainer
+                ].classList.contains("active") &&
+                    elementsFlowerGardens[
+                        flowerGardenIndexInFirstContainer
+                    ].classList.remove("active");
+            }
             // Отримуємо всі елементи, котрі потрібно видалити з першого контейнера
             let itemsToRemove = getItemsToRemove(
                 firstContainerChildren,
@@ -3125,6 +3430,7 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 {
                     isStand: true,
                     isMonument: true,
+                    isFlowerGarden: isFlowerGardenInSecondContainer,
                     mustRemoveElementOnConstructor: true,
                 }
             );
@@ -5046,6 +5352,24 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
                 flowerGardenIndexInFirstContainer ===
                 flowerGardenIndexInSecondContainer
             ) {
+                let itemsToRemove = getItemsToRemove(
+                    firstContainerChildren,
+                    $standContainerNode,
+                    {
+                        isFlowerGarden: true,
+                        mustRemoveElementOnConstructor: true,
+                    }
+                );
+
+                handleRemoveFilterNode(itemsToRemove);
+                handleRemoveCalculatorNode(itemsToRemove);
+                handleRemoveItemsFromSelectedItems(itemsToRemove);
+                calculate();
+            } else if (
+                flowerGardenIndexInFirstContainer !==
+                    flowerGardenIndexInSecondContainer &&
+                selectedFlowerGarden === flowerGardenIndexInFirstContainer
+            ) {
                 elementsFlowerGardens[selectedFlowerGarden].classList.remove(
                     "active"
                 );
@@ -5066,26 +5390,12 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
             } else if (
                 flowerGardenIndexInFirstContainer !==
                     flowerGardenIndexInSecondContainer &&
-                selectedFlowerGarden === flowerGardenIndexInFirstContainer
-            ) {
-                let itemsToRemove = getItemsToRemove(
-                    firstContainerChildren,
-                    $standContainerNode,
-                    {
-                        isFlowerGarden: true,
-                        mustRemoveElementOnConstructor: true,
-                    }
-                );
-
-                handleRemoveFilterNode(itemsToRemove);
-                handleRemoveCalculatorNode(itemsToRemove);
-                handleRemoveItemsFromSelectedItems(itemsToRemove);
-                calculate();
-            } else if (
-                flowerGardenIndexInFirstContainer !==
-                    flowerGardenIndexInSecondContainer &&
                 selectedFlowerGarden === flowerGardenIndexInSecondContainer
             ) {
+                elementsFlowerGardens[selectedFlowerGarden].classList.remove(
+                    "active"
+                );
+
                 let itemsToRemove = getItemsToRemove(
                     secondContainerChildren,
                     $standContainer2Node,
