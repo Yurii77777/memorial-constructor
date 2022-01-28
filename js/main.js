@@ -262,6 +262,21 @@ const startHelper = () => {
 startHelper();
 
 /**
+ * Функція для створення повноцінних масивів із HTML вузлів
+ * Function to create arrays from HTML nodes
+ * Функция для создания полноценных массивов из HTML узлов
+ * @param {HTMLnode} HTMLnode
+ * @returns Array contains HTML node children
+ */
+const createArrayFromNode = (HTMLnode) => {
+    let result = [];
+
+    result = Array.from(HTMLnode[0].children);
+
+    return result;
+};
+
+/**
  * Функція для створення карток елементів у вкладках.
  * Function for creating tabbed items in tabs.
  * Функция для создания карточек элементов во вкладках.
@@ -393,9 +408,8 @@ const handleHideInfoMessage = () => {
     );
 
     if ($chooseStandMessage[0].classList.contains("active")) {
-        const standMessageChildrenNodes = Array.from(
-            $chooseStandMessage[0].children
-        );
+        const standMessageChildrenNodes =
+            createArrayFromNode($chooseStandMessage);
 
         for (let i = 0; i < standMessageChildrenNodes.length; i++) {
             standMessageChildrenNodes[i].classList.contains(
@@ -492,17 +506,10 @@ const getStandAndMonumentsIndexes = (node) => {
                 childrenOfStandContainer1[i].dataset.itemIndex
             );
         }
-
-        // if (childrenOfStandContainer1[i].dataset.category === "monuments") {
-        //     selectedMonumentsIndexes.push(
-        //         Number(childrenOfStandContainer1[i].dataset.itemIndex)
-        //     );
-        // }
     }
 
     return {
         selectedStandIndex,
-        // selectedMonumentsIndexes
     };
 };
 
@@ -1218,7 +1225,7 @@ languageListNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    const languageList = Array.from(languageListNode[0].children);
+    const languageList = createArrayFromNode(languageListNode);
 
     if (
         (isHiddenLanguageList && languageList.indexOf(userClick) === 0) ||
@@ -1290,10 +1297,10 @@ elementsNavTabs[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    const navTabs = Array.from(elementsNavTabs[0].children);
+    const navTabs = createArrayFromNode(elementsNavTabs);
     let currentActiveTab = 0;
     let selectedNavTabNumber = navTabs.indexOf(userClick.parentNode);
-    const navTabsValues = Array.from(elementsNavTabsValues[0].children);
+    const navTabsValues = createArrayFromNode(elementsNavTabsValues);
 
     for (let i = 0; i < navTabs.length; i++) {
         if (navTabs[i].classList.contains("active")) {
@@ -1424,7 +1431,7 @@ const handleSubmitLandPlotInputsData = () => {
         let socleIndex = null;
         let isTileSelected = false;
         let tileIndex = null;
-        const landElementsChildren = Array.from($landElements[0].children);
+        const landElementsChildren = createArrayFromNode($landElements);
 
         for (let i = 0; i < landElementsChildren.length; i++) {
             if (landElementsChildren[i].dataset.category === "curbs") {
@@ -1655,6 +1662,108 @@ const createCalculatorDataNode = (
     return result;
 };
 
+const getElementsInfoFromBothContainers = (props) => {
+    const { HTMLnode1, HTMLnode2 } = props;
+
+    let firstContainerChildren = null;
+    let isFirstStand = false;
+    let firstStandIndex = null;
+    let isFirstFlowerGarden = false;
+    let firstFlowerGardenIndex = null;
+    let isMonumentInFirstContainer = false;
+    let sameStelesCountInFirstContainer = null;
+    let firstContainerMonuments = [];
+
+    let secondContainerChildren = null;
+    let isSecondStand = false;
+    let secondStandIndex = null;
+    let isSecondFlowerGarden = false;
+    let secondFlowerGardenIndex = null;
+    let isMonumentInSecondContainer = false;
+    let sameStelesCountInSecondContainer = null;
+    let secondContainerMonuments = [];
+
+    if (HTMLnode1) {
+        firstContainerChildren = Array.from(HTMLnode1[0].children);
+
+        for (let i = 0; i < firstContainerChildren.length; i++) {
+            if (firstContainerChildren[i].dataset.category === "stand") {
+                isFirstStand = true;
+                firstStandIndex = +firstContainerChildren[i].dataset.itemIndex;
+            } else if (
+                firstContainerChildren[i].dataset.category === "monuments"
+            ) {
+                firstContainerMonuments.push(
+                    +firstContainerChildren[i].dataset.itemIndex
+                );
+                isMonumentInFirstContainer = true;
+            } else if (
+                firstContainerChildren[i].dataset.category === "flowerGarden"
+            ) {
+                isFirstFlowerGarden = true;
+                firstFlowerGardenIndex =
+                    +firstContainerChildren[i].dataset.itemIndex;
+            }
+        }
+
+        const [firstMonumentIndex, secondMonumentIndex] =
+            firstContainerMonuments;
+        firstMonumentIndex === secondMonumentIndex
+            ? (sameStelesCountInFirstContainer = 2)
+            : (sameStelesCountInFirstContainer = 1);
+    }
+
+    if (HTMLnode2) {
+        secondContainerChildren = Array.from(HTMLnode2[0].children);
+
+        for (let i = 0; i < secondContainerChildren.length; i++) {
+            if (secondContainerChildren[i].dataset.category === "stand") {
+                isSecondStand = true;
+                secondStandIndex =
+                    +secondContainerChildren[i].dataset.itemIndex;
+            } else if (
+                secondContainerChildren[i].dataset.category === "monuments"
+            ) {
+                secondContainerMonuments.push(
+                    +secondContainerChildren[i].dataset.itemIndex
+                );
+                isMonumentInSecondContainer = true;
+            } else if (
+                secondContainerChildren[i].dataset.category === "flowerGarden"
+            ) {
+                isSecondFlowerGarden = true;
+                secondFlowerGardenIndex =
+                    +secondContainerChildren[i].dataset.itemIndex;
+            }
+        }
+
+        const [firstMonumentIndex, secondMonumentIndex] =
+            secondContainerMonuments;
+        firstMonumentIndex === secondMonumentIndex
+            ? (sameStelesCountInSecondContainer = 2)
+            : (sameStelesCountInSecondContainer = 1);
+    }
+
+    return {
+        firstContainerChildren,
+        isFirstStand,
+        firstStandIndex,
+        isFirstFlowerGarden,
+        firstFlowerGardenIndex,
+        isMonumentInFirstContainer,
+        sameStelesCountInFirstContainer,
+        firstContainerMonuments,
+        secondContainerChildren,
+        isSecondStand,
+        secondStandIndex,
+        isSecondFlowerGarden,
+        secondFlowerGardenIndex,
+        isMonumentInSecondContainer,
+        sameStelesCountInSecondContainer,
+        secondContainerMonuments,
+    };
+};
+
 /**
  * Обробники блоку Фільтр
  * Handlers for Filter section
@@ -1665,91 +1774,40 @@ filterNode[0].addEventListener("click", (e) => {
 
     let userClick = e.target;
     let selectedItem = null;
-    const filterElements = Array.from(filterNode[0].children);
+    const filterElements = createArrayFromNode(filterNode);
     selectedItem = filterElements.indexOf(userClick.parentNode);
+
+    const {
+        firstContainerChildren,
+        isFirstStand: isStandInFirstContainer,
+        firstStandIndex: standIdInFirstContainer,
+        isFirstFlowerGarden: isFlowerGardenInFirstContainer,
+        firstFlowerGardenIndex: flowerGardenIndexInFirstContainer,
+        isMonumentInFirstContainer,
+        sameStelesCountInFirstContainer,
+        firstContainerMonuments: monumentsInFirstContainer,
+        secondContainerChildren,
+        isSecondStand: isStandInSecondContainer,
+        secondStandIndex: standIdInSecondContainer,
+        isSecondFlowerGarden: isFlowerGardenInSecondContainer,
+        secondFlowerGardenIndex: flowerGardenIndexInSecondContainer,
+        isMonumentInSecondContainer,
+        sameStelesCountInSecondContainer,
+        secondContainerMonuments: monumentsInSecondContainer,
+    } = getElementsInfoFromBothContainers({
+        HTMLnode1: $standContainerNode,
+        HTMLnode2: $standContainer2Node,
+    });
+
+    const monumentsElements = createArrayFromNode(elementsValuesMonumentsNode);
 
     if (
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "stand"
     ) {
-        let isStandInFirstContainer = false;
-        let standIdInFirstContainer = null;
-        let isFlowerGardenInFirstContainer = false;
-        let flowerGardenIndexInFirstContainer = null;
-        let isStandInSecondContainer = false;
-        let standIdInSecondContainer = null;
-        let isFlowerGardenInSecondContainer = false;
-        let flowerGardenIndexInSecondContainer = null;
-        let monumentsInFirstContainer = [];
-        let monumentsInSecondContainer = [];
-
-        const firstContainerChildren = Array.from(
-            $standContainerNode[0].children
-        );
-
-        if (firstContainerChildren.length) {
-            for (let i = 0; i < firstContainerChildren.length; i++) {
-                if (firstContainerChildren[i].dataset.category === "stand") {
-                    isStandInFirstContainer = true;
-                    let standIndex =
-                        +firstContainerChildren[i].dataset.itemIndex;
-                    standIdInFirstContainer = standIndex;
-                }
-
-                if (
-                    firstContainerChildren[i].dataset.category === "monuments"
-                ) {
-                    monumentsInFirstContainer.push(
-                        +firstContainerChildren[i].dataset.itemIndex
-                    );
-                }
-
-                if (
-                    firstContainerChildren[i].dataset.category ===
-                    "flowerGarden"
-                ) {
-                    isFlowerGardenInFirstContainer = true;
-                    flowerGardenIndexInFirstContainer =
-                        +firstContainerChildren[i].dataset.itemIndex;
-                }
-            }
-        }
-
-        const secondContainerChildren = Array.from(
-            $standContainer2Node[0].children
-        );
-
-        if (secondContainerChildren.length) {
-            for (let i = 0; i < secondContainerChildren.length; i++) {
-                if (secondContainerChildren[i].dataset.category === "stand") {
-                    isStandInSecondContainer = true;
-                    let standIndex =
-                        +secondContainerChildren[i].dataset.itemIndex;
-                    standIdInSecondContainer = standIndex;
-                }
-
-                if (
-                    secondContainerChildren[i].dataset.category === "monuments"
-                ) {
-                    monumentsInSecondContainer.push(
-                        +secondContainerChildren[i].dataset.itemIndex
-                    );
-                }
-
-                if (
-                    secondContainerChildren[i].dataset.category ===
-                    "flowerGarden"
-                ) {
-                    isFlowerGardenInSecondContainer = true;
-                    flowerGardenIndexInSecondContainer =
-                        +secondContainerChildren[i].dataset.itemIndex;
-                }
-            }
-        }
-
-        const elementsStands = Array.from($elementsStandsNode[0].children);
-        const elementsFlowerGardens = Array.from(
-            $elementsValuesFlowerGardensNode[0].children
+        const elementsStands = createArrayFromNode($elementsStandsNode);
+        const elementsFlowerGardens = createArrayFromNode(
+            $elementsValuesFlowerGardensNode
         );
 
         if (isStandInFirstContainer && !isStandInSecondContainer) {
@@ -1758,10 +1816,6 @@ filterNode[0].addEventListener("click", (e) => {
             ].classList.remove("active");
 
             // Зняти вибір стелли
-            const monumentsElements = Array.from(
-                elementsValuesMonumentsNode[0].children
-            );
-
             for (let i = 0; i < monumentsElements.length; i++) {
                 if (monumentsElements[i].classList.contains("active")) {
                     for (let j = 0; j < monumentsInFirstContainer.length; j++) {
@@ -1805,10 +1859,6 @@ filterNode[0].addEventListener("click", (e) => {
             elementsStands[
                 +userClick.parentNode.dataset.itemIndex
             ].classList.remove("active");
-
-            const monumentsElements = Array.from(
-                elementsValuesMonumentsNode[0].children
-            );
 
             for (let i = 0; i < monumentsElements.length; i++) {
                 if (monumentsElements[i].classList.contains("active")) {
@@ -1875,10 +1925,6 @@ filterNode[0].addEventListener("click", (e) => {
                         }
                     );
 
-                    const monumentsElements = Array.from(
-                        elementsValuesMonumentsNode[0].children
-                    );
-
                     for (let i = 0; i < monumentsElements.length; i++) {
                         if (monumentsElements[i].classList.contains("active")) {
                             for (
@@ -1926,10 +1972,6 @@ filterNode[0].addEventListener("click", (e) => {
                         }
                     );
 
-                    const monumentsElements = Array.from(
-                        elementsValuesMonumentsNode[0].children
-                    );
-
                     for (let i = 0; i < monumentsElements.length; i++) {
                         if (monumentsElements[i].classList.contains("active")) {
                             for (
@@ -1970,12 +2012,9 @@ filterNode[0].addEventListener("click", (e) => {
                     {
                         isStand: true,
                         isMonument: true,
+                        isFlowerGarden: isFlowerGardenInFirstContainer,
                         mustRemoveElementOnConstructor: true,
                     }
-                );
-
-                const monumentsElements = Array.from(
-                    elementsValuesMonumentsNode[0].children
                 );
 
                 for (let i = 0; i < monumentsElements.length; i++) {
@@ -2001,57 +2040,11 @@ filterNode[0].addEventListener("click", (e) => {
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "monuments"
     ) {
-        // Знайти в якому контейнері конструктора знаходиться обрана стелла
-        let isMonumentInFirstContainer = false;
-        let sameStelesCountInFirstContainer = null;
-        let isMonumentInSecondContainer = false;
-        let sameStelesCountInSecondContainer = null;
-
-        const firstContainerChildren = Array.from(
-            $standContainerNode[0].children
-        );
-
-        if (firstContainerChildren.length) {
-            for (let i = 0; i < firstContainerChildren.length; i++) {
-                if (
-                    firstContainerChildren[i].dataset.category ===
-                        "monuments" &&
-                    +firstContainerChildren[i].dataset.itemIndex ===
-                        +userClick.parentNode.dataset.itemIndex
-                ) {
-                    isMonumentInFirstContainer = true;
-                    sameStelesCountInFirstContainer += 1;
-                }
-            }
-        }
-
-        const secondContainerChildren = Array.from(
-            $standContainer2Node[0].children
-        );
-
-        if (secondContainerChildren.length) {
-            for (let i = 0; i < secondContainerChildren.length; i++) {
-                if (
-                    secondContainerChildren[i].dataset.category ===
-                        "monuments" &&
-                    +secondContainerChildren[i].dataset.itemIndex ===
-                        +userClick.parentNode.dataset.itemIndex
-                ) {
-                    isMonumentInSecondContainer = true;
-                    sameStelesCountInSecondContainer += 1;
-                }
-            }
-        }
-
         if (
             isMonumentInFirstContainer &&
             sameStelesCountInFirstContainer === 1 &&
             !isMonumentInSecondContainer
         ) {
-            const monumentsElements = Array.from(
-                elementsValuesMonumentsNode[0].children
-            );
-
             monumentsElements[
                 +userClick.parentNode.dataset.itemIndex
             ].classList.remove("active");
@@ -2069,39 +2062,23 @@ filterNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const firstContainerChildrenAfterRemove = Array.from(
-                $standContainerNode[0].children
-            );
-            let monumentIndexToKeep = null;
-            let standIndex = null;
+            const { firstContainerMonuments, firstStandIndex: standIndex } =
+                getElementsInfoFromBothContainers({
+                    HTMLnode1: $standContainerNode,
+                });
+            const [monumentIndexToKeep] = firstContainerMonuments;
 
-            if (firstContainerChildrenAfterRemove.length) {
-                for (
-                    let i = 0;
-                    i < firstContainerChildrenAfterRemove.length;
-                    i++
-                ) {
-                    if (
-                        firstContainerChildrenAfterRemove[i].dataset
-                            .category === "monuments"
-                    ) {
-                        monumentIndexToKeep =
-                            +firstContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                        $standContainerNode[0].removeChild(
-                            firstContainerChildrenAfterRemove[i]
-                        );
-                    }
+            const updatedFirstContainerChildren =
+                createArrayFromNode($standContainerNode);
 
-                    if (
-                        firstContainerChildrenAfterRemove[i].dataset
-                            .category === "stand"
-                    ) {
-                        standIndex =
-                            +firstContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                    }
-                }
+            for (let i = 0; i < updatedFirstContainerChildren.length; i++) {
+                updatedFirstContainerChildren[i].dataset.category ===
+                    "monuments" &&
+                    +updatedFirstContainerChildren[i].dataset.itemIndex ===
+                        monumentIndexToKeep &&
+                    $standContainerNode[0].removeChild(
+                        updatedFirstContainerChildren[i]
+                    );
             }
 
             if (monumentIndexToKeep || monumentIndexToKeep === 0) {
@@ -2149,39 +2126,23 @@ filterNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const firstContainerChildrenAfterRemove = Array.from(
-                $standContainerNode[0].children
-            );
-            let monumentIndexToKeep = null;
-            let standIndex = null;
+            const { firstContainerMonuments, firstStandIndex: standIndex } =
+                getElementsInfoFromBothContainers({
+                    HTMLnode1: $standContainerNode,
+                });
+            const [monumentIndexToKeep] = firstContainerMonuments;
 
-            if (firstContainerChildrenAfterRemove.length) {
-                for (
-                    let i = 0;
-                    i < firstContainerChildrenAfterRemove.length;
-                    i++
-                ) {
-                    if (
-                        firstContainerChildrenAfterRemove[i].dataset
-                            .category === "monuments"
-                    ) {
-                        monumentIndexToKeep =
-                            +firstContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                        $standContainerNode[0].removeChild(
-                            firstContainerChildrenAfterRemove[i]
-                        );
-                    }
+            const updatedFirstContainerChildren =
+                createArrayFromNode($standContainerNode);
 
-                    if (
-                        firstContainerChildrenAfterRemove[i].dataset
-                            .category === "stand"
-                    ) {
-                        standIndex =
-                            +firstContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                    }
-                }
+            for (let i = 0; i < updatedFirstContainerChildren.length; i++) {
+                updatedFirstContainerChildren[i].dataset.category ===
+                    "monuments" &&
+                    +updatedFirstContainerChildren[i].dataset.itemIndex ===
+                        monumentIndexToKeep &&
+                    $standContainerNode[0].removeChild(
+                        updatedFirstContainerChildren[i]
+                    );
             }
 
             if (monumentIndexToKeep || monumentIndexToKeep === 0) {
@@ -2212,10 +2173,6 @@ filterNode[0].addEventListener("click", (e) => {
             sameStelesCountInSecondContainer === 1 &&
             isMonumentInSecondContainer
         ) {
-            const monumentsElements = Array.from(
-                elementsValuesMonumentsNode[0].children
-            );
-
             monumentsElements[
                 +userClick.parentNode.dataset.itemIndex
             ].classList.remove("active");
@@ -2233,39 +2190,23 @@ filterNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const secondContainerChildrenAfterRemove = Array.from(
-                $standContainer2Node[0].children
-            );
-            let monumentIndexToKeep = null;
-            let standIndex = null;
+            const { secondContainerMonuments, secondStandIndex: standIndex } =
+                getElementsInfoFromBothContainers({
+                    HTMLnode2: $standContainer2Node,
+                });
+            const [monumentIndexToKeep] = secondContainerMonuments;
 
-            if (secondContainerChildrenAfterRemove.length) {
-                for (
-                    let i = 0;
-                    i < secondContainerChildrenAfterRemove.length;
-                    i++
-                ) {
-                    if (
-                        secondContainerChildrenAfterRemove[i].dataset
-                            .category === "monuments"
-                    ) {
-                        monumentIndexToKeep =
-                            +secondContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                        $standContainer2Node[0].removeChild(
-                            secondContainerChildrenAfterRemove[i]
-                        );
-                    }
+            const updatedSecondContainerChildren =
+                createArrayFromNode($standContainer2Node);
 
-                    if (
-                        secondContainerChildrenAfterRemove[i].dataset
-                            .category === "stand"
-                    ) {
-                        standIndex =
-                            +secondContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                    }
-                }
+            for (let i = 0; i < updatedSecondContainerChildren.length; i++) {
+                updatedSecondContainerChildren[i].dataset.category ===
+                    "monuments" &&
+                    +updatedSecondContainerChildren[i].dataset.itemIndex ===
+                        monumentIndexToKeep &&
+                    $standContainer2Node[0].removeChild(
+                        updatedSecondContainerChildren[i]
+                    );
             }
 
             if (monumentIndexToKeep || monumentIndexToKeep === 0) {
@@ -2313,39 +2254,23 @@ filterNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const secondContainerChildrenAfterRemove = Array.from(
-                $standContainer2Node[0].children
-            );
-            let monumentIndexToKeep = null;
-            let standIndex = null;
+            const { secondContainerMonuments, secondStandIndex: standIndex } =
+                getElementsInfoFromBothContainers({
+                    HTMLnode2: $standContainer2Node,
+                });
+            const [monumentIndexToKeep] = secondContainerMonuments;
 
-            if (secondContainerChildrenAfterRemove.length) {
-                for (
-                    let i = 0;
-                    i < secondContainerChildrenAfterRemove.length;
-                    i++
-                ) {
-                    if (
-                        secondContainerChildrenAfterRemove[i].dataset
-                            .category === "monuments"
-                    ) {
-                        monumentIndexToKeep =
-                            +secondContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                        $standContainer2Node[0].removeChild(
-                            secondContainerChildrenAfterRemove[i]
-                        );
-                    }
+            const updatedSecondContainerChildren =
+                createArrayFromNode($standContainer2Node);
 
-                    if (
-                        secondContainerChildrenAfterRemove[i].dataset
-                            .category === "stand"
-                    ) {
-                        standIndex =
-                            +secondContainerChildrenAfterRemove[i].dataset
-                                .itemIndex;
-                    }
-                }
+            for (let i = 0; i < updatedSecondContainerChildren.length; i++) {
+                updatedSecondContainerChildren[i].dataset.category ===
+                    "monuments" &&
+                    +updatedSecondContainerChildren[i].dataset.itemIndex ===
+                        monumentIndexToKeep &&
+                    $standContainer2Node[0].removeChild(
+                        updatedSecondContainerChildren[i]
+                    );
             }
 
             if (monumentIndexToKeep || monumentIndexToKeep === 0) {
@@ -2392,14 +2317,14 @@ filterNode[0].addEventListener("click", (e) => {
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "curbs"
     ) {
-        const elementsBorders = Array.from(elementsBordersNode[0].children);
+        const elementsBorders = createArrayFromNode(elementsBordersNode);
 
         for (let i = 0; i < elementsBorders.length; i++) {
             elementsBorders[i].classList.contains("active") &&
                 elementsBorders[i].classList.remove("active");
         }
 
-        const landElementsChildren = Array.from($landElements[0].children);
+        const landElementsChildren = createArrayFromNode($landElements);
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
             $landElements,
@@ -2419,23 +2344,21 @@ filterNode[0].addEventListener("click", (e) => {
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "socle"
     ) {
-        const elementsSocles = Array.from(elementsValuesSocleNode[0].children);
+        const elementsSocles = createArrayFromNode(elementsValuesSocleNode);
 
         for (let i = 0; i < elementsSocles.length; i++) {
             elementsSocles[i].classList.contains("active") &&
                 elementsSocles[i].classList.remove("active");
         }
 
-        const elementsBeautification = Array.from(
-            elementsBeautyNode[0].children
-        );
+        const elementsBeautification = createArrayFromNode(elementsBeautyNode);
 
         for (let i = 0; i < elementsBeautification.length; i++) {
             elementsBeautification[i].classList.contains("active") &&
                 elementsBeautification[i].classList.remove("active");
         }
 
-        const landElementsChildren = Array.from($landElements[0].children);
+        const landElementsChildren = createArrayFromNode($landElements);
 
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
@@ -2461,16 +2384,14 @@ filterNode[0].addEventListener("click", (e) => {
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "beauty"
     ) {
-        const elementsBeautification = Array.from(
-            elementsBeautyNode[0].children
-        );
+        const elementsBeautification = createArrayFromNode(elementsBeautyNode);
 
         for (let i = 0; i < elementsBeautification.length; i++) {
             elementsBeautification[i].classList.contains("active") &&
                 elementsBeautification[i].classList.remove("active");
         }
 
-        const landElementsChildren = Array.from($landElements[0].children);
+        const landElementsChildren = createArrayFromNode($landElements);
 
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
@@ -2493,48 +2414,9 @@ filterNode[0].addEventListener("click", (e) => {
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "flowerGarden"
     ) {
-        let isFlowerGardenInFirstContainer = false;
-        let flowerGardenIndexInFirstContainer = null;
-        let isFlowerGardenInSecondContainer = false;
-        let flowerGardenIndexInSecondContainer = null;
-
-        const firstContainerChildren = Array.from(
-            $standContainerNode[0].children
+        const elementsFlowerGardens = createArrayFromNode(
+            $elementsValuesFlowerGardensNode
         );
-
-        if (firstContainerChildren.length) {
-            for (let i = 0; i < firstContainerChildren.length; i++) {
-                if (
-                    firstContainerChildren[i].dataset.category ===
-                    "flowerGarden"
-                ) {
-                    isFlowerGardenInFirstContainer = true;
-                    flowerGardenIndexInFirstContainer =
-                        +firstContainerChildren[i].dataset.itemIndex;
-                }
-            }
-        }
-
-        const secondContainerChildren = Array.from(
-            $standContainer2Node[0].children
-        );
-
-        if (secondContainerChildren.length) {
-            for (let i = 0; i < secondContainerChildren.length; i++) {
-                if (
-                    secondContainerChildren[i].dataset.category ===
-                    "flowerGarden"
-                ) {
-                    isFlowerGardenInSecondContainer = true;
-                    flowerGardenIndexInSecondContainer =
-                        +secondContainerChildren[i].dataset.itemIndex;
-                }
-            }
-        }
-        const elementsFlowerGardens = Array.from(
-            $elementsValuesFlowerGardensNode[0].children
-        );
-
         let selectedFlowerGarden = +userClick.parentElement.dataset.itemIndex;
 
         if (
