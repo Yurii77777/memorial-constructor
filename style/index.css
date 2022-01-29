@@ -1579,6 +1579,7 @@ body {
     }
 
     .filter-section__item-title {
+        word-break: break-word;
         line-height: 1.2;
     }
 

@@ -162,6 +162,10 @@ let isFirstStep = true;
 let isSecondStep = false;
 let isThirdStep = false;
 let isFourthStep = false;
+let isFifthStep = false;
+let isSixthStep = false;
+let isSeventhStep = false;
+let isEighthStep = false;
 
 const startHelper = () => {
     const infoMessages = [
@@ -198,6 +202,36 @@ const startHelper = () => {
             engMessage:
                 "<p>You can add a maximum of 4 stella to the mockup. And now you have the opportunity to add elements of the design of the stella</p>",
         },
+        {
+            id: 4,
+            uaMessage:
+                "<p>Радимо звернути увагу на оформлення ділянки, вибравши цоколь чи протиусадкові плити</p>",
+            ruMessage:
+                "<p>Советуем обратить внимание на оформление участка, выбрав цоколь или противоусадочные плиты.</p>",
+            engMessage:
+                "<p>We advise you to pay attention to the design of the land plot by choosing a socle or anti-shrink plates.</p>",
+        },
+        {
+            id: 5,
+            uaMessage: "<p>Тепер Ви можете вибрати плитку та квітник</p>",
+            ruMessage: "<p>Теперь Вы можете выбрать плитку и цветник</p>",
+            engMessage: "<p>Now you can choose tiles and flower beds</p>",
+        },
+        {
+            id: 6,
+            uaMessage:
+                "<p>Також зверніть увагу на вкладки Бордюри та Аксесуари</p>",
+            ruMessage:
+                "<p>Также обратите внимание на вкладки Бордюры и Аксессуары</p>",
+            engMessage:
+                "<p>Also pay attention to the tabs Borders and Accessories</p>",
+        },
+        {
+            id: 7,
+            uaMessage: "<p>Не забудьте зберегти готовий макет!</p>",
+            ruMessage: "<p>Не забудьте сохранить готовый макет!</p>",
+            engMessage: "<p>Don't forget to save ready mockup</p>",
+        },
     ];
 
     const getHelpMessage = (infoMessages, messageNumber) => {
@@ -222,6 +256,41 @@ const startHelper = () => {
         });
     };
 
+    for (let i = 0; i < selectedItems.length; i++) {
+        const { category } = selectedItems[i];
+
+        if (category === "stand") {
+            isSecondStep = false;
+            isThirdStep = true;
+        }
+
+        if (category === "monuments" && !isFifthStep) {
+            isThirdStep = false;
+            isFourthStep = true;
+        }
+
+        if (category === "socle") {
+            isFourthStep = false;
+            isFifthStep = false;
+            isSixthStep = true;
+        }
+
+        if (category === "flowerGarden") {
+            isSixthStep = false;
+            isSeventhStep = true;
+        }
+
+        if (category === "flowerGarden") {
+            isSixthStep = false;
+            isSeventhStep = true;
+        }
+
+        if (category === "curbs" || category === "beauty") {
+            isSeventhStep = false;
+            isEighthStep = true;
+        }
+    }
+
     if (isFirstStep) {
         getHelpMessage(infoMessages, 0);
 
@@ -237,7 +306,7 @@ const startHelper = () => {
             isFirstStep = false;
             isSecondStep = true;
             startHelper();
-        }, 16000);
+        }, 8000);
     }
 
     if (isSecondStep) {
@@ -257,9 +326,27 @@ const startHelper = () => {
             $steleDecorationForm[0].classList.remove("focus");
         }, 3000);
     }
-};
 
-startHelper();
+    if (isFifthStep) {
+        getHelpMessage(infoMessages, 4);
+    }
+
+    if (isSixthStep) {
+        getHelpMessage(infoMessages, 5);
+    }
+
+    if (isSeventhStep) {
+        setTimeout(() => {
+            getHelpMessage(infoMessages, 6);
+        }, 3000);
+    }
+
+    if (isEighthStep) {
+        setTimeout(() => {
+            getHelpMessage(infoMessages, 7);
+        }, 3000);
+    }
+};
 
 /**
  * Функція для створення повноцінних масивів із HTML вузлів
@@ -498,7 +585,7 @@ const getStandAndMonumentsIndexes = (node) => {
     let selectedStandIndex = null;
     // let selectedMonumentsIndexes = [];
 
-    const childrenOfStandContainer1 = Array.from(node[0].children);
+    const childrenOfStandContainer1 = createArrayFromNode(node);
 
     for (let i = 0; i < childrenOfStandContainer1.length; i++) {
         if (childrenOfStandContainer1[i].dataset.category === "stand") {
@@ -526,7 +613,7 @@ const handleMonumentsDataForScaling = (standNode, standLength) => {
     let monumentData = {};
 
     // Заходит контейнер для поиска и расчета
-    const standContainerChildren = Array.from(standNode[0].children);
+    const standContainerChildren = createArrayFromNode(standNode);
 
     for (let i = 0; i < standContainerChildren.length; i++) {
         if (standContainerChildren[i].dataset.category === "monuments") {
@@ -1601,7 +1688,8 @@ const createCalculatorDataNode = (
     siteNameUa,
     siteNameRu,
     siteNameEng,
-    price
+    price,
+    id
 ) => {
     let result = null;
 
@@ -1627,6 +1715,7 @@ const createCalculatorDataNode = (
                  </div>`;
     } else if (category === "socle" || category === "beauty") {
         const totalCost = handleSocleCost(price);
+        let flag = id === 0 || id === 1;
 
         result = `<div class="calculator__data-container" 
                         data-category="${category}" 
@@ -1637,9 +1726,15 @@ const createCalculatorDataNode = (
                         <span data-lang="eng">${siteNameEng}</span>
                     </p>
                     <p class="calculator__data-value">
-                        <span data-lang="ua" class="active">${totalCost} грн.</span>
-                        <span data-lang="ru">${totalCost} грн.</span>
-                        <span data-lang="eng">${totalCost} UAH</span>
+                        <span data-lang="ua" class="active">${
+                            flag ? totalCost : price
+                        } грн.</span>
+                        <span data-lang="ru">${
+                            flag ? totalCost : price
+                        } грн.</span>
+                        <span data-lang="eng">${
+                            flag ? totalCost : price
+                        } UAH</span>
                     </p>
                  </div>`;
     } else {
@@ -1684,7 +1779,7 @@ const getElementsInfoFromBothContainers = (props) => {
     let secondContainerMonuments = [];
 
     if (HTMLnode1) {
-        firstContainerChildren = Array.from(HTMLnode1[0].children);
+        firstContainerChildren = createArrayFromNode(HTMLnode1);
 
         for (let i = 0; i < firstContainerChildren.length; i++) {
             if (firstContainerChildren[i].dataset.category === "stand") {
@@ -1714,7 +1809,7 @@ const getElementsInfoFromBothContainers = (props) => {
     }
 
     if (HTMLnode2) {
-        secondContainerChildren = Array.from(HTMLnode2[0].children);
+        secondContainerChildren = createArrayFromNode(HTMLnode2);
 
         for (let i = 0; i < secondContainerChildren.length; i++) {
             if (secondContainerChildren[i].dataset.category === "stand") {
@@ -1850,11 +1945,6 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
-
-            isSecondStep = true;
-            isThirdStep = false;
-            isFourthStep = false;
-            startHelper();
         } else if (!isStandInFirstContainer && isStandInSecondContainer) {
             elementsStands[
                 +userClick.parentNode.dataset.itemIndex
@@ -1898,11 +1988,6 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
-
-            isSecondStep = true;
-            isThirdStep = false;
-            isFourthStep = false;
-            startHelper();
         } else if (isStandInFirstContainer && isStandInSecondContainer) {
             if (standIdInFirstContainer !== standIdInSecondContainer) {
                 elementsStands[
@@ -2005,6 +2090,19 @@ filterNode[0].addEventListener("click", (e) => {
                     calculate();
                 }
             } else if (standIdInFirstContainer === standIdInSecondContainer) {
+                if (
+                    flowerGardenIndexInFirstContainer !==
+                    flowerGardenIndexInSecondContainer
+                ) {
+                    isFlowerGardenInFirstContainer &&
+                        elementsFlowerGardens[
+                            flowerGardenIndexInFirstContainer
+                        ].classList.contains("active") &&
+                        elementsFlowerGardens[
+                            flowerGardenIndexInFirstContainer
+                        ].classList.remove("active");
+                }
+
                 // Отримуємо всі елементи, котрі потрібно видалити з першого контейнера
                 let itemsToRemove = getItemsToRemove(
                     firstContainerChildren,
@@ -2103,9 +2201,6 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
-
-            isFourthStep = false;
-            startHelper();
 
             calculate();
         } else if (
@@ -2231,9 +2326,6 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveFilterNode(itemsToRemove);
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
-
-            isFourthStep = false;
-            startHelper();
 
             calculate();
         } else if (
@@ -2631,7 +2723,7 @@ const handleRemoveFilterNode = (props) => {
         for (let i = 0; i < itemsToRemove.length; i++) {
             const { category, index } = itemsToRemove[i];
 
-            const itemsInFilterSection = Array.from(filterNode[0].children);
+            const itemsInFilterSection = createArrayFromNode(filterNode);
 
             for (let j = 0; j < itemsInFilterSection.length; j++) {
                 if (
@@ -2664,7 +2756,7 @@ const handleRemoveCalculatorNode = (props) => {
         for (let i = 0; i < itemsToRemove.length; i++) {
             const { category, index } = itemsToRemove[i];
 
-            const calculatorNodes = Array.from($calculatorSection[0].children);
+            const calculatorNodes = createArrayFromNode($calculatorSection);
 
             for (let j = 0; j < calculatorNodes.length; j++) {
                 if (
@@ -2831,7 +2923,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 $elementsStandsNode[0].addEventListener("click", (e) => {
     let selectedStand = null;
     let userClick = e.target;
-    const elementsStands = Array.from($elementsStandsNode[0].children);
+    const elementsStands = createArrayFromNode($elementsStandsNode);
     selectedStand = elementsStands.indexOf(userClick.parentNode);
     const { width } = handleLandPlotSizes();
 
@@ -2868,78 +2960,45 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                                     />`;
 
     // Перевіряємо в якому контейнері вже є тумби
-    let isStandInFirstContainer = false;
-    let standIdInFirstContainer = null;
-    let isFlowerGardenInFirstContainer = false;
-    let flowerGardenIndexInFirstContainer = null;
-    let isStandInSecondContainer = false;
-    let standIdInSecondContainer = null;
-    let isFlowerGardenInSecondContainer = false;
-    let flowerGardenIndexInSecondContainer = null;
+    const {
+        firstContainerChildren,
+        isFirstStand: isStandInFirstContainer,
+        firstStandIndex: standIdInFirstContainer,
+        isFirstFlowerGarden: isFlowerGardenInFirstContainer,
+        firstFlowerGardenIndex: flowerGardenIndexInFirstContainer,
+        firstContainerMonuments: monumentsInFirstContainer,
+        secondContainerChildren,
+        isSecondStand: isStandInSecondContainer,
+        secondStandIndex: standIdInSecondContainer,
+        isSecondFlowerGarden: isFlowerGardenInSecondContainer,
+        secondFlowerGardenIndex: flowerGardenIndexInSecondContainer,
+        secondContainerMonuments: monumentsInSecondContainer,
+    } = getElementsInfoFromBothContainers({
+        HTMLnode1: $standContainerNode,
+        HTMLnode2: $standContainer2Node,
+    });
+
     let totalStandsLength = 0;
-    let monumentsInFirstContainer = [];
-    let monumentsInSecondContainer = [];
 
-    const firstContainerChildren = Array.from($standContainerNode[0].children);
+    if (standIdInFirstContainer) {
+        const { length: firstStandLength } = getElementData(
+            standIdInFirstContainer,
+            "stand"
+        );
 
-    if (firstContainerChildren.length) {
-        for (let i = 0; i < firstContainerChildren.length; i++) {
-            if (firstContainerChildren[i].dataset.category === "stand") {
-                isStandInFirstContainer = true;
-                let standIndex = +firstContainerChildren[i].dataset.itemIndex;
-                standIdInFirstContainer = standIndex;
-
-                const { length } = getElementData(standIndex, "stand");
-                totalStandsLength += length;
-            }
-
-            if (firstContainerChildren[i].dataset.category === "monuments") {
-                monumentsInFirstContainer.push(
-                    +firstContainerChildren[i].dataset.itemIndex
-                );
-            }
-
-            if (firstContainerChildren[i].dataset.category === "flowerGarden") {
-                isFlowerGardenInFirstContainer = true;
-                flowerGardenIndexInFirstContainer =
-                    +firstContainerChildren[i].dataset.itemIndex;
-            }
-        }
+        totalStandsLength += firstStandLength;
     }
 
-    const secondContainerChildren = Array.from(
-        $standContainer2Node[0].children
-    );
-
-    if (secondContainerChildren.length) {
-        for (let i = 0; i < secondContainerChildren.length; i++) {
-            if (secondContainerChildren[i].dataset.category === "stand") {
-                isStandInSecondContainer = true;
-                let standIndex = +secondContainerChildren[i].dataset.itemIndex;
-                standIdInSecondContainer = standIndex;
-
-                const { length } = getElementData(standIndex, "stand");
-                totalStandsLength += length;
-            }
-
-            if (secondContainerChildren[i].dataset.category === "monuments") {
-                monumentsInSecondContainer.push(
-                    +secondContainerChildren[i].dataset.itemIndex
-                );
-            }
-
-            if (
-                secondContainerChildren[i].dataset.category === "flowerGarden"
-            ) {
-                isFlowerGardenInSecondContainer = true;
-                flowerGardenIndexInSecondContainer =
-                    +secondContainerChildren[i].dataset.itemIndex;
-            }
-        }
+    if (standIdInSecondContainer) {
+        const { length: secondStandLength } = getElementData(
+            standIdInSecondContainer,
+            "stand"
+        );
+        totalStandsLength += secondStandLength;
     }
 
-    const elementsFlowerGardens = Array.from(
-        $elementsValuesFlowerGardensNode[0].children
+    const elementsFlowerGardens = createArrayFromNode(
+        $elementsValuesFlowerGardensNode
     );
 
     selectedStand !== -1 && (totalStandsLength += length);
@@ -2991,10 +3050,6 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         );
 
         calculate();
-
-        isSecondStep = false;
-        isThirdStep = true;
-        startHelper();
     } else if (
         selectedStand !== -1 &&
         userClick.className !== "field__hide-element-button" &&
@@ -3113,8 +3168,8 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     ) {
         elementsStands[selectedStand].classList.remove("active");
 
-        const monumentsElements = Array.from(
-            elementsValuesMonumentsNode[0].children
+        const monumentsElements = createArrayFromNode(
+            elementsValuesMonumentsNode
         );
 
         for (let i = 0; i < monumentsElements.length; i++) {
@@ -3150,10 +3205,6 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
-
-        isSecondStep = true;
-        isThirdStep = false;
-        startHelper();
     } else if (
         selectedStand !== -1 &&
         userClick.className === "field__hide-element-button" &&
@@ -3162,8 +3213,8 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
     ) {
         elementsStands[selectedStand].classList.remove("active");
 
-        const monumentsElements = Array.from(
-            elementsValuesMonumentsNode[0].children
+        const monumentsElements = createArrayFromNode(
+            elementsValuesMonumentsNode
         );
 
         for (let i = 0; i < monumentsElements.length; i++) {
@@ -3199,10 +3250,6 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
         calculate();
-
-        isSecondStep = true;
-        isThirdStep = false;
-        startHelper();
     } else if (
         selectedStand !== -1 &&
         userClick.className === "field__hide-element-button" &&
@@ -3237,8 +3284,8 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     }
                 );
 
-                const monumentsElements = Array.from(
-                    elementsValuesMonumentsNode[0].children
+                const monumentsElements = createArrayFromNode(
+                    elementsValuesMonumentsNode
                 );
 
                 for (let i = 0; i < monumentsElements.length; i++) {
@@ -3271,8 +3318,8 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                     }
                 );
 
-                const monumentsElements = Array.from(
-                    elementsValuesMonumentsNode[0].children
+                const monumentsElements = createArrayFromNode(
+                    elementsValuesMonumentsNode
                 );
 
                 for (let i = 0; i < monumentsElements.length; i++) {
@@ -3317,8 +3364,8 @@ $elementsStandsNode[0].addEventListener("click", (e) => {
                 }
             );
 
-            const monumentsElements = Array.from(
-                elementsValuesMonumentsNode[0].children
+            const monumentsElements = createArrayFromNode(
+                elementsValuesMonumentsNode
             );
 
             for (let i = 0; i < monumentsElements.length; i++) {
@@ -3403,7 +3450,7 @@ const handleSizesForMonument = (
         calculateFirstMonumentSizes(selectedMonument);
     } else if (isMonumentInContainer) {
         let monumentOnConstructorIndex = null;
-        const childNodes = Array.from(containerNode[0].children);
+        const childNodes = createArrayFromNode(containerNode);
 
         for (let i = 0; i < childNodes.length; i++) {
             childNodes[i].dataset.category === "monuments" &&
@@ -3534,7 +3581,7 @@ const renderMonumentOnConstructor = (
     }
 
     if (monumentData.length === 2 && !isDoubleStele) {
-        const nodeToRenderChildren = Array.from(nodeToRender[0].children);
+        const nodeToRenderChildren = createArrayFromNode(nodeToRender);
         let firstMonumentId = null;
 
         for (let i = 0; i < nodeToRenderChildren.length; i++) {
@@ -3657,7 +3704,7 @@ const handleAddChooseStandMessageNode = (props) => {
                             </div>`;
 
     if (nodeToRender[0].children.length > 1) {
-        const nodeToRenderChildren = Array.from(nodeToRender[0].children);
+        const nodeToRenderChildren = createArrayFromNode(nodeToRender);
 
         for (let i = 0; i < nodeToRenderChildren.length; i++) {
             nodeToRenderChildren[i].classList.contains(
@@ -3676,9 +3723,7 @@ const handleAddChooseStandMessageNode = (props) => {
  */
 elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
     let userClick = e.target;
-    const elementsMonuments = Array.from(
-        elementsValuesMonumentsNode[0].children
-    );
+    const elementsMonuments = createArrayFromNode(elementsValuesMonumentsNode);
     let selectedMonument = elementsMonuments.indexOf(userClick.parentNode);
     let selectedMonumentData = null;
     selectedMonument !== -1 &&
@@ -3717,7 +3762,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
     let secondStandIndex = null;
     let totalMonumentsLengthInSecondContainer = 0;
 
-    const firstContainerChildren = Array.from($standContainerNode[0].children);
+    const firstContainerChildren = createArrayFromNode($standContainerNode);
 
     if (firstContainerChildren.length) {
         for (let i = 0; i < firstContainerChildren.length; i++) {
@@ -3739,9 +3784,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         }
     }
 
-    const secondContainerChildren = Array.from(
-        $standContainer2Node[0].children
-    );
+    const secondContainerChildren = createArrayFromNode($standContainer2Node);
 
     if (secondContainerChildren.length) {
         for (let i = 0; i < secondContainerChildren.length; i++) {
@@ -3834,9 +3877,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 monumentNodeToCalculator
             );
 
-            isFourthStep = true;
-            startHelper();
-
             calculate();
         } else if (isDoubleStele && !isMonumentInFirstContainer) {
             elementsMonuments[selectedMonument].classList.add("active");
@@ -3870,9 +3910,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 "beforebegin",
                 monumentNodeToCalculator
             );
-
-            isFourthStep = true;
-            startHelper();
 
             calculate();
         } else if (isDoubleStele && isMonumentInFirstContainer) {
@@ -3938,9 +3975,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 monumentNodeToCalculator
             );
 
-            isFourthStep = true;
-            startHelper();
-
             calculate();
         } else if (isDoubleStele && !isMonumentInSecondContainer) {
             elementsMonuments[selectedMonument].classList.add("active");
@@ -3974,9 +4008,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                 "beforebegin",
                 monumentNodeToCalculator
             );
-
-            isFourthStep = true;
-            startHelper();
 
             calculate();
         } else if (isDoubleStele && isMonumentInSecondContainer) {
@@ -4069,9 +4100,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
                             monumentNodeToCalculator
                         );
                         $chooseStandMessage[0].classList.remove("active");
-
-                        isFourthStep = true;
-                        startHelper();
 
                         calculate();
                     }
@@ -4356,9 +4384,7 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
         let isMonumentInSecondContainer = false;
         let sameStelesCountInSecondContainer = null;
 
-        const firstContainerChildren = Array.from(
-            $standContainerNode[0].children
-        );
+        const firstContainerChildren = createArrayFromNode($standContainerNode);
 
         if (firstContainerChildren.length) {
             for (let i = 0; i < firstContainerChildren.length; i++) {
@@ -4374,9 +4400,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             }
         }
 
-        const secondContainerChildren = Array.from(
-            $standContainer2Node[0].children
-        );
+        const secondContainerChildren =
+            createArrayFromNode($standContainer2Node);
 
         if (secondContainerChildren.length) {
             for (let i = 0; i < secondContainerChildren.length; i++) {
@@ -4412,9 +4437,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const firstContainerChildrenAfterRemove = Array.from(
-                $standContainerNode[0].children
-            );
+            const firstContainerChildrenAfterRemove =
+                createArrayFromNode($standContainerNode);
             let monumentIndexToKeep = null;
             let standIndex = null;
 
@@ -4470,9 +4494,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
 
-            isFourthStep = false;
-            startHelper();
-
             calculate();
         } else if (
             isMonumentInFirstContainer &&
@@ -4492,9 +4513,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const firstContainerChildrenAfterRemove = Array.from(
-                $standContainerNode[0].children
-            );
+            const firstContainerChildrenAfterRemove =
+                createArrayFromNode($standContainerNode);
             let monumentIndexToKeep = null;
             let standIndex = null;
 
@@ -4570,9 +4590,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const secondContainerChildrenAfterRemove = Array.from(
-                $standContainer2Node[0].children
-            );
+            const secondContainerChildrenAfterRemove =
+                createArrayFromNode($standContainer2Node);
             let monumentIndexToKeep = null;
             let standIndex = null;
 
@@ -4628,9 +4647,6 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
             handleRemoveCalculatorNode(itemsToRemove);
             handleRemoveItemsFromSelectedItems(itemsToRemove);
 
-            isFourthStep = false;
-            startHelper();
-
             calculate();
         } else if (
             !isMonumentInFirstContainer &&
@@ -4650,9 +4666,8 @@ elementsValuesMonumentsNode[0].addEventListener("click", (e) => {
 
             // Перевірити наявність стел на тумбі
             // щоб відцентрувати стеллу, якщо вона ще тут є
-            const secondContainerChildrenAfterRemove = Array.from(
-                $standContainer2Node[0].children
-            );
+            const secondContainerChildrenAfterRemove =
+                createArrayFromNode($standContainer2Node);
             let monumentIndexToKeep = null;
             let standIndex = null;
 
@@ -4741,8 +4756,8 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    const elementsFlowerGardens = Array.from(
-        $elementsValuesFlowerGardensNode[0].children
+    const elementsFlowerGardens = createArrayFromNode(
+        $elementsValuesFlowerGardensNode
     );
     let selectedFlowerGarden = elementsFlowerGardens.indexOf(
         userClick.parentNode
@@ -4759,9 +4774,7 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
         let secondStandIndex = null;
         let isFlowerGardenInSecondContainer = false;
 
-        const firstContainerChildren = Array.from(
-            $standContainerNode[0].children
-        );
+        const firstContainerChildren = createArrayFromNode($standContainerNode);
 
         if (firstContainerChildren.length) {
             for (let i = 0; i < firstContainerChildren.length; i++) {
@@ -4780,9 +4793,8 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
             }
         }
 
-        const secondContainerChildren = Array.from(
-            $standContainer2Node[0].children
-        );
+        const secondContainerChildren =
+            createArrayFromNode($standContainer2Node);
 
         if (secondContainerChildren.length) {
             for (let i = 0; i < secondContainerChildren.length; i++) {
@@ -5150,9 +5162,7 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
         let isFlowerGardenInSecondContainer = false;
         let flowerGardenIndexInSecondContainer = null;
 
-        const firstContainerChildren = Array.from(
-            $standContainerNode[0].children
-        );
+        const firstContainerChildren = createArrayFromNode($standContainerNode);
 
         if (firstContainerChildren.length) {
             for (let i = 0; i < firstContainerChildren.length; i++) {
@@ -5167,9 +5177,8 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
             }
         }
 
-        const secondContainerChildren = Array.from(
-            $standContainer2Node[0].children
-        );
+        const secondContainerChildren =
+            createArrayFromNode($standContainer2Node);
 
         if (secondContainerChildren.length) {
             for (let i = 0; i < secondContainerChildren.length; i++) {
@@ -5884,8 +5893,8 @@ const handleSubmitSteleForm = (e) => {
         node: $draggableElementsNode,
     });
 
-    const draggableElementsChildren = Array.from(
-        $draggableElementsNode[0].children
+    const draggableElementsChildren = createArrayFromNode(
+        $draggableElementsNode
     );
 
     for (let i = 0; i < draggableElementsChildren.length; i++) {
@@ -5940,6 +5949,9 @@ const handleSubmitSteleForm = (e) => {
         isRuLanguage,
         isEngLanguage,
     });
+
+    isFifthStep = true;
+    startHelper();
 };
 
 $steleDecorationForm[0].onsubmit = handleSubmitSteleForm;
@@ -5982,8 +5994,8 @@ $draggableElementsNode[0].addEventListener("click", (e) => {
     ) {
         userClickVariant3.classList.remove("active");
     } else if (e.target.className === "stella-lettering__remove") {
-        const draggableElementsChildren = Array.from(
-            $draggableElementsNode[0].children
+        const draggableElementsChildren = createArrayFromNode(
+            $draggableElementsNode
         );
         let itemToRemove = draggableElementsChildren.indexOf(
             e.target.parentNode
@@ -5999,8 +6011,8 @@ $draggableElementsNode[0].addEventListener("touchstart", (e) => {
     e.stopPropagation();
 
     if (e.target.className === "stella-lettering__remove") {
-        const draggableElementsChildren = Array.from(
-            $draggableElementsNode[0].children
+        const draggableElementsChildren = createArrayFromNode(
+            $draggableElementsNode
         );
         let itemToRemove = draggableElementsChildren.indexOf(
             e.target.parentNode
@@ -6623,9 +6635,9 @@ elementsBordersNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    const elementsBorders = Array.from(elementsBordersNode[0].children);
+    const elementsBorders = createArrayFromNode(elementsBordersNode);
     let selectedBorder = elementsBorders.indexOf(userClick.parentNode);
-    const landElementsChildren = Array.from($landElements[0].children);
+    const landElementsChildren = createArrayFromNode($landElements);
 
     if (
         selectedBorder !== -1 &&
@@ -6743,9 +6755,9 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    const elementsSocles = Array.from(elementsValuesSocleNode[0].children);
+    const elementsSocles = createArrayFromNode(elementsValuesSocleNode);
     let selectedSocle = elementsSocles.indexOf(userClick.parentNode);
-    const landElementsChildren = Array.from($landElements[0].children);
+    const landElementsChildren = createArrayFromNode($landElements);
 
     if (
         selectedSocle !== -1 &&
@@ -6781,6 +6793,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
 
         let selectedSocleElement = getElementData(selectedSocle, "socle");
         const {
+            id,
             imgUrl,
             imgConstructorUrl,
             siteNameUa,
@@ -6791,7 +6804,11 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         } = selectedSocleElement;
 
         const totalSocleCost = handleSocleCost(price);
-        selectedSocleElement["totalElementCost"] = totalSocleCost;
+        let flag = id === 0 || id === 1;
+
+        flag
+            ? (selectedSocleElement["totalElementCost"] = totalSocleCost)
+            : (selectedSocleElement["totalElementCost"] = price);
         selectedItems.push(selectedSocleElement);
 
         let propsForFilterNode = {};
@@ -6820,7 +6837,8 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
             siteNameUa,
             siteNameRu,
             siteNameEng,
-            price
+            price,
+            id
         );
 
         handleAddFilterNode(propsForFilterNode);
@@ -6836,6 +6854,12 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         userClick.className === "field__hide-element-button"
     ) {
         elementsSocles[selectedSocle].classList.remove("active");
+        const elementsBeautification = createArrayFromNode(elementsBeautyNode);
+
+        for (let i = 0; i < elementsBeautification.length; i++) {
+            elementsBeautification[i].classList.contains("active") &&
+                elementsBeautification[i].classList.remove("active");
+        }
 
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
@@ -6856,6 +6880,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         handleRemoveFilterNode(itemsToRemove);
         handleRemoveCalculatorNode(itemsToRemove);
         handleRemoveItemsFromSelectedItems(itemsToRemove);
+
         calculate();
     }
 
@@ -6873,11 +6898,11 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
     e.stopPropagation();
 
     let userClick = e.target;
-    const elementsBeautification = Array.from(elementsBeautyNode[0].children);
+    const elementsBeautification = createArrayFromNode(elementsBeautyNode);
     let selectedBeautyElement = elementsBeautification.indexOf(
         userClick.parentNode
     );
-    const landElementsChildren = Array.from($landElements[0].children);
+    const landElementsChildren = createArrayFromNode($landElements);
 
     if (
         selectedBeautyElement !== -1 &&
@@ -6908,9 +6933,13 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
         }
 
         let isSocleSelected = false;
+        let socleElementIndex = null;
+
         for (let i = 0; i < landElementsChildren.length; i++) {
-            landElementsChildren[i].dataset.category === "socle" &&
-                (isSocleSelected = true);
+            if (landElementsChildren[i].dataset.category === "socle") {
+                isSocleSelected = true;
+                socleElementIndex = +landElementsChildren[i].dataset.itemIndex;
+            }
         }
 
         if (!isSocleSelected) {
@@ -6919,7 +6948,10 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 isRuLanguage,
                 isEngLanguage,
             });
-        } else if (isSocleSelected) {
+        } else if (
+            isSocleSelected &&
+            (socleElementIndex === 0 || socleElementIndex === 1)
+        ) {
             elementsBeautification[selectedBeautyElement].classList.add(
                 "active"
             );
@@ -7041,7 +7073,7 @@ const handleCancelEditPlotInputsData = () => {
  */
 const getActiveElements = (node) => {
     let activeElement = [];
-    const elements = Array.from(node[0].children);
+    const elements = createArrayFromNode(node);
 
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].classList.contains("active")) {
@@ -7104,6 +7136,8 @@ const calculate = () => {
             $totalCostNode[0].removeChild($totalCostNode[0].children[1]);
         $totalCostNode[0].classList.remove("active");
     }
+
+    startHelper();
 };
 
 const hideMockupImg = () => {
