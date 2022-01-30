@@ -193,6 +193,8 @@ body {
 .vignette-list__arrow-down,
 .vignette-list__arrow-up,
 .save-and-send__save-button > span,
+.save-final-img-info,
+.save-final-img-info > span,
 .second-stand_choose > span {
     display: none;
 }

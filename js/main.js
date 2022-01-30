@@ -6825,11 +6825,33 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
                                         data-category="${category}"
                                         data-item-index="${selectedSocle}"
                                     />`;
-        landPlotNode[0].classList.add("hide");
+
         $landElements[0].insertAdjacentHTML(
             "afterbegin",
             imgSocleOnConstructor
         );
+
+        const landElementsChildrenUpd = createArrayFromNode($landElements);
+
+        for (let i = 0; i < landElementsChildrenUpd.length; i++) {
+            if (
+                +landElementsChildrenUpd[i].dataset.itemIndex === 0 ||
+                +landElementsChildrenUpd[i].dataset.itemIndex === 1 ||
+                +landElementsChildrenUpd[i].dataset.itemIndex === 4 ||
+                +landElementsChildrenUpd[i].dataset.itemIndex === 5
+            ) {
+                landPlotNode[0].classList.add("hide");
+            } else if (
+                +landElementsChildrenUpd[i].dataset.itemIndex === 2 ||
+                +landElementsChildrenUpd[i].dataset.itemIndex === 3
+            ) {
+                landElementsChildrenUpd[i].style.width = "50%";
+                landElementsChildrenUpd[i].style.top = "50%";
+                landElementsChildrenUpd[i].style.left = "50%";
+                landElementsChildrenUpd[i].style.transform =
+                    "translate(-50%, 45%)";
+            }
+        }
 
         const socleNodeToCalculator = createCalculatorDataNode(
             category,
