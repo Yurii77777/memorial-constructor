@@ -158,6 +158,8 @@ const $chooseStandMessage = document.querySelectorAll(
     ".info-message__choose-stand"
 );
 
+const $finalInfoMessage = document.querySelectorAll(".save-final-img-info");
+
 let isFirstStep = true;
 let isSecondStep = false;
 let isThirdStep = false;
@@ -6831,6 +6833,9 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
             imgSocleOnConstructor
         );
 
+        let intViewportWidth = window.innerWidth;
+        console.log("[intViewportWidth]", intViewportWidth);
+
         const landElementsChildrenUpd = createArrayFromNode($landElements);
 
         for (let i = 0; i < landElementsChildrenUpd.length; i++) {
@@ -6848,8 +6853,17 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
                 landElementsChildrenUpd[i].style.width = "50%";
                 landElementsChildrenUpd[i].style.top = "50%";
                 landElementsChildrenUpd[i].style.left = "50%";
-                landElementsChildrenUpd[i].style.transform =
-                    "translate(-50%, 45%)";
+
+                if (intViewportWidth < 576) {
+                    landElementsChildrenUpd[i].style.transform =
+                        "translate(-50%, 35%)";
+                } else if (intViewportWidth > 576 && intViewportWidth < 992) {
+                    landElementsChildrenUpd[i].style.transform =
+                        "translate(-50%, 68%)";
+                } else if (intViewportWidth > 992) {
+                    landElementsChildrenUpd[i].style.transform =
+                        "translate(-50%, 45%)";
+                }
             }
         }
 
@@ -7315,6 +7329,12 @@ const takeshot = () => {
 
     html2canvas($mockup[0]).then(function (canvas) {
         document.querySelectorAll(".mockup-canvas")[0].appendChild(canvas);
+    });
+
+    handleInfoAndErrorMessages($finalInfoMessage, {
+        isUaLanguage,
+        isRuLanguage,
+        isEngLanguage,
     });
 };
 

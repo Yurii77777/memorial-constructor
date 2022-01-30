@@ -319,6 +319,7 @@ body {
 .candle-item > span.active,
 .vignette-item > span.active,
 .save-and-send__save-button > span.active,
+.save-final-img-info > span.active,
 .steleDates > span.active {
     display: inline;
 }
@@ -751,6 +752,23 @@ body {
     position: absolute;
     z-index: 100;
     top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: var(--sm-padding);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: rgba(158, 158, 158, 0.13);
+}
+
+.save-final-img-info.active {
+    display: block;
+    position: absolute;
+    z-index: 9000;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: center;
+    width: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: var(--sm-padding);
