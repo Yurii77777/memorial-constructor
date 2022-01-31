@@ -504,6 +504,64 @@
                 <span data-lang="ru">Сохранить</span>
                 <span data-lang="eng">Save</span>
             </button>
+
+            <button onclick="handleSendWindow()" class="save-and-send__send-button">
+                <span data-lang="ua" class="active">Відправити</span>
+                <span data-lang="ru">Отправить</span>
+                <span data-lang="eng">Send</span>
+            </button>
+        </section>
+
+        <section class="send-modal-window">
+            <img src="./img/icons/close.svg" alt="Закрити макет" class="close-send-mobile-window" onclick="handleSendWindow()">
+            <form method="post" class="send-order-form">
+                <div class="stele-form-input-wrapper">
+                    <input 
+                        type="text" 
+                        name="userName" 
+                        id="userName" 
+                        onblur="hasInputValue()"
+                    >
+                    <label for="userName" class="userName">
+                        <span data-lang="ua" class="active">Ім'я</span>
+                        <span data-lang="ru">Имя</span>
+                        <span data-lang="eng">Name</span>
+                    </label>
+                </div>
+                <div class="stele-form-input-wrapper">
+                    <input 
+                        type="tel" 
+                        name="userPhone" 
+                        id="userPhone" 
+                        onblur="hasInputValue()"
+                        required
+                    >
+                    <label for="userPhone" class="userPhone">
+                        <span data-lang="ua" class="active">Телефон</span>
+                        <span data-lang="ru">Телефон</span>
+                        <span data-lang="eng">Phone number</span>
+                    </label>
+                </div>
+                <div class="stele-form-input-wrapper">
+                    <input 
+                        type="email" 
+                        name="userEmail" 
+                        id="userEmail" 
+                        onblur="hasInputValue()"
+                    >
+                    <label for="userEmail" class="userEmail">
+                        <span data-lang="ua" class="active">E-mail</span>
+                        <span data-lang="ru">E-mail</span>
+                        <span data-lang="eng">E-mail</span>
+                    </label>
+                </div>
+
+                <button class="save-and-send__send-button" type="submit">
+                    <span data-lang="ua" class="active">Відправити</span>
+                    <span data-lang="ru">Отправить</span>
+                    <span data-lang="eng">Send</span>
+                </button>
+            </form>
         </section>
     </div>
 

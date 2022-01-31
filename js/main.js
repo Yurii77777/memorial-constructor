@@ -159,6 +159,8 @@ const $chooseStandMessage = document.querySelectorAll(
 );
 
 const $finalInfoMessage = document.querySelectorAll(".save-final-img-info");
+const $sendModalWindow = document.querySelectorAll(".send-modal-window");
+const $sendOrderForm = document.querySelectorAll(".send-order-form");
 
 let isFirstStep = true;
 let isSecondStep = false;
@@ -5320,6 +5322,7 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
  */
 const hasInputValue = () => {
     const inputs = $steleDecorationForm[0].getElementsByTagName("input");
+    const sendFormInputs = $sendOrderForm[0].getElementsByTagName("input");
 
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].value && inputs[i].value !== "") {
@@ -5329,6 +5332,17 @@ const hasInputValue = () => {
         if (!inputs[i].value || inputs[i].value === "") {
             inputs[i].classList.contains("has-value") &&
                 inputs[i].classList.remove("has-value");
+        }
+    }
+
+    for (let i = 0; i < sendFormInputs.length; i++) {
+        if (sendFormInputs[i].value && sendFormInputs[i].value !== "") {
+            sendFormInputs[i].classList.add("has-value");
+        }
+
+        if (!sendFormInputs[i].value || sendFormInputs[i].value === "") {
+            sendFormInputs[i].classList.contains("has-value") &&
+                sendFormInputs[i].classList.remove("has-value");
         }
     }
 };
@@ -7119,6 +7133,55 @@ const getActiveElements = (node) => {
 
     return activeElement;
 };
+
+const handleSendWindow = () => {
+    !$sendModalWindow[0].classList.contains("active")
+        ? $sendModalWindow[0].classList.add("active")
+        : $sendModalWindow[0].classList.remove("active");
+};
+
+const sendOrder = (e) => {
+    e.preventDefault();
+
+    let data = {};
+    let order = [];
+
+    const userName = document.getElementById("userName").value;
+    const userPhone = document.getElementById("userPhone").value;
+    const userEmail = document.getElementById("userEmail").value;
+
+    data["userName"] = userName;
+    data["userPhone"] = userPhone;
+    data["userEmail"] = userEmail;
+
+    for (let i = 0; i < selectedItems.length; i++) {
+        let item = {};
+        const { titleUa, price } = selectedItems[i];
+        item["titleUa"] = titleUa;
+        item["price"] = price;
+        order.push(item);
+    }
+
+    data["order"] = order;
+
+    const { width, length } = handleLandPlotSizes();
+    data["landPlotSizes"] = `${width} x ${length} см`;
+
+    let perimeter = 2 * (width / 100 + length / 100);
+    data["perimeter"] = `${perimeter} м`;
+
+    let area = (width * length) / 10000;
+    data["area"] = `${area} м2`;
+
+    let result = JSON.stringify(data); // Зібрані для відправки дані в форматі JSON
+    console.log("[result]", result);
+
+    handleSendWindow();
+
+    return result;
+};
+
+$sendOrderForm[0].onsubmit = sendOrder;
 
 /**
  * Блок калькулятора

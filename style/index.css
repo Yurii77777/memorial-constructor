@@ -166,6 +166,9 @@ body {
 .steleName > span,
 .steleSecondName > span,
 .steleDates > span,
+.userName > span,
+.userPhone > span,
+.userEmail > span,
 .button-add-data-to-stele > span,
 .button-cancel-data-to-stele > span,
 .select-stele-title > span,
@@ -193,8 +196,10 @@ body {
 .vignette-list__arrow-down,
 .vignette-list__arrow-up,
 .save-and-send__save-button > span,
+.save-and-send__send-button > span,
 .save-final-img-info,
 .save-final-img-info > span,
+.send-modal-window,
 .second-stand_choose > span {
     display: none;
 }
@@ -206,6 +211,35 @@ body {
     position: relative;
     z-index: 10;
     cursor: pointer;
+}
+
+.send-modal-window.active {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--sm-padding);
+}
+
+.send-order-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.close-send-mobile-window {
+    width: 15px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.send-order-form > button {
+    margin-bottom: 0;
 }
 
 .title-container__language-list.active > li:nth-child(2) {
@@ -307,6 +341,9 @@ body {
 .steleSurname > span.active,
 .steleName > span.active,
 .steleSecondName > span.active,
+.userName > span.active,
+.userPhone > span.active,
+.userEmail > span.active,
 .button-add-data-to-stele > span.active,
 .button-cancel-data-to-stele > span.active,
 .select-stele-title > span.active,
@@ -319,6 +356,7 @@ body {
 .candle-item > span.active,
 .vignette-item > span.active,
 .save-and-send__save-button > span.active,
+.save-and-send__send-button > span.active,
 .save-final-img-info > span.active,
 .steleDates > span.active {
     display: inline;
@@ -469,6 +507,9 @@ body {
 .steleSurname,
 .steleName,
 .steleSecondName,
+.userName,
+.userPhone,
+.userEmail,
 .steleDates {
     font-size: 0.7rem;
     position: absolute;
@@ -1066,6 +1107,9 @@ body {
 #steleSurname.has-value ~ label,
 #steleName.has-value ~ label,
 #steleSecondName.has-value ~ label,
+#userName.has-value ~ label,
+#userPhone.has-value ~ label,
+#userEmail.has-value ~ label,
 #steleDates.has-value ~ label {
     top: 18px;
     left: 60%;
@@ -1260,7 +1304,8 @@ body {
     cursor: pointer;
 }
 
-.save-and-send__save-button {
+.save-and-send__save-button,
+.save-and-send__send-button {
     color: #fff;
     background-color: #0d6efd;
     border-color: #0d6efd;
@@ -1275,7 +1320,10 @@ body {
 
 .save-and-send__save-button:hover,
 .save-and-send__save-button:focus,
-.save-and-send__save-button:active {
+.save-and-send__save-button:active,
+.save-and-send__send-button:hover,
+.save-and-send__send-button:focus,
+.save-and-send__send-button:active {
     background-color: #0b5ed7;
     border-color: #0a58ca;
 }
