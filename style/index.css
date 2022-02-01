@@ -707,6 +707,8 @@ body {
     width: 100%;
     height: 260px;
     position: relative;
+    background-image: url(../img/background.jpg);
+    background-size: cover;
 }
 
 .field__land {

@@ -6848,21 +6848,39 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
         );
 
         let intViewportWidth = window.innerWidth;
-        console.log("[intViewportWidth]", intViewportWidth);
 
         const landElementsChildrenUpd = createArrayFromNode($landElements);
+        landPlotNode[0].classList.add("hide");
 
         for (let i = 0; i < landElementsChildrenUpd.length; i++) {
             if (
-                +landElementsChildrenUpd[i].dataset.itemIndex === 0 ||
-                +landElementsChildrenUpd[i].dataset.itemIndex === 1 ||
-                +landElementsChildrenUpd[i].dataset.itemIndex === 4 ||
-                +landElementsChildrenUpd[i].dataset.itemIndex === 5
+                landElementsChildrenUpd[i].dataset.category === "socle" &&
+                (+landElementsChildrenUpd[i].dataset.itemIndex === 4 ||
+                    +landElementsChildrenUpd[i].dataset.itemIndex === 5)
             ) {
-                landPlotNode[0].classList.add("hide");
+                landElementsChildrenUpd[i].style.width = "90%";
+
+                if (intViewportWidth < 576) {
+                    landElementsChildrenUpd[i].style.height = "95px";
+                    landElementsChildrenUpd[i].style.top = "55.5%";
+                    landElementsChildrenUpd[i].style.left = "6%";
+                } else if (intViewportWidth > 576 && intViewportWidth < 768) {
+                    landElementsChildrenUpd[i].style.height = "135px";
+                    landElementsChildrenUpd[i].style.top = "62.5%";
+                    landElementsChildrenUpd[i].style.left = "5.5%";
+                } else if (intViewportWidth > 768 && intViewportWidth < 992) {
+                    landElementsChildrenUpd[i].style.height = "132px";
+                    landElementsChildrenUpd[i].style.top = "63.5%";
+                    landElementsChildrenUpd[i].style.left = "5.5%";
+                } else if (intViewportWidth > 992) {
+                    landElementsChildrenUpd[i].style.height = "185px";
+                    landElementsChildrenUpd[i].style.top = "57.5%";
+                    landElementsChildrenUpd[i].style.left = "5.5%";
+                }
             } else if (
-                +landElementsChildrenUpd[i].dataset.itemIndex === 2 ||
-                +landElementsChildrenUpd[i].dataset.itemIndex === 3
+                landElementsChildrenUpd[i].dataset.category === "socle" &&
+                (+landElementsChildrenUpd[i].dataset.itemIndex === 2 ||
+                    +landElementsChildrenUpd[i].dataset.itemIndex === 3)
             ) {
                 landElementsChildrenUpd[i].style.width = "50%";
                 landElementsChildrenUpd[i].style.top = "50%";
@@ -6870,13 +6888,20 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
 
                 if (intViewportWidth < 576) {
                     landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 35%)";
-                } else if (intViewportWidth > 576 && intViewportWidth < 992) {
+                        "translate(-50%, 16%)";
+                    landElementsChildrenUpd[i].style.height = "93px";
+                } else if (intViewportWidth > 576 && intViewportWidth < 768) {
+                    landElementsChildrenUpd[i].style.height = "135px";
                     landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 68%)";
+                        "translate(-50%, 42%)";
+                } else if (intViewportWidth > 768 && intViewportWidth < 992) {
+                    landElementsChildrenUpd[i].style.height = "132px";
+                    landElementsChildrenUpd[i].style.transform =
+                        "translate(-50%, 46%)";
                 } else if (intViewportWidth > 992) {
                     landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 45%)";
+                        "translate(-50%, 24%)";
+                    landElementsChildrenUpd[i].style.height = "180px";
                 }
             }
         }
@@ -7112,26 +7137,6 @@ const handleCancelEditPlotInputsData = () => {
 
     arrowsContainerNode[0].children[1].classList.remove("active");
     arrowsContainerNode[0].children[0].classList.add("active");
-};
-
-/**
- * Функція для отримання активного елементу вкладки.
- * Function to get the active tab item.
- * Функция для получения активного элемента вкладки
- * @param {HTML_Node} node
- * @returns Array which contains indexes of node elements with class 'active'
- */
-const getActiveElements = (node) => {
-    let activeElement = [];
-    const elements = createArrayFromNode(node);
-
-    for (let i = 0; i < elements.length; i++) {
-        if (elements[i].classList.contains("active")) {
-            activeElement.push(i);
-        }
-    }
-
-    return activeElement;
 };
 
 const handleSendWindow = () => {
