@@ -161,6 +161,7 @@ const $chooseStandMessage = document.querySelectorAll(
 const $finalInfoMessage = document.querySelectorAll(".save-final-img-info");
 const $sendModalWindow = document.querySelectorAll(".send-modal-window");
 const $sendOrderForm = document.querySelectorAll(".send-order-form");
+const $soclePupError = document.querySelectorAll(".socle-pup-error");
 
 let isFirstStep = true;
 let isSecondStep = false;
@@ -395,7 +396,7 @@ const createCardNode = (selectedTabIndex, priceList) => {
                         siteNameRu,
                         siteNameEng,
                         price,
-                        type,
+                        category,
                     } = data[i];
 
                     // unshift для того, щоб елементи рендерилися в тому ж порядку, як і в прайсі
@@ -404,7 +405,7 @@ const createCardNode = (selectedTabIndex, priceList) => {
                             <img src="./img/icons/close.svg" alt="Приховати елемент" class="field__hide-element-button">
                             <img src="${
                                 BASE_IMG_URL + imgUrl
-                            }" alt="${titleUa}" class="constructor__element-img">
+                            }" alt="${titleUa}" class="constructor__element-img" data-category="${category}">
                             <p class="constructor__element-name">
                                 <span data-lang="ua" class="active">${siteNameUa}</span>
                                 <span data-lang="ru">${siteNameRu}</span>
@@ -412,7 +413,7 @@ const createCardNode = (selectedTabIndex, priceList) => {
                             </p>
                             <p class="constructor__element-price">
                                 <span class="active">${price} ${
-                            type === "tile" || type === "socle"
+                            category === "beauty" || category === "socle"
                                 ? "грн/м2"
                                 : "грн/шт"
                         }</span>
@@ -2420,6 +2421,17 @@ filterNode[0].addEventListener("click", (e) => {
                 elementsBorders[i].classList.remove("active");
         }
 
+        let isSocleSelected = false;
+
+        for (let i = 0; i < selectedItems.length; i++) {
+            const { category } = selectedItems[i];
+            category === "socle" && (isSocleSelected = true);
+        }
+
+        !isSocleSelected &&
+            landPlotNode[0].classList.contains("hide") &&
+            landPlotNode[0].classList.remove("hide");
+
         const landElementsChildren = createArrayFromNode($landElements);
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
@@ -2469,7 +2481,15 @@ filterNode[0].addEventListener("click", (e) => {
             }
         );
 
-        landPlotNode[0].classList.contains("hide") &&
+        let isCurbsSelected = false;
+
+        for (let i = 0; i < selectedItems.length; i++) {
+            const { category } = selectedItems[i];
+            category === "curbs" && (isCurbsSelected = true);
+        }
+
+        !isCurbsSelected &&
+            landPlotNode[0].classList.contains("hide") &&
             landPlotNode[0].classList.remove("hide");
 
         handleRemoveFilterNode(itemsToRemove);
@@ -2873,6 +2893,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
             category === "curbs" ||
             category === "socle" ||
             category === "beauty" ||
+            category === "pup" ||
             category === "flowerGarden"
         ) {
             for (let i = 0; i < arrayOfNodes.length; i++) {
@@ -2910,6 +2931,10 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 
     if (isBeauty) {
         createItemData(arrayOfNodes, "beauty", selectedItem);
+    }
+
+    if (isBeauty) {
+        createItemData(arrayOfNodes, "pup", selectedItem);
     }
 
     if (isFlowerGarden) {
@@ -6659,6 +6684,9 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         selectedBorder !== -1 &&
         userClick.className !== "field__hide-element-button"
     ) {
+        !landPlotNode[0].classList.contains("hide") &&
+            landPlotNode[0].classList.add("hide");
+
         for (let i = 0; i < elementsBorders.length; i++) {
             if (elementsBorders[i].classList.contains("active")) {
                 elementsBorders[i].classList.remove("active");
@@ -6682,6 +6710,7 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         }
 
         elementsBorders[selectedBorder].classList.add("active");
+
         let selectedBorderElement = getElementData(selectedBorder, "curbs");
         const {
             imgUrl,
@@ -6739,6 +6768,17 @@ elementsBordersNode[0].addEventListener("click", (e) => {
         userClick.className === "field__hide-element-button"
     ) {
         elementsBorders[selectedBorder].classList.remove("active");
+
+        let isSocleSelected = false;
+
+        for (let i = 0; i < selectedItems.length; i++) {
+            const { category } = selectedItems[i];
+            category === "socle" && (isSocleSelected = true);
+        }
+
+        !isSocleSelected &&
+            landPlotNode[0].classList.contains("hide") &&
+            landPlotNode[0].classList.remove("hide");
 
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
@@ -6847,64 +6887,7 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
             imgSocleOnConstructor
         );
 
-        let intViewportWidth = window.innerWidth;
-
-        const landElementsChildrenUpd = createArrayFromNode($landElements);
         landPlotNode[0].classList.add("hide");
-
-        for (let i = 0; i < landElementsChildrenUpd.length; i++) {
-            if (
-                landElementsChildrenUpd[i].dataset.category === "socle" &&
-                (+landElementsChildrenUpd[i].dataset.itemIndex === 4 ||
-                    +landElementsChildrenUpd[i].dataset.itemIndex === 5)
-            ) {
-                landElementsChildrenUpd[i].style.width = "90%";
-
-                if (intViewportWidth < 576) {
-                    landElementsChildrenUpd[i].style.height = "95px";
-                    landElementsChildrenUpd[i].style.top = "55.5%";
-                    landElementsChildrenUpd[i].style.left = "6%";
-                } else if (intViewportWidth > 576 && intViewportWidth < 768) {
-                    landElementsChildrenUpd[i].style.height = "135px";
-                    landElementsChildrenUpd[i].style.top = "62.5%";
-                    landElementsChildrenUpd[i].style.left = "5.5%";
-                } else if (intViewportWidth > 768 && intViewportWidth < 992) {
-                    landElementsChildrenUpd[i].style.height = "132px";
-                    landElementsChildrenUpd[i].style.top = "63.5%";
-                    landElementsChildrenUpd[i].style.left = "5.5%";
-                } else if (intViewportWidth > 992) {
-                    landElementsChildrenUpd[i].style.height = "185px";
-                    landElementsChildrenUpd[i].style.top = "57.5%";
-                    landElementsChildrenUpd[i].style.left = "5.5%";
-                }
-            } else if (
-                landElementsChildrenUpd[i].dataset.category === "socle" &&
-                (+landElementsChildrenUpd[i].dataset.itemIndex === 2 ||
-                    +landElementsChildrenUpd[i].dataset.itemIndex === 3)
-            ) {
-                landElementsChildrenUpd[i].style.width = "50%";
-                landElementsChildrenUpd[i].style.top = "50%";
-                landElementsChildrenUpd[i].style.left = "50%";
-
-                if (intViewportWidth < 576) {
-                    landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 16%)";
-                    landElementsChildrenUpd[i].style.height = "93px";
-                } else if (intViewportWidth > 576 && intViewportWidth < 768) {
-                    landElementsChildrenUpd[i].style.height = "135px";
-                    landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 42%)";
-                } else if (intViewportWidth > 768 && intViewportWidth < 992) {
-                    landElementsChildrenUpd[i].style.height = "132px";
-                    landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 46%)";
-                } else if (intViewportWidth > 992) {
-                    landElementsChildrenUpd[i].style.transform =
-                        "translate(-50%, 24%)";
-                    landElementsChildrenUpd[i].style.height = "180px";
-                }
-            }
-        }
 
         const socleNodeToCalculator = createCalculatorDataNode(
             category,
@@ -6949,7 +6932,15 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
             }
         );
 
-        landPlotNode[0].classList.contains("hide") &&
+        let isCurbsSelected = false;
+
+        for (let i = 0; i < selectedItems.length; i++) {
+            const { category } = selectedItems[i];
+            category === "curbs" && (isCurbsSelected = true);
+        }
+
+        !isCurbsSelected &&
+            landPlotNode[0].classList.contains("hide") &&
             landPlotNode[0].classList.remove("hide");
 
         handleRemoveFilterNode(itemsToRemove);
@@ -7008,25 +6999,25 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
         }
 
         let isSocleSelected = false;
-        let socleElementIndex = null;
 
         for (let i = 0; i < landElementsChildren.length; i++) {
-            if (landElementsChildren[i].dataset.category === "socle") {
-                isSocleSelected = true;
-                socleElementIndex = +landElementsChildren[i].dataset.itemIndex;
-            }
+            landElementsChildren[i].dataset.category === "socle" &&
+                (isSocleSelected = true);
         }
 
-        if (!isSocleSelected) {
+        let isTileSelected = userClick.dataset.category === "beauty";
+        let isPupSelected = userClick.dataset.category === "pup";
+
+        //TODO: Не выбран цоколь = нельзя класть плитку, можно ПУП и можно щебень
+        if (!isSocleSelected && isTileSelected) {
             handleInfoAndErrorMessages($tileErrorNode, {
                 isUaLanguage,
                 isRuLanguage,
                 isEngLanguage,
             });
-        } else if (
-            isSocleSelected &&
-            (socleElementIndex === 0 || socleElementIndex === 1)
-        ) {
+
+            // Выбран цоколь = можно класть плитку, нельзя ПУП и нельзя щебень
+        } else if (isSocleSelected && isTileSelected) {
             elementsBeautification[selectedBeautyElement].classList.add(
                 "active"
             );
@@ -7086,6 +7077,109 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 "beforebegin",
                 beautyNodeToCalculator
             );
+
+            calculate();
+        } else if (isSocleSelected && isPupSelected) {
+            handleInfoAndErrorMessages($soclePupError, {
+                isUaLanguage,
+                isRuLanguage,
+                isEngLanguage,
+            });
+        } else if (!isSocleSelected && isPupSelected) {
+            elementsBeautification[selectedBeautyElement].classList.add(
+                "active"
+            );
+
+            let selectedBeautyElementData = getElementData(
+                selectedBeautyElement,
+                "beauty"
+            );
+            const {
+                imgUrl,
+                imgConstructorUrl,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                category,
+                type,
+                price,
+            } = selectedBeautyElementData;
+
+            selectedItems.push(selectedBeautyElementData);
+
+            let propsForFilterNode = {};
+            propsForFilterNode["category"] = category;
+            propsForFilterNode["selectedItemIndex"] = selectedBeautyElement;
+            propsForFilterNode["imgUrl"] = imgUrl;
+            propsForFilterNode["siteNameUa"] = siteNameUa;
+            propsForFilterNode["siteNameRu"] = siteNameRu;
+            propsForFilterNode["siteNameEng"] = siteNameEng;
+
+            let imgBeautyOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
+                                        alt="${siteNameUa}" 
+                                        class="field__land-beauty-img"
+                                        data-category="${category}"
+                                        data-item-index="${selectedBeautyElement}"
+                                    />`;
+
+            $landElements[0].insertAdjacentHTML(
+                "afterbegin",
+                imgBeautyOnConstructor
+            );
+
+            const beautyNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedBeautyElement,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                price
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                beautyNodeToCalculator
+            );
+
+            // Получить актуальные данные земельного участка
+            const { width: landPlotWidth, length: landPlotHeight } =
+                handleLandPlotSizes();
+
+            // Определить выбран ли бордюр = влияет на высоту расположения ПУП
+            let isCurbs = false;
+
+            for (let i = 0; i < selectedItems.length; i++) {
+                const { category } = selectedItems[i];
+
+                category === "curbs" && (isCurbs = true);
+            }
+
+            const windowWidth = window.innerWidth;
+
+            // Найти ПУП и задать ей стили
+            const updLandElements = Array.from($landElements[0].children);
+
+            for (let i = 0; i < updLandElements.length; i++) {
+                // !ВАЖНО! Ширина одинарной ПУП = 60 см
+                if (updLandElements[i].dataset.category === "pup" && isCurbs) {
+                    updLandElements[i].style.top = "50%";
+                    updLandElements[i].style.left = "50%";
+
+                    if (type === "single" && windowWidth > 992) {
+                        let pupWidth = (60 / landPlotWidth) * 100;
+                        const BASE_PUP_HEIGHT = 180; // 180px
+                        let pupHeight =
+                            (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+
+                        updLandElements[i].style.width = `${pupWidth}%`;
+                        updLandElements[i].style.height = `${pupHeight}px`;
+                        updLandElements[i].style.transform =
+                            "translate(-50%, 31%)";
+                    }
+                }
+            }
 
             calculate();
         }

@@ -158,6 +158,7 @@ body {
 .monument__error > span,
 .monument__error-length > span,
 .flower-garden__error > span,
+.socle-pup-error > span,
 .info-message__choose-stand,
 .info-message__choose-stand-paragraph > span,
 .first-stand__choose > span,
@@ -332,6 +333,7 @@ body {
 .monument__error.active > span.active,
 .monument__error-length.active > span.active,
 .flower-garden__error.active > span.active,
+.socle-pup-error.active > span.active,
 .constructor__element-name > span.active,
 .calculator__data-value > span.active,
 .info-message__choose-stand-paragraph > span.active,
@@ -691,7 +693,7 @@ body {
     position: absolute;
     width: 95%;
     height: 20px;
-    top: 91%;
+    top: 92%;
     left: 2.5%;
     color: #084298;
     margin-top: var(--xs-margin);
@@ -712,10 +714,17 @@ body {
 }
 
 .field__land {
-    background-image: url(../img/land-plot.svg);
+    /* Заменить себе на svg (песок) */
+    background-image: url(../img/land-plot.jpg);
     background-size: cover;
+}
+
+.field__land,
+.field-elements {
+    display: block;
+    position: absolute;
     width: 85%;
-    height: 89px;
+    height: 93px;
     left: 7%;
     bottom: 4%;
     clip-path: polygon(22% 0%, 81% 0%, 100% 100%, 0% 100%);
@@ -723,18 +732,18 @@ body {
 
 .field__land-border-img {
     position: absolute;
-    width: 88%;
-    height: 110px;
-    bottom: 2%;
-    left: 7%;
+    width: 98%;
+    height: 91px;
+    bottom: 0;
+    left: 1%;
 }
 
 .field__land-socle-img {
     position: absolute;
-    bottom: 9.5%;
+    bottom: 8.5%;
     z-index: 2;
-    width: 84%;
-    left: 9%;
+    width: 98%;
+    left: 1%;
     height: 88px;
     clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
 }
@@ -743,15 +752,10 @@ body {
     position: absolute;
     z-index: 3;
     bottom: 9%;
-    width: 87%;
-    left: 7.5%;
+    width: 96%;
+    left: 2.5%;
     height: 91px;
     clip-path: polygon(20% 0%, 81% 0%, 100% 100%, 0% 100%);
-}
-
-.field__land {
-    display: block;
-    position: absolute;
 }
 
 .field__land.hide {
@@ -868,7 +872,7 @@ body {
 .stand-container > img,
 .stand-container2 > img {
     width: 100%;
-    height: 100%;
+    height: 200%;
 }
 
 .calculator {
@@ -1045,6 +1049,7 @@ body {
 .monument__error.active,
 .monument__error-length.active,
 .flower-garden__error.active,
+.socle-pup-error.active,
 .elements-container__tile-error.active {
     position: absolute;
     display: block;
@@ -1351,7 +1356,7 @@ body {
 
 .flower-garden__img {
     position: absolute;
-    top: 7px;
+    top: 15px;
     left: -5%;
 }
 
@@ -1408,7 +1413,8 @@ body {
         height: 445px;
     }
 
-    .field__land {
+    .field__land,
+    .field-elements {
         bottom: 3%;
         height: 130px;
     }
@@ -1419,21 +1425,22 @@ body {
 
     .field__land-border-img {
         width: 89%;
-        height: 155px;
+        height: 130px;
         left: 6%;
     }
 
     .field__land-socle-img {
-        height: 123px;
-        width: 83%;
-        bottom: 8.5%;
+        height: 118px;
+        width: 89%;
+        bottom: 9.5%;
+        left: 6%;
     }
 
     .field__land-beauty-img {
         height: 130px;
         bottom: 7.5%;
-        left: 6.5%;
-        width: 88%;
+        left: 6%;
+        width: 89%;
         clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
     }
 
@@ -1518,13 +1525,19 @@ body {
         letter-spacing: 0.1em;
     }
 
-    .field__land {
+    .field__land,
+    .field-elements {
         height: 135px;
         bottom: 3%;
     }
 
     .field__land-plot {
         height: 40px;
+    }
+
+    .field__land-socle-img {
+        height: 120px;
+        bottom: 8.5%;
     }
 
     .draggable-elements {
@@ -1676,7 +1689,7 @@ body {
     }
 
     .field__land-border-img {
-        height: 215px;
+        height: 180px;
     }
 
     .field__land-socle-img {
@@ -1686,6 +1699,8 @@ body {
 
     .field__land-beauty-img {
         height: 180px;
+        width: 89%;
+        left: 6%;
         bottom: 8.3%;
     }
 
@@ -1722,7 +1737,8 @@ body {
         height: 535px;
     }
 
-    .field__land {
+    .field__land,
+    .field-elements {
         height: 180px;
         bottom: 3%;
     }
