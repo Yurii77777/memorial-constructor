@@ -189,7 +189,7 @@ const prices = [
                 titleUa: "Протиусадкові плити 3",
                 price: 2850,
                 tabId: 7,
-                category: "socle",
+                category: "pup",
                 type: "double",
                 imgUrl: "/mobile/pup/pup_3.png",
                 imgConstructorUrl: "/mobile/pup/pup_3_on_constructor.png",

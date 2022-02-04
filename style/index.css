@@ -159,6 +159,7 @@ body {
 .monument__error-length > span,
 .flower-garden__error > span,
 .socle-pup-error > span,
+.land-size-pup-error > span,
 .info-message__choose-stand,
 .info-message__choose-stand-paragraph > span,
 .first-stand__choose > span,
@@ -334,6 +335,7 @@ body {
 .monument__error-length.active > span.active,
 .flower-garden__error.active > span.active,
 .socle-pup-error.active > span.active,
+.land-size-pup-error.active > span.active,
 .constructor__element-name > span.active,
 .calculator__data-value > span.active,
 .info-message__choose-stand-paragraph > span.active,
@@ -755,7 +757,7 @@ body {
     width: 96%;
     left: 2.5%;
     height: 91px;
-    clip-path: polygon(20% 0%, 81% 0%, 100% 100%, 0% 100%);
+    /* clip-path: polygon(20% 0%, 81% 0%, 100% 100%, 0% 100%); */
 }
 
 .field__land.hide {
@@ -1050,6 +1052,7 @@ body {
 .monument__error-length.active,
 .flower-garden__error.active,
 .socle-pup-error.active,
+.land-size-pup-error.active,
 .elements-container__tile-error.active {
     position: absolute;
     display: block;
@@ -1441,7 +1444,7 @@ body {
         bottom: 7.5%;
         left: 6%;
         width: 89%;
-        clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        /* clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); */
     }
 
     .field__error.active {

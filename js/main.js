@@ -162,6 +162,7 @@ const $finalInfoMessage = document.querySelectorAll(".save-final-img-info");
 const $sendModalWindow = document.querySelectorAll(".send-modal-window");
 const $sendOrderForm = document.querySelectorAll(".send-order-form");
 const $soclePupError = document.querySelectorAll(".socle-pup-error");
+const $landSizePupError = document.querySelectorAll(".land-size-pup-error");
 
 let isFirstStep = true;
 let isSecondStep = false;
@@ -2498,7 +2499,8 @@ filterNode[0].addEventListener("click", (e) => {
         calculate();
     } else if (
         selectedItem !== -1 &&
-        filterElements[selectedItem].dataset.category === "beauty"
+        (filterElements[selectedItem].dataset.category === "beauty" ||
+            filterElements[selectedItem].dataset.category === "pup")
     ) {
         const elementsBeautification = createArrayFromNode(elementsBeautyNode);
 
@@ -6999,10 +7001,14 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
         }
 
         let isSocleSelected = false;
+        let isCurbsSelected = false;
 
         for (let i = 0; i < landElementsChildren.length; i++) {
             landElementsChildren[i].dataset.category === "socle" &&
                 (isSocleSelected = true);
+
+            landElementsChildren[i].dataset.category === "curbs" &&
+                (isCurbsSelected = true);
         }
 
         let isTileSelected = userClick.dataset.category === "beauty";
@@ -7085,15 +7091,12 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 isRuLanguage,
                 isEngLanguage,
             });
-        } else if (!isSocleSelected && isPupSelected) {
-            elementsBeautification[selectedBeautyElement].classList.add(
-                "active"
-            );
-
+        } else if (!isSocleSelected && !isTileSelected && isPupSelected) {
             let selectedBeautyElementData = getElementData(
                 selectedBeautyElement,
                 "beauty"
             );
+
             const {
                 imgUrl,
                 imgConstructorUrl,
@@ -7105,83 +7108,161 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 price,
             } = selectedBeautyElementData;
 
-            selectedItems.push(selectedBeautyElementData);
+            // Получить актуальные данные земельного участка
+            const { width: landPlotWidth, length: landPlotHeight } =
+                handleLandPlotSizes();
 
-            let propsForFilterNode = {};
-            propsForFilterNode["category"] = category;
-            propsForFilterNode["selectedItemIndex"] = selectedBeautyElement;
-            propsForFilterNode["imgUrl"] = imgUrl;
-            propsForFilterNode["siteNameUa"] = siteNameUa;
-            propsForFilterNode["siteNameRu"] = siteNameRu;
-            propsForFilterNode["siteNameEng"] = siteNameEng;
+            let pupWidth = null;
 
-            let imgBeautyOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
+            type === "single"
+                ? (pupWidth = (120 / landPlotWidth) * 93)
+                : (pupWidth = (180 / landPlotWidth) * 93);
+
+            // Если ширина ПУП меньше = 100% ширины участка, только тогда мы ее отрисовываем
+            if (pupWidth <= 100) {
+                elementsBeautification[selectedBeautyElement].classList.add(
+                    "active"
+                );
+
+                selectedItems.push(selectedBeautyElementData);
+
+                let propsForFilterNode = {};
+                propsForFilterNode["category"] = category;
+                propsForFilterNode["selectedItemIndex"] = selectedBeautyElement;
+                propsForFilterNode["imgUrl"] = imgUrl;
+                propsForFilterNode["siteNameUa"] = siteNameUa;
+                propsForFilterNode["siteNameRu"] = siteNameRu;
+                propsForFilterNode["siteNameEng"] = siteNameEng;
+
+                let imgBeautyOnConstructor = `<img src="./img/items${imgConstructorUrl}" 
                                         alt="${siteNameUa}" 
                                         class="field__land-beauty-img"
                                         data-category="${category}"
                                         data-item-index="${selectedBeautyElement}"
                                     />`;
 
-            $landElements[0].insertAdjacentHTML(
-                "afterbegin",
-                imgBeautyOnConstructor
-            );
+                $landElements[0].insertAdjacentHTML(
+                    "afterbegin",
+                    imgBeautyOnConstructor
+                );
 
-            const beautyNodeToCalculator = createCalculatorDataNode(
-                category,
-                selectedBeautyElement,
-                siteNameUa,
-                siteNameRu,
-                siteNameEng,
-                price
-            );
+                const beautyNodeToCalculator = createCalculatorDataNode(
+                    category,
+                    selectedBeautyElement,
+                    siteNameUa,
+                    siteNameRu,
+                    siteNameEng,
+                    price
+                );
 
-            handleAddFilterNode(propsForFilterNode);
+                handleAddFilterNode(propsForFilterNode);
 
-            $totalCostNode[0].insertAdjacentHTML(
-                "beforebegin",
-                beautyNodeToCalculator
-            );
+                $totalCostNode[0].insertAdjacentHTML(
+                    "beforebegin",
+                    beautyNodeToCalculator
+                );
 
-            // Получить актуальные данные земельного участка
-            const { width: landPlotWidth, length: landPlotHeight } =
-                handleLandPlotSizes();
+                const windowWidth = window.innerWidth;
 
-            // Определить выбран ли бордюр = влияет на высоту расположения ПУП
-            let isCurbs = false;
+                // Найти ПУП и задать ей стили
+                const updLandElements = Array.from($landElements[0].children);
 
-            for (let i = 0; i < selectedItems.length; i++) {
-                const { category } = selectedItems[i];
+                for (let i = 0; i < updLandElements.length; i++) {
+                    // !ВАЖНО! Ширина одинарной ПУП = 120см (2 секции по 60 см)
+                    // Ширина двойной = 180 см (3 секции), высота в обеих вариантах = 200 см
+                    if (
+                        updLandElements[i].dataset.category === "pup" &&
+                        !isCurbsSelected
+                    ) {
+                        updLandElements[i].style.top = "50%";
+                        updLandElements[i].style.left = "50%";
 
-                category === "curbs" && (isCurbs = true);
-            }
+                        if (windowWidth < 576) {
+                            const BASE_PUP_HEIGHT = 93;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -50%)";
+                        } else if (windowWidth > 576 && windowWidth < 768) {
+                            const BASE_PUP_HEIGHT = 130;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -50%)";
+                        } else if (windowWidth > 768 && windowWidth < 992) {
+                            const BASE_PUP_HEIGHT = 135;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -50%)";
+                        } else if (windowWidth > 992) {
+                            const BASE_PUP_HEIGHT = 180;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
 
-            const windowWidth = window.innerWidth;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -50%)";
+                        }
+                    } else if (
+                        updLandElements[i].dataset.category === "pup" &&
+                        isCurbsSelected
+                    ) {
+                        updLandElements[i].style.top = "50%";
+                        updLandElements[i].style.left = "50%";
 
-            // Найти ПУП и задать ей стили
-            const updLandElements = Array.from($landElements[0].children);
+                        if (windowWidth < 576) {
+                            const BASE_PUP_HEIGHT = 73;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -56%)";
+                        } else if (windowWidth > 576 && windowWidth < 768) {
+                            const BASE_PUP_HEIGHT = 110;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -56%)";
+                        } else if (windowWidth > 768 && windowWidth < 992) {
+                            const BASE_PUP_HEIGHT = 115;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -56%)";
+                        } else if (windowWidth > 992) {
+                            const BASE_PUP_HEIGHT = 160;
+                            let pupHeight =
+                                (200 / landPlotHeight) * BASE_PUP_HEIGHT;
 
-            for (let i = 0; i < updLandElements.length; i++) {
-                // !ВАЖНО! Ширина одинарной ПУП = 60 см
-                if (updLandElements[i].dataset.category === "pup" && isCurbs) {
-                    updLandElements[i].style.top = "50%";
-                    updLandElements[i].style.left = "50%";
-
-                    if (type === "single" && windowWidth > 992) {
-                        let pupWidth = (60 / landPlotWidth) * 100;
-                        const BASE_PUP_HEIGHT = 180; // 180px
-                        let pupHeight =
-                            (200 / landPlotHeight) * BASE_PUP_HEIGHT;
-
-                        updLandElements[i].style.width = `${pupWidth}%`;
-                        updLandElements[i].style.height = `${pupHeight}px`;
-                        updLandElements[i].style.transform =
-                            "translate(-50%, 31%)";
+                            updLandElements[i].style.width = `${pupWidth}%`;
+                            updLandElements[i].style.height = `${pupHeight}px`;
+                            updLandElements[i].style.transform =
+                                "translate(-50%, -56%)";
+                        }
                     }
                 }
-            }
 
-            calculate();
+                calculate();
+            } else if (pupWidth > 100) {
+                handleInfoAndErrorMessages($landSizePupError, {
+                    isUaLanguage,
+                    isRuLanguage,
+                    isEngLanguage,
+                });
+            }
         }
     } else if (
         selectedBeautyElement !== -1 &&
