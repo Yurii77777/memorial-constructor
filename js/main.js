@@ -2500,34 +2500,62 @@ filterNode[0].addEventListener("click", (e) => {
     } else if (
         selectedItem !== -1 &&
         (filterElements[selectedItem].dataset.category === "beauty" ||
-            filterElements[selectedItem].dataset.category === "pup")
+            filterElements[selectedItem].dataset.category === "pup" ||
+            filterElements[selectedItem].dataset.category === "rubble")
     ) {
         const elementsBeautification = createArrayFromNode(elementsBeautyNode);
+        let itemIndexToRemove = +userClick.parentElement.dataset.itemIndex;
+        let itemCategoryToRemove = userClick.parentElement.dataset.category;
 
-        for (let i = 0; i < elementsBeautification.length; i++) {
-            elementsBeautification[i].classList.contains("active") &&
-                elementsBeautification[i].classList.remove("active");
-        }
+        elementsBeautification[itemIndexToRemove].classList.contains(
+            "active"
+        ) &&
+            elementsBeautification[itemIndexToRemove].classList.remove(
+                "active"
+            );
 
         const landElementsChildren = createArrayFromNode($landElements);
+        if (
+            itemCategoryToRemove === "pup" ||
+            itemCategoryToRemove === "beauty"
+        ) {
+            let itemsToRemove = getItemsToRemove(
+                landElementsChildren,
+                $landElements,
+                {
+                    isStand: false,
+                    isMonument: false,
+                    isCurb: false,
+                    isSocle: false,
+                    isBeauty: true,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
 
-        let itemsToRemove = getItemsToRemove(
-            landElementsChildren,
-            $landElements,
-            {
-                isStand: false,
-                isMonument: false,
-                isCurb: false,
-                isSocle: false,
-                isBeauty: true,
-                mustRemoveElementOnConstructor: true,
-            }
-        );
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (itemCategoryToRemove === "rubble") {
+            let itemsToRemove = getItemsToRemove(
+                landElementsChildren,
+                $landElements,
+                {
+                    isStand: false,
+                    isMonument: false,
+                    isCurb: false,
+                    isSocle: false,
+                    isBeauty: false,
+                    isRubble: true,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
 
-        handleRemoveFilterNode(itemsToRemove);
-        handleRemoveCalculatorNode(itemsToRemove);
-        handleRemoveItemsFromSelectedItems(itemsToRemove);
-        calculate();
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        }
     } else if (
         selectedItem !== -1 &&
         filterElements[selectedItem].dataset.category === "flowerGarden"
@@ -2849,6 +2877,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
         isCurb,
         isSocle,
         isBeauty,
+        isRubble,
         isFlowerGarden,
         mustRemoveElementOnConstructor,
     } = categories;
@@ -2891,13 +2920,28 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                 }
             }
         } else if (
-            category === "monuments" ||
+            // category === "monuments" ||
             category === "curbs" ||
             category === "socle" ||
             category === "beauty" ||
             category === "pup" ||
             category === "flowerGarden"
         ) {
+            for (let i = 0; i < arrayOfNodes.length; i++) {
+                let obj = {};
+
+                if (arrayOfNodes[i].dataset.category === category) {
+                    arrayOfNodes[i].dataset.category &&
+                        (obj["category"] = arrayOfNodes[i].dataset.category);
+                    arrayOfNodes[i].dataset.itemIndex &&
+                        (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
+                    Object.keys(obj).length && result.push(obj);
+
+                    mustRemoveElementOnConstructor &&
+                        node[0].removeChild(arrayOfNodes[i]);
+                }
+            }
+        } else if (category === "rubble") {
             for (let i = 0; i < arrayOfNodes.length; i++) {
                 let obj = {};
 
@@ -2937,6 +2981,10 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 
     if (isBeauty) {
         createItemData(arrayOfNodes, "pup", selectedItem);
+    }
+
+    if (isRubble) {
+        createItemData(arrayOfNodes, "rubble", selectedItem);
     }
 
     if (isFlowerGarden) {
@@ -6972,34 +7020,14 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
     );
     const landElementsChildren = createArrayFromNode($landElements);
 
+    let isTileSelected = userClick?.dataset?.category === "beauty";
+    let isPupSelected = userClick?.dataset?.category === "pup";
+    let isRubbleSelected = userClick?.dataset?.category === "rubble";
+
     if (
         selectedBeautyElement !== -1 &&
         userClick.className !== "field__hide-element-button"
     ) {
-        for (let i = 0; i < elementsBeautification.length; i++) {
-            if (elementsBeautification[i].classList.contains("active")) {
-                elementsBeautification[i].classList.remove("active");
-
-                let itemsToRemove = getItemsToRemove(
-                    landElementsChildren,
-                    $landElements,
-                    {
-                        isStand: false,
-                        isMonument: false,
-                        isCurb: false,
-                        isSocle: false,
-                        isBeauty: true,
-                        mustRemoveElementOnConstructor: true,
-                    }
-                );
-
-                handleRemoveFilterNode(itemsToRemove);
-                handleRemoveCalculatorNode(itemsToRemove);
-                handleRemoveItemsFromSelectedItems(itemsToRemove);
-                calculate();
-            }
-        }
-
         let isSocleSelected = false;
         let isCurbsSelected = false;
 
@@ -7011,8 +7039,65 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 (isCurbsSelected = true);
         }
 
-        let isTileSelected = userClick.dataset.category === "beauty";
-        let isPupSelected = userClick.dataset.category === "pup";
+        if (isTileSelected || isPupSelected) {
+            for (let i = 0; i < elementsBeautification.length; i++) {
+                if (
+                    elementsBeautification[i].classList.contains("active") &&
+                    (elementsBeautification[i].children[1].dataset.category ===
+                        "beauty" ||
+                        elementsBeautification[i].children[1].dataset
+                            .category === "pup")
+                ) {
+                    elementsBeautification[i].classList.remove("active");
+
+                    let itemsToRemove = getItemsToRemove(
+                        landElementsChildren,
+                        $landElements,
+                        {
+                            isStand: false,
+                            isMonument: false,
+                            isCurb: false,
+                            isSocle: false,
+                            isBeauty: true,
+                            mustRemoveElementOnConstructor: true,
+                        }
+                    );
+
+                    handleRemoveFilterNode(itemsToRemove);
+                    handleRemoveCalculatorNode(itemsToRemove);
+                    handleRemoveItemsFromSelectedItems(itemsToRemove);
+                    calculate();
+                }
+            }
+        } else if (isRubbleSelected) {
+            for (let i = 0; i < elementsBeautification.length; i++) {
+                if (
+                    elementsBeautification[i].classList.contains("active") &&
+                    elementsBeautification[i].children[1].dataset.category ===
+                        "rubble"
+                ) {
+                    elementsBeautification[i].classList.remove("active");
+                    let itemsToRemove = getItemsToRemove(
+                        landElementsChildren,
+                        $landElements,
+                        {
+                            isStand: false,
+                            isMonument: false,
+                            isCurb: false,
+                            isSocle: false,
+                            isBeauty: false,
+                            isRubble: true,
+                            mustRemoveElementOnConstructor: true,
+                        },
+                        selectedBeautyElement
+                    );
+                    handleRemoveFilterNode(itemsToRemove);
+                    handleRemoveCalculatorNode(itemsToRemove);
+                    handleRemoveItemsFromSelectedItems(itemsToRemove);
+                    calculate();
+                }
+            }
+        }
 
         //TODO: Не выбран цоколь = нельзя класть плитку, можно ПУП и можно щебень
         if (!isSocleSelected && isTileSelected) {
@@ -7176,6 +7261,7 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                     ) {
                         updLandElements[i].style.top = "50%";
                         updLandElements[i].style.left = "50%";
+                        updLandElements[i].style.zIndex = "15";
 
                         if (windowWidth < 576) {
                             const BASE_PUP_HEIGHT = 93;
@@ -7263,6 +7349,98 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                     isEngLanguage,
                 });
             }
+        } else if (!isSocleSelected && !isTileSelected && isRubbleSelected) {
+            elementsBeautification[selectedBeautyElement].classList.add(
+                "active"
+            );
+
+            let selectedBeautyElementData = getElementData(
+                selectedBeautyElement,
+                "beauty"
+            );
+
+            const {
+                imgUrl,
+                imgConstructorUrl,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                category,
+                price,
+            } = selectedBeautyElementData;
+
+            // Получаем актуальные размеры участка
+            const { width, length } = handleLandPlotSizes();
+            let area = (width * length) / 10000;
+
+            // Получаем тип ПУП, для расчета ее площади
+            let pupType = null;
+            let rubbleNeed = null; // м2
+            let rubbleCost = null;
+            const PUP_SINGLE_AREA = 2.4; // м2
+            const PUP_DOUBLE_AREA = 3.6; // м2
+
+            for (let i = 0; i < selectedItems.length; i++) {
+                const { category, type } = selectedItems[i];
+
+                category === "pup" && (pupType = type);
+            }
+
+            pupType === "single" && (rubbleNeed = area - PUP_SINGLE_AREA);
+            pupType === "double" && (rubbleNeed = area - PUP_DOUBLE_AREA);
+            rubbleCost = rubbleNeed * price;
+
+            selectedBeautyElementData.price = rubbleCost;
+            selectedItems.push(selectedBeautyElementData);
+
+            let propsForFilterNode = {};
+            propsForFilterNode["category"] = category;
+            propsForFilterNode["selectedItemIndex"] = selectedBeautyElement;
+            propsForFilterNode["imgUrl"] = imgUrl;
+            propsForFilterNode["siteNameUa"] = siteNameUa;
+            propsForFilterNode["siteNameRu"] = siteNameRu;
+            propsForFilterNode["siteNameEng"] = siteNameEng;
+
+            let imgBeautyOnConstructor = `<img src="./img/items${imgConstructorUrl}"
+                                        alt="${siteNameUa}"
+                                        class="field__land-beauty-img"
+                                        data-category="${category}"
+                                        data-item-index="${selectedBeautyElement}"
+                                    />`;
+
+            $landElements[0].insertAdjacentHTML(
+                "afterbegin",
+                imgBeautyOnConstructor
+            );
+
+            const beautyNodeToCalculator = createCalculatorDataNode(
+                category,
+                selectedBeautyElement,
+                siteNameUa,
+                siteNameRu,
+                siteNameEng,
+                parseFloat(rubbleCost.toFixed(2))
+            );
+
+            handleAddFilterNode(propsForFilterNode);
+
+            $totalCostNode[0].insertAdjacentHTML(
+                "beforebegin",
+                beautyNodeToCalculator
+            );
+
+            const updLandElements = Array.from($landElements[0].children);
+
+            for (let i = 0; i < updLandElements.length; i++) {
+                if (updLandElements[i].dataset.category === "rubble") {
+                    updLandElements[i].style.width = "100%";
+                    updLandElements[i].style.left = "0";
+                    updLandElements[i].style.bottom = "0";
+                    updLandElements[i].style.height = "182px";
+                }
+            }
+
+            calculate();
         }
     } else if (
         selectedBeautyElement !== -1 &&
@@ -7272,23 +7450,57 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
             "active"
         );
 
-        let itemsToRemove = getItemsToRemove(
-            landElementsChildren,
-            $landElements,
-            {
-                isStand: false,
-                isMonument: false,
-                isCurb: false,
-                isSocle: false,
-                isBeauty: true,
-                mustRemoveElementOnConstructor: true,
-            }
-        );
+        const selectedNode = userClick.parentNode;
+        const selectedNodeChildren = Array.from(selectedNode.children);
+        let itemCategoryToRemove = null;
 
-        handleRemoveFilterNode(itemsToRemove);
-        handleRemoveCalculatorNode(itemsToRemove);
-        handleRemoveItemsFromSelectedItems(itemsToRemove);
-        calculate();
+        for (let i = 0; i < selectedNodeChildren.length; i++) {
+            selectedNodeChildren[i].dataset.category &&
+                (itemCategoryToRemove =
+                    selectedNodeChildren[i].dataset.category);
+        }
+
+        if (
+            itemCategoryToRemove === "pup" ||
+            itemCategoryToRemove === "beauty"
+        ) {
+            let itemsToRemove = getItemsToRemove(
+                landElementsChildren,
+                $landElements,
+                {
+                    isStand: false,
+                    isMonument: false,
+                    isCurb: false,
+                    isSocle: false,
+                    isBeauty: true,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        } else if (itemCategoryToRemove === "rubble") {
+            let itemsToRemove = getItemsToRemove(
+                landElementsChildren,
+                $landElements,
+                {
+                    isStand: false,
+                    isMonument: false,
+                    isCurb: false,
+                    isSocle: false,
+                    isBeauty: false,
+                    isRubble: true,
+                    mustRemoveElementOnConstructor: true,
+                }
+            );
+
+            handleRemoveFilterNode(itemsToRemove);
+            handleRemoveCalculatorNode(itemsToRemove);
+            handleRemoveItemsFromSelectedItems(itemsToRemove);
+            calculate();
+        }
     }
 
     isUaLanguage && setLanguage(document, "ua");
