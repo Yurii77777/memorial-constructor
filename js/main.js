@@ -2537,6 +2537,9 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
         } else if (itemCategoryToRemove === "rubble") {
+            landPlotNode[0].classList.contains("hide") &&
+                landPlotNode[0].classList.remove("hide");
+
             let itemsToRemove = getItemsToRemove(
                 landElementsChildren,
                 $landElements,
@@ -7255,6 +7258,12 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                 for (let i = 0; i < updLandElements.length; i++) {
                     // !ВАЖНО! Ширина одинарной ПУП = 120см (2 секции по 60 см)
                     // Ширина двойной = 180 см (3 секции), высота в обеих вариантах = 200 см
+
+                    updLandElements[i].dataset.category === "pup" &&
+                        updLandElements[i].addEventListener("mousedown", (e) =>
+                            handleDragLetterings(e, updLandElements[i])
+                        );
+
                     if (
                         updLandElements[i].dataset.category === "pup" &&
                         !isCurbsSelected
@@ -7353,6 +7362,9 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
             elementsBeautification[selectedBeautyElement].classList.add(
                 "active"
             );
+
+            !landPlotNode[0].classList.contains("hide") &&
+                landPlotNode[0].classList.add("hide");
 
             let selectedBeautyElementData = getElementData(
                 selectedBeautyElement,
@@ -7482,6 +7494,9 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
         } else if (itemCategoryToRemove === "rubble") {
+            landPlotNode[0].classList.contains("hide") &&
+                landPlotNode[0].classList.remove("hide");
+
             let itemsToRemove = getItemsToRemove(
                 landElementsChildren,
                 $landElements,
@@ -7507,6 +7522,12 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
     isRuLanguage && setLanguage(document, "ru");
     isEngLanguage && setLanguage(document, "eng");
 });
+
+// $landElements[0].addEventListener("click", (e) => {
+//     console.log("[e.target]", e.target);
+
+//     // handleDragLetterings
+// });
 
 /**
  * Функція відміни введення нових даних в конструктор

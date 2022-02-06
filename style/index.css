@@ -732,6 +732,10 @@ body {
     clip-path: polygon(22% 0%, 81% 0%, 100% 100%, 0% 100%);
 }
 
+.field-elements {
+    z-index: 1;
+}
+
 .field__land-border-img {
     position: absolute;
     width: 98%;
@@ -866,6 +870,7 @@ body {
 .stand-container2 {
     display: block;
     position: absolute;
+    z-index: 10;
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: move;
