@@ -112,6 +112,9 @@ const elementsValuesMonumentsNode = document.querySelectorAll(
 const $elementsValuesFlowerGardensNode = document.querySelectorAll(
     ".constructor__elements-values.flower-garden"
 );
+const $elementsValuesAccessoriesNode = document.querySelectorAll(
+    ".constructor__elements-values.accessories"
+);
 const $steleDecorationForm = document.querySelectorAll(".constructor__form");
 const $epitaphListNode = document.getElementById("epitaph-list");
 const $crossListNode = document.getElementById("cross-list");
@@ -2689,6 +2692,36 @@ filterNode[0].addEventListener("click", (e) => {
                 calculate();
             }
         }
+    } else if (
+        selectedItem !== -1 &&
+        filterElements[selectedItem].dataset.category === "accessories"
+    ) {
+        let selectedAccessory = +userClick.parentElement.dataset.itemIndex;
+
+        const elementsAccessories = createArrayFromNode(
+            $elementsValuesAccessoriesNode
+        );
+
+        elementsAccessories[selectedAccessory].classList.remove("active");
+
+        const draggableElementsChildren = Array.from(
+            $draggableElementsNode[0].children
+        );
+
+        let itemsToRemove = getItemsToRemove(
+            draggableElementsChildren,
+            $draggableElementsNode,
+            {
+                isAccessory: true,
+                mustRemoveElementOnConstructor: true,
+            },
+            selectedAccessory
+        );
+
+        handleRemoveFilterNode(itemsToRemove);
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+        calculate();
     }
 });
 
@@ -2882,6 +2915,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
         isBeauty,
         isRubble,
         isFlowerGarden,
+        isAccessory,
         mustRemoveElementOnConstructor,
     } = categories;
     let result = [];
@@ -2923,7 +2957,7 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                 }
             }
         } else if (
-            // category === "monuments" ||
+            category === "monuments" ||
             category === "curbs" ||
             category === "socle" ||
             category === "beauty" ||
@@ -2949,6 +2983,24 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
                 let obj = {};
 
                 if (arrayOfNodes[i].dataset.category === category) {
+                    arrayOfNodes[i].dataset.category &&
+                        (obj["category"] = arrayOfNodes[i].dataset.category);
+                    arrayOfNodes[i].dataset.itemIndex &&
+                        (obj["index"] = +arrayOfNodes[i].dataset.itemIndex);
+                    Object.keys(obj).length && result.push(obj);
+
+                    mustRemoveElementOnConstructor &&
+                        node[0].removeChild(arrayOfNodes[i]);
+                }
+            }
+        } else if (category === "accessories") {
+            for (let i = 0; i < arrayOfNodes.length; i++) {
+                let obj = {};
+
+                if (
+                    arrayOfNodes[i].dataset.category === category &&
+                    +arrayOfNodes[i].dataset.itemIndex === selectedItem
+                ) {
                     arrayOfNodes[i].dataset.category &&
                         (obj["category"] = arrayOfNodes[i].dataset.category);
                     arrayOfNodes[i].dataset.itemIndex &&
@@ -2992,6 +3044,10 @@ const getItemsToRemove = (arrayOfNodes, node, categories, selectedItem) => {
 
     if (isFlowerGarden) {
         createItemData(arrayOfNodes, "flowerGarden", selectedItem);
+    }
+
+    if (isAccessory) {
+        createItemData(arrayOfNodes, "accessories", selectedItem);
     }
 
     return result;
@@ -5388,6 +5444,158 @@ $elementsValuesFlowerGardensNode[0].addEventListener("click", (e) => {
 });
 
 /**
+ * Обробник елементів блоку "Аксесуари"
+ * Accessories block element handler
+ * Обработчик элементов блока "Аксессуары"
+ */
+$elementsValuesAccessoriesNode[0].addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    let userClick = e.target;
+    const elementsAccessories = createArrayFromNode(
+        $elementsValuesAccessoriesNode
+    );
+    let selectedAccessory = elementsAccessories.indexOf(userClick.parentNode);
+
+    elementsAccessories[selectedAccessory].classList.add("active");
+
+    if (
+        selectedAccessory !== -1 &&
+        userClick.className !== "field__hide-element-button"
+    ) {
+        const selectedAccessoryData = getElementData(
+            selectedAccessory,
+            "accessories"
+        );
+
+        const {
+            id,
+            imgUrl,
+            imgConstructorUrl,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            category,
+            price,
+        } = selectedAccessoryData;
+
+        let propsForFilterNode = {};
+        propsForFilterNode["category"] = category;
+        propsForFilterNode["selectedItemIndex"] = selectedAccessory;
+        propsForFilterNode["imgUrl"] = imgUrl;
+        propsForFilterNode["siteNameUa"] = siteNameUa;
+        propsForFilterNode["siteNameRu"] = siteNameRu;
+        propsForFilterNode["siteNameEng"] = siteNameEng;
+
+        let constructorNodeString =
+            '<img src="./img/items[URL]" class="accessory__img" data-item-index="[INDEX]" data-category="[value]" />';
+
+        selectedItems.push(selectedAccessoryData);
+
+        const constructorNode = constructorNodeString
+            .slice()
+            .replace(/\[URL\]/g, imgConstructorUrl)
+            .replace(/\[INDEX\]/g, id)
+            .replace(/\[value\]/g, category);
+
+        $draggableElementsNode[0].insertAdjacentHTML(
+            "beforeend",
+            constructorNode
+        );
+
+        const draggableElementsChildren = Array.from(
+            $draggableElementsNode[0].children
+        );
+
+        // const windowWidth = window.innerWidth;
+
+        // Стилизуем элементы в зависимости от их типа
+        for (let i = 0; i < draggableElementsChildren.length; i++) {
+            draggableElementsChildren[i].dataset.category === "accessories" &&
+                draggableElementsChildren[i].addEventListener(
+                    "mousedown",
+                    (e) => handleDragLetterings(e, draggableElementsChildren[i])
+                );
+            draggableElementsChildren[i].dataset.category === "accessories" &&
+                draggableElementsChildren[i].addEventListener(
+                    "touchstart",
+                    (e) =>
+                        handleTouchDragLetterings(
+                            e,
+                            draggableElementsChildren[i]
+                        )
+                );
+
+            if (
+                draggableElementsChildren[i].dataset.category ===
+                    "accessories" &&
+                +draggableElementsChildren[i].dataset.itemIndex === 0
+            ) {
+                draggableElementsChildren[i].style.width = "30%";
+            }
+
+            if (
+                draggableElementsChildren[i].dataset.category ===
+                    "accessories" &&
+                +draggableElementsChildren[i].dataset.itemIndex === 1
+            ) {
+                draggableElementsChildren[i].style.width = "10%";
+            }
+
+            if (
+                draggableElementsChildren[i].dataset.category ===
+                    "accessories" &&
+                +draggableElementsChildren[i].dataset.itemIndex === 2
+            ) {
+                draggableElementsChildren[i].style.width = "18%";
+            }
+        }
+
+        handleAddFilterNode(propsForFilterNode);
+
+        const accessoryNodeToCalculator = createCalculatorDataNode(
+            category,
+            selectedAccessory,
+            siteNameUa,
+            siteNameRu,
+            siteNameEng,
+            price
+        );
+
+        $totalCostNode[0].insertAdjacentHTML(
+            "beforebegin",
+            accessoryNodeToCalculator
+        );
+
+        calculate();
+    } else if (
+        selectedAccessory !== -1 &&
+        userClick.className === "field__hide-element-button"
+    ) {
+        elementsAccessories[selectedAccessory].classList.remove("active");
+
+        const draggableElementsChildren = Array.from(
+            $draggableElementsNode[0].children
+        );
+
+        let itemsToRemove = getItemsToRemove(
+            draggableElementsChildren,
+            $draggableElementsNode,
+            {
+                isAccessory: true,
+                mustRemoveElementOnConstructor: true,
+            },
+            selectedAccessory
+        );
+
+        handleRemoveFilterNode(itemsToRemove);
+        handleRemoveCalculatorNode(itemsToRemove);
+        handleRemoveItemsFromSelectedItems(itemsToRemove);
+        calculate();
+    }
+});
+
+/**
  * Блок для обробки елементів оформлення стелли
  * Section for handle stele design elements
  * Блок для обработки элементов оформления стеллы
@@ -7262,6 +7470,11 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
                     updLandElements[i].dataset.category === "pup" &&
                         updLandElements[i].addEventListener("mousedown", (e) =>
                             handleDragLetterings(e, updLandElements[i])
+                        );
+
+                    updLandElements[i].dataset.category === "pup" &&
+                        updLandElements[i].addEventListener("touchstart", (e) =>
+                            handleTouchDragLetterings(e, updLandElements[i])
                         );
 
                     if (

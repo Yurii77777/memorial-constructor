@@ -43,6 +43,52 @@ const prices = [
         ],
     },
     {
+        accessories: [
+            {
+                id: 0,
+                titleUa: "Лавка ракурс 1",
+                price: 1,
+                // length: 50,
+                tabId: 4,
+                category: "accessories",
+                imgUrl: "/mobile/accessories/Bench_1.png",
+                imgConstructorUrl:
+                    "/mobile/accessories/Bench_1_on_constructor.png",
+                siteNameUa: "Лавка ракурс 1",
+                siteNameRu: "Скамейка ракурс 1",
+                siteNameEng: "Bench angle 1",
+            },
+            {
+                id: 1,
+                titleUa: "Лавка ракурс 2",
+                price: 1,
+                // length: 50,
+                tabId: 4,
+                category: "accessories",
+                imgUrl: "/mobile/accessories/Bench_2.png",
+                imgConstructorUrl:
+                    "/mobile/accessories/Bench_2_on_constructor.png",
+                siteNameUa: "Лавка ракурс 2",
+                siteNameRu: "Скамейка ракурс 2",
+                siteNameEng: "Bench angle 2",
+            },
+            {
+                id: 2,
+                titleUa: "Стіл",
+                price: 1,
+                // length: 100,
+                tabId: 4,
+                category: "accessories",
+                imgUrl: "/mobile/accessories/Table.png",
+                imgConstructorUrl:
+                    "/mobile/accessories/Table_on_constructor.png",
+                siteNameUa: "Стіл",
+                siteNameRu: "Стол",
+                siteNameEng: "Table",
+            },
+        ],
+    },
+    {
         socle: [
             {
                 id: 0,
