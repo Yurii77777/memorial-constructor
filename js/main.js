@@ -2658,7 +2658,16 @@ filterNode[0].addEventListener("click", (e) => {
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
         } else if (itemCategoryToRemove === "rubble") {
-            landPlotNode[0].classList.contains("hide") &&
+            let isCurbsSelected = false;
+
+            const landElements = Array.from($landElements[0].children);
+            for (let i = 0; i < landElements.length; i++) {
+                landElements[i].dataset.category === "curbs" &&
+                    (isCurbsSelected = true);
+            }
+
+            !isCurbsSelected &&
+                landPlotNode[0].classList.contains("hide") &&
                 landPlotNode[0].classList.remove("hide");
 
             let itemsToRemove = getItemsToRemove(
@@ -7227,9 +7236,22 @@ elementsValuesSocleNode[0].addEventListener("click", (e) => {
     let selectedSocle = elementsSocles.indexOf(userClick.parentNode);
     const landElementsChildren = createArrayFromNode($landElements);
 
+    let isPupSelected = false;
+    let isRubbleSelected = false;
+
+    for (let i = 0; i < landElementsChildren.length; i++) {
+        landElementsChildren[i].dataset.category === "pup" &&
+            (isPupSelected = true);
+
+        landElementsChildren[i].dataset.category === "rubble" &&
+            (isRubbleSelected = true);
+    }
+
     if (
         selectedSocle !== -1 &&
-        userClick.className !== "field__hide-element-button"
+        userClick.className !== "field__hide-element-button" &&
+        !isPupSelected &&
+        !isRubbleSelected
     ) {
         for (let i = 0; i < elementsSocles.length; i++) {
             if (elementsSocles[i].classList.contains("active")) {
