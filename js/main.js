@@ -714,7 +714,7 @@ const handleStandPositionForDrag = (
             let newLength =
                 initialLengthXL + initialLengthXL * (progress / 1.2);
             standNode.style.width = `${newLength}%`;
-            standNode.style.height = `${newHeight * 0.9}px`;
+            standNode.style.height = `${newHeight * 0.8}px`;
         }
     }
 
@@ -3798,6 +3798,89 @@ const handleSizesForDoubleMonument = (
     return result;
 };
 
+let letteringPos1 = 0;
+let letteringPos2 = 0;
+let letteringPos3 = 0;
+let letteringPos4 = 0;
+
+let letteringTouchPos1 = null;
+let letteringTouchPos2 = null;
+let letteringTouchPos3 = null;
+let letteringTouchPos4 = null;
+
+/**
+ * Функція для переміщення написів стелли (за допомогою миші)
+ * Function to move the letterings of the stele (using the mouse)
+ * Функция для перемещения надписей стеллы (при помощи мыши)
+ * @param {Event} e
+ * @param {HTMLNode} currentIterableElement
+ */
+const handleDragLetterings = (e, currentIterableElement) => {
+    e = e || window.event;
+    e.preventDefault();
+
+    const closeDragElement = () => {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    };
+
+    const elementMouseDrag = (e) => {
+        e = e || window.event;
+        e.preventDefault();
+
+        letteringPos1 = letteringPos3 - e.clientX;
+        letteringPos2 = letteringPos4 - e.clientY;
+        letteringPos3 = e.clientX;
+        letteringPos4 = e.clientY;
+
+        currentIterableElement.style.top =
+            currentIterableElement.offsetTop - letteringPos2 + "px";
+        currentIterableElement.style.left =
+            currentIterableElement.offsetLeft - letteringPos1 + "px";
+    };
+
+    letteringPos3 = e.clientX;
+    letteringPos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementMouseDrag;
+};
+
+/**
+ * Функція для переміщення написів стелли (для сенсорного екрану)
+ * Function to move the letterings of the stele (for touchscreen)
+ * Функция для перемещения надписей стеллы (для сенсорного экрана)
+ * @param {Event} e
+ * @param {HTMLNode} currentIterableElement
+ */
+const handleTouchDragLetterings = (e, currentIterableElement) => {
+    e = e || window.event;
+    // e.preventDefault();
+
+    const closeDragElement = () => {
+        document.ontouchend = null;
+        document.ontouchmove = null;
+    };
+
+    const elementDrag = (e) => {
+        e = e || window.event;
+        // e.preventDefault();
+
+        letteringTouchPos1 = letteringTouchPos3 - e.touches[0].clientX;
+        letteringTouchPos2 = letteringTouchPos4 - e.touches[0].clientY;
+        letteringTouchPos3 = e.touches[0].clientX;
+        letteringTouchPos4 = e.touches[0].clientY;
+        currentIterableElement.style.top =
+            currentIterableElement.offsetTop - letteringTouchPos2 + "px";
+        currentIterableElement.style.left =
+            currentIterableElement.offsetLeft - letteringTouchPos1 + "px";
+    };
+
+    letteringTouchPos3 = e.touches[0].clientX;
+    letteringTouchPos4 = e.touches.clientY;
+    document.ontouchend = closeDragElement;
+    document.ontouchmove = elementDrag;
+};
+
 /**
  * Функція для рендеру стели на тумбі.
  * Function for rendering the stelle on the stand.
@@ -3834,6 +3917,12 @@ const renderMonumentOnConstructor = (
         $monument1Img[0].style.top = `${monumentTopPosition}px`;
         $monument1Img[0].style.left = `${monumentLeftPosition1}px`;
         $monument1Img[0].style.position = "absolute";
+        // $monument1Img[0].style.zIndex = 100;
+
+        //Разрешаем двигать стеллу
+        // $monument1Img[0].addEventListener("mousedown", (e) =>
+        // handleDragLetterings(e, $monument1Img[0])
+        // );
     }
 
     if (monumentData.length === 2 && !isDoubleStele) {
@@ -6004,89 +6093,6 @@ const renderStellaLettering = (props) => {
 
     letteringStellaVengette &&
         node[0].insertAdjacentHTML("afterbegin", letteringStellaVengette);
-};
-
-let letteringPos1 = 0;
-let letteringPos2 = 0;
-let letteringPos3 = 0;
-let letteringPos4 = 0;
-
-let letteringTouchPos1 = null;
-let letteringTouchPos2 = null;
-let letteringTouchPos3 = null;
-let letteringTouchPos4 = null;
-
-/**
- * Функція для переміщення написів стелли (за допомогою миші)
- * Function to move the letterings of the stele (using the mouse)
- * Функция для перемещения надписей стеллы (при помощи мыши)
- * @param {Event} e
- * @param {HTMLNode} currentIterableElement
- */
-const handleDragLetterings = (e, currentIterableElement) => {
-    e = e || window.event;
-    e.preventDefault();
-
-    const closeDragElement = () => {
-        document.onmouseup = null;
-        document.onmousemove = null;
-    };
-
-    const elementMouseDrag = (e) => {
-        e = e || window.event;
-        e.preventDefault();
-
-        letteringPos1 = letteringPos3 - e.clientX;
-        letteringPos2 = letteringPos4 - e.clientY;
-        letteringPos3 = e.clientX;
-        letteringPos4 = e.clientY;
-
-        currentIterableElement.style.top =
-            currentIterableElement.offsetTop - letteringPos2 + "px";
-        currentIterableElement.style.left =
-            currentIterableElement.offsetLeft - letteringPos1 + "px";
-    };
-
-    letteringPos3 = e.clientX;
-    letteringPos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementMouseDrag;
-};
-
-/**
- * Функція для переміщення написів стелли (для сенсорного екрану)
- * Function to move the letterings of the stele (for touchscreen)
- * Функция для перемещения надписей стеллы (для сенсорного экрана)
- * @param {Event} e
- * @param {HTMLNode} currentIterableElement
- */
-const handleTouchDragLetterings = (e, currentIterableElement) => {
-    e = e || window.event;
-    // e.preventDefault();
-
-    const closeDragElement = () => {
-        document.ontouchend = null;
-        document.ontouchmove = null;
-    };
-
-    const elementDrag = (e) => {
-        e = e || window.event;
-        // e.preventDefault();
-
-        letteringTouchPos1 = letteringTouchPos3 - e.touches[0].clientX;
-        letteringTouchPos2 = letteringTouchPos4 - e.touches[0].clientY;
-        letteringTouchPos3 = e.touches[0].clientX;
-        letteringTouchPos4 = e.touches[0].clientY;
-        currentIterableElement.style.top =
-            currentIterableElement.offsetTop - letteringTouchPos2 + "px";
-        currentIterableElement.style.left =
-            currentIterableElement.offsetLeft - letteringTouchPos1 + "px";
-    };
-
-    letteringTouchPos3 = e.touches[0].clientX;
-    letteringTouchPos4 = e.touches.clientY;
-    document.ontouchend = closeDragElement;
-    document.ontouchmove = elementDrag;
 };
 
 /**
