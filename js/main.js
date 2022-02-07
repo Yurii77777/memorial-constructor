@@ -417,7 +417,9 @@ const createCardNode = (selectedTabIndex, priceList) => {
                             </p>
                             <p class="constructor__element-price">
                                 <span class="active">${price} ${
-                            category === "beauty" || category === "socle"
+                            category === "beauty" ||
+                            category === "socle" ||
+                            category === "rubble"
                                 ? "грн/м2"
                                 : "грн/шт"
                         }</span>
@@ -1542,6 +1544,106 @@ const handleSubmitLandPlotInputsData = () => {
             }
         }
 
+        // Пересчитать размер ПУП
+        const windowWidth = window.innerWidth;
+
+        // Получить актуальные данные земельного участка
+        const { width, length } = handleLandPlotSizes();
+
+        const updLandElements = Array.from($landElements[0].children);
+        let pupIndex = null;
+        let pupWidth = null;
+
+        for (let i = 0; i < updLandElements.length; i++) {
+            // !ВАЖНО! Ширина одинарной ПУП = 120см (2 секции по 60 см)
+            // Ширина двойной = 180 см (3 секции), высота в обеих вариантах = 200 см
+            updLandElements[i].dataset.category === "pup" &&
+                (pupIndex = +updLandElements[i].dataset.itemIndex);
+
+            const { type } = pupIndex;
+
+            type === "single"
+                ? (pupWidth = (120 / width) * 93)
+                : (pupWidth = (180 / width) * 93);
+
+            if (
+                updLandElements[i].dataset.category === "pup" &&
+                !isCurbsSelected
+            ) {
+                updLandElements[i].style.top = "50%";
+                updLandElements[i].style.left = "50%";
+                updLandElements[i].style.zIndex = "15";
+
+                if (windowWidth < 576) {
+                    const BASE_PUP_HEIGHT = 93;
+                    let pupHeight = (200 / length) * BASE_PUP_HEIGHT;
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -50%)";
+                } else if (windowWidth > 576 && windowWidth < 768) {
+                    const BASE_PUP_HEIGHT = 130;
+                    let pupHeight = (200 / length) * BASE_PUP_HEIGHT;
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -50%)";
+                } else if (windowWidth > 768 && windowWidth < 992) {
+                    const BASE_PUP_HEIGHT = 135;
+                    let pupHeight = (200 / length) * BASE_PUP_HEIGHT;
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -50%)";
+                } else if (windowWidth > 992) {
+                    const BASE_PUP_HEIGHT = 180;
+                    let pupHeight = (200 / length) * BASE_PUP_HEIGHT;
+
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -50%)";
+                }
+            } else if (
+                updLandElements[i].dataset.category === "pup" &&
+                isCurbsSelected
+            ) {
+                updLandElements[i].style.top = "50%";
+                updLandElements[i].style.left = "50%";
+
+                if (windowWidth < 576) {
+                    const BASE_PUP_HEIGHT = 73;
+                    let pupHeight = (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -56%)";
+                } else if (windowWidth > 576 && windowWidth < 768) {
+                    const BASE_PUP_HEIGHT = 110;
+                    let pupHeight = (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -56%)";
+                } else if (windowWidth > 768 && windowWidth < 992) {
+                    const BASE_PUP_HEIGHT = 115;
+                    let pupHeight = (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -56%)";
+                } else if (windowWidth > 992) {
+                    const BASE_PUP_HEIGHT = 160;
+                    let pupHeight = (200 / landPlotHeight) * BASE_PUP_HEIGHT;
+
+                    updLandElements[i].style.width = `${pupWidth}%`;
+                    updLandElements[i].style.height = `${pupHeight}px`;
+                    updLandElements[i].style.transform =
+                        "translate(-50%, -56%)";
+                }
+            }
+        }
+
         // Вибалити старі дані з зони калькулятора і масиву selectedItems
         let itemsToRemove = getItemsToRemove(
             landElementsChildren,
@@ -2432,7 +2534,23 @@ filterNode[0].addEventListener("click", (e) => {
             category === "socle" && (isSocleSelected = true);
         }
 
+        let isRubbleSelected = false;
+        const updLandElements = Array.from($landElements[0].children);
+
+        for (let i = 0; i < updLandElements.length; i++) {
+            updLandElements[i].dataset.category === "rubble" &&
+                (isRubbleSelected = true);
+        }
+
+        for (let i = 0; i < updLandElements.length; i++) {
+            if (updLandElements[i].dataset.category === "rubble") {
+                updLandElements[i].style.height = "182px";
+                updLandElements[i].style.width = "100%";
+            }
+        }
+
         !isSocleSelected &&
+            !isRubbleSelected &&
             landPlotNode[0].classList.contains("hide") &&
             landPlotNode[0].classList.remove("hide");
 
@@ -7023,6 +7141,17 @@ elementsBordersNode[0].addEventListener("click", (e) => {
             curbNodeToCalculator
         );
 
+        const updLandElements = Array.from($landElements[0].children);
+
+        for (let i = 0; i < updLandElements.length; i++) {
+            if (updLandElements[i].dataset.category === "rubble") {
+                updLandElements[i].style.height = "180px";
+                updLandElements[i].style.width = "89%";
+                updLandElements[i].style.left = "6%";
+                updLandElements[i].style.bottom = "8.3%";
+            }
+        }
+
         calculate();
     } else if (
         selectedBorder !== -1 &&
@@ -7037,7 +7166,23 @@ elementsBordersNode[0].addEventListener("click", (e) => {
             category === "socle" && (isSocleSelected = true);
         }
 
+        let isRubbleSelected = false;
+        const updLandElements = Array.from($landElements[0].children);
+
+        for (let i = 0; i < updLandElements.length; i++) {
+            updLandElements[i].dataset.category === "rubble" &&
+                (isRubbleSelected = true);
+        }
+
+        for (let i = 0; i < updLandElements.length; i++) {
+            if (updLandElements[i].dataset.category === "rubble") {
+                updLandElements[i].style.height = "182px";
+                updLandElements[i].style.width = "100%";
+            }
+        }
+
         !isSocleSelected &&
+            !isRubbleSelected &&
             landPlotNode[0].classList.contains("hide") &&
             landPlotNode[0].classList.remove("hide");
 
@@ -7655,9 +7800,18 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
             );
 
             const updLandElements = Array.from($landElements[0].children);
+            let isCurbsSelected = false;
 
             for (let i = 0; i < updLandElements.length; i++) {
-                if (updLandElements[i].dataset.category === "rubble") {
+                updLandElements[i].dataset.category === "curbs" &&
+                    (isCurbsSelected = true);
+            }
+
+            for (let i = 0; i < updLandElements.length; i++) {
+                if (
+                    updLandElements[i].dataset.category === "rubble" &&
+                    !isCurbsSelected
+                ) {
                     updLandElements[i].style.width = "100%";
                     updLandElements[i].style.left = "0";
                     updLandElements[i].style.bottom = "0";
@@ -7707,7 +7861,16 @@ elementsBeautyNode[0].addEventListener("click", (e) => {
             handleRemoveItemsFromSelectedItems(itemsToRemove);
             calculate();
         } else if (itemCategoryToRemove === "rubble") {
-            landPlotNode[0].classList.contains("hide") &&
+            let isCurbsSelected = false;
+
+            const landElements = Array.from($landElements[0].children);
+            for (let i = 0; i < landElements.length; i++) {
+                landElements[i].dataset.category === "curbs" &&
+                    (isCurbsSelected = true);
+            }
+
+            !isCurbsSelected &&
+                landPlotNode[0].classList.contains("hide") &&
                 landPlotNode[0].classList.remove("hide");
 
             let itemsToRemove = getItemsToRemove(
@@ -7854,7 +8017,7 @@ const calculate = () => {
 
         $totalCostNode[0].insertAdjacentHTML(
             "beforeend",
-            totalCostNode.replace(/\[price\]/g, totalCost)
+            totalCostNode.replace(/\[price\]/g, totalCost.toFixed(2))
         );
     } else {
         $totalCostNode[0].children.length === 2 &&
